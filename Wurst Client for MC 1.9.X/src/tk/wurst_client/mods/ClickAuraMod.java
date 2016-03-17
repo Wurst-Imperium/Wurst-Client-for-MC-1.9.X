@@ -62,8 +62,7 @@ public class ClickAuraMod extends Mod implements UpdateListener
 				wurst.mods.blockHitMod.doBlock();
 				EntityUtils.faceEntityPacket(en);
 				mc.thePlayer.swingArm(EnumHand.MAIN_HAND);
-				mc.thePlayer.sendQueue.addToSendQueue(new CPacketUseEntity(en,
-					EnumHand.MAIN_HAND));
+				mc.thePlayer.sendQueue.addToSendQueue(new CPacketUseEntity(en));
 				updateLastMS();
 			}
 	}

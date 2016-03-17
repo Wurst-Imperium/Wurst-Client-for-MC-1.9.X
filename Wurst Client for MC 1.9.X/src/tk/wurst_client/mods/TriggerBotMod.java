@@ -76,7 +76,7 @@ public class TriggerBotMod extends Mod implements UpdateListener
 					wurst.mods.blockHitMod.doBlock();
 					mc.thePlayer.swingArm(EnumHand.MAIN_HAND);
 					mc.thePlayer.sendQueue.addToSendQueue(new CPacketUseEntity(
-						en, EnumHand.MAIN_HAND));
+						en));
 					updateLastMS();
 				}
 			}
