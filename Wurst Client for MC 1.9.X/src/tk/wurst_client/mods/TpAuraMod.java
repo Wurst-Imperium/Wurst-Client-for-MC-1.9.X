@@ -69,8 +69,8 @@ public class TpAuraMod extends Mod implements UpdateListener
 				wurst.mods.blockHitMod.doBlock();
 				EntityUtils.faceEntityPacket(en);
 				mc.thePlayer.swingArm(EnumHand.MAIN_HAND);
-				mc.thePlayer.sendQueue.addToSendQueue(new CPacketUseEntity(
-					en, CPacketUseEntity.Action.ATTACK));
+				mc.thePlayer.sendQueue.addToSendQueue(new CPacketUseEntity(en,
+					EnumHand.MAIN_HAND));
 				updateLastMS();
 			}
 		}
