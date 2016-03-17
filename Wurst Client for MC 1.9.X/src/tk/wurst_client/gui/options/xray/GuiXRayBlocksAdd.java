@@ -49,7 +49,6 @@ public class GuiXRayBlocksAdd extends GuiScreen
 	/**
 	 * Adds the buttons (and other controls) to the screen in question.
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public void initGui()
 	{
@@ -146,8 +145,8 @@ public class GuiXRayBlocksAdd extends GuiScreen
 		Minecraft
 			.getMinecraft()
 			.getRenderItem()
-			.func_175030_a(Minecraft.getMinecraft().fontRendererObj, itemStack,
-				x + 4, y + 4);
+			.renderItemOverlays(Minecraft.getMinecraft().fontRendererObj,
+				itemStack, x + 4, y + 4);
 		RenderHelper.disableStandardItemLighting();
 		GlStateManager.disableRescaleNormal();
 		GlStateManager.disableBlend();
