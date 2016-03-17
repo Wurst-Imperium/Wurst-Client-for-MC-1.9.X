@@ -58,7 +58,6 @@ public class ModManager
 	public final CaveFinderMod caveFinderMod = new CaveFinderMod();
 	public final ChestEspMod chestEspMod = new ChestEspMod();
 	public final ClickAuraMod clickAuraMod = new ClickAuraMod();
-	public final ClickGuiMod clickGuiMod = new ClickGuiMod();
 	public final CmdBlockMod cmdBlockMod = new CmdBlockMod();
 	public final CrashChestMod crashChestMod = new CrashChestMod();
 	public final CrashItemMod crashItemMod = new CrashItemMod();
@@ -112,7 +111,6 @@ public class ModManager
 	public final NoWebMod noWebMod = new NoWebMod();
 	public final NukerMod nukerMod = new NukerMod();
 	public final NukerLegitMod nukerLegitMod = new NukerLegitMod();
-	public final OpSignMod opSignMod = new OpSignMod();
 	public final OverlayMod overlayMod = new OverlayMod();
 	public final PanicMod panicMod = new PanicMod();
 	public final PhaseMod phaseMod = new PhaseMod();

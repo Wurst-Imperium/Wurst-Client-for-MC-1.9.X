@@ -20,9 +20,6 @@ import java.util.function.Consumer;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-
-import org.darkstorm.minecraft.gui.component.Frame;
-
 import tk.wurst_client.WurstClient;
 import tk.wurst_client.alts.Alt;
 import tk.wurst_client.alts.Encryption;
@@ -54,7 +51,6 @@ public class FileManager
 	
 	public final File alts = new File(wurstDir, "alts.json");
 	public final File friends = new File(wurstDir, "friends.json");
-	public final File gui = new File(wurstDir, "gui.json");
 	public final File modules = new File(wurstDir, "modules.json");
 	public final File navigatorData = new File(wurstDir, "navigator.json");
 	public final File keybinds = new File(wurstDir, "keybinds.json");
@@ -120,60 +116,6 @@ public class FileManager
 		}
 	}
 	
-	public void saveGUI(Frame[] frames)
-	{
-		try
-		{
-			JsonObject json = new JsonObject();
-			for(Frame frame : frames)
-				if(!frame.getTitle().equalsIgnoreCase("ArenaBrawl"))
-				{
-					JsonObject jsonFrame = new JsonObject();
-					jsonFrame.addProperty("minimized", frame.isMinimized());
-					jsonFrame.addProperty("pinned", frame.isPinned());
-					jsonFrame.addProperty("posX", frame.getX());
-					jsonFrame.addProperty("posY", frame.getY());
-					json.add(frame.getTitle(), jsonFrame);
-				}
-			PrintWriter save = new PrintWriter(new FileWriter(gui));
-			save.println(JsonUtils.prettyGson.toJson(json));
-			save.close();
-		}catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
-	
-	public void loadGUI(Frame[] frames)
-	{
-		try
-		{
-			BufferedReader load = new BufferedReader(new FileReader(gui));
-			JsonObject json = (JsonObject)JsonUtils.jsonParser.parse(load);
-			load.close();
-			Iterator<Entry<String, JsonElement>> itr =
-				json.entrySet().iterator();
-			while(itr.hasNext())
-			{
-				Entry<String, JsonElement> entry = itr.next();
-				for(Frame frame : frames)
-					if(frame.getTitle().equals(entry.getKey()))
-					{
-						JsonObject jsonFrame = (JsonObject)entry.getValue();
-						frame.setMinimized(jsonFrame.get("minimized")
-							.getAsBoolean());
-						frame.setPinned(jsonFrame.get("pinned").getAsBoolean());
-						frame.setX(jsonFrame.get("posX").getAsInt());
-						frame.setY(jsonFrame.get("posY").getAsInt());
-					}
-				
-			}
-		}catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
-	
 	public void saveMods()
 	{
 		try
@@ -201,8 +143,8 @@ public class FileManager
 		FollowMod.class.getName(), ForceOpMod.class.getName(),
 		FreecamMod.class.getName(), InvisibilityMod.class.getName(),
 		LsdMod.class.getName(), MassTpaMod.class.getName(),
-		OpSignMod.class.getName(), ProtectMod.class.getName(),
-		RemoteViewMod.class.getName(), SpammerMod.class.getName());
+		ProtectMod.class.getName(), RemoteViewMod.class.getName(),
+		SpammerMod.class.getName());
 	
 	public boolean isModBlacklisted(Mod mod)
 	{

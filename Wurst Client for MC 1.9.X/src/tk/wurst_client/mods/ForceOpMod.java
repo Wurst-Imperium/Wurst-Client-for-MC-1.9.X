@@ -82,8 +82,8 @@ public class ForceOpMod extends Mod implements ChatInputListener
 	@Override
 	public NavigatorItem[] getSeeAlso()
 	{
-		return new NavigatorItem[]{wurst.mods.opSignMod,
-			wurst.special.bookHackSpf, wurst.special.sessionStealerSpf};
+		return new NavigatorItem[]{wurst.special.bookHackSpf,
+			wurst.special.sessionStealerSpf};
 	}
 	
 	@Override

@@ -223,8 +223,6 @@ public final class GuiManager extends AbstractGuiManager
 				offsetY += height + 5;
 			}
 		}
-		if(WurstClient.INSTANCE.files.gui.exists())
-			WurstClient.INSTANCE.files.loadGUI(getFrames());
 	}
 	
 	@Override
