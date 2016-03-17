@@ -36,7 +36,7 @@ public class MassTpaMod extends Mod implements UpdateListener,
 	public void onEnable()
 	{
 		i = 0;
-		Iterator itr = mc.getNetHandler().getPlayerInfo().iterator();
+		Iterator itr = mc.getNetHandler().getPlayerInfoMap().iterator();
 		players = new ArrayList<String>();
 		while(itr.hasNext())
 			players.add(StringUtils.stripControlCodes(((NetworkPlayerInfo)itr
