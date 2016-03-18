@@ -205,7 +205,7 @@ public class ForceOpMod extends Mod implements ChatInputListener
 						try
 						{
 							String howToLink =
-								"http://www.wurst-client.tk/tutorials/forceop";
+								"https://www.wurst-client.tk/tutorials/forceop";
 							Desktop.getDesktop().browse(new URI(howToLink));
 						}catch(Throwable var5)
 						{

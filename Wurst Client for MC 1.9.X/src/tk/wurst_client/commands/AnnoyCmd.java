@@ -58,11 +58,14 @@ public class AnnoyCmd extends Cmd implements ChatInputListener
 		{
 			String repeatMessage = message.substring(message.indexOf(">") + 1);
 			mc.thePlayer.sendChatMessage(repeatMessage);
-		}else if(message.contains("] " + name + ":")
-			|| message.contains("]" + name + ":"))
+		}else if(message.contains(name+":"))
 		{
 			String repeatMessage = message.substring(message.indexOf(":") + 1);
 			mc.thePlayer.sendChatMessage(repeatMessage);
+		} else if(message.contains(name + " §f"))
+		{
+			String repeatMessage = message.substring(message.indexOf(" §f"));
+			mc.thePlayer.sendChatMessage(repeatMessage); 
 		}
 	}
 }
