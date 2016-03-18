@@ -27,8 +27,6 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiYesNo;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 
@@ -305,9 +303,6 @@ public class GuiWurstMainMenu extends GuiMainMenu
 		drawGradientRect(0, 0, width, height, -2130706433, 16777215);
 		drawGradientRect(0, 0, width, height, 0, Integer.MIN_VALUE);
 		
-		Tessellator tessellator = Tessellator.getInstance();
-		VertexBuffer vb = tessellator.getBuffer();
-		
 		// title image
 		mc.getTextureManager().bindTexture(title);
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
@@ -318,7 +313,7 @@ public class GuiWurstMainMenu extends GuiMainMenu
 		int w = 256;
 		int h = 64;
 		float fw = 256;
-		float fh = 256;
+		float fh = 64;
 		float u = 0;
 		float v = 0;
 		if(GuiMainMenu.splashText.equals("umop-apisdn!"))
@@ -334,8 +329,8 @@ public class GuiWurstMainMenu extends GuiMainMenu
 			y = y - 36;
 			h = 48;
 			w = 48;
-			fw = 256;
-			fh = 256;
+			fw = 48;
+			fh = 48;
 			u = 0;
 			v = 0;
 			drawModalRectWithCustomSizedTexture(x, y, u, v, w, h, fw, fh);
@@ -347,7 +342,6 @@ public class GuiWurstMainMenu extends GuiMainMenu
 		}
 		
 		// splash text
-		vb.color(255, 255, 255, 255);
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(width / 2 + 90, 72.0F, 0.0F);
 		GlStateManager.rotate(-20.0F, 0.0F, 0.0F, 1.0F);
@@ -363,7 +357,7 @@ public class GuiWurstMainMenu extends GuiMainMenu
 		GlStateManager.popMatrix();
 		
 		// text
-		String vMinecraft = "Minecraft 1.8";
+		String vMinecraft = "Minecraft 1.9";
 		String cMinecraft1 = "Copyright Mojang AB";
 		String cMinecraft2 = "Do not distribute!";
 		drawString(fontRendererObj, vMinecraft,
@@ -397,9 +391,9 @@ public class GuiWurstMainMenu extends GuiMainMenu
 			y = height - 34;
 			h = 16;
 			w = 16;
-			fw = 43;
-			fh = 256;
-			u = 256 * 5 / 6 - i * 256 / 6;
+			fw = 96;
+			fh = 16;
+			u = 96 * 5 / 6 - i * 96 / 6;
 			v = 0;
 			drawModalRectWithCustomSizedTexture(x, y, u, v, w, h, fw, fh);
 		}

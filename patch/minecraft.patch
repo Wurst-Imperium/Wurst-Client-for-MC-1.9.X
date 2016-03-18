@@ -1,18 +1,21 @@
-From 762f806e88441a9cf80f2f6f3fc44d2f59b79ad7 Mon Sep 17 00:00:00 2001
+From 90d77468f9451f56f97c432e3f53fa0668b55734 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Fri, 18 Mar 2016 13:05:35 +0100
+Date: Fri, 18 Mar 2016 14:19:22 +0100
 Subject: [PATCH] Wurst
 
 ---
  .../minecraft/block/state/BlockStateContainer.java |   3 +-
  src/net/minecraft/block/state/IBlockState.java     |   2 +-
- src/net/minecraft/client/Minecraft.java            |  62 +++++++--
+ src/net/minecraft/client/Minecraft.java            |  72 ++++++++--
  .../client/audio/PositionedSoundRecord.java        |   2 +-
  .../minecraft/client/entity/EntityPlayerSP.java    | 154 +++++++++++++++++----
  src/net/minecraft/client/gui/GuiButton.java        |   2 +-
+ src/net/minecraft/client/gui/GuiGameOver.java      |   6 +-
  src/net/minecraft/client/gui/GuiIngame.java        |  23 ++-
+ src/net/minecraft/client/gui/GuiIngameMenu.java    |   8 +-
  .../client/gui/GuiListWorldSelectionEntry.java     |   2 +-
- src/net/minecraft/client/gui/GuiMainMenu.java      |   4 +-
+ src/net/minecraft/client/gui/GuiMainMenu.java      |  20 ++-
+ .../minecraft/client/gui/GuiMemoryErrorScreen.java |   4 +-
  src/net/minecraft/client/gui/GuiMultiplayer.java   | 109 +++++++++++----
  src/net/minecraft/client/gui/GuiScreenBook.java    |  66 ++++++++-
  .../client/gui/GuiScreenOptionsSounds.java         |   2 +-
@@ -22,7 +25,7 @@ Subject: [PATCH] Wurst
  .../client/gui/inventory/GuiContainer.java         |   2 +-
  .../client/multiplayer/PlayerControllerMP.java     |  14 +-
  .../minecraft/client/multiplayer/ServerList.java   |   6 +
- .../client/network/NetHandlerPlayClient.java       |   2 +-
+ .../client/network/NetHandlerPlayClient.java       |   6 +-
  .../client/network/NetworkPlayerInfo.java          |  10 ++
  .../minecraft/client/renderer/EntityRenderer.java  |   8 +-
  .../minecraft/client/renderer/RenderGlobal.java    |   2 +-
@@ -33,7 +36,8 @@ Subject: [PATCH] Wurst
  src/net/minecraft/entity/EntityLivingBase.java     |   6 +-
  src/net/minecraft/entity/monster/EntityZombie.java |   2 +-
  src/net/minecraft/entity/player/EntityPlayer.java  |   7 +-
- 29 files changed, 405 insertions(+), 105 deletions(-)
+ src/net/minecraft/realms/Realms.java               |   4 +-
+ 33 files changed, 441 insertions(+), 121 deletions(-)
 
 diff --git a/src/net/minecraft/block/state/BlockStateContainer.java b/src/net/minecraft/block/state/BlockStateContainer.java
 index 72ab5aa..7148dae 100644
@@ -63,7 +67,7 @@ index e590b46..157dc4b 100644
      <T extends Comparable<T>> IBlockState cycleProperty(IProperty<T> property);
  
 diff --git a/src/net/minecraft/client/Minecraft.java b/src/net/minecraft/client/Minecraft.java
-index 61b2545..e682027 100644
+index 61b2545..c89d45c 100644
 --- a/src/net/minecraft/client/Minecraft.java
 +++ b/src/net/minecraft/client/Minecraft.java
 @@ -12,6 +12,7 @@ import com.mojang.authlib.GameProfileRepository;
@@ -84,6 +88,15 @@ index 61b2545..e682027 100644
  import net.minecraft.block.Block;
  import net.minecraft.block.material.Material;
  import net.minecraft.block.state.IBlockState;
+@@ -48,7 +51,7 @@ import net.minecraft.client.gui.GuiControls;
+ import net.minecraft.client.gui.GuiGameOver;
+ import net.minecraft.client.gui.GuiIngame;
+ import net.minecraft.client.gui.GuiIngameMenu;
+-import net.minecraft.client.gui.GuiMainMenu;
++import tk.wurst_client.gui.main.GuiWurstMainMenu;
+ import net.minecraft.client.gui.GuiMemoryErrorScreen;
+ import net.minecraft.client.gui.GuiMultiplayer;
+ import net.minecraft.client.gui.GuiNewChat;
 @@ -180,6 +183,7 @@ import net.minecraft.world.chunk.storage.AnvilSaveConverter;
  import net.minecraft.world.storage.ISaveFormat;
  import net.minecraft.world.storage.ISaveHandler;
@@ -139,7 +152,7 @@ index 61b2545..e682027 100644
      private String serverName;
      private int serverPort;
  
-@@ -586,6 +598,9 @@ public class Minecraft implements IThreadListener, ISnooperInfo
+@@ -586,13 +598,16 @@ public class Minecraft implements IThreadListener, ISnooperInfo
          this.checkGLError("Post startup");
          this.ingameGUI = new GuiIngame(this);
  
@@ -148,7 +161,16 @@ index 61b2545..e682027 100644
 +
          if (this.serverName != null)
          {
-             this.displayGuiScreen(new GuiConnecting(new GuiMainMenu(), this, this.serverName, this.serverPort));
+-            this.displayGuiScreen(new GuiConnecting(new GuiMainMenu(), this, this.serverName, this.serverPort));
++            this.displayGuiScreen(new GuiConnecting(new GuiWurstMainMenu(), this, this.serverName, this.serverPort));
+         }
+         else
+         {
+-            this.displayGuiScreen(new GuiMainMenu());
++            this.displayGuiScreen(new GuiWurstMainMenu());
+         }
+ 
+         this.renderEngine.deleteTexture(this.mojangLogo);
 @@ -670,6 +685,9 @@ public class Minecraft implements IThreadListener, ISnooperInfo
          else
          {
@@ -159,6 +181,23 @@ index 61b2545..e682027 100644
          }
      }
  
+@@ -997,14 +1015,14 @@ public class Minecraft implements IThreadListener, ISnooperInfo
+ 
+         if (guiScreenIn == null && this.theWorld == null)
+         {
+-            guiScreenIn = new GuiMainMenu();
++            guiScreenIn = new GuiWurstMainMenu();
+         }
+         else if (guiScreenIn == null && this.thePlayer.getHealth() <= 0.0F)
+         {
+             guiScreenIn = new GuiGameOver((ITextComponent)null);
+         }
+ 
+-        if (guiScreenIn instanceof GuiMainMenu || guiScreenIn instanceof GuiMultiplayer)
++        if (guiScreenIn instanceof GuiWurstMainMenu || guiScreenIn instanceof GuiMultiplayer)
+         {
+             this.gameSettings.showDebugInfo = false;
+             this.ingameGUI.getChatGUI().clearChatMessages();
 @@ -1530,6 +1548,9 @@ public class Minecraft implements IThreadListener, ISnooperInfo
      {
          if (this.leftClickCounter <= 0)
@@ -177,7 +216,7 @@ index 61b2545..e682027 100644
  
      /**
       * Called when user clicked he's mouse right button (place)
-      */ 
+      */
 -    private void rightClickMouse()
 +    @SuppressWarnings("incomplete-switch")
 +	public void rightClickMouse()
@@ -542,8 +581,39 @@ index cdb4e57..75bea07 100644
      }
  
      public int getButtonWidth()
+diff --git a/src/net/minecraft/client/gui/GuiGameOver.java b/src/net/minecraft/client/gui/GuiGameOver.java
+index 08d7720..99f7604 100644
+--- a/src/net/minecraft/client/gui/GuiGameOver.java
++++ b/src/net/minecraft/client/gui/GuiGameOver.java
+@@ -1,6 +1,8 @@
+ package net.minecraft.client.gui;
+ 
+ import java.io.IOException;
++
++import tk.wurst_client.gui.main.GuiWurstMainMenu;
+ import net.minecraft.client.multiplayer.WorldClient;
+ import net.minecraft.client.renderer.GlStateManager;
+ import net.minecraft.client.resources.I18n;
+@@ -74,7 +76,7 @@ public class GuiGameOver extends GuiScreen implements GuiYesNoCallback
+             case 1:
+                 if (this.mc.theWorld.getWorldInfo().isHardcoreModeEnabled())
+                 {
+-                    this.mc.displayGuiScreen(new GuiMainMenu());
++                    this.mc.displayGuiScreen(new GuiWurstMainMenu());
+                 }
+                 else
+                 {
+@@ -95,7 +97,7 @@ public class GuiGameOver extends GuiScreen implements GuiYesNoCallback
+             }
+ 
+             this.mc.loadWorld((WorldClient)null);
+-            this.mc.displayGuiScreen(new GuiMainMenu());
++            this.mc.displayGuiScreen(new GuiWurstMainMenu());
+         }
+         else
+         {
 diff --git a/src/net/minecraft/client/gui/GuiIngame.java b/src/net/minecraft/client/gui/GuiIngame.java
-index 8c38552..4b28a08 100644
+index 8c38552..6f0e7c2 100644
 --- a/src/net/minecraft/client/gui/GuiIngame.java
 +++ b/src/net/minecraft/client/gui/GuiIngame.java
 @@ -4,9 +4,14 @@ import com.google.common.base.Predicate;
@@ -568,8 +638,8 @@ index 8c38552..4b28a08 100644
 -        if (scoreobjective1 != null)
 +		// TODO: Client
 +		if(scoreobjective1 != null)
- 		{
- 			this.renderScoreboard(scoreobjective1, scaledresolution);
+         {
+             this.renderScoreboard(scoreobjective1, scaledresolution);
 -        }
 +		}else
 +			ArenaBrawlMod.scoreboard = null;
@@ -607,6 +677,39 @@ index 8c38552..4b28a08 100644
      }
  
      private void renderPlayerStats(ScaledResolution scaledRes)
+diff --git a/src/net/minecraft/client/gui/GuiIngameMenu.java b/src/net/minecraft/client/gui/GuiIngameMenu.java
+index b93bf8a..cf1b0fd 100644
+--- a/src/net/minecraft/client/gui/GuiIngameMenu.java
++++ b/src/net/minecraft/client/gui/GuiIngameMenu.java
+@@ -1,6 +1,8 @@
+ package net.minecraft.client.gui;
+ 
+ import java.io.IOException;
++
++import tk.wurst_client.gui.main.GuiWurstMainMenu;
+ import net.minecraft.client.gui.achievement.GuiAchievements;
+ import net.minecraft.client.gui.achievement.GuiStats;
+ import net.minecraft.client.multiplayer.WorldClient;
+@@ -58,16 +60,16 @@ public class GuiIngameMenu extends GuiScreen
+ 
+                 if (flag)
+                 {
+-                    this.mc.displayGuiScreen(new GuiMainMenu());
++                    this.mc.displayGuiScreen(new GuiWurstMainMenu());
+                 }
+                 else if (flag1)
+                 {
+                     RealmsBridge realmsbridge = new RealmsBridge();
+-                    realmsbridge.switchToRealms(new GuiMainMenu());
++                    realmsbridge.switchToRealms(new GuiWurstMainMenu());
+                 }
+                 else
+                 {
+-                    this.mc.displayGuiScreen(new GuiMultiplayer(new GuiMainMenu()));
++                    this.mc.displayGuiScreen(new GuiMultiplayer(new GuiWurstMainMenu()));
+                 }
+ 
+             case 2:
 diff --git a/src/net/minecraft/client/gui/GuiListWorldSelectionEntry.java b/src/net/minecraft/client/gui/GuiListWorldSelectionEntry.java
 index cf5b504..cc18322 100644
 --- a/src/net/minecraft/client/gui/GuiListWorldSelectionEntry.java
@@ -621,10 +724,43 @@ index cf5b504..cc18322 100644
          if (this.field_186784_e.getSaveLoader().canLoadWorld(this.field_186786_g.getFileName()))
          {
 diff --git a/src/net/minecraft/client/gui/GuiMainMenu.java b/src/net/minecraft/client/gui/GuiMainMenu.java
-index b8f0b51..e65fbcc 100644
+index b8f0b51..cd27a1e 100644
 --- a/src/net/minecraft/client/gui/GuiMainMenu.java
 +++ b/src/net/minecraft/client/gui/GuiMainMenu.java
-@@ -45,7 +45,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
+@@ -1,6 +1,7 @@
+ package net.minecraft.client.gui;
+ 
+ import com.google.common.collect.Lists;
++
+ import java.io.BufferedReader;
+ import java.io.Closeable;
+ import java.io.IOException;
+@@ -11,6 +12,7 @@ import java.util.Date;
+ import java.util.List;
+ import java.util.Random;
+ import java.util.concurrent.atomic.AtomicInteger;
++
+ import net.minecraft.client.Minecraft;
+ import net.minecraft.client.renderer.GlStateManager;
+ import net.minecraft.client.renderer.OpenGlHelper;
+@@ -28,6 +30,7 @@ import net.minecraft.util.text.TextFormatting;
+ import net.minecraft.world.demo.DemoWorldServer;
+ import net.minecraft.world.storage.ISaveFormat;
+ import net.minecraft.world.storage.WorldInfo;
++
+ import org.apache.commons.io.Charsets;
+ import org.apache.commons.io.IOUtils;
+ import org.apache.logging.log4j.LogManager;
+@@ -35,6 +38,8 @@ import org.apache.logging.log4j.Logger;
+ import org.lwjgl.opengl.GLContext;
+ import org.lwjgl.util.glu.Project;
+ 
++import tk.wurst_client.hooks.ServerHook;
++
+ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
+ {
+     private static final AtomicInteger field_175373_f = new AtomicInteger(0);
+@@ -45,7 +50,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
      private float updateCounter;
  
      /** The splash message. */
@@ -633,7 +769,33 @@ index b8f0b51..e65fbcc 100644
      private GuiButton buttonResetDemo;
  
      /** Timer used to rotate the panorama, increases every tick. */
-@@ -488,7 +488,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
+@@ -202,7 +207,13 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
+         else if (calendar.get(2) + 1 == 10 && calendar.get(5) == 31)
+         {
+             this.splashText = "OOoooOOOoooo! Spooky!";
++            
++            //TODO: Client
++        }else if (calendar.get(2) + 1 == 2 && calendar.get(5) == 9)
++        {
++            this.splashText = "Happy birthday, Alexander01998!";
+         }
++        ServerHook.setCurrentIpToSingleplayer();
+ 
+         int i = 24;
+         int j = this.height / 4 + 48;
+@@ -254,7 +265,10 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
+     {
+         this.buttonList.add(new GuiButton(1, this.width / 2 - 100, p_73969_1_, I18n.format("menu.singleplayer", new Object[0])));
+         this.buttonList.add(new GuiButton(2, this.width / 2 - 100, p_73969_1_ + p_73969_2_ * 1, I18n.format("menu.multiplayer", new Object[0])));
+-        this.buttonList.add(this.realmsButton = new GuiButton(14, this.width / 2 - 100, p_73969_1_ + p_73969_2_ * 2, I18n.format("menu.online", new Object[0])));
++        
++        //TODO: Client
++        this.buttonList.add(new GuiButton(3, this.width / 2 + 2, p_73969_1_ + p_73969_2_ * 2, 98, 20, "Alt Manager"));
++        this.buttonList.add(this.realmsButton = new GuiButton(14, this.width / 2 - 100, p_73969_1_ + p_73969_2_ * 2, 98, 20, I18n.format("menu.online", new Object[0])));
+     }
+ 
+     /**
+@@ -488,7 +502,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
      /**
       * Renders the skybox in the main menu
       */
@@ -642,8 +804,30 @@ index b8f0b51..e65fbcc 100644
      {
          this.mc.getFramebuffer().unbindFramebuffer();
          GlStateManager.viewport(0, 0, 256, 256);
+diff --git a/src/net/minecraft/client/gui/GuiMemoryErrorScreen.java b/src/net/minecraft/client/gui/GuiMemoryErrorScreen.java
+index 77e3893..c302473 100644
+--- a/src/net/minecraft/client/gui/GuiMemoryErrorScreen.java
++++ b/src/net/minecraft/client/gui/GuiMemoryErrorScreen.java
+@@ -1,6 +1,8 @@
+ package net.minecraft.client.gui;
+ 
+ import java.io.IOException;
++
++import tk.wurst_client.gui.main.GuiWurstMainMenu;
+ import net.minecraft.client.resources.I18n;
+ 
+ public class GuiMemoryErrorScreen extends GuiScreen
+@@ -23,7 +25,7 @@ public class GuiMemoryErrorScreen extends GuiScreen
+     {
+         if (button.id == 0)
+         {
+-            this.mc.displayGuiScreen(new GuiMainMenu());
++            this.mc.displayGuiScreen(new GuiWurstMainMenu());
+         }
+         else if (button.id == 1)
+         {
 diff --git a/src/net/minecraft/client/gui/GuiMultiplayer.java b/src/net/minecraft/client/gui/GuiMultiplayer.java
-index e4e5eb7..018cab5 100644
+index e4e5eb7..8618bb1 100644
 --- a/src/net/minecraft/client/gui/GuiMultiplayer.java
 +++ b/src/net/minecraft/client/gui/GuiMultiplayer.java
 @@ -2,25 +2,35 @@ package net.minecraft.client.gui;
@@ -701,7 +885,7 @@ index e4e5eb7..018cab5 100644
 +        
 +        //TODO: Client
 +        if(serverListSelector != null)
-         	this.serverListSelector.handleMouseInput();
+         this.serverListSelector.handleMouseInput();
      }
  
 @@ -98,7 +114,16 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
@@ -1190,9 +1374,27 @@ index 060ef17..d60ddd9 100644
       * Loads a list of servers from servers.dat, by running ServerData.getServerDataFromNBTCompound on each NBT compound
       * found in the "servers" tag list.
 diff --git a/src/net/minecraft/client/network/NetHandlerPlayClient.java b/src/net/minecraft/client/network/NetHandlerPlayClient.java
-index b7f7be5..507c502 100644
+index b7f7be5..1db63d4 100644
 --- a/src/net/minecraft/client/network/NetHandlerPlayClient.java
 +++ b/src/net/minecraft/client/network/NetHandlerPlayClient.java
+@@ -27,7 +27,7 @@ import net.minecraft.client.gui.GuiCommandBlock;
+ import net.minecraft.client.gui.GuiDisconnected;
+ import net.minecraft.client.gui.GuiDownloadTerrain;
+ import net.minecraft.client.gui.GuiGameOver;
+-import net.minecraft.client.gui.GuiMainMenu;
++import tk.wurst_client.gui.main.GuiWurstMainMenu;
+ import net.minecraft.client.gui.GuiMerchant;
+ import net.minecraft.client.gui.GuiMultiplayer;
+ import net.minecraft.client.gui.GuiScreen;
+@@ -837,7 +837,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+         }
+         else
+         {
+-            this.gameController.displayGuiScreen(new GuiDisconnected(new GuiMultiplayer(new GuiMainMenu()), "disconnect.lost", reason));
++            this.gameController.displayGuiScreen(new GuiDisconnected(new GuiMultiplayer(new GuiWurstMainMenu()), "disconnect.lost", reason));
+         }
+     }
+ 
 @@ -1629,7 +1629,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
  
          if (entity instanceof EntityLivingBase)
@@ -1372,7 +1574,7 @@ index a65657e..9d9e562 100644
          this.worldObj.setEntityState(this, (byte)16);
      }
 diff --git a/src/net/minecraft/entity/player/EntityPlayer.java b/src/net/minecraft/entity/player/EntityPlayer.java
-index 23d8999..4a68eb0 100644
+index 23d8999..b4ec5c2 100644
 --- a/src/net/minecraft/entity/player/EntityPlayer.java
 +++ b/src/net/minecraft/entity/player/EntityPlayer.java
 @@ -3,10 +3,13 @@ package net.minecraft.entity.player;
@@ -1392,14 +1594,35 @@ index 23d8999..4a68eb0 100644
 @@ -2342,7 +2345,9 @@ public abstract class EntityPlayer extends EntityLivingBase
  
      public boolean isPushedByWater()
- 	{
+     {
 -        return !this.capabilities.isFlying;
 +		// TODO: Client
 +		return !this.capabilities.isFlying
 +			&& !WurstClient.INSTANCE.mods.antiKnockbackMod.isActive();
- 	}
+     }
  
      public Scoreboard getWorldScoreboard()
+diff --git a/src/net/minecraft/realms/Realms.java b/src/net/minecraft/realms/Realms.java
+index 3cba0d7..3243c19 100644
+--- a/src/net/minecraft/realms/Realms.java
++++ b/src/net/minecraft/realms/Realms.java
+@@ -5,7 +5,7 @@ import com.mojang.authlib.GameProfile;
+ import com.mojang.util.UUIDTypeAdapter;
+ import java.net.Proxy;
+ import net.minecraft.client.Minecraft;
+-import net.minecraft.client.gui.GuiMainMenu;
++import tk.wurst_client.gui.main.GuiWurstMainMenu;
+ import net.minecraft.client.settings.GameSettings;
+ import net.minecraft.util.Session;
+ import net.minecraft.world.WorldSettings;
+@@ -112,6 +112,6 @@ public class Realms
+ 
+     public static boolean inTitleScreen()
+     {
+-        return Minecraft.getMinecraft().currentScreen != null && Minecraft.getMinecraft().currentScreen instanceof GuiMainMenu;
++        return Minecraft.getMinecraft().currentScreen != null && Minecraft.getMinecraft().currentScreen instanceof GuiWurstMainMenu;
+     }
+ }
 -- 
 2.0.0
 
