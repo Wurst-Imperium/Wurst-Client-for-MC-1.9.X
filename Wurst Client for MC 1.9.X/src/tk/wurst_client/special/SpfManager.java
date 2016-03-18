@@ -27,7 +27,6 @@ public class SpfManager
 	public final BookHackSpf bookHackSpf = new BookHackSpf();
 	public final ChangelogSpf changelogSpf = new ChangelogSpf();
 	public final ServerFinderSpf serverFinderSpf = new ServerFinderSpf();
-	public final SessionStealerSpf sessionStealerSpf = new SessionStealerSpf();
 	public final TargetSpf targetSpf = new TargetSpf();
 	
 	public SpfManager()
