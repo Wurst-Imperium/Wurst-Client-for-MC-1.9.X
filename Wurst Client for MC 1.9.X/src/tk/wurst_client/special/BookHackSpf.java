@@ -20,7 +20,6 @@ public class BookHackSpf extends Spf
 	@Override
 	public NavigatorItem[] getSeeAlso()
 	{
-		return new NavigatorItem[]{wurst.mods.forceOpMod,
-			wurst.special.sessionStealerSpf};
+		return new NavigatorItem[]{wurst.mods.forceOpMod};
 	}
 }

@@ -70,8 +70,6 @@ public class GuiAlts extends GuiScreen
 			"Delete"));
 		buttonList.add(new GuiButton(6, width / 2 + 80, height - 28, 75, 20,
 			"Cancel"));
-		buttonList.add(new GuiButton(8, width - 108, 8, 100, 20,
-			"Session Stealer"));
 		
 		buttonList.add(new GuiButton(7, 8, 8, 100, 20, "Import Alts"));
 		WurstClient.INSTANCE.analytics.trackPageView("/alt-manager/",
@@ -199,9 +197,7 @@ public class GuiAlts extends GuiScreen
 							}
 					}
 				}).start();
-			else if(clickedButton.id == 8)
-				mc.displayGuiScreen(new SessionStealerScreen(this));
-	}
+			
 	
 	@Override
 	public void confirmClicked(boolean par1, int par2)
