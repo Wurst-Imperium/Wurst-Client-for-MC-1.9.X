@@ -1,5 +1,5 @@
 /*
- * Copyright © 2014 - 2016 | Wurst-Imperium | All rights reserved.
+ * Copyright Â© 2014 - 2016 | Wurst-Imperium | All rights reserved.
  * 
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -316,68 +316,32 @@ public class RenderUtils
 	
 	public static void drawColorBox(AxisAlignedBB axisalignedbb)
 	{
-		Tessellator ts = Tessellator.getInstance();
-		VertexBuffer vb = ts.getBuffer();
-		vb.begin(7, DefaultVertexFormats.POSITION_TEX);// Starts X.
-		vb.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ);
-		vb.pos(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.minZ);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.minZ);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.minZ);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.maxZ);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.maxZ);
-		vb.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.maxZ);
-		vb.pos(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.maxZ);
-		ts.draw();
-		vb.begin(7, DefaultVertexFormats.POSITION_TEX);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.minZ);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.minZ);
-		vb.pos(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.minZ);
-		vb.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ);
-		vb.pos(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.maxZ);
-		vb.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.maxZ);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.maxZ);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.maxZ);
-		ts.draw();// Ends X.
-		vb.begin(7, DefaultVertexFormats.POSITION_TEX);// Starts Y.
-		vb.pos(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.minZ);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.minZ);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.maxZ);
-		vb.pos(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.maxZ);
-		vb.pos(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.minZ);
-		vb.pos(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.maxZ);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.maxZ);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.minZ);
-		ts.draw();
-		vb.begin(7, DefaultVertexFormats.POSITION_TEX);
-		vb.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.minZ);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.maxZ);
-		vb.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.maxZ);
-		vb.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ);
-		vb.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.maxZ);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.maxZ);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.minZ);
-		ts.draw();// Ends Y.
-		vb.begin(7, DefaultVertexFormats.POSITION_TEX);// Starts Z.
-		vb.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ);
-		vb.pos(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.minZ);
-		vb.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.maxZ);
-		vb.pos(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.maxZ);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.maxZ);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.maxZ);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.minZ);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.minZ);
-		ts.draw();
-		vb.begin(7, DefaultVertexFormats.POSITION_TEX);
-		vb.pos(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.maxZ);
-		vb.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.maxZ);
-		vb.pos(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.minZ);
-		vb.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.minZ);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.minZ);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.maxZ);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.maxZ);
-		ts.draw();// Ends Z.
+		 Tessellator tessellator = Tessellator.getInstance();
+        net.minecraft.client.renderer.VertexBuffer vertexbuffer = tessellator.getBuffer();
+        vertexbuffer.begin(3, DefaultVertexFormats.POSITION);
+        vertexbuffer.pos(boundingBox.minX, boundingBox.minY, boundingBox.minZ).endVertex();
+        vertexbuffer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.minZ).endVertex();
+        vertexbuffer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.maxZ).endVertex();
+        vertexbuffer.pos(boundingBox.minX, boundingBox.minY, boundingBox.maxZ).endVertex();
+        vertexbuffer.pos(boundingBox.minX, boundingBox.minY, boundingBox.minZ).endVertex();
+        tessellator.draw();
+        vertexbuffer.begin(3, DefaultVertexFormats.POSITION);
+        vertexbuffer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.minZ).endVertex();
+        vertexbuffer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.minZ).endVertex();
+        vertexbuffer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ).endVertex();
+        vertexbuffer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.maxZ).endVertex();
+        vertexbuffer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.minZ).endVertex();
+        tessellator.draw();
+        vertexbuffer.begin(1, DefaultVertexFormats.POSITION);
+        vertexbuffer.pos(boundingBox.minX, boundingBox.minY, boundingBox.minZ).endVertex();
+        vertexbuffer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.minZ).endVertex();
+        vertexbuffer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.minZ).endVertex();
+        vertexbuffer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.minZ).endVertex();
+        vertexbuffer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.maxZ).endVertex();
+        vertexbuffer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ).endVertex();
+        vertexbuffer.pos(boundingBox.minX, boundingBox.minY, boundingBox.maxZ).endVertex();
+        vertexbuffer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.maxZ).endVertex();
+        tessellator.draw();
 	}
 	
 	public static void tracerLine(Entity entity, int mode)
