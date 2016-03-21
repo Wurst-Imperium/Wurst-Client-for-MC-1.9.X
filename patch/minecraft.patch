@@ -1,6 +1,6 @@
-From 90d77468f9451f56f97c432e3f53fa0668b55734 Mon Sep 17 00:00:00 2001
+From 68ed43ee51ed577fb9418ad82020e423cf8a1ea5 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Fri, 18 Mar 2016 14:19:22 +0100
+Date: Mon, 21 Mar 2016 14:51:56 +0100
 Subject: [PATCH] Wurst
 
 ---
@@ -10,13 +10,14 @@ Subject: [PATCH] Wurst
  .../client/audio/PositionedSoundRecord.java        |   2 +-
  .../minecraft/client/entity/EntityPlayerSP.java    | 154 +++++++++++++++++----
  src/net/minecraft/client/gui/GuiButton.java        |   2 +-
- src/net/minecraft/client/gui/GuiGameOver.java      |   6 +-
+ src/net/minecraft/client/gui/GuiGameOver.java      |  13 +-
  src/net/minecraft/client/gui/GuiIngame.java        |  23 ++-
  src/net/minecraft/client/gui/GuiIngameMenu.java    |   8 +-
  .../client/gui/GuiListWorldSelectionEntry.java     |   2 +-
  src/net/minecraft/client/gui/GuiMainMenu.java      |  20 ++-
  .../minecraft/client/gui/GuiMemoryErrorScreen.java |   4 +-
  src/net/minecraft/client/gui/GuiMultiplayer.java   | 109 +++++++++++----
+ src/net/minecraft/client/gui/GuiNewChat.java       |  13 ++
  src/net/minecraft/client/gui/GuiScreenBook.java    |  66 ++++++++-
  .../client/gui/GuiScreenOptionsSounds.java         |   2 +-
  .../client/gui/ServerListEntryNormal.java          |   2 +-
@@ -27,7 +28,7 @@ Subject: [PATCH] Wurst
  .../minecraft/client/multiplayer/ServerList.java   |   6 +
  .../client/network/NetHandlerPlayClient.java       |   6 +-
  .../client/network/NetworkPlayerInfo.java          |  10 ++
- .../minecraft/client/renderer/EntityRenderer.java  |   8 +-
+ .../minecraft/client/renderer/EntityRenderer.java  |  47 +++++--
  .../minecraft/client/renderer/RenderGlobal.java    |   2 +-
  .../client/renderer/entity/RenderManager.java      |   6 +-
  src/net/minecraft/client/settings/KeyBinding.java  |   2 +-
@@ -36,8 +37,9 @@ Subject: [PATCH] Wurst
  src/net/minecraft/entity/EntityLivingBase.java     |   6 +-
  src/net/minecraft/entity/monster/EntityZombie.java |   2 +-
  src/net/minecraft/entity/player/EntityPlayer.java  |   7 +-
+ src/net/minecraft/network/NetworkManager.java      |  26 ++++
  src/net/minecraft/realms/Realms.java               |   4 +-
- 33 files changed, 441 insertions(+), 121 deletions(-)
+ 35 files changed, 522 insertions(+), 125 deletions(-)
 
 diff --git a/src/net/minecraft/block/state/BlockStateContainer.java b/src/net/minecraft/block/state/BlockStateContainer.java
 index 72ab5aa..7148dae 100644
@@ -582,19 +584,22 @@ index cdb4e57..75bea07 100644
  
      public int getButtonWidth()
 diff --git a/src/net/minecraft/client/gui/GuiGameOver.java b/src/net/minecraft/client/gui/GuiGameOver.java
-index 08d7720..99f7604 100644
+index 08d7720..0404908 100644
 --- a/src/net/minecraft/client/gui/GuiGameOver.java
 +++ b/src/net/minecraft/client/gui/GuiGameOver.java
-@@ -1,6 +1,8 @@
+@@ -1,6 +1,11 @@
  package net.minecraft.client.gui;
  
  import java.io.IOException;
 +
++import tk.wurst_client.WurstClient;
++import tk.wurst_client.events.DeathEvent;
 +import tk.wurst_client.gui.main.GuiWurstMainMenu;
++import tk.wurst_client.spam.SpamProcessor;
  import net.minecraft.client.multiplayer.WorldClient;
  import net.minecraft.client.renderer.GlStateManager;
  import net.minecraft.client.resources.I18n;
-@@ -74,7 +76,7 @@ public class GuiGameOver extends GuiScreen implements GuiYesNoCallback
+@@ -74,7 +79,7 @@ public class GuiGameOver extends GuiScreen implements GuiYesNoCallback
              case 1:
                  if (this.mc.theWorld.getWorldInfo().isHardcoreModeEnabled())
                  {
@@ -603,7 +608,7 @@ index 08d7720..99f7604 100644
                  }
                  else
                  {
-@@ -95,7 +97,7 @@ public class GuiGameOver extends GuiScreen implements GuiYesNoCallback
+@@ -95,7 +100,7 @@ public class GuiGameOver extends GuiScreen implements GuiYesNoCallback
              }
  
              this.mc.loadWorld((WorldClient)null);
@@ -612,6 +617,17 @@ index 08d7720..99f7604 100644
          }
          else
          {
+@@ -192,6 +197,10 @@ public class GuiGameOver extends GuiScreen implements GuiYesNoCallback
+             {
+                 guibutton.enabled = true;
+             }
++            
++            //TODO: Client
++            WurstClient.INSTANCE.events.fireEvent(DeathEvent.class, new DeathEvent());
++            SpamProcessor.runScript("death", "Runs whenever you die.");
+         }
+     }
+ }
 diff --git a/src/net/minecraft/client/gui/GuiIngame.java b/src/net/minecraft/client/gui/GuiIngame.java
 index 8c38552..6f0e7c2 100644
 --- a/src/net/minecraft/client/gui/GuiIngame.java
@@ -1096,6 +1112,48 @@ index e4e5eb7..8618bb1 100644
          {
              this.selectServer(i);
          }
+diff --git a/src/net/minecraft/client/gui/GuiNewChat.java b/src/net/minecraft/client/gui/GuiNewChat.java
+index b43a7c5..f5ca79d 100644
+--- a/src/net/minecraft/client/gui/GuiNewChat.java
++++ b/src/net/minecraft/client/gui/GuiNewChat.java
+@@ -3,17 +3,23 @@ package net.minecraft.client.gui;
+ import com.google.common.base.Joiner;
+ import com.google.common.base.Splitter;
+ import com.google.common.collect.Lists;
++
+ import java.util.Iterator;
+ import java.util.List;
++
+ import net.minecraft.client.Minecraft;
+ import net.minecraft.client.renderer.GlStateManager;
+ import net.minecraft.entity.player.EntityPlayer;
+ import net.minecraft.util.math.MathHelper;
+ import net.minecraft.util.text.ITextComponent;
+ import net.minecraft.util.text.TextComponentString;
++
+ import org.apache.logging.log4j.LogManager;
+ import org.apache.logging.log4j.Logger;
+ 
++import tk.wurst_client.WurstClient;
++import tk.wurst_client.events.ChatInputEvent;
++
+ public class GuiNewChat extends Gui
+ {
+     private static final Splitter field_184061_a = Splitter.on('\n');
+@@ -137,6 +143,13 @@ public class GuiNewChat extends Gui
+      */
+     public void printChatMessageWithOptionalDeletion(ITextComponent chatComponent, int chatLineId)
+     {
++    	//TODO: Client
++    	ChatInputEvent event = new ChatInputEvent(chatComponent, drawnChatLines);
++    	WurstClient.INSTANCE.events.fireEvent(ChatInputEvent.class, event);
++    	if(event.isCancelled())
++    		return;
++    	chatComponent = event.getComponent();
++    	
+         this.setChatLine(chatComponent, chatLineId, this.mc.ingameGUI.getUpdateCounter(), false);
+         logger.info("[CHAT] " + field_184062_f.join(field_184061_a.split(chatComponent.getUnformattedText())));
+     }
 diff --git a/src/net/minecraft/client/gui/GuiScreenBook.java b/src/net/minecraft/client/gui/GuiScreenBook.java
 index 884aeb0..36eb022 100644
 --- a/src/net/minecraft/client/gui/GuiScreenBook.java
@@ -1434,10 +1492,55 @@ index 7ed5f12..ac56d75 100644
      {
          return this.field_178873_i;
 diff --git a/src/net/minecraft/client/renderer/EntityRenderer.java b/src/net/minecraft/client/renderer/EntityRenderer.java
-index e8fdae5..272fe83 100644
+index e8fdae5..791db14 100644
 --- a/src/net/minecraft/client/renderer/EntityRenderer.java
 +++ b/src/net/minecraft/client/renderer/EntityRenderer.java
-@@ -178,10 +178,10 @@ public class EntityRenderer implements IResourceManagerReloadListener
+@@ -3,6 +3,7 @@ package net.minecraft.client.renderer;
+ import com.google.common.base.Predicate;
+ import com.google.common.base.Predicates;
+ import com.google.gson.JsonSyntaxException;
++
+ import java.awt.Graphics;
+ import java.awt.image.BufferedImage;
+ import java.awt.image.ImageObserver;
+@@ -12,7 +13,9 @@ import java.nio.FloatBuffer;
+ import java.util.List;
+ import java.util.Random;
+ import java.util.concurrent.Callable;
++
+ import javax.imageio.ImageIO;
++
+ import net.minecraft.block.Block;
+ import net.minecraft.block.BlockBed;
+ import net.minecraft.block.material.Material;
+@@ -48,6 +51,7 @@ import net.minecraft.init.MobEffects;
+ import net.minecraft.init.SoundEvents;
+ import net.minecraft.inventory.IInventory;
+ import net.minecraft.item.ItemStack;
++import net.minecraft.potion.Potion;
+ import net.minecraft.util.BlockRenderLayer;
+ import net.minecraft.util.EntitySelectors;
+ import net.minecraft.util.EnumFacing;
+@@ -65,6 +69,7 @@ import net.minecraft.util.math.Vec3d;
+ import net.minecraft.world.World;
+ import net.minecraft.world.WorldSettings;
+ import net.minecraft.world.biome.BiomeGenBase;
++
+ import org.apache.logging.log4j.LogManager;
+ import org.apache.logging.log4j.Logger;
+ import org.lwjgl.input.Mouse;
+@@ -72,6 +77,10 @@ import org.lwjgl.opengl.Display;
+ import org.lwjgl.opengl.GLContext;
+ import org.lwjgl.util.glu.Project;
+ 
++import tk.wurst_client.WurstClient;
++import tk.wurst_client.events.RenderEvent;
++import tk.wurst_client.hooks.ZoomHook;
++
+ public class EntityRenderer implements IResourceManagerReloadListener
+ {
+     private static final Logger logger = LogManager.getLogger();
+@@ -178,10 +187,10 @@ public class EntityRenderer implements IResourceManagerReloadListener
      private double cameraZoom = 1.0D;
      private double cameraYaw;
      private double cameraPitch;
@@ -1451,7 +1554,7 @@ index e8fdae5..272fe83 100644
      private boolean useShader;
      private int frameCount;
  
-@@ -262,7 +262,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
+@@ -262,7 +271,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
          }
      }
  
@@ -1460,6 +1563,86 @@ index e8fdae5..272fe83 100644
      {
          try
          {
+@@ -539,6 +548,10 @@ public class EntityRenderer implements IResourceManagerReloadListener
+             if (useFOVSetting)
+             {
+                 f = this.mc.gameSettings.fovSetting;
++				
++				// TODO: Client
++				f = ZoomHook.changeFovBasedOnZoom(f);
++				
+                 f = f * (this.fovModifierHandPrev + (this.fovModifierHand - this.fovModifierHandPrev) * partialTicks);
+             }
+ 
+@@ -751,14 +764,17 @@ public class EntityRenderer implements IResourceManagerReloadListener
+ 
+         this.hurtCameraEffect(partialTicks);
+ 
+-        if (this.mc.gameSettings.viewBobbing)
++		// TODO: Client
++		if(this.mc.gameSettings.viewBobbing
++			&& !WurstClient.INSTANCE.mods.tracersMod.isActive())
+         {
+             this.setupViewBobbing(partialTicks);
+         }
+ 
+         float f1 = this.mc.thePlayer.prevTimeInPortal + (this.mc.thePlayer.timeInPortal - this.mc.thePlayer.prevTimeInPortal) * partialTicks;
+ 
+-        if (f1 > 0.0F)
++		// TODO: Client
++		if(f1 > 0.0F && !WurstClient.INSTANCE.mods.antiBlindMod.isActive())
+         {
+             int i = 20;
+ 
+@@ -1293,7 +1309,11 @@ public class EntityRenderer implements IResourceManagerReloadListener
+         }
+ 
+         this.getMouseOver(partialTicks);
++        
++		// TODO: Client
++		if(!WurstClient.INSTANCE.mods.caveFinderMod.isActive())
+ 			GlStateManager.enableDepth();
++		
+         GlStateManager.enableAlpha();
+         GlStateManager.alphaFunc(516, 0.5F);
+         this.mc.mcProfiler.startSection("center");
+@@ -1463,6 +1483,10 @@ public class EntityRenderer implements IResourceManagerReloadListener
+ 
+         this.mc.mcProfiler.endStartSection("hand");
+ 
++		// TODO: Client
++		WurstClient.INSTANCE.events.fireEvent(RenderEvent.class,
++			new RenderEvent());
++
+         if (this.renderHand)
+         {
+             GlStateManager.clear(256);
+@@ -1847,8 +1871,12 @@ public class EntityRenderer implements IResourceManagerReloadListener
+         this.fogColorBlue *= f13;
+         double d1 = (entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double)partialTicks) * world.provider.getVoidFogYFactor();
+ 
+-        if (entity instanceof EntityLivingBase && ((EntityLivingBase)entity).isPotionActive(MobEffects.blindness))
++		// TODO: Client
++		if(entity instanceof EntityLivingBase
++			&& ((EntityLivingBase)entity).isPotionActive(MobEffects.blindness)
++			&& !WurstClient.INSTANCE.mods.antiBlindMod.isActive())
+         {
++			
+             int i = ((EntityLivingBase)entity).getActivePotionEffect(MobEffects.blindness).getDuration();
+ 
+             if (i < 20)
+@@ -1927,7 +1955,10 @@ public class EntityRenderer implements IResourceManagerReloadListener
+         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+         IBlockState iblockstate = ActiveRenderInfo.func_186703_a(this.mc.theWorld, entity, partialTicks);
+ 
+-        if (entity instanceof EntityLivingBase && ((EntityLivingBase)entity).isPotionActive(MobEffects.blindness))
++		// TODO: Client
++		if(entity instanceof EntityLivingBase
++			&& ((EntityLivingBase)entity).isPotionActive(MobEffects.blindness)
++			&& !WurstClient.INSTANCE.mods.antiBlindMod.isActive())
+         {
+             float f1 = 5.0F;
+             int i = ((EntityLivingBase)entity).getActivePotionEffect(MobEffects.blindness).getDuration();
 diff --git a/src/net/minecraft/client/renderer/RenderGlobal.java b/src/net/minecraft/client/renderer/RenderGlobal.java
 index 3220298..1d9b9e0 100644
 --- a/src/net/minecraft/client/renderer/RenderGlobal.java
@@ -1602,6 +1785,85 @@ index 23d8999..b4ec5c2 100644
      }
  
      public Scoreboard getWorldScoreboard()
+diff --git a/src/net/minecraft/network/NetworkManager.java b/src/net/minecraft/network/NetworkManager.java
+index 0d831b0..31ff3d6 100644
+--- a/src/net/minecraft/network/NetworkManager.java
++++ b/src/net/minecraft/network/NetworkManager.java
+@@ -2,6 +2,7 @@ package net.minecraft.network;
+ 
+ import com.google.common.collect.Queues;
+ import com.google.common.util.concurrent.ThreadFactoryBuilder;
++
+ import io.netty.bootstrap.Bootstrap;
+ import io.netty.channel.Channel;
+ import io.netty.channel.ChannelException;
+@@ -27,17 +28,21 @@ import io.netty.handler.timeout.TimeoutException;
+ import io.netty.util.AttributeKey;
+ import io.netty.util.concurrent.Future;
+ import io.netty.util.concurrent.GenericFutureListener;
++
+ import java.net.InetAddress;
+ import java.net.SocketAddress;
+ import java.util.Queue;
+ import java.util.concurrent.locks.ReentrantReadWriteLock;
++
+ import javax.crypto.SecretKey;
++
+ import net.minecraft.util.CryptManager;
+ import net.minecraft.util.ITickable;
+ import net.minecraft.util.LazyLoadBase;
+ import net.minecraft.util.text.ITextComponent;
+ import net.minecraft.util.text.TextComponentString;
+ import net.minecraft.util.text.TextComponentTranslation;
++
+ import org.apache.commons.lang3.ArrayUtils;
+ import org.apache.commons.lang3.Validate;
+ import org.apache.logging.log4j.LogManager;
+@@ -45,6 +50,9 @@ import org.apache.logging.log4j.Logger;
+ import org.apache.logging.log4j.Marker;
+ import org.apache.logging.log4j.MarkerManager;
+ 
++import tk.wurst_client.WurstClient;
++import tk.wurst_client.events.PacketInputEvent;
++
+ public class NetworkManager extends SimpleChannelInboundHandler < Packet<? >>
+ {
+     private static final Logger logger = LogManager.getLogger();
+@@ -130,9 +138,21 @@ public class NetworkManager extends SimpleChannelInboundHandler < Packet<? >>
+     {
+         TextComponentTranslation textcomponenttranslation;
+ 
++
+         if (p_exceptionCaught_2_ instanceof TimeoutException)
+         {
+             textcomponenttranslation = new TextComponentTranslation("disconnect.timeout", new Object[0]);
++            
++			// TODO: Client
++		}else if(p_exceptionCaught_2_ instanceof NullPointerException)
++		{
++			textcomponenttranslation =
++				new TextComponentTranslation(
++					"disconnect.genericReason",
++					"§c[§6Wurst§c]§r\n"
++						+ "You are using a §ocracked§r alt on a §opremium§r server."
++						+ "\n§cDon't do that!");
++			
+ 		}
+         else
+         {
+@@ -147,6 +167,12 @@ public class NetworkManager extends SimpleChannelInboundHandler < Packet<? >>
+     {
+         if (this.channel.isOpen())
+         {
++			//TODO: Client
++			PacketInputEvent event = new PacketInputEvent(p_channelRead0_2_);
++			WurstClient.INSTANCE.events.fireEvent(PacketInputEvent.class, event);
++			if(event.isCancelled())
++				return;
++			
+             try
+             {
+                 ((Packet<INetHandler>)p_channelRead0_2_).processPacket(this.packetListener);
 diff --git a/src/net/minecraft/realms/Realms.java b/src/net/minecraft/realms/Realms.java
 index 3cba0d7..3243c19 100644
 --- a/src/net/minecraft/realms/Realms.java
