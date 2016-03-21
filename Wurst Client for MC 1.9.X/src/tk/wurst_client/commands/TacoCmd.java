@@ -81,10 +81,10 @@ public class TacoCmd extends Cmd implements GUIRenderListener, UpdateListener
 		mc.getTextureManager().bindTexture(tacoTextures[ticks / 8]);
 		int x = screenRes.getScaledWidth() / 2 - 32 + 76;
 		int y = screenRes.getScaledHeight() - 32 - 19;
-		int h = 32;
 		int w = 64;
-		float fw = 256;
-		float fh = 256;
+		int h = 32;
+		float fw = 64;
+		float fh = 32;
 		float u = 0;
 		float v = 0;
 		Gui.drawModalRectWithCustomSizedTexture(x, y, u, v, w, h, fw, fh);
