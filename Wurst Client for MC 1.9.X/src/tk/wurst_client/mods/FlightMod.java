@@ -7,9 +7,7 @@
  */
 package tk.wurst_client.mods;
 
-import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.network.play.client.CPacketPlayer.C04PacketPlayerPosition;
-import net.minecraft.util.math.AxisAlignedBB;
 
 import org.darkstorm.minecraft.gui.component.BoundedRangeComponent.ValueDisplay;
 
@@ -17,7 +15,6 @@ import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.NavigatorItem;
-import tk.wurst_client.navigator.settings.CheckboxSetting;
 import tk.wurst_client.navigator.settings.SliderSetting;
 
 @Info(category = Category.MOVEMENT,
@@ -30,7 +27,7 @@ import tk.wurst_client.navigator.settings.SliderSetting;
 public class FlightMod extends Mod implements UpdateListener
 {
 	public float speed = 1F;
-	double startY;
+	private double startY;
 	
 	@Override
 	public void initSettings()
@@ -106,8 +103,6 @@ public class FlightMod extends Mod implements UpdateListener
 			mc.thePlayer.jumpMovementFactor = 0.04F;
 		}else
 		{
-			updateMS();
-			
 			mc.thePlayer.capabilities.isFlying = false;
 			mc.thePlayer.motionX = 0;
 			mc.thePlayer.motionY = 0;
