@@ -205,18 +205,35 @@ public class FileManager
 	{
 		try
 		{
+			// load file
 			BufferedReader load = new BufferedReader(new FileReader(keybinds));
 			JsonObject json = (JsonObject)JsonUtils.jsonParser.parse(load);
 			load.close();
+			
+			// clear keybinds
 			WurstClient.INSTANCE.keybinds.clear();
+			
+			// add keybinds
 			Iterator<Entry<String, JsonElement>> itr =
 				json.entrySet().iterator();
+			boolean needsUpdate = false;
 			while(itr.hasNext())
 			{
 				Entry<String, JsonElement> entry = itr.next();
-				WurstClient.INSTANCE.keybinds.put(entry.getKey(), entry
-					.getValue().getAsString());
+				
+				String command = entry.getValue().getAsString();
+				if(command.equalsIgnoreCase(".t clickgui"))
+				{
+					command = ".t navigator";
+					needsUpdate = true;
+				}
+				
+				WurstClient.INSTANCE.keybinds.put(entry.getKey(), command);
 			}
+			
+			// update file
+			if(needsUpdate)
+				WurstClient.INSTANCE.files.saveKeybinds();
 		}catch(Exception e)
 		{
 			e.printStackTrace();
