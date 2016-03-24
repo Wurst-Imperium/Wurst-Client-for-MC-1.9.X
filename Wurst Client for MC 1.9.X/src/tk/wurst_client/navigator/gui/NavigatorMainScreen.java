@@ -110,7 +110,7 @@ public class NavigatorMainScreen extends NavigatorScreen
 				if(item.getTutorialPage().isEmpty())
 					return;
 				MiscUtils.openLink("https://www.wurst-client.tk/wiki/"
-					+ item.getTutorialPage());
+					+ item.getTutorialPage() + "/");
 				WurstClient wurst = WurstClient.INSTANCE;
 				wurst.navigator.addPreference(item.getName());
 				wurst.files.saveNavigatorData();
