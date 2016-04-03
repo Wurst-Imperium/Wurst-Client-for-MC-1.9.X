@@ -1,6 +1,6 @@
-From 05deb4bf5e061f785e281b2e0d5c9ebe79e437cd Mon Sep 17 00:00:00 2001
+From 33a0efca0802527aee0b0081ea8f3a55aa5f9205 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Sat, 2 Apr 2016 20:16:08 +0200
+Date: Sun, 3 Apr 2016 11:46:34 +0200
 Subject: [PATCH] Wurst
 
 ---
@@ -14,21 +14,26 @@ Subject: [PATCH] Wurst
  src/net/minecraft/client/Minecraft.java            |  72 ++++++++--
  .../client/audio/PositionedSoundRecord.java        |   2 +-
  .../minecraft/client/entity/EntityPlayerSP.java    | 154 +++++++++++++++++----
- src/net/minecraft/client/gui/GuiButton.java        |   2 +-
+ src/net/minecraft/client/gui/GuiButton.java        |  16 ++-
+ src/net/minecraft/client/gui/GuiDisconnected.java  |  87 ++++++++++++
  src/net/minecraft/client/gui/GuiGameOver.java      |  13 +-
  src/net/minecraft/client/gui/GuiIngame.java        |  23 ++-
- src/net/minecraft/client/gui/GuiIngameMenu.java    |   8 +-
+ src/net/minecraft/client/gui/GuiIngameMenu.java    |  50 ++++++-
  .../client/gui/GuiListWorldSelectionEntry.java     |   2 +-
  src/net/minecraft/client/gui/GuiMainMenu.java      |  20 ++-
  .../minecraft/client/gui/GuiMemoryErrorScreen.java |   4 +-
  src/net/minecraft/client/gui/GuiMultiplayer.java   | 109 +++++++++++----
  src/net/minecraft/client/gui/GuiNewChat.java       |  13 ++
- src/net/minecraft/client/gui/GuiScreenBook.java    |  66 ++++++++-
+ src/net/minecraft/client/gui/GuiScreenBook.java    |  73 +++++++++-
  .../client/gui/GuiScreenOptionsSounds.java         |   2 +-
- .../client/gui/ServerListEntryNormal.java          |   2 +-
+ .../minecraft/client/gui/GuiScreenServerList.java  |   9 ++
+ .../client/gui/ServerListEntryNormal.java          |  13 +-
  .../minecraft/client/gui/ServerSelectionList.java  |   2 +-
  .../minecraft/client/gui/achievement/GuiStats.java |   2 +-
- .../client/gui/inventory/GuiContainer.java         |   2 +-
+ .../minecraft/client/gui/inventory/GuiChest.java   |  73 ++++++++++
+ .../client/gui/inventory/GuiContainer.java         |  40 +++---
+ .../client/gui/inventory/GuiContainerCreative.java |   2 +-
+ .../client/gui/inventory/GuiEditSign.java          |  18 +++
  .../client/multiplayer/PlayerControllerMP.java     |  14 +-
  .../minecraft/client/multiplayer/ServerList.java   |   6 +
  .../client/network/NetHandlerPlayClient.java       |   6 +-
@@ -44,7 +49,8 @@ Subject: [PATCH] Wurst
  src/net/minecraft/entity/player/EntityPlayer.java  |   7 +-
  src/net/minecraft/network/NetworkManager.java      |  26 ++++
  src/net/minecraft/realms/Realms.java               |   4 +-
- 40 files changed, 568 insertions(+), 132 deletions(-)
+ src/net/minecraft/tileentity/TileEntitySign.java   |   2 +-
+ 46 files changed, 847 insertions(+), 156 deletions(-)
 
 diff --git a/src/net/minecraft/block/Block.java b/src/net/minecraft/block/Block.java
 index b386ea0..44bfcdc 100644
@@ -747,10 +753,31 @@ index 61b85c2..5793cc2 100644
      }
  }
 diff --git a/src/net/minecraft/client/gui/GuiButton.java b/src/net/minecraft/client/gui/GuiButton.java
-index cdb4e57..75bea07 100644
+index cdb4e57..82cb9ea 100644
 --- a/src/net/minecraft/client/gui/GuiButton.java
 +++ b/src/net/minecraft/client/gui/GuiButton.java
-@@ -143,7 +143,7 @@ public class GuiButton extends Gui
+@@ -88,8 +88,18 @@ public class GuiButton extends Gui
+             GlStateManager.enableBlend();
+             GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+             GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+-            this.drawTexturedModalRect(this.xPosition, this.yPosition, 0, 46 + i * 20, this.width / 2, this.height);
+-            this.drawTexturedModalRect(this.xPosition + this.width / 2, this.yPosition, 200 - this.width / 2, 46 + i * 20, this.width / 2, this.height);
++
++            // TODO: Client
++			drawTexturedModalRect(xPosition, yPosition, 0, 46 + i * 20,
++				width / 2, height / 2);
++			drawTexturedModalRect(xPosition + width / 2, yPosition,
++				200 - width / 2, 46 + i * 20, width / 2, height / 2);
++			drawTexturedModalRect(xPosition, yPosition + height / 2, 0, 46 + i
++				* 20 + 20 - height / 2, width / 2, height / 2);
++			drawTexturedModalRect(xPosition + width / 2,
++				yPosition + height / 2, 200 - width / 2, 46 + i * 20 + 20
++					- height / 2, width / 2, height / 2);
++			
+             this.mouseDragged(mc, mouseX, mouseY);
+             int j = 14737632;
+ 
+@@ -143,7 +153,7 @@ public class GuiButton extends Gui
  
      public void playPressSound(SoundHandler soundHandlerIn)
      {
@@ -759,6 +786,130 @@ index cdb4e57..75bea07 100644
      }
  
      public int getButtonWidth()
+diff --git a/src/net/minecraft/client/gui/GuiDisconnected.java b/src/net/minecraft/client/gui/GuiDisconnected.java
+index 4a7f37e..a4a75f7 100644
+--- a/src/net/minecraft/client/gui/GuiDisconnected.java
++++ b/src/net/minecraft/client/gui/GuiDisconnected.java
+@@ -2,6 +2,11 @@ package net.minecraft.client.gui;
+ 
+ import java.io.IOException;
+ import java.util.List;
++
++import org.apache.logging.log4j.LogManager;
++
++import tk.wurst_client.WurstClient;
++import tk.wurst_client.hooks.ServerHook;
+ import net.minecraft.client.resources.I18n;
+ import net.minecraft.util.text.ITextComponent;
+ 
+@@ -13,11 +18,20 @@ public class GuiDisconnected extends GuiScreen
+     private final GuiScreen parentScreen;
+     private int field_175353_i;
+     
++    //TODO: Client
++	private int autoReconnectTimer;
++
+     public GuiDisconnected(GuiScreen screen, String reasonLocalizationKey, ITextComponent chatComp)
+     {
+         this.parentScreen = screen;
+         this.reason = I18n.format(reasonLocalizationKey, new Object[0]);
+         this.message = chatComp;
++
++        //TODO: Client
++		LogManager.getLogger().info(
++			"Disconnected.\n    Message: "
++				+ (message == null ? null : message.getUnformattedText())
++				+ "\n    Reason: " + reason);
+     }
+ 
+     /**
+@@ -38,6 +52,58 @@ public class GuiDisconnected extends GuiScreen
+         this.multilineMessage = this.fontRendererObj.listFormattedStringToWidth(this.message.getFormattedText(), this.width - 50);
+         this.field_175353_i = this.multilineMessage.size() * this.fontRendererObj.FONT_HEIGHT;
+         this.buttonList.add(new GuiButton(0, this.width / 2 - 100, this.height / 2 + this.field_175353_i / 2 + this.fontRendererObj.FONT_HEIGHT, I18n.format("gui.toMenu", new Object[0])));
++        
++		// TODO: Client
++		this.buttonList.add(new GuiButton(1, this.width / 2 - 100, this.height
++			/ 2 + this.field_175353_i / 2 + this.fontRendererObj.FONT_HEIGHT
++			+ 24, "Reconnect"));
++		this.buttonList.add(new GuiButton(2, this.width / 2 - 100, this.height
++			/ 2 + this.field_175353_i / 2 + this.fontRendererObj.FONT_HEIGHT
++			+ 48, "AutoReconnect"));
++		if(message.getUnformattedText().toLowerCase().contains("whitelist")
++			|| message.getUnformattedText().toLowerCase()
++				.contains("white-list"))
++			if(parentScreen instanceof GuiMultiplayer
++				&& ((GuiMultiplayer)parentScreen).serverListSelector
++					.getSelectedServer() != -1)
++				this.buttonList.add(new GuiButton(3, this.width / 2 - 100,
++					this.height / 2 + this.field_175353_i / 2
++						+ this.fontRendererObj.FONT_HEIGHT + 72,
++					"§4Delete Server§r"));
++		if(WurstClient.INSTANCE.options.autoReconnect)
++			this.autoReconnectTimer = 100;
++    }
++
++    //TODO: Client
++    /**
++     * Called from the main game loop to update the screen.
++     */
++    public void updateScreen()
++    {
++        super.updateScreen();
++        if(WurstClient.INSTANCE.options.autoReconnect)
++		{
++			if(buttonList.size() < 2)
++				return;
++			((GuiButton)this.buttonList.get(2)).displayString =
++				"AutoReconnect (" + ((this.autoReconnectTimer / 20) + 1) + ")";
++			if(this.autoReconnectTimer > 0)
++				this.autoReconnectTimer--;
++			else
++			{
++				try
++				{
++					this.actionPerformed((GuiButton)this.buttonList.get(1));
++				}catch(IOException e)
++				{
++					e.printStackTrace();
++				}
++			}
++		}
++        else
++        {
++        	((GuiButton)this.buttonList.get(2)).displayString = "AutoReconnect";
++        }
+     }
+ 
+     /**
+@@ -48,6 +114,27 @@ public class GuiDisconnected extends GuiScreen
+         if (button.id == 0)
+         {
+             this.mc.displayGuiScreen(this.parentScreen);
++            
++			// TODO: Client
++		}else if(button.id == 1)
++		{
++			ServerHook.reconnectToLastServer(this);
++		}else if(button.id == 2)
++		{
++			WurstClient.INSTANCE.options.autoReconnect =
++				!WurstClient.INSTANCE.options.autoReconnect;
++			WurstClient.INSTANCE.files.saveOptions();
++			if(WurstClient.INSTANCE.options.autoReconnect)
++				this.autoReconnectTimer = 100;
++		}else if(button.id == 3)
++		{
++			GuiMultiplayer servers = (GuiMultiplayer)parentScreen;
++			servers.savedServerList.removeServerData(servers.serverListSelector
++				.getSelectedServer());
++			servers.savedServerList.saveServerList();
++			servers.serverListSelector.setSelectedSlotIndex(-1);
++			servers.serverListSelector.func_148195_a(servers.savedServerList);
++			mc.displayGuiScreen(servers);
+ 		}
+     }
+ 
 diff --git a/src/net/minecraft/client/gui/GuiGameOver.java b/src/net/minecraft/client/gui/GuiGameOver.java
 index 08d7720..0404908 100644
 --- a/src/net/minecraft/client/gui/GuiGameOver.java
@@ -870,19 +1021,57 @@ index 8c38552..6f0e7c2 100644
  
      private void renderPlayerStats(ScaledResolution scaledRes)
 diff --git a/src/net/minecraft/client/gui/GuiIngameMenu.java b/src/net/minecraft/client/gui/GuiIngameMenu.java
-index b93bf8a..cf1b0fd 100644
+index b93bf8a..553ddd2 100644
 --- a/src/net/minecraft/client/gui/GuiIngameMenu.java
 +++ b/src/net/minecraft/client/gui/GuiIngameMenu.java
-@@ -1,6 +1,8 @@
+@@ -1,17 +1,34 @@
  package net.minecraft.client.gui;
  
++import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
++import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
++import static org.lwjgl.opengl.GL11.glEnable;
++
  import java.io.IOException;
 +
++import org.lwjgl.opengl.GL11;
++
 +import tk.wurst_client.gui.main.GuiWurstMainMenu;
++import tk.wurst_client.gui.options.GuiWurstOptions;
  import net.minecraft.client.gui.achievement.GuiAchievements;
  import net.minecraft.client.gui.achievement.GuiStats;
  import net.minecraft.client.multiplayer.WorldClient;
-@@ -58,16 +60,16 @@ public class GuiIngameMenu extends GuiScreen
++import net.minecraft.client.renderer.OpenGlHelper;
++import net.minecraft.client.renderer.Tessellator;
++import net.minecraft.client.renderer.VertexBuffer;
+ import net.minecraft.client.resources.I18n;
+ import net.minecraft.realms.RealmsBridge;
++import net.minecraft.util.ResourceLocation;
+ 
+ public class GuiIngameMenu extends GuiScreen
+ {
+     private int field_146445_a;
+     private int field_146444_f;
+     
++	// TODO: Client
++	private static final ResourceLocation wurstTextures = new ResourceLocation(
++		"wurst/wurst_128.png");
++
+     /**
+      * Adds the buttons (and other controls) to the screen in question. Called when the GUI is displayed and when the
+      * window resizes, the buttonList is cleared beforehand.
+@@ -31,6 +48,11 @@ public class GuiIngameMenu extends GuiScreen
+ 
+         this.buttonList.add(new GuiButton(4, this.width / 2 - 100, this.height / 4 + 24 + i, I18n.format("menu.returnToGame", new Object[0])));
+         this.buttonList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 96 + i, 98, 20, I18n.format("menu.options", new Object[0])));
++
++		// TODO: Client
++		this.buttonList.add(new GuiButton(8, this.width / 2 - 100, this.height
++			/ 4 + 72 + i, "            Options"));
++        
+         GuiButton guibutton;
+         this.buttonList.add(guibutton = new GuiButton(7, this.width / 2 + 2, this.height / 4 + 96 + i, 98, 20, I18n.format("menu.shareToLan", new Object[0])));
+         this.buttonList.add(new GuiButton(5, this.width / 2 - 100, this.height / 4 + 48 + i, 98, 20, I18n.format("gui.achievements", new Object[0])));
+@@ -58,16 +80,16 @@ public class GuiIngameMenu extends GuiScreen
  
                  if (flag)
                  {
@@ -902,6 +1091,41 @@ index b93bf8a..cf1b0fd 100644
                  }
  
              case 2:
+@@ -90,6 +112,10 @@ public class GuiIngameMenu extends GuiScreen
+ 
+             case 7:
+                 this.mc.displayGuiScreen(new GuiShareToLan(this));
++
++                //TODO: Client
++            case 8:
++                this.mc.displayGuiScreen(new GuiWurstOptions(this));
+         }
+     }
+ 
+@@ -110,5 +136,23 @@ public class GuiIngameMenu extends GuiScreen
+         this.drawDefaultBackground();
+         this.drawCenteredString(this.fontRendererObj, I18n.format("menu.game", new Object[0]), this.width / 2, 40, 16777215);
+         super.drawScreen(mouseX, mouseY, partialTicks);
++        
++        //TODO: Client
++		glEnable(GL_TEXTURE_2D);
++		glEnable(GL_CULL_FACE);
++        GL11.glDisable(GL11.GL_DEPTH_TEST);
++        GL11.glDepthMask(false);
++        OpenGlHelper.glBlendFunc(770, 771, 1, 0);
++        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
++        this.mc.getTextureManager().bindTexture(wurstTextures);
++        int x = this.width / 2 - 68;
++        int y = this.height / 4 + 73 - 15;
++        int w = 63;
++        int h = 16;
++        float fw = 63;
++        float fh = 16;
++        float u = 0;
++        float v = 0;
++		Gui.drawModalRectWithCustomSizedTexture(x, y, u, v, w, h, fw, fh);
+     }
+ }
 diff --git a/src/net/minecraft/client/gui/GuiListWorldSelectionEntry.java b/src/net/minecraft/client/gui/GuiListWorldSelectionEntry.java
 index cf5b504..cc18322 100644
 --- a/src/net/minecraft/client/gui/GuiListWorldSelectionEntry.java
@@ -1331,7 +1555,7 @@ index b43a7c5..f5ca79d 100644
          logger.info("[CHAT] " + field_184062_f.join(field_184061_a.split(chatComponent.getUnformattedText())));
      }
 diff --git a/src/net/minecraft/client/gui/GuiScreenBook.java b/src/net/minecraft/client/gui/GuiScreenBook.java
-index 884aeb0..36eb022 100644
+index 884aeb0..6aa6df0 100644
 --- a/src/net/minecraft/client/gui/GuiScreenBook.java
 +++ b/src/net/minecraft/client/gui/GuiScreenBook.java
 @@ -1,10 +1,10 @@
@@ -1347,7 +1571,7 @@ index 884aeb0..36eb022 100644
  import net.minecraft.client.Minecraft;
  import net.minecraft.client.renderer.GlStateManager;
  import net.minecraft.client.resources.I18n;
-@@ -19,13 +19,18 @@ import net.minecraft.network.play.client.CPacketCustomPayload;
+@@ -19,13 +19,20 @@ import net.minecraft.network.play.client.CPacketCustomPayload;
  import net.minecraft.util.ChatAllowedCharacters;
  import net.minecraft.util.ResourceLocation;
  import net.minecraft.util.text.ITextComponent;
@@ -1360,13 +1584,15 @@ index 884aeb0..36eb022 100644
  import org.apache.logging.log4j.Logger;
  import org.lwjgl.input.Keyboard;
  
++import tk.wurst_client.gui.mods.GuiBookHack;
++
 +import com.google.common.collect.Lists;
 +import com.google.gson.JsonParseException;
 +
  public class GuiScreenBook extends GuiScreen
  {
      private static final Logger logger = LogManager.getLogger();
-@@ -65,6 +70,10 @@ public class GuiScreenBook extends GuiScreen
+@@ -65,6 +72,10 @@ public class GuiScreenBook extends GuiScreen
      private GuiButton buttonFinalize;
      private GuiButton buttonCancel;
  
@@ -1377,7 +1603,7 @@ index 884aeb0..36eb022 100644
      public GuiScreenBook(EntityPlayer player, ItemStack book, boolean isUnsigned)
      {
          this.editingPlayer = player;
-@@ -120,6 +129,9 @@ public class GuiScreenBook extends GuiScreen
+@@ -120,6 +131,9 @@ public class GuiScreenBook extends GuiScreen
              this.buttonList.add(this.buttonDone = new GuiButton(0, this.width / 2 + 2, 4 + this.bookImageHeight, 98, 20, I18n.format("gui.done", new Object[0])));
              this.buttonList.add(this.buttonFinalize = new GuiButton(5, this.width / 2 - 100, 4 + this.bookImageHeight, 98, 20, I18n.format("book.finalizeButton", new Object[0])));
              this.buttonList.add(this.buttonCancel = new GuiButton(4, this.width / 2 + 2, 4 + this.bookImageHeight, 98, 20, I18n.format("gui.cancel", new Object[0])));
@@ -1387,7 +1613,7 @@ index 884aeb0..36eb022 100644
          }
          else
          {
-@@ -153,6 +165,11 @@ public class GuiScreenBook extends GuiScreen
+@@ -153,6 +167,11 @@ public class GuiScreenBook extends GuiScreen
              this.buttonCancel.visible = this.bookGettingSigned;
              this.buttonFinalize.visible = this.bookGettingSigned;
              this.buttonFinalize.enabled = !this.bookTitle.trim().isEmpty();
@@ -1399,7 +1625,7 @@ index 884aeb0..36eb022 100644
          }
      }
  
-@@ -191,6 +208,36 @@ public class GuiScreenBook extends GuiScreen
+@@ -191,6 +210,36 @@ public class GuiScreenBook extends GuiScreen
                      s1 = "MC|BSign";
                      this.bookObj.setTagInfo("author", new NBTTagString(this.editingPlayer.getName()));
                      this.bookObj.setTagInfo("title", new NBTTagString(this.bookTitle.trim()));
@@ -1436,13 +1662,24 @@ index 884aeb0..36eb022 100644
                  }
  
                  PacketBuffer packetbuffer = new PacketBuffer(Unpooled.buffer());
-@@ -200,6 +247,21 @@ public class GuiScreenBook extends GuiScreen
+@@ -247,12 +296,32 @@ public class GuiScreenBook extends GuiScreen
+             else if (button.id == 4 && this.bookGettingSigned)
+             {
+                 this.bookGettingSigned = false;
++                
++                //TODO: Client
++            }else if(button.id == 6)
++			{
++            	mc.displayGuiScreen(new GuiBookHack(this));
+             }
+ 
+             this.updateButtons();
          }
      }
  
 +    //TODO: Client
-+    public void signWithCommand(String command)
-+    {
++	public void signWithCommand(String command)
++	{
 +		try
 +		{
 +			this.command = command;
@@ -1453,11 +1690,11 @@ index 884aeb0..36eb022 100644
 +		{
 +			e.printStackTrace();
 +		}
-+    }
++	}
 +
-     /**
-      * Called by the controls from the buttonList when activated. (Mouse pressed for buttons)
-      */
+ 	private void addNewPage()
+     {
+         if (this.bookPages != null && this.bookPages.tagCount() < 50)
 diff --git a/src/net/minecraft/client/gui/GuiScreenOptionsSounds.java b/src/net/minecraft/client/gui/GuiScreenOptionsSounds.java
 index 9f8af59..9b31dc9 100644
 --- a/src/net/minecraft/client/gui/GuiScreenOptionsSounds.java
@@ -1471,11 +1708,69 @@ index 9f8af59..9b31dc9 100644
              }
  
              this.field_146155_p = false;
+diff --git a/src/net/minecraft/client/gui/GuiScreenServerList.java b/src/net/minecraft/client/gui/GuiScreenServerList.java
+index 6ef9c81..b0f016a 100644
+--- a/src/net/minecraft/client/gui/GuiScreenServerList.java
++++ b/src/net/minecraft/client/gui/GuiScreenServerList.java
+@@ -1,10 +1,14 @@
+ package net.minecraft.client.gui;
+ 
+ import java.io.IOException;
++
+ import net.minecraft.client.multiplayer.ServerData;
+ import net.minecraft.client.resources.I18n;
++
+ import org.lwjgl.input.Keyboard;
+ 
++import tk.wurst_client.hooks.ServerHook;
++
+ public class GuiScreenServerList extends GuiScreen
+ {
+     private final GuiScreen field_146303_a;
+@@ -66,6 +70,11 @@ public class GuiScreenServerList extends GuiScreen
+             else if (button.id == 0)
+             {
+                 this.field_146301_f.serverIP = this.field_146302_g.getText();
++                
++				// TODO: Client
++				ServerHook.updateLastServerFromDirectConnect(
++					(GuiMultiplayer)field_146303_a, field_146301_f);
++				
+                 this.field_146303_a.confirmClicked(true, 0);
+             }
+         }
 diff --git a/src/net/minecraft/client/gui/ServerListEntryNormal.java b/src/net/minecraft/client/gui/ServerListEntryNormal.java
-index f4982df..28182fb 100644
+index f4982df..9eb3ec5 100644
 --- a/src/net/minecraft/client/gui/ServerListEntryNormal.java
 +++ b/src/net/minecraft/client/gui/ServerListEntryNormal.java
-@@ -36,7 +36,7 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
+@@ -2,15 +2,18 @@ package net.minecraft.client.gui;
+ 
+ import com.google.common.base.Charsets;
+ import com.google.common.util.concurrent.ThreadFactoryBuilder;
++
+ import io.netty.buffer.ByteBuf;
+ import io.netty.buffer.ByteBufInputStream;
+ import io.netty.buffer.Unpooled;
+ import io.netty.handler.codec.base64.Base64;
++
+ import java.awt.image.BufferedImage;
+ import java.net.UnknownHostException;
+ import java.util.List;
+ import java.util.concurrent.ScheduledThreadPoolExecutor;
+ import java.util.concurrent.ThreadPoolExecutor;
++
+ import net.minecraft.client.Minecraft;
+ import net.minecraft.client.multiplayer.ServerData;
+ import net.minecraft.client.renderer.GlStateManager;
+@@ -18,6 +21,7 @@ import net.minecraft.client.renderer.texture.DynamicTexture;
+ import net.minecraft.client.renderer.texture.TextureUtil;
+ import net.minecraft.util.ResourceLocation;
+ import net.minecraft.util.text.TextFormatting;
++
+ import org.apache.commons.lang3.Validate;
+ import org.apache.logging.log4j.LogManager;
+ import org.apache.logging.log4j.Logger;
+@@ -36,7 +40,7 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
      private DynamicTexture field_148305_h;
      private long field_148298_f;
  
@@ -1484,6 +1779,20 @@ index f4982df..28182fb 100644
      {
          this.owner = p_i45048_1_;
          this.server = serverIn;
+@@ -86,7 +90,12 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
+             this.mc.fontRendererObj.drawString((String)list.get(i), x + 32 + 3, y + 12 + this.mc.fontRendererObj.FONT_HEIGHT * i, 8421504);
+         }
+ 
+-        String s2 = flag2 ? TextFormatting.DARK_RED + this.server.gameVersion : this.server.populationInfo;
++		// TODO: Client
++		String s2 =
++			flag2 ? TextFormatting.DARK_RED + this.server.gameVersion
++				: TextFormatting.GREEN + server.gameVersion
++					+ TextFormatting.RESET + " " + this.server.populationInfo;
++		
+         int j = this.mc.fontRendererObj.getStringWidth(s2);
+         this.mc.fontRendererObj.drawString(s2, x + listWidth - j - 15 - 2, y + 1, 8421504);
+         int k = 0;
 diff --git a/src/net/minecraft/client/gui/ServerSelectionList.java b/src/net/minecraft/client/gui/ServerSelectionList.java
 index d7c9b83..5d605df 100644
 --- a/src/net/minecraft/client/gui/ServerSelectionList.java
@@ -1510,11 +1819,211 @@ index f14be3e..8c3ed3f 100644
              }
          }
  
+diff --git a/src/net/minecraft/client/gui/inventory/GuiChest.java b/src/net/minecraft/client/gui/inventory/GuiChest.java
+index b01af09..563049b 100644
+--- a/src/net/minecraft/client/gui/inventory/GuiChest.java
++++ b/src/net/minecraft/client/gui/inventory/GuiChest.java
+@@ -1,9 +1,13 @@
+ package net.minecraft.client.gui.inventory;
+ 
++import tk.wurst_client.WurstClient;
+ import net.minecraft.client.Minecraft;
++import net.minecraft.client.gui.GuiButton;
+ import net.minecraft.client.renderer.GlStateManager;
++import net.minecraft.inventory.ClickType;
+ import net.minecraft.inventory.ContainerChest;
+ import net.minecraft.inventory.IInventory;
++import net.minecraft.inventory.Slot;
+ import net.minecraft.util.ResourceLocation;
+ 
+ public class GuiChest extends GuiContainer
+@@ -30,6 +34,75 @@ public class GuiChest extends GuiContainer
+         this.ySize = j + this.inventoryRows * 18;
+     }
+ 
++	// TODO: Client
++	@Override
++	public void initGui()
++	{
++		super.initGui();
++		buttonList.add(new GuiButton(0, guiLeft + xSize - 108, guiTop + 4, 50,
++			12, "Steal"));
++		buttonList.add(new GuiButton(1, guiLeft + xSize - 56, guiTop + 4, 50,
++			12, "Store"));
++		if(WurstClient.INSTANCE.mods.autoStealMod.isActive())
++			actionPerformed((GuiButton)buttonList.get(0));
++	}
++
++	// TODO: Client
++	@Override
++	protected void actionPerformed(GuiButton button)
++	{
++		if(button.id == 0)// Steal
++			new Thread(new Runnable()
++			{
++				@Override
++				public void run()
++				{
++					try
++					{
++						for(int i = 0; i < inventoryRows * 9; i++)
++						{
++							Slot slot =
++								(Slot)inventorySlots.inventorySlots.get(i);
++							if(slot.getStack() == null)
++								continue;
++							if(WurstClient.INSTANCE.mods.yesCheatMod
++								.isActive())
++								Thread.sleep(250);
++							handleMouseClick(slot, slot.slotNumber, 0, ClickType.QUICK_MOVE);
++						}
++					}catch(Exception e)
++					{
++						e.printStackTrace();
++					}
++				}
++			}).start();
++		else if(button.id == 1)// Store
++			new Thread(new Runnable()
++			{
++				@Override
++				public void run()
++				{
++					try
++					{
++						for(int i = inventoryRows * 9; i < inventoryRows * 9 + 44; i++)
++						{
++							Slot slot =
++								(Slot)inventorySlots.inventorySlots.get(i);
++							if(slot.getStack() == null)
++								continue;
++							if(WurstClient.INSTANCE.mods.yesCheatMod
++								.isActive())
++								Thread.sleep(250);
++							handleMouseClick(slot, slot.slotNumber, 0, ClickType.QUICK_MOVE);
++						}
++					}catch(Exception e)
++					{
++						e.printStackTrace();
++					}
++				}
++			}).start();
++    }
++
+     /**
+      * Draw the foreground layer for the GuiContainer (everything in front of the items). Args : mouseX, mouseY
+      */
 diff --git a/src/net/minecraft/client/gui/inventory/GuiContainer.java b/src/net/minecraft/client/gui/inventory/GuiContainer.java
-index c1a2665..2e37dc9 100644
+index c1a2665..c4057a4 100644
 --- a/src/net/minecraft/client/gui/inventory/GuiContainer.java
 +++ b/src/net/minecraft/client/gui/inventory/GuiContainer.java
-@@ -680,7 +680,7 @@ public abstract class GuiContainer extends GuiScreen
+@@ -410,7 +410,7 @@ public abstract class GuiContainer extends GuiScreen
+                     {
+                         if (mouseButton == this.mc.gameSettings.keyBindPickBlock.getKeyCode() + 100)
+                         {
+-                            this.func_184098_a(slot, l, mouseButton, ClickType.CLONE);
++                            this.handleMouseClick(slot, l, mouseButton, ClickType.CLONE);
+                         }
+                         else
+                         {
+@@ -427,7 +427,7 @@ public abstract class GuiContainer extends GuiScreen
+                                 clicktype = ClickType.THROW;
+                             }
+ 
+-                            this.func_184098_a(slot, l, mouseButton, clicktype);
++                            this.handleMouseClick(slot, l, mouseButton, clicktype);
+                         }
+ 
+                         this.ignoreMouseUp = true;
+@@ -488,9 +488,9 @@ public abstract class GuiContainer extends GuiScreen
+                     {
+                         if (i - this.dragItemDropDelay > 500L)
+                         {
+-                            this.func_184098_a(this.clickedSlot, this.clickedSlot.slotNumber, 0, ClickType.PICKUP);
+-                            this.func_184098_a(slot, slot.slotNumber, 1, ClickType.PICKUP);
+-                            this.func_184098_a(this.clickedSlot, this.clickedSlot.slotNumber, 0, ClickType.PICKUP);
++                            this.handleMouseClick(this.clickedSlot, this.clickedSlot.slotNumber, 0, ClickType.PICKUP);
++                            this.handleMouseClick(slot, slot.slotNumber, 1, ClickType.PICKUP);
++                            this.handleMouseClick(this.clickedSlot, this.clickedSlot.slotNumber, 0, ClickType.PICKUP);
+                             this.dragItemDropDelay = i + 750L;
+                             --this.draggedStack.stackSize;
+                         }
+@@ -541,14 +541,14 @@ public abstract class GuiContainer extends GuiScreen
+                     {
+                         if (slot2 != null && slot2.canTakeStack(this.mc.thePlayer) && slot2.getHasStack() && slot2.inventory == slot.inventory && Container.canAddItemToSlot(slot2, this.shiftClickedSlot, true))
+                         {
+-                            this.func_184098_a(slot2, slot2.slotNumber, state, ClickType.QUICK_MOVE);
++                            this.handleMouseClick(slot2, slot2.slotNumber, state, ClickType.QUICK_MOVE);
+                         }
+                     }
+                 }
+             }
+             else
+             {
+-                this.func_184098_a(slot, k, state, ClickType.PICKUP_ALL);
++                this.handleMouseClick(slot, k, state, ClickType.PICKUP_ALL);
+             }
+ 
+             this.doubleClick = false;
+@@ -583,12 +583,12 @@ public abstract class GuiContainer extends GuiScreen
+ 
+                     if (k != -1 && this.draggedStack != null && flag2)
+                     {
+-                        this.func_184098_a(this.clickedSlot, this.clickedSlot.slotNumber, state, ClickType.PICKUP);
+-                        this.func_184098_a(slot, k, 0, ClickType.PICKUP);
++                        this.handleMouseClick(this.clickedSlot, this.clickedSlot.slotNumber, state, ClickType.PICKUP);
++                        this.handleMouseClick(slot, k, 0, ClickType.PICKUP);
+ 
+                         if (this.mc.thePlayer.inventory.getItemStack() != null)
+                         {
+-                            this.func_184098_a(this.clickedSlot, this.clickedSlot.slotNumber, state, ClickType.PICKUP);
++                            this.handleMouseClick(this.clickedSlot, this.clickedSlot.slotNumber, state, ClickType.PICKUP);
+                             this.touchUpX = mouseX - i;
+                             this.touchUpY = mouseY - j;
+                             this.returningStackDestSlot = this.clickedSlot;
+@@ -615,20 +615,20 @@ public abstract class GuiContainer extends GuiScreen
+             }
+             else if (this.dragSplitting && !this.dragSplittingSlots.isEmpty())
+             {
+-                this.func_184098_a((Slot)null, -999, Container.func_94534_d(0, this.dragSplittingLimit), ClickType.QUICK_CRAFT);
++                this.handleMouseClick((Slot)null, -999, Container.func_94534_d(0, this.dragSplittingLimit), ClickType.QUICK_CRAFT);
+ 
+                 for (Slot slot1 : this.dragSplittingSlots)
+                 {
+-                    this.func_184098_a(slot1, slot1.slotNumber, Container.func_94534_d(1, this.dragSplittingLimit), ClickType.QUICK_CRAFT);
++                    this.handleMouseClick(slot1, slot1.slotNumber, Container.func_94534_d(1, this.dragSplittingLimit), ClickType.QUICK_CRAFT);
+                 }
+ 
+-                this.func_184098_a((Slot)null, -999, Container.func_94534_d(2, this.dragSplittingLimit), ClickType.QUICK_CRAFT);
++                this.handleMouseClick((Slot)null, -999, Container.func_94534_d(2, this.dragSplittingLimit), ClickType.QUICK_CRAFT);
+             }
+             else if (this.mc.thePlayer.inventory.getItemStack() != null)
+             {
+                 if (state == this.mc.gameSettings.keyBindPickBlock.getKeyCode() + 100)
+                 {
+-                    this.func_184098_a(slot, k, state, ClickType.CLONE);
++                    this.handleMouseClick(slot, k, state, ClickType.CLONE);
+                 }
+                 else
+                 {
+@@ -639,7 +639,7 @@ public abstract class GuiContainer extends GuiScreen
+                         this.shiftClickedSlot = slot != null && slot.getHasStack() ? slot.getStack() : null;
+                     }
+ 
+-                    this.func_184098_a(slot, k, state, flag1 ? ClickType.QUICK_MOVE : ClickType.PICKUP);
++                    this.handleMouseClick(slot, k, state, flag1 ? ClickType.QUICK_MOVE : ClickType.PICKUP);
+                 }
+             }
+         }
+@@ -673,14 +673,14 @@ public abstract class GuiContainer extends GuiScreen
+         return pointX >= left - 1 && pointX < left + right + 1 && pointY >= top - 1 && pointY < top + bottom + 1;
+     }
+ 
+-    protected void func_184098_a(Slot p_184098_1_, int p_184098_2_, int p_184098_3_, ClickType p_184098_4_)
++    protected void handleMouseClick(Slot p_184098_1_, int p_184098_2_, int p_184098_3_, ClickType p_184098_4_)
+     {
+         if (p_184098_1_ != null)
+         {
              p_184098_2_ = p_184098_1_.slotNumber;
          }
  
@@ -1523,6 +2032,94 @@ index c1a2665..2e37dc9 100644
      }
  
      /**
+@@ -700,11 +700,11 @@ public abstract class GuiContainer extends GuiScreen
+         {
+             if (keyCode == this.mc.gameSettings.keyBindPickBlock.getKeyCode())
+             {
+-                this.func_184098_a(this.theSlot, this.theSlot.slotNumber, 0, ClickType.CLONE);
++                this.handleMouseClick(this.theSlot, this.theSlot.slotNumber, 0, ClickType.CLONE);
+             }
+             else if (keyCode == this.mc.gameSettings.keyBindDrop.getKeyCode())
+             {
+-                this.func_184098_a(this.theSlot, this.theSlot.slotNumber, isCtrlKeyDown() ? 1 : 0, ClickType.THROW);
++                this.handleMouseClick(this.theSlot, this.theSlot.slotNumber, isCtrlKeyDown() ? 1 : 0, ClickType.THROW);
+             }
+         }
+     }
+@@ -721,7 +721,7 @@ public abstract class GuiContainer extends GuiScreen
+             {
+                 if (keyCode == this.mc.gameSettings.keyBindsHotbar[i].getKeyCode())
+                 {
+-                    this.func_184098_a(this.theSlot, this.theSlot.slotNumber, i, ClickType.SWAP);
++                    this.handleMouseClick(this.theSlot, this.theSlot.slotNumber, i, ClickType.SWAP);
+                     return true;
+                 }
+             }
+diff --git a/src/net/minecraft/client/gui/inventory/GuiContainerCreative.java b/src/net/minecraft/client/gui/inventory/GuiContainerCreative.java
+index 7ed3f4f..05c3eb8 100644
+--- a/src/net/minecraft/client/gui/inventory/GuiContainerCreative.java
++++ b/src/net/minecraft/client/gui/inventory/GuiContainerCreative.java
+@@ -78,7 +78,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer
+         }
+     }
+ 
+-    protected void func_184098_a(Slot p_184098_1_, int p_184098_2_, int p_184098_3_, ClickType p_184098_4_)
++    protected void handleMouseClick(Slot p_184098_1_, int p_184098_2_, int p_184098_3_, ClickType p_184098_4_)
+     {
+         this.field_147057_D = true;
+         boolean flag = p_184098_4_ == ClickType.QUICK_MOVE;
+diff --git a/src/net/minecraft/client/gui/inventory/GuiEditSign.java b/src/net/minecraft/client/gui/inventory/GuiEditSign.java
+index b14a4e1..3dccc01 100644
+--- a/src/net/minecraft/client/gui/inventory/GuiEditSign.java
++++ b/src/net/minecraft/client/gui/inventory/GuiEditSign.java
+@@ -1,6 +1,7 @@
+ package net.minecraft.client.gui.inventory;
+ 
+ import java.io.IOException;
++
+ import net.minecraft.block.Block;
+ import net.minecraft.client.gui.GuiButton;
+ import net.minecraft.client.gui.GuiScreen;
+@@ -13,8 +14,12 @@ import net.minecraft.network.play.client.CPacketUpdateSign;
+ import net.minecraft.tileentity.TileEntitySign;
+ import net.minecraft.util.ChatAllowedCharacters;
+ import net.minecraft.util.text.TextComponentString;
++
+ import org.lwjgl.input.Keyboard;
+ 
++import tk.wurst_client.WurstClient;
++import tk.wurst_client.mods.AutoSignMod;
++
+ public class GuiEditSign extends GuiScreen
+ {
+     /** Reference to the sign object. */
+@@ -40,6 +45,14 @@ public class GuiEditSign extends GuiScreen
+      */
+     public void initGui()
+     {
++		// TODO: Client
++    	AutoSignMod autoSign = WurstClient.INSTANCE.mods.autoSignMod;
++		if(autoSign.isActive() && autoSign.signText != null)
++		{
++			this.tileSign.signText = autoSign.signText;
++			mc.displayGuiScreen(null);
++		}
++		
+         this.buttonList.clear();
+         Keyboard.enableRepeatEvents(true);
+         this.buttonList.add(this.doneBtn = new GuiButton(0, this.width / 2 - 100, this.height / 4 + 120, I18n.format("gui.done", new Object[0])));
+@@ -79,6 +92,11 @@ public class GuiEditSign extends GuiScreen
+         {
+             if (button.id == 0)
+             {
++				// TODO: Client
++				AutoSignMod autoSign = WurstClient.INSTANCE.mods.autoSignMod;
++				if(autoSign.isActive() && autoSign.signText == null)
++					autoSign.signText = this.tileSign.signText;
++				
+                 this.tileSign.markDirty();
+                 this.mc.displayGuiScreen((GuiScreen)null);
+             }
 diff --git a/src/net/minecraft/client/multiplayer/PlayerControllerMP.java b/src/net/minecraft/client/multiplayer/PlayerControllerMP.java
 index a54fc8f..63271a3 100644
 --- a/src/net/minecraft/client/multiplayer/PlayerControllerMP.java
@@ -2061,6 +2658,19 @@ index 3cba0d7..3243c19 100644
 +        return Minecraft.getMinecraft().currentScreen != null && Minecraft.getMinecraft().currentScreen instanceof GuiWurstMainMenu;
      }
  }
+diff --git a/src/net/minecraft/tileentity/TileEntitySign.java b/src/net/minecraft/tileentity/TileEntitySign.java
+index f5cab9e..d422622 100644
+--- a/src/net/minecraft/tileentity/TileEntitySign.java
++++ b/src/net/minecraft/tileentity/TileEntitySign.java
+@@ -20,7 +20,7 @@ import net.minecraft.world.World;
+ 
+ public class TileEntitySign extends TileEntity
+ {
+-    public final ITextComponent[] signText = new ITextComponent[] {new TextComponentString(""), new TextComponentString(""), new TextComponentString(""), new TextComponentString("")};
++    public ITextComponent[] signText = new ITextComponent[] {new TextComponentString(""), new TextComponentString(""), new TextComponentString(""), new TextComponentString("")};
+ 
+     /**
+      * The index of the line currently being edited. Only used on client side, but defined on both. Note this is only
 -- 
 2.0.0
 
