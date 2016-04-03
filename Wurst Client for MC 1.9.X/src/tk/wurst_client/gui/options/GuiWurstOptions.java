@@ -56,11 +56,7 @@ public class GuiWurstOptions extends GuiScreen
 				+ "update videos, Wurst tutorials and\n" + "more.",
 			"Our Twitter account shows the latest\n"
 				+ "Wurst updates, news and sneak peeks in\n"
-				+ "140 characters or less.",
-			"The feedback network for the Wurst\n"
-				+ "Client, its website, etc. This is\n"
-				+ "the place to go for suggesting\n"
-				+ "features and reporting bugs.", ""};
+				+ "140 characters or less.", "", ""};
 	private boolean autoMaximize;
 	
 	public GuiWurstOptions(GuiScreen par1GuiScreen)
@@ -110,8 +106,8 @@ public class GuiWurstOptions extends GuiScreen
 			100, 20, "Wurst on YouTube"));
 		buttonList.add(new GuiButton(13, width / 2 + 54, height / 4 + 72 - 16,
 			100, 20, "Wurst on Twitter"));
-		buttonList.add(new GuiButton(14, width / 2 + 54, height / 4 + 96 - 16,
-			100, 20, "Wurst Feedback"));
+		// buttonList.add(new GuiButton(14, width / 2 + 54, height / 4 + 96 -
+		// 16, 100, 20, "???"));
 		// buttonList.add(new GuiButton(15, width / 2 + 54, height / 4 + 120 -
 		// 16, 100, 20, "???"));
 		((GuiButton)buttonList.get(3)).enabled = !Minecraft.isRunningOnMac;
