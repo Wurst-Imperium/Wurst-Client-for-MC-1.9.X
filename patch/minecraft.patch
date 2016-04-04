@@ -1,6 +1,6 @@
-From 33a0efca0802527aee0b0081ea8f3a55aa5f9205 Mon Sep 17 00:00:00 2001
+From 2105ec14c60f7a6dcb8b30179a8b46e45d2a90e3 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Sun, 3 Apr 2016 11:46:34 +0200
+Date: Mon, 4 Apr 2016 18:18:44 +0200
 Subject: [PATCH] Wurst
 
 ---
@@ -34,7 +34,7 @@ Subject: [PATCH] Wurst
  .../client/gui/inventory/GuiContainer.java         |  40 +++---
  .../client/gui/inventory/GuiContainerCreative.java |   2 +-
  .../client/gui/inventory/GuiEditSign.java          |  18 +++
- .../client/multiplayer/PlayerControllerMP.java     |  14 +-
+ .../client/multiplayer/PlayerControllerMP.java     |  57 +++++---
  .../minecraft/client/multiplayer/ServerList.java   |   6 +
  .../client/network/NetHandlerPlayClient.java       |   6 +-
  .../client/network/NetworkPlayerInfo.java          |  10 ++
@@ -50,7 +50,7 @@ Subject: [PATCH] Wurst
  src/net/minecraft/network/NetworkManager.java      |  26 ++++
  src/net/minecraft/realms/Realms.java               |   4 +-
  src/net/minecraft/tileentity/TileEntitySign.java   |   2 +-
- 46 files changed, 847 insertions(+), 156 deletions(-)
+ 46 files changed, 878 insertions(+), 168 deletions(-)
 
 diff --git a/src/net/minecraft/block/Block.java b/src/net/minecraft/block/Block.java
 index b386ea0..44bfcdc 100644
@@ -2121,10 +2121,35 @@ index b14a4e1..3dccc01 100644
                  this.mc.displayGuiScreen((GuiScreen)null);
              }
 diff --git a/src/net/minecraft/client/multiplayer/PlayerControllerMP.java b/src/net/minecraft/client/multiplayer/PlayerControllerMP.java
-index a54fc8f..63271a3 100644
+index a54fc8f..e3255c1 100644
 --- a/src/net/minecraft/client/multiplayer/PlayerControllerMP.java
 +++ b/src/net/minecraft/client/multiplayer/PlayerControllerMP.java
-@@ -51,7 +51,7 @@ public class PlayerControllerMP
+@@ -1,5 +1,7 @@
+ package net.minecraft.client.multiplayer;
+ 
++import tk.wurst_client.WurstClient;
++import tk.wurst_client.mods.FastBreakMod;
+ import io.netty.buffer.Unpooled;
+ import net.minecraft.block.Block;
+ import net.minecraft.block.BlockCommandBlock;
+@@ -19,15 +21,7 @@ import net.minecraft.item.ItemBlock;
+ import net.minecraft.item.ItemStack;
+ import net.minecraft.item.ItemSword;
+ import net.minecraft.network.PacketBuffer;
+-import net.minecraft.network.play.client.CPacketClickWindow;
+-import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
+-import net.minecraft.network.play.client.CPacketCustomPayload;
+-import net.minecraft.network.play.client.CPacketEnchantItem;
+-import net.minecraft.network.play.client.CPacketHeldItemChange;
+-import net.minecraft.network.play.client.CPacketPlayerBlockPlacement;
+-import net.minecraft.network.play.client.CPacketPlayerDigging;
+-import net.minecraft.network.play.client.CPacketPlayerTryUseItem;
+-import net.minecraft.network.play.client.CPacketUseEntity;
++import net.minecraft.network.play.client.*;
+ import net.minecraft.stats.StatFileWriter;
+ import net.minecraft.util.ActionResult;
+ import net.minecraft.util.EnumActionResult;
+@@ -51,7 +45,7 @@ public class PlayerControllerMP
      private ItemStack currentItemHittingBlock;
  
      /** Current block damage (MP) */
@@ -2133,7 +2158,7 @@ index a54fc8f..63271a3 100644
  
      /**
       * Tick counter, when it hits 4 it resets back to 0 and plays the step sound
-@@ -82,7 +82,7 @@ public class PlayerControllerMP
+@@ -82,7 +76,7 @@ public class PlayerControllerMP
      {
          if (!mcIn.theWorld.extinguishFire(mcIn.thePlayer, pos, facing))
          {
@@ -2142,7 +2167,7 @@ index a54fc8f..63271a3 100644
          }
      }
  
-@@ -124,7 +124,7 @@ public class PlayerControllerMP
+@@ -124,7 +118,7 @@ public class PlayerControllerMP
          return this.currentGameType.isSurvivalOrAdventure();
      }
  
@@ -2151,7 +2176,19 @@ index a54fc8f..63271a3 100644
      {
          if (this.currentGameType.isAdventure())
          {
-@@ -258,7 +258,7 @@ public class PlayerControllerMP
+@@ -238,7 +232,10 @@ public class PlayerControllerMP
+             {
+                 this.netClientHandler.addToSendQueue(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, loc, face));
+                 clickBlockCreative(this.mc, this, loc, face);
+-                this.blockHitDelay = 5;
++                
++                //TODO: Client
++                this.blockHitDelay = WurstClient.INSTANCE.mods.fastBreakMod.isEnabled() ? 0 : 5;
++                
+             }
+             else if (!this.isHittingBlock || !this.isHittingPosition(loc))
+             {
+@@ -258,7 +255,7 @@ public class PlayerControllerMP
  
                  if (flag && iblockstate.getPlayerRelativeBlockHardness(this.mc.thePlayer, this.mc.thePlayer.worldObj, loc) >= 1.0F)
                  {
@@ -2160,7 +2197,36 @@ index a54fc8f..63271a3 100644
                  }
                  else
                  {
-@@ -332,7 +332,7 @@ public class PlayerControllerMP
+@@ -301,7 +298,9 @@ public class PlayerControllerMP
+         }
+         else if (this.currentGameType.isCreative() && this.mc.theWorld.getWorldBorder().contains(posBlock))
+         {
+-            this.blockHitDelay = 5;
++        	//TODO: Client
++            this.blockHitDelay = WurstClient.INSTANCE.mods.fastBreakMod.isEnabled() ? 0 : 5;
++            
+             this.netClientHandler.addToSendQueue(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, posBlock, directionFacing));
+             clickBlockCreative(this.mc, this, posBlock, directionFacing);
+             return true;
+@@ -318,7 +317,16 @@ public class PlayerControllerMP
+             }
+             else
+             {
+-                this.curBlockDamageMP += iblockstate.getPlayerRelativeBlockHardness(this.mc.thePlayer, this.mc.thePlayer.worldObj, posBlock);
++				// TODO: Client
++				FastBreakMod fastBreak = WurstClient.INSTANCE.mods.fastBreakMod;
++				this.curBlockDamageMP +=
++					iblockstate
++						.getPlayerRelativeBlockHardness(this.mc.thePlayer,
++							this.mc.thePlayer.worldObj, posBlock)
++						* (fastBreak.isActive()
++							&& !this.currentGameType.isCreative()
++							&& WurstClient.INSTANCE.options.fastbreakMode == 0
++							? fastBreak.speed : 1);
+ 
+                 if (this.stepSoundTickCounter % 4.0F == 0.0F)
+                 {
+@@ -332,10 +340,21 @@ public class PlayerControllerMP
                  {
                      this.isHittingBlock = false;
                      this.netClientHandler.addToSendQueue(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, posBlock, directionFacing));
@@ -2169,7 +2235,21 @@ index a54fc8f..63271a3 100644
                      this.curBlockDamageMP = 0.0F;
                      this.stepSoundTickCounter = 0.0F;
                      this.blockHitDelay = 5;
-@@ -468,7 +468,7 @@ public class PlayerControllerMP
++                    
++					// TODO: Client
++				}else if(!this.currentGameType.isCreative()
++					&& WurstClient.INSTANCE.mods.fastBreakMod.isEnabled()
++					&& WurstClient.INSTANCE.options.fastbreakMode == 1)
++				{
++					
++					this.netClientHandler
++						.addToSendQueue(new CPacketPlayerDigging(
++							CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK,
++							posBlock, directionFacing));
+ 				}
+ 
+                 this.mc.theWorld.sendBlockBreakProgress(this.mc.thePlayer.getEntityId(), this.currentBlock, (int)(this.curBlockDamageMP * 10.0F) - 1);
+@@ -468,7 +487,7 @@ public class PlayerControllerMP
          }
      }
  
@@ -2178,7 +2258,7 @@ index a54fc8f..63271a3 100644
      {
          if (this.currentGameType == WorldSettings.GameType.SPECTATOR)
          {
-@@ -539,7 +539,7 @@ public class PlayerControllerMP
+@@ -539,7 +558,7 @@ public class PlayerControllerMP
          return this.currentGameType == WorldSettings.GameType.SPECTATOR ? EnumActionResult.PASS : p_187102_2_.func_184199_a(p_187102_1_, vec3d, p_187102_4_, p_187102_5_);
      }
  
