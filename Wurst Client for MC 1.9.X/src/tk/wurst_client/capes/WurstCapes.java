@@ -9,7 +9,7 @@ package tk.wurst_client.capes;
 
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.HashMap;
+import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -30,11 +30,10 @@ public class WurstCapes
 	 * @see net.minecraft.client.resources.SkinManager#func_152790_a(GameProfile,
 	 *      SkinAvailableCallback, boolean)
 	 * @param player
-	 * @param skinManagerMap
+	 * @param map
 	 * @param callback
 	 */
-	@SuppressWarnings("unchecked")
-	public static void checkCape(GameProfile player, HashMap skinManagerMap,
+	public static void checkCape(GameProfile player, Map<Type, MinecraftProfileTexture> map,
 		SkinAvailableCallback callback)
 	{
 		if(capes == null)
@@ -78,7 +77,7 @@ public class WurstCapes
 			try
 			{
 				if(capes.has(player.getName()))
-					skinManagerMap.put(Type.CAPE, new MinecraftProfileTexture(
+					map.put(Type.CAPE, new MinecraftProfileTexture(
 						capes.get(player.getName()).getAsString(), null));
 			}catch(Exception e)
 			{

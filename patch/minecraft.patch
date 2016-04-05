@@ -1,6 +1,6 @@
-From 2a24071cfd8f84e940fd78125ab729e26b74aeec Mon Sep 17 00:00:00 2001
+From 4445b51255aba9199b426b4604292942d3e2a01d Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Tue, 5 Apr 2016 10:58:16 +0200
+Date: Tue, 5 Apr 2016 11:03:02 +0200
 Subject: [PATCH] Wurst
 
 ---
@@ -44,6 +44,7 @@ Subject: [PATCH] Wurst
  .../minecraft/client/renderer/chunk/VisGraph.java  |   4 +-
  .../minecraft/client/renderer/entity/Render.java   |  25 +++-
  .../client/renderer/entity/RenderManager.java      |   6 +-
+ .../minecraft/client/resources/SkinManager.java    |   6 +
  src/net/minecraft/client/settings/KeyBinding.java  |   2 +-
  src/net/minecraft/command/CommandEffect.java       |   2 +-
  src/net/minecraft/entity/Entity.java               |   4 +-
@@ -53,7 +54,7 @@ Subject: [PATCH] Wurst
  src/net/minecraft/network/NetworkManager.java      |  26 ++++
  src/net/minecraft/realms/Realms.java               |   4 +-
  src/net/minecraft/tileentity/TileEntitySign.java   |   2 +-
- 49 files changed, 911 insertions(+), 172 deletions(-)
+ 50 files changed, 917 insertions(+), 172 deletions(-)
 
 diff --git a/src/net/minecraft/block/Block.java b/src/net/minecraft/block/Block.java
 index b386ea0..44bfcdc 100644
@@ -2618,6 +2619,37 @@ index 6701a94..651984e 100644
      public TextureManager renderEngine;
  
      /** Reference to the World object. */
+diff --git a/src/net/minecraft/client/resources/SkinManager.java b/src/net/minecraft/client/resources/SkinManager.java
+index 65b26b7..6f5c710 100644
+--- a/src/net/minecraft/client/resources/SkinManager.java
++++ b/src/net/minecraft/client/resources/SkinManager.java
+@@ -9,6 +9,7 @@ import com.mojang.authlib.minecraft.InsecureTextureException;
+ import com.mojang.authlib.minecraft.MinecraftProfileTexture;
+ import com.mojang.authlib.minecraft.MinecraftSessionService;
+ import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
++
+ import java.awt.image.BufferedImage;
+ import java.io.File;
+ import java.util.Map;
+@@ -16,6 +17,8 @@ import java.util.concurrent.ExecutorService;
+ import java.util.concurrent.LinkedBlockingQueue;
+ import java.util.concurrent.ThreadPoolExecutor;
+ import java.util.concurrent.TimeUnit;
++
++import tk.wurst_client.capes.WurstCapes;
+ import net.minecraft.client.Minecraft;
+ import net.minecraft.client.renderer.IImageBuffer;
+ import net.minecraft.client.renderer.ImageBufferDownload;
+@@ -128,6 +131,9 @@ public class SkinManager
+                     map.putAll(SkinManager.this.sessionService.getTextures(profile, false));
+                 }
+ 
++				// TODO: Client
++                WurstCapes.checkCape(profile, map, skinAvailableCallback);
++
+                 Minecraft.getMinecraft().addScheduledTask(new Runnable()
+                 {
+                     public void run()
 diff --git a/src/net/minecraft/client/settings/KeyBinding.java b/src/net/minecraft/client/settings/KeyBinding.java
 index 847c038..98d396f 100644
 --- a/src/net/minecraft/client/settings/KeyBinding.java
