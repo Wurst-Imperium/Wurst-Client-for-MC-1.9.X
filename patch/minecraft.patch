@@ -1,6 +1,6 @@
-From b4a0f7f431c4bac73d0f2e9c87b2c5bc06368db2 Mon Sep 17 00:00:00 2001
+From 88574792ddc0eb4cc267a9c67058dd122aad5a59 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Tue, 5 Apr 2016 12:05:39 +0200
+Date: Tue, 5 Apr 2016 13:02:21 +0200
 Subject: [PATCH] Wurst
 
 ---
@@ -51,11 +51,11 @@ Subject: [PATCH] Wurst
  src/net/minecraft/entity/Entity.java               |  48 +++++--
  src/net/minecraft/entity/EntityLivingBase.java     |  24 +++-
  src/net/minecraft/entity/monster/EntityZombie.java |   2 +-
- src/net/minecraft/entity/player/EntityPlayer.java  |   7 +-
+ src/net/minecraft/entity/player/EntityPlayer.java  |  13 +-
  src/net/minecraft/network/NetworkManager.java      |  26 ++++
  src/net/minecraft/realms/Realms.java               |   4 +-
  src/net/minecraft/tileentity/TileEntitySign.java   |   2 +-
- 51 files changed, 1024 insertions(+), 183 deletions(-)
+ 51 files changed, 1030 insertions(+), 183 deletions(-)
 
 diff --git a/src/net/minecraft/block/Block.java b/src/net/minecraft/block/Block.java
 index b386ea0..44bfcdc 100644
@@ -2979,10 +2979,10 @@ index a65657e..9d9e562 100644
          this.worldObj.setEntityState(this, (byte)16);
      }
 diff --git a/src/net/minecraft/entity/player/EntityPlayer.java b/src/net/minecraft/entity/player/EntityPlayer.java
-index 23d8999..b4ec5c2 100644
+index 23d8999..7d93bbc 100644
 --- a/src/net/minecraft/entity/player/EntityPlayer.java
 +++ b/src/net/minecraft/entity/player/EntityPlayer.java
-@@ -3,10 +3,13 @@ package net.minecraft.entity.player;
+@@ -3,15 +3,20 @@ package net.minecraft.entity.player;
  import com.google.common.base.Charsets;
  import com.google.common.collect.Lists;
  import com.mojang.authlib.GameProfile;
@@ -2993,10 +2993,28 @@ index 23d8999..b4ec5c2 100644
  import java.util.UUID;
 +
 +import tk.wurst_client.WurstClient;
++import tk.wurst_client.bot.WurstBot;
  import net.minecraft.block.Block;
  import net.minecraft.block.BlockBed;
  import net.minecraft.block.BlockHorizontal;
-@@ -2342,7 +2345,9 @@ public abstract class EntityPlayer extends EntityLivingBase
+ import net.minecraft.block.material.Material;
+ import net.minecraft.block.state.IBlockState;
++import net.minecraft.client.Minecraft;
+ import net.minecraft.enchantment.EnchantmentHelper;
+ import net.minecraft.entity.Entity;
+ import net.minecraft.entity.EntityList;
+@@ -656,6 +661,10 @@ public abstract class EntityPlayer extends EntityLivingBase
+      */
+     public void onDeath(DamageSource cause)
+     {
++    	//TODO: Client
++    	if(this.equals(Minecraft.getMinecraft().thePlayer) && WurstBot.isEnabled())
++			Minecraft.getMinecraft().displayGuiScreen(null);
++    	
+         super.onDeath(cause);
+         this.setSize(0.2F, 0.2F);
+         this.setPosition(this.posX, this.posY, this.posZ);
+@@ -2342,7 +2351,9 @@ public abstract class EntityPlayer extends EntityLivingBase
  
      public boolean isPushedByWater()
      {
