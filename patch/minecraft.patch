@@ -1,6 +1,6 @@
-From 1141152b6a896e1a3b29262cc2e85f04e107228e Mon Sep 17 00:00:00 2001
+From b4a0f7f431c4bac73d0f2e9c87b2c5bc06368db2 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Tue, 5 Apr 2016 11:19:57 +0200
+Date: Tue, 5 Apr 2016 12:05:39 +0200
 Subject: [PATCH] Wurst
 
 ---
@@ -49,13 +49,13 @@ Subject: [PATCH] Wurst
  src/net/minecraft/command/CommandEffect.java       |   2 +-
  src/net/minecraft/crash/CrashReport.java           |  56 +++++++-
  src/net/minecraft/entity/Entity.java               |  48 +++++--
- src/net/minecraft/entity/EntityLivingBase.java     |   6 +-
+ src/net/minecraft/entity/EntityLivingBase.java     |  24 +++-
  src/net/minecraft/entity/monster/EntityZombie.java |   2 +-
  src/net/minecraft/entity/player/EntityPlayer.java  |   7 +-
  src/net/minecraft/network/NetworkManager.java      |  26 ++++
  src/net/minecraft/realms/Realms.java               |   4 +-
  src/net/minecraft/tileentity/TileEntitySign.java   |   2 +-
- 51 files changed, 1008 insertions(+), 181 deletions(-)
+ 51 files changed, 1024 insertions(+), 183 deletions(-)
 
 diff --git a/src/net/minecraft/block/Block.java b/src/net/minecraft/block/Block.java
 index b386ea0..44bfcdc 100644
@@ -2898,10 +2898,27 @@ index 85a68a2..3268834 100644
  
      public void handleStatusUpdate(byte id)
 diff --git a/src/net/minecraft/entity/EntityLivingBase.java b/src/net/minecraft/entity/EntityLivingBase.java
-index d1580a1..19a5018 100644
+index d1580a1..8486968 100644
 --- a/src/net/minecraft/entity/EntityLivingBase.java
 +++ b/src/net/minecraft/entity/EntityLivingBase.java
-@@ -836,14 +836,14 @@ public abstract class EntityLivingBase extends Entity
+@@ -2,12 +2,16 @@ package net.minecraft.entity;
+ 
+ import com.google.common.base.Objects;
+ import com.google.common.collect.Maps;
++
+ import java.util.Collection;
+ import java.util.Iterator;
+ import java.util.List;
+ import java.util.Map;
+ import java.util.Random;
+ import java.util.UUID;
++
++import tk.wurst_client.WurstClient;
++import tk.wurst_client.mods.HighJumpMod;
+ import net.minecraft.block.Block;
+ import net.minecraft.block.BlockLadder;
+ import net.minecraft.block.BlockTrapDoor;
+@@ -836,14 +840,14 @@ public abstract class EntityLivingBase extends Entity
          return this.getCreatureAttribute() == EnumCreatureAttribute.UNDEAD;
      }
  
@@ -2919,6 +2936,35 @@ index d1580a1..19a5018 100644
  
          if (potioneffect != null)
          {
+@@ -1761,7 +1765,12 @@ public abstract class EntityLivingBase extends Entity
+      */
+     protected void jump()
+     {
+-        this.motionY = (double)this.getJumpUpwardsMotion();
++		// TODO: Client
++		HighJumpMod highJumpMod = WurstClient.INSTANCE.mods.highJumpMod;
++		this.motionY =
++			(double)this.getJumpUpwardsMotion()
++				+ (this instanceof EntityPlayer && highJumpMod.isActive()
++					? highJumpMod.jumpHeight * 0.1F : 0F);
+ 
+         if (this.isPotionActive(MobEffects.jump))
+         {
+@@ -1798,8 +1807,13 @@ public abstract class EntityLivingBase extends Entity
+     {
+         if (this.isServerWorld() || this.func_184186_bw())
+         {
+-            if (!this.isInWater() || this instanceof EntityPlayer && ((EntityPlayer)this).capabilities.isFlying)
++			// TODO: Client
++			if(!this.isInWater()
++				|| WurstClient.INSTANCE.mods.noSlowdownMod.isActive()
++				|| this instanceof EntityPlayer
++				&& ((EntityPlayer)this).capabilities.isFlying)
+ 			{
++            	
+                 if (!this.isInLava() || this instanceof EntityPlayer && ((EntityPlayer)this).capabilities.isFlying)
+                 {
+                     if (this.func_184613_cA())
 diff --git a/src/net/minecraft/entity/monster/EntityZombie.java b/src/net/minecraft/entity/monster/EntityZombie.java
 index a65657e..9d9e562 100644
 --- a/src/net/minecraft/entity/monster/EntityZombie.java
