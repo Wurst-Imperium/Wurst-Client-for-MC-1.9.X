@@ -1,6 +1,6 @@
-From 2105ec14c60f7a6dcb8b30179a8b46e45d2a90e3 Mon Sep 17 00:00:00 2001
+From 2a24071cfd8f84e940fd78125ab729e26b74aeec Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Mon, 4 Apr 2016 18:18:44 +0200
+Date: Tue, 5 Apr 2016 10:58:16 +0200
 Subject: [PATCH] Wurst
 
 ---
@@ -38,8 +38,11 @@ Subject: [PATCH] Wurst
  .../minecraft/client/multiplayer/ServerList.java   |   6 +
  .../client/network/NetHandlerPlayClient.java       |   6 +-
  .../client/network/NetworkPlayerInfo.java          |  10 ++
+ .../client/renderer/BlockModelRenderer.java        |   8 +-
  .../minecraft/client/renderer/EntityRenderer.java  |  47 +++++--
  .../minecraft/client/renderer/RenderGlobal.java    |   2 +-
+ .../minecraft/client/renderer/chunk/VisGraph.java  |   4 +-
+ .../minecraft/client/renderer/entity/Render.java   |  25 +++-
  .../client/renderer/entity/RenderManager.java      |   6 +-
  src/net/minecraft/client/settings/KeyBinding.java  |   2 +-
  src/net/minecraft/command/CommandEffect.java       |   2 +-
@@ -50,7 +53,7 @@ Subject: [PATCH] Wurst
  src/net/minecraft/network/NetworkManager.java      |  26 ++++
  src/net/minecraft/realms/Realms.java               |   4 +-
  src/net/minecraft/tileentity/TileEntitySign.java   |   2 +-
- 46 files changed, 878 insertions(+), 168 deletions(-)
+ 49 files changed, 911 insertions(+), 172 deletions(-)
 
 diff --git a/src/net/minecraft/block/Block.java b/src/net/minecraft/block/Block.java
 index b386ea0..44bfcdc 100644
@@ -2344,6 +2347,32 @@ index 7ed5f12..ac56d75 100644
      public int func_178835_l()
      {
          return this.field_178873_i;
+diff --git a/src/net/minecraft/client/renderer/BlockModelRenderer.java b/src/net/minecraft/client/renderer/BlockModelRenderer.java
+index 628f4dd..92dc601 100644
+--- a/src/net/minecraft/client/renderer/BlockModelRenderer.java
++++ b/src/net/minecraft/client/renderer/BlockModelRenderer.java
+@@ -2,6 +2,9 @@ package net.minecraft.client.renderer;
+ 
+ import java.util.BitSet;
+ import java.util.List;
++
++import tk.wurst_client.WurstClient;
++import tk.wurst_client.utils.XRayUtils;
+ import net.minecraft.block.Block;
+ import net.minecraft.block.state.IBlockState;
+ import net.minecraft.client.Minecraft;
+@@ -71,7 +74,10 @@ public class BlockModelRenderer
+ 
+         List<BakedQuad> list1 = modelIn.getQuads(stateIn, (EnumFacing)null, rand);
+ 
+-        if (!list1.isEmpty())
++		// TODO: Client
++		if(!list1.isEmpty()
++			&& (!WurstClient.INSTANCE.mods.xRayMod.isActive() || XRayUtils
++				.isXRayBlock(stateIn.getBlock())))
+         {
+             this.renderQuadsSmooth(worldIn, stateIn, posIn, buffer, list1, afloat, bitset, blockmodelrenderer$ambientocclusionface);
+             flag = true;
 diff --git a/src/net/minecraft/client/renderer/EntityRenderer.java b/src/net/minecraft/client/renderer/EntityRenderer.java
 index e8fdae5..791db14 100644
 --- a/src/net/minecraft/client/renderer/EntityRenderer.java
@@ -2509,6 +2538,69 @@ index 3220298..1d9b9e0 100644
                  break;
  
              case 1033:
+diff --git a/src/net/minecraft/client/renderer/chunk/VisGraph.java b/src/net/minecraft/client/renderer/chunk/VisGraph.java
+index 1fe434a..b9bd178 100644
+--- a/src/net/minecraft/client/renderer/chunk/VisGraph.java
++++ b/src/net/minecraft/client/renderer/chunk/VisGraph.java
+@@ -20,7 +20,9 @@ public class VisGraph
+ 
+     public void func_178606_a(BlockPos pos)
+     {
+-        this.field_178612_d.set(getIndex(pos), true);
++    	// TODO: Client
++        // this.field_178612_d.set(getIndex(pos), true);
++    	
+         --this.field_178611_f;
+     }
+ 
+diff --git a/src/net/minecraft/client/renderer/entity/Render.java b/src/net/minecraft/client/renderer/entity/Render.java
+index 884e95f..4893e06 100644
+--- a/src/net/minecraft/client/renderer/entity/Render.java
++++ b/src/net/minecraft/client/renderer/entity/Render.java
+@@ -1,5 +1,6 @@
+ package net.minecraft.client.renderer.entity;
+ 
++import tk.wurst_client.WurstClient;
+ import net.minecraft.block.state.IBlockState;
+ import net.minecraft.client.Minecraft;
+ import net.minecraft.client.gui.FontRenderer;
+@@ -364,14 +365,34 @@ public abstract class Render<T extends Entity>
+ 
+         if (d0 <= (double)(maxDistance * maxDistance))
+         {
+-            boolean flag = entityIn.isSneaking();
++			// TODO: Client
++			boolean nameTagsActive =
++				WurstClient.INSTANCE.mods.nameTagsMod.isActive();
++            boolean flag = entityIn.isSneaking() && !nameTagsActive;
++            
+             GlStateManager.pushMatrix();
+             float f = flag ? 0.25F : 0.0F;
+             GlStateManager.translate((float)x, (float)y + entityIn.height + 0.5F - f, (float)z);
+             GlStateManager.glNormal3f(0.0F, 1.0F, 0.0F);
+             GlStateManager.rotate(-this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
+             GlStateManager.rotate((float)(this.renderManager.options.thirdPersonView == 2 ? -1 : 1) * this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
+-            GlStateManager.scale(-0.025F, -0.025F, 0.025F);
++
++			// TODO: Client
++            float scaleFactor =
++            	0.016666668F * 1.6F * (entityIn
++            		.getDistanceToEntity(this.renderManager.livingPlayer) > 10
++            		&& nameTagsActive ? entityIn
++            			.getDistanceToEntity(this.renderManager.livingPlayer) / 10
++            			: 1);
++            scaleFactor *=
++            	(nameTagsActive
++            		? (entityIn.boundingBox.getAverageEdgeLength() > -50
++            			? 1
++            				: entityIn
++            				.getDistanceToEntity(this.renderManager.livingPlayer) / 300)
++            				: 1);
++            GlStateManager.scale(-scaleFactor, -scaleFactor, scaleFactor);
++            
+             GlStateManager.disableLighting();
+             GlStateManager.depthMask(false);
+ 
 diff --git a/src/net/minecraft/client/renderer/entity/RenderManager.java b/src/net/minecraft/client/renderer/entity/RenderManager.java
 index 6701a94..651984e 100644
 --- a/src/net/minecraft/client/renderer/entity/RenderManager.java
