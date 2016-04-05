@@ -161,8 +161,7 @@ public class TrajectoriesMod extends Mod implements RenderListener
 		AxisAlignedBB bb =
 			new AxisAlignedBB(renderX - 0.5, renderY - 0.5, renderZ - 0.5,
 				renderX + 0.5, renderY + 0.5, renderZ + 0.5);
-		GL11.glColor4d(0, 1, 0, 0.15F);
-		RenderUtils.drawColorBox(bb);
+		RenderUtils.drawColorBox(bb, 0F, 1F, 0F, 0.15F);
 		GL11.glColor4d(0, 0, 0, 0.5F);
 		RenderGlobal.drawSelectionBoundingBox(bb);
 		

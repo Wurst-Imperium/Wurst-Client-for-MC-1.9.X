@@ -7,7 +7,6 @@
  */
 package tk.wurst_client.mods;
 
-import java.awt.Color;
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
@@ -48,7 +47,7 @@ public class BaseFinderMod extends Mod implements UpdateListener,
 	public void onRender()
 	{
 		for(BlockPos blockPos : matchingBlocks)
-			RenderUtils.framelessBlockESP(blockPos, new Color(255, 0, 0));
+			RenderUtils.framelessBlockESP(blockPos, 1F, 0F, 0F);
 	}
 	
 	@Override

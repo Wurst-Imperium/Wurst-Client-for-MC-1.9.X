@@ -15,6 +15,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -38,7 +39,7 @@ public class RenderUtils
 	 * @param color
 	 */
 	public static void box(double x, double y, double z, double x2, double y2,
-		double z2, Color color)
+		double z2, float red, float green, float blue, float alpha)
 	{
 		x = x - Minecraft.getMinecraft().getRenderManager().renderPosX;
 		y = y - Minecraft.getMinecraft().getRenderManager().renderPosY;
@@ -49,11 +50,13 @@ public class RenderUtils
 		GL11.glBlendFunc(770, 771);
 		GL11.glEnable(GL_BLEND);
 		GL11.glLineWidth(2.0F);
-		RenderUtil.setColor(color);
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL11.glDisable(GL_DEPTH_TEST);
 		GL11.glDepthMask(false);
-		drawColorBox(new AxisAlignedBB(x, y, z, x2, y2, z2));
+		GL11.glDepthMask(false);
+		GL11.glColor4f(red, green, blue, alpha);
+		drawColorBox(new AxisAlignedBB(x, y, z, x2, y2, z2), red, green, blue,
+			alpha);
 		GL11.glColor4d(0, 0, 0, 0.5F);
 		RenderGlobal.drawSelectionBoundingBox(new AxisAlignedBB(x, y, z, x2,
 			y2, z2));
@@ -120,11 +123,12 @@ public class RenderUtils
 		GL11.glBlendFunc(770, 771);
 		GL11.glEnable(GL_BLEND);
 		GL11.glLineWidth(1.0F);
-		GL11.glColor4d(0, 1, 0, 0.15F);
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL11.glDisable(GL_DEPTH_TEST);
 		GL11.glDepthMask(false);
-		drawColorBox(new AxisAlignedBB(x, y, z, x + 1.0, y + 1.0, z + 1.0));
+		GL11.glColor4d(0, 1, 0, 0.15F);
+		drawColorBox(new AxisAlignedBB(x, y, z, x + 1.0, y + 1.0, z + 1.0), 0F,
+			1F, 0F, 0.15F);
 		GL11.glColor4d(0, 0, 0, 0.5F);
 		RenderGlobal.drawSelectionBoundingBox(new AxisAlignedBB(x, y, z,
 			x + 1.0, y + 1.0, z + 1.0));
@@ -134,7 +138,8 @@ public class RenderUtils
 		GL11.glDisable(GL_BLEND);
 	}
 	
-	public static void framelessBlockESP(BlockPos blockPos, Color color)
+	public static void framelessBlockESP(BlockPos blockPos, float red,
+		float green, float blue)
 	{
 		double x =
 			blockPos.getX()
@@ -148,12 +153,12 @@ public class RenderUtils
 		GL11.glBlendFunc(770, 771);
 		GL11.glEnable(GL_BLEND);
 		GL11.glLineWidth(2.0F);
-		GL11.glColor4d(color.getRed() / 255, color.getGreen() / 255,
-			color.getBlue() / 255, 0.15);
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL11.glDisable(GL_DEPTH_TEST);
 		GL11.glDepthMask(false);
-		drawColorBox(new AxisAlignedBB(x, y, z, x + 1.0, y + 1.0, z + 1.0));
+		GL11.glColor4f(red, green, blue, 0.15F);
+		drawColorBox(new AxisAlignedBB(x, y, z, x + 1.0, y + 1.0, z + 1.0),
+			red, green, blue, 0.15F);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL11.glEnable(GL_DEPTH_TEST);
 		GL11.glDepthMask(true);
@@ -214,38 +219,21 @@ public class RenderUtils
 			GL11.glColor4d(1, 0, 0, 0.5F);
 		else if(mode == 4)// Team
 			GL11.glColor4d(0, 1, 0, 0.5F);
-		Minecraft.getMinecraft().getRenderManager();
-		RenderGlobal
-			.drawSelectionBoundingBox(new AxisAlignedBB(
-				entity.boundingBox.minX
-					- 0.05
-					- entity.posX
-					+ (entity.posX - Minecraft.getMinecraft()
-						.getRenderManager().renderPosX),
-				entity.boundingBox.minY
-					- entity.posY
-					+ (entity.posY - Minecraft.getMinecraft()
-						.getRenderManager().renderPosY),
-				entity.boundingBox.minZ
-					- 0.05
-					- entity.posZ
-					+ (entity.posZ - Minecraft.getMinecraft()
-						.getRenderManager().renderPosZ),
-				entity.boundingBox.maxX
-					+ 0.05
-					- entity.posX
-					+ (entity.posX - Minecraft.getMinecraft()
-						.getRenderManager().renderPosX),
-				entity.boundingBox.maxY
-					+ 0.1
-					- entity.posY
-					+ (entity.posY - Minecraft.getMinecraft()
-						.getRenderManager().renderPosY),
-				entity.boundingBox.maxZ
-					+ 0.05
-					- entity.posZ
-					+ (entity.posZ - Minecraft.getMinecraft()
-						.getRenderManager().renderPosZ)));
+		RenderManager renderManager =
+			Minecraft.getMinecraft().getRenderManager();
+		RenderGlobal.drawSelectionBoundingBox(new AxisAlignedBB(
+			entity.boundingBox.minX - 0.05 - entity.posX
+				+ (entity.posX - renderManager.renderPosX),
+			entity.boundingBox.minY - entity.posY
+				+ (entity.posY - renderManager.renderPosY),
+			entity.boundingBox.minZ - 0.05 - entity.posZ
+				+ (entity.posZ - renderManager.renderPosZ),
+			entity.boundingBox.maxX + 0.05 - entity.posX
+				+ (entity.posX - renderManager.renderPosX),
+			entity.boundingBox.maxY + 0.1 - entity.posY
+				+ (entity.posY - renderManager.renderPosY),
+			entity.boundingBox.maxZ + 0.05 - entity.posZ
+				+ (entity.posZ - renderManager.renderPosZ)));
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL11.glEnable(GL_DEPTH_TEST);
 		GL11.glDepthMask(true);
@@ -266,13 +254,13 @@ public class RenderUtils
 		GL11.glBlendFunc(770, 771);
 		GL11.glEnable(GL_BLEND);
 		GL11.glLineWidth(1.0F);
-		GL11.glColor4d(damage, 1 - damage, 0, 0.15F);
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL11.glDisable(GL_DEPTH_TEST);
 		GL11.glDepthMask(false);
+		GL11.glColor4f(damage, 1 - damage, 0, 0.15F);
 		drawColorBox(new AxisAlignedBB(x + 0.5 - damage / 2, y + 0.5 - damage
 			/ 2, z + 0.5 - damage / 2, x + 0.5 + damage / 2, y + 0.5 + damage
-			/ 2, z + 0.5 + damage / 2));
+			/ 2, z + 0.5 + damage / 2), damage, 1 - damage, 0, 0.15F);
 		GL11.glColor4d(0, 0, 0, 0.5F);
 		RenderGlobal.drawSelectionBoundingBox(new AxisAlignedBB(x + 0.5
 			- damage / 2, y + 0.5 - damage / 2, z + 0.5 - damage / 2, x + 0.5
@@ -300,11 +288,12 @@ public class RenderUtils
 		float sinus =
 			1F - MathHelper.abs(MathHelper.sin(Minecraft.getSystemTime()
 				% 10000L / 10000.0F * (float)Math.PI * 4.0F) * 1F);
-		GL11.glColor4d(1 - sinus, sinus, 0, 0.15);
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL11.glDisable(GL_DEPTH_TEST);
 		GL11.glDepthMask(false);
-		drawColorBox(new AxisAlignedBB(x, y, z, x + 1.0, y + 1.0, z + 1.0));
+		GL11.glColor4f(1F - sinus, sinus, 0F, 0.15F);
+		drawColorBox(new AxisAlignedBB(x, y, z, x + 1.0, y + 1.0, z + 1.0),
+			1F - sinus, sinus, 0F, 0.15F);
 		GL11.glColor4d(0, 0, 0, 0.5);
 		RenderGlobal.drawSelectionBoundingBox(new AxisAlignedBB(x, y, z,
 			x + 1.0, y + 1.0, z + 1.0));
@@ -314,69 +303,118 @@ public class RenderUtils
 		GL11.glDisable(GL_BLEND);
 	}
 	
-	public static void drawColorBox(AxisAlignedBB axisalignedbb)
+	public static void drawColorBox(AxisAlignedBB axisalignedbb, float red,
+		float green, float blue, float alpha)
 	{
 		Tessellator ts = Tessellator.getInstance();
 		VertexBuffer vb = ts.getBuffer();
 		vb.begin(7, DefaultVertexFormats.POSITION_TEX);// Starts X.
-		vb.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ);
-		vb.pos(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.minZ);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.minZ);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.minZ);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.maxZ);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.maxZ);
-		vb.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.maxZ);
-		vb.pos(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.maxZ);
+		vb.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ)
+			.color(red, green, blue, alpha).endVertex();
+		vb.pos(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.minZ)
+			.color(red, green, blue, alpha).endVertex();
+		vb.pos(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.minZ)
+			.color(red, green, blue, alpha).endVertex();
+		vb.pos(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.minZ)
+			.color(red, green, blue, alpha).endVertex();
+		vb.pos(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.maxZ)
+			.color(red, green, blue, alpha).endVertex();
+		vb.pos(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.maxZ)
+			.color(red, green, blue, alpha).endVertex();
+		vb.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.maxZ)
+			.color(red, green, blue, alpha).endVertex();
+		vb.pos(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.maxZ)
+			.color(red, green, blue, alpha).endVertex();
 		ts.draw();
 		vb.begin(7, DefaultVertexFormats.POSITION_TEX);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.minZ);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.minZ);
-		vb.pos(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.minZ);
-		vb.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ);
-		vb.pos(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.maxZ);
-		vb.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.maxZ);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.maxZ);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.maxZ);
+		vb.pos(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.minZ)
+			.color(red, green, blue, alpha).endVertex();
+		vb.pos(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.minZ)
+			.color(red, green, blue, alpha).endVertex();
+		vb.pos(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.minZ)
+			.color(red, green, blue, alpha).endVertex();
+		vb.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ)
+			.color(red, green, blue, alpha).endVertex();
+		vb.pos(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.maxZ)
+			.color(red, green, blue, alpha).endVertex();
+		vb.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.maxZ)
+			.color(red, green, blue, alpha).endVertex();
+		vb.pos(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.maxZ)
+			.color(red, green, blue, alpha).endVertex();
+		vb.pos(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.maxZ)
+			.color(red, green, blue, alpha).endVertex();
 		ts.draw();// Ends X.
 		vb.begin(7, DefaultVertexFormats.POSITION_TEX);// Starts Y.
-		vb.pos(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.minZ);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.minZ);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.maxZ);
-		vb.pos(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.maxZ);
-		vb.pos(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.minZ);
-		vb.pos(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.maxZ);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.maxZ);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.minZ);
+		vb.pos(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.minZ)
+			.color(red, green, blue, alpha).endVertex();
+		vb.pos(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.minZ)
+			.color(red, green, blue, alpha).endVertex();
+		vb.pos(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.maxZ)
+			.color(red, green, blue, alpha).endVertex();
+		vb.pos(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.maxZ)
+			.color(red, green, blue, alpha).endVertex();
+		vb.pos(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.minZ)
+			.color(red, green, blue, alpha).endVertex();
+		vb.pos(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.maxZ)
+			.color(red, green, blue, alpha).endVertex();
+		vb.pos(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.maxZ)
+			.color(red, green, blue, alpha).endVertex();
+		vb.pos(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.minZ)
+			.color(red, green, blue, alpha).endVertex();
 		ts.draw();
 		vb.begin(7, DefaultVertexFormats.POSITION_TEX);
-		vb.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.minZ);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.maxZ);
-		vb.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.maxZ);
-		vb.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ);
-		vb.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.maxZ);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.maxZ);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.minZ);
+		vb.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ)
+			.color(red, green, blue, alpha).endVertex();
+		vb.pos(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.minZ)
+			.color(red, green, blue, alpha).endVertex();
+		vb.pos(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.maxZ)
+			.color(red, green, blue, alpha).endVertex();
+		vb.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.maxZ)
+			.color(red, green, blue, alpha).endVertex();
+		vb.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ)
+			.color(red, green, blue, alpha).endVertex();
+		vb.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.maxZ)
+			.color(red, green, blue, alpha).endVertex();
+		vb.pos(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.maxZ)
+			.color(red, green, blue, alpha).endVertex();
+		vb.pos(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.minZ)
+			.color(red, green, blue, alpha).endVertex();
 		ts.draw();// Ends Y.
 		vb.begin(7, DefaultVertexFormats.POSITION_TEX);// Starts Z.
-		vb.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ);
-		vb.pos(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.minZ);
-		vb.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.maxZ);
-		vb.pos(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.maxZ);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.maxZ);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.maxZ);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.minZ);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.minZ);
+		vb.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ)
+			.color(red, green, blue, alpha).endVertex();
+		vb.pos(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.minZ)
+			.color(red, green, blue, alpha).endVertex();
+		vb.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.maxZ)
+			.color(red, green, blue, alpha).endVertex();
+		vb.pos(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.maxZ)
+			.color(red, green, blue, alpha).endVertex();
+		vb.pos(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.maxZ)
+			.color(red, green, blue, alpha).endVertex();
+		vb.pos(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.maxZ)
+			.color(red, green, blue, alpha).endVertex();
+		vb.pos(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.minZ)
+			.color(red, green, blue, alpha).endVertex();
+		vb.pos(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.minZ)
+			.color(red, green, blue, alpha).endVertex();
 		ts.draw();
 		vb.begin(7, DefaultVertexFormats.POSITION_TEX);
-		vb.pos(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.maxZ);
-		vb.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.maxZ);
-		vb.pos(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.minZ);
-		vb.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.minZ);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.minZ);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.maxZ);
-		vb.pos(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.maxZ);
+		vb.pos(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.maxZ)
+			.color(red, green, blue, alpha).endVertex();
+		vb.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.maxZ)
+			.color(red, green, blue, alpha).endVertex();
+		vb.pos(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.minZ)
+			.color(red, green, blue, alpha).endVertex();
+		vb.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ)
+			.color(red, green, blue, alpha).endVertex();
+		vb.pos(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.minZ)
+			.color(red, green, blue, alpha).endVertex();
+		vb.pos(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.minZ)
+			.color(red, green, blue, alpha).endVertex();
+		vb.pos(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.maxZ)
+			.color(red, green, blue, alpha).endVertex();
+		vb.pos(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.maxZ)
+			.color(red, green, blue, alpha).endVertex();
 		ts.draw();// Ends Z.
 	}
 	
