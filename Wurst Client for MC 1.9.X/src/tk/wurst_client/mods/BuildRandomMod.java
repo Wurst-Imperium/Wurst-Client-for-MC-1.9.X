@@ -8,11 +8,9 @@
 package tk.wurst_client.mods;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.network.play.client.CPacketPlayerBlockPlacement;
+import net.minecraft.network.play.client.CPacketPlayerTryUseItem;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.mods.Mod.Category;
@@ -95,9 +93,8 @@ public class BuildRandomMod extends Mod implements UpdateListener
 		}
 		BlockUtils.faceBlockPacket(randomPos);
 		mc.thePlayer.swingArm(EnumHand.MAIN_HAND);
-		mc.thePlayer.sendQueue.addToSendQueue(new CPacketPlayerBlockPlacement(
-			randomPos, mc.objectMouseOver.sideHit.getIndex(), Minecraft
-				.getMinecraft().thePlayer.inventory.getCurrentItem(),
+		mc.thePlayer.sendQueue.addToSendQueue(new CPacketPlayerTryUseItem(
+			randomPos, mc.objectMouseOver.sideHit, EnumHand.MAIN_HAND,
 			(float)mc.objectMouseOver.hitVec.xCoord
 				- mc.objectMouseOver.getBlockPos().getX(),
 			(float)mc.objectMouseOver.hitVec.yCoord
