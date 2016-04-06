@@ -1,6 +1,6 @@
-From 88574792ddc0eb4cc267a9c67058dd122aad5a59 Mon Sep 17 00:00:00 2001
+From f42dad548b5f0ec2cf8102415630c11db00d392c Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Tue, 5 Apr 2016 13:02:21 +0200
+Date: Wed, 6 Apr 2016 09:53:55 +0200
 Subject: [PATCH] Wurst
 
 ---
@@ -11,35 +11,37 @@ Subject: [PATCH] Wurst
  src/net/minecraft/block/BlockSoulSand.java         |   5 +
  .../minecraft/block/state/BlockStateContainer.java |   3 +-
  src/net/minecraft/block/state/IBlockState.java     |   2 +-
- src/net/minecraft/client/Minecraft.java            |  72 ++++++++--
+ src/net/minecraft/client/Minecraft.java            |  78 +++++++---
  .../client/audio/PositionedSoundRecord.java        |   2 +-
- .../minecraft/client/entity/EntityPlayerSP.java    | 154 +++++++++++++++++----
- src/net/minecraft/client/gui/GuiButton.java        |  16 ++-
- src/net/minecraft/client/gui/GuiDisconnected.java  |  87 ++++++++++++
+ .../client/entity/AbstractClientPlayer.java        |   4 +-
+ .../minecraft/client/entity/EntityPlayerSP.java    | 164 ++++++++++++++++-----
+ src/net/minecraft/client/gui/GuiButton.java        |  16 +-
+ src/net/minecraft/client/gui/GuiDisconnected.java  |  87 +++++++++++
  src/net/minecraft/client/gui/GuiGameOver.java      |  13 +-
  src/net/minecraft/client/gui/GuiIngame.java        |  23 ++-
  src/net/minecraft/client/gui/GuiIngameMenu.java    |  50 ++++++-
  .../client/gui/GuiListWorldSelectionEntry.java     |   2 +-
  src/net/minecraft/client/gui/GuiMainMenu.java      |  20 ++-
  .../minecraft/client/gui/GuiMemoryErrorScreen.java |   4 +-
- src/net/minecraft/client/gui/GuiMultiplayer.java   | 109 +++++++++++----
+ src/net/minecraft/client/gui/GuiMultiplayer.java   | 109 +++++++++++---
  src/net/minecraft/client/gui/GuiNewChat.java       |  13 ++
- src/net/minecraft/client/gui/GuiScreenBook.java    |  73 +++++++++-
+ src/net/minecraft/client/gui/GuiScreenBook.java    |  73 ++++++++-
  .../client/gui/GuiScreenOptionsSounds.java         |   2 +-
  .../minecraft/client/gui/GuiScreenServerList.java  |   9 ++
  .../client/gui/ServerListEntryNormal.java          |  13 +-
  .../minecraft/client/gui/ServerSelectionList.java  |   2 +-
  .../minecraft/client/gui/achievement/GuiStats.java |   2 +-
- .../minecraft/client/gui/inventory/GuiChest.java   |  73 ++++++++++
- .../client/gui/inventory/GuiContainer.java         |  40 +++---
+ .../minecraft/client/gui/inventory/GuiChest.java   |  73 +++++++++
+ .../client/gui/inventory/GuiContainer.java         |  40 ++---
  .../client/gui/inventory/GuiContainerCreative.java |   2 +-
  .../client/gui/inventory/GuiEditSign.java          |  18 +++
- .../client/multiplayer/PlayerControllerMP.java     |  57 +++++---
+ .../client/multiplayer/PlayerControllerMP.java     |  57 ++++---
  .../minecraft/client/multiplayer/ServerList.java   |   6 +
  .../client/network/NetHandlerPlayClient.java       |   6 +-
  .../client/network/NetworkPlayerInfo.java          |  10 ++
  .../client/renderer/BlockModelRenderer.java        |   8 +-
- .../minecraft/client/renderer/EntityRenderer.java  |  47 +++++--
+ .../minecraft/client/renderer/EntityRenderer.java  |  47 +++++-
+ .../minecraft/client/renderer/ItemRenderer.java    |   4 +-
  .../minecraft/client/renderer/RenderGlobal.java    |   2 +-
  .../minecraft/client/renderer/chunk/VisGraph.java  |   4 +-
  .../minecraft/client/renderer/entity/Render.java   |  25 +++-
@@ -47,15 +49,21 @@ Subject: [PATCH] Wurst
  .../minecraft/client/resources/SkinManager.java    |   6 +
  src/net/minecraft/client/settings/KeyBinding.java  |   2 +-
  src/net/minecraft/command/CommandEffect.java       |   2 +-
- src/net/minecraft/crash/CrashReport.java           |  56 +++++++-
- src/net/minecraft/entity/Entity.java               |  48 +++++--
- src/net/minecraft/entity/EntityLivingBase.java     |  24 +++-
+ src/net/minecraft/crash/CrashReport.java           |  56 ++++++-
+ src/net/minecraft/entity/Entity.java               |  48 ++++--
+ src/net/minecraft/entity/EntityLivingBase.java     |  76 ++++++----
+ .../entity/ai/EntityAIAttackRangedBow.java         |   4 +-
+ src/net/minecraft/entity/monster/EntityMob.java    |   2 +-
  src/net/minecraft/entity/monster/EntityZombie.java |   2 +-
- src/net/minecraft/entity/player/EntityPlayer.java  |  13 +-
+ src/net/minecraft/entity/player/EntityPlayer.java  |  23 ++-
+ .../minecraft/entity/player/EntityPlayerMP.java    |   2 +-
+ src/net/minecraft/item/ItemBow.java                |   2 +-
+ src/net/minecraft/item/ItemShield.java             |   2 +-
  src/net/minecraft/network/NetworkManager.java      |  26 ++++
  src/net/minecraft/realms/Realms.java               |   4 +-
+ .../management/PlayerInteractionManager.java       |   2 +-
  src/net/minecraft/tileentity/TileEntitySign.java   |   2 +-
- 51 files changed, 1030 insertions(+), 183 deletions(-)
+ 59 files changed, 1080 insertions(+), 233 deletions(-)
 
 diff --git a/src/net/minecraft/block/Block.java b/src/net/minecraft/block/Block.java
 index b386ea0..44bfcdc 100644
@@ -256,7 +264,7 @@ index e590b46..157dc4b 100644
      <T extends Comparable<T>> IBlockState cycleProperty(IProperty<T> property);
  
 diff --git a/src/net/minecraft/client/Minecraft.java b/src/net/minecraft/client/Minecraft.java
-index 61b2545..c89d45c 100644
+index 61b2545..d5e8ab2 100644
 --- a/src/net/minecraft/client/Minecraft.java
 +++ b/src/net/minecraft/client/Minecraft.java
 @@ -12,6 +12,7 @@ import com.mojang.authlib.GameProfileRepository;
@@ -387,6 +395,15 @@ index 61b2545..c89d45c 100644
          {
              this.gameSettings.showDebugInfo = false;
              this.ingameGUI.getChatGUI().clearChatMessages();
+@@ -1507,7 +1525,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo
+             this.leftClickCounter = 0;
+         }
+ 
+-        if (this.leftClickCounter <= 0 && !this.thePlayer.func_184587_cr())
++        if (this.leftClickCounter <= 0 && !this.thePlayer.isUsingItem())
+         {
+             if (leftClick && this.objectMouseOver != null && this.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK)
+             {
 @@ -1530,6 +1548,9 @@ public class Minecraft implements IThreadListener, ISnooperInfo
      {
          if (this.leftClickCounter <= 0)
@@ -469,6 +486,24 @@ index 61b2545..c89d45c 100644
                      if (i == 1)
                      {
                          this.displayInGameMenu();
+@@ -2242,7 +2277,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo
+             }
+         }
+ 
+-        if (this.thePlayer.func_184587_cr())
++        if (this.thePlayer.isUsingItem())
+         {
+             if (!this.gameSettings.keyBindUseItem.isKeyDown())
+             {
+@@ -2290,7 +2325,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo
+             }
+         }
+ 
+-        if (this.gameSettings.keyBindUseItem.isKeyDown() && this.rightClickDelayTimer == 0 && !this.thePlayer.func_184587_cr())
++        if (this.gameSettings.keyBindUseItem.isKeyDown() && this.rightClickDelayTimer == 0 && !this.thePlayer.isUsingItem())
+         {
+             this.rightClickMouse();
+         }
 @@ -2440,6 +2475,10 @@ public class Minecraft implements IThreadListener, ISnooperInfo
          networkmanager.sendPacket(new C00Handshake(107, socketaddress.toString(), 0, EnumConnectionState.LOGIN));
          networkmanager.sendPacket(new CPacketLoginStart(this.getSession().getProfile()));
@@ -503,8 +538,24 @@ index 20aa9ae..be0e158 100644
      {
          return new PositionedSoundRecord(p_184371_0_, SoundCategory.MASTER, 0.25F, p_184371_1_, false, 0, ISound.AttenuationType.NONE, 0.0F, 0.0F, 0.0F);
      }
+diff --git a/src/net/minecraft/client/entity/AbstractClientPlayer.java b/src/net/minecraft/client/entity/AbstractClientPlayer.java
+index c30247b..1fd170a 100644
+--- a/src/net/minecraft/client/entity/AbstractClientPlayer.java
++++ b/src/net/minecraft/client/entity/AbstractClientPlayer.java
+@@ -146,9 +146,9 @@ public abstract class AbstractClientPlayer extends EntityPlayer
+             f = 1.0F;
+         }
+ 
+-        if (this.func_184587_cr() && this.func_184607_cu() != null && this.func_184607_cu().getItem() == Items.bow)
++        if (this.isUsingItem() && this.func_184607_cu() != null && this.func_184607_cu().getItem() == Items.bow)
+         {
+-            int i = this.func_184612_cw();
++            int i = this.getItemInUseDuration();
+             float f1 = (float)i / 20.0F;
+ 
+             if (f1 > 1.0F)
 diff --git a/src/net/minecraft/client/entity/EntityPlayerSP.java b/src/net/minecraft/client/entity/EntityPlayerSP.java
-index 61b85c2..5793cc2 100644
+index 61b85c2..8d534c7 100644
 --- a/src/net/minecraft/client/entity/EntityPlayerSP.java
 +++ b/src/net/minecraft/client/entity/EntityPlayerSP.java
 @@ -1,5 +1,6 @@
@@ -731,6 +782,24 @@ index 61b85c2..5793cc2 100644
      }
  
      public void swingArm(EnumHand hand)
+@@ -629,7 +723,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+     {
+         ItemStack itemstack = this.getHeldItem(p_184598_1_);
+ 
+-        if (itemstack != null && !this.func_184587_cr())
++        if (itemstack != null && !this.isUsingItem())
+         {
+             super.func_184598_c(p_184598_1_);
+             this.field_184842_cm = true;
+@@ -637,7 +731,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+         }
+     }
+ 
+-    public boolean func_184587_cr()
++    public boolean isUsingItem()
+     {
+         return this.field_184842_cm;
+     }
 @@ -847,7 +941,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
  
              if (this.timeInPortal == 0.0F)
@@ -740,6 +809,33 @@ index 61b85c2..5793cc2 100644
              }
  
              this.timeInPortal += 0.0125F;
+@@ -892,7 +986,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+         boolean flag2 = this.movementInput.moveForward >= f;
+         this.movementInput.updatePlayerMoveState();
+ 
+-        if (this.func_184587_cr() && !this.isRiding())
++        if (this.isUsingItem() && !this.isRiding())
+         {
+             this.movementInput.moveStrafe *= 0.2F;
+             this.movementInput.moveForward *= 0.2F;
+@@ -906,7 +1000,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+         this.pushOutOfBlocks(this.posX + (double)this.width * 0.35D, axisalignedbb.minY + 0.5D, this.posZ + (double)this.width * 0.35D);
+         boolean flag3 = (float)this.getFoodStats().getFoodLevel() > 6.0F || this.capabilities.allowFlying;
+ 
+-        if (this.onGround && !flag1 && !flag2 && this.movementInput.moveForward >= f && !this.isSprinting() && flag3 && !this.func_184587_cr() && !this.isPotionActive(MobEffects.blindness))
++        if (this.onGround && !flag1 && !flag2 && this.movementInput.moveForward >= f && !this.isSprinting() && flag3 && !this.isUsingItem() && !this.isPotionActive(MobEffects.blindness))
+         {
+             if (this.sprintToggleTimer <= 0 && !this.mc.gameSettings.keyBindSprint.isKeyDown())
+             {
+@@ -918,7 +1012,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+             }
+         }
+ 
+-        if (!this.isSprinting() && this.movementInput.moveForward >= f && flag3 && !this.func_184587_cr() && !this.isPotionActive(MobEffects.blindness) && this.mc.gameSettings.keyBindSprint.isKeyDown())
++        if (!this.isSprinting() && this.movementInput.moveForward >= f && flag3 && !this.isUsingItem() && !this.isPotionActive(MobEffects.blindness) && this.mc.gameSettings.keyBindSprint.isKeyDown())
+         {
+             this.setSprinting(true);
+         }
 @@ -1052,7 +1146,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
          return this.field_184844_co;
      }
@@ -2527,6 +2623,28 @@ index e8fdae5..791db14 100644
          {
              float f1 = 5.0F;
              int i = ((EntityLivingBase)entity).getActivePotionEffect(MobEffects.blindness).getDuration();
+diff --git a/src/net/minecraft/client/renderer/ItemRenderer.java b/src/net/minecraft/client/renderer/ItemRenderer.java
+index 4b843db..dbd2679 100644
+--- a/src/net/minecraft/client/renderer/ItemRenderer.java
++++ b/src/net/minecraft/client/renderer/ItemRenderer.java
+@@ -323,7 +323,7 @@ public class ItemRenderer
+         boolean flag = true;
+         boolean flag1 = true;
+ 
+-        if (abstractclientplayer.func_184587_cr())
++        if (abstractclientplayer.isUsingItem())
+         {
+             ItemStack itemstack = abstractclientplayer.func_184607_cu();
+ 
+@@ -386,7 +386,7 @@ public class ItemRenderer
+         {
+             boolean flag1 = enumhandside == EnumHandSide.RIGHT;
+ 
+-            if (p_187457_1_.func_184587_cr() && p_187457_1_.getItemInUseCount() > 0 && p_187457_1_.func_184600_cs() == p_187457_4_)
++            if (p_187457_1_.isUsingItem() && p_187457_1_.getItemInUseCount() > 0 && p_187457_1_.func_184600_cs() == p_187457_4_)
+             {
+                 int j = flag1 ? 1 : -1;
+ 
 diff --git a/src/net/minecraft/client/renderer/RenderGlobal.java b/src/net/minecraft/client/renderer/RenderGlobal.java
 index 3220298..1d9b9e0 100644
 --- a/src/net/minecraft/client/renderer/RenderGlobal.java
@@ -2898,7 +3016,7 @@ index 85a68a2..3268834 100644
  
      public void handleStatusUpdate(byte id)
 diff --git a/src/net/minecraft/entity/EntityLivingBase.java b/src/net/minecraft/entity/EntityLivingBase.java
-index d1580a1..8486968 100644
+index d1580a1..b87c535 100644
 --- a/src/net/minecraft/entity/EntityLivingBase.java
 +++ b/src/net/minecraft/entity/EntityLivingBase.java
 @@ -2,12 +2,16 @@ package net.minecraft.entity;
@@ -2918,6 +3036,15 @@ index d1580a1..8486968 100644
  import net.minecraft.block.Block;
  import net.minecraft.block.BlockLadder;
  import net.minecraft.block.BlockTrapDoor;
+@@ -201,7 +205,7 @@ public abstract class EntityLivingBase extends Entity
+     /** Number of ticks since last jump */
+     private int jumpTicks;
+     private float absorptionAmount;
+-    protected ItemStack field_184627_bm;
++    protected ItemStack itemInUse;
+     protected int field_184628_bn;
+     protected int field_184629_bo;
+     private BlockPos field_184620_bC;
 @@ -836,14 +840,14 @@ public abstract class EntityLivingBase extends Entity
          return this.getCreatureAttribute() == EnumCreatureAttribute.UNDEAD;
      }
@@ -2965,6 +3092,180 @@ index d1580a1..8486968 100644
                  if (!this.isInLava() || this instanceof EntityPlayer && ((EntityPlayer)this).capabilities.isFlying)
                  {
                      if (this.func_184613_cA())
+@@ -2608,7 +2622,7 @@ public abstract class EntityLivingBase extends Entity
+ 
+     public abstract EnumHandSide getPrimaryHand();
+ 
+-    public boolean func_184587_cr()
++    public boolean isUsingItem()
+     {
+         return (((Byte)this.dataWatcher.get(field_184621_as)).byteValue() & 1) > 0;
+     }
+@@ -2620,15 +2634,15 @@ public abstract class EntityLivingBase extends Entity
+ 
+     protected void func_184608_ct()
+     {
+-        if (this.func_184587_cr())
++        if (this.isUsingItem())
+         {
+             ItemStack itemstack = this.getHeldItem(this.func_184600_cs());
+ 
+-            if (itemstack == this.field_184627_bm)
++            if (itemstack == this.itemInUse)
+             {
+                 if (this.getItemInUseCount() <= 25 && this.getItemInUseCount() % 4 == 0)
+                 {
+-                    this.func_184584_a(this.field_184627_bm, 5);
++                    this.func_184584_a(this.itemInUse, 5);
+                 }
+ 
+                 if (--this.field_184628_bn == 0 && !this.worldObj.isRemote)
+@@ -2647,9 +2661,9 @@ public abstract class EntityLivingBase extends Entity
+     {
+         ItemStack itemstack = this.getHeldItem(p_184598_1_);
+ 
+-        if (itemstack != null && !this.func_184587_cr())
++        if (itemstack != null && !this.isUsingItem())
+         {
+-            this.field_184627_bm = itemstack;
++            this.itemInUse = itemstack;
+             this.field_184628_bn = itemstack.getMaxItemUseDuration();
+ 
+             if (!this.worldObj.isRemote)
+@@ -2672,18 +2686,18 @@ public abstract class EntityLivingBase extends Entity
+ 
+         if (field_184621_as.equals(key) && this.worldObj.isRemote)
+         {
+-            if (this.func_184587_cr() && this.field_184627_bm == null)
++            if (this.isUsingItem() && this.itemInUse == null)
+             {
+-                this.field_184627_bm = this.getHeldItem(this.func_184600_cs());
++                this.itemInUse = this.getHeldItem(this.func_184600_cs());
+ 
+-                if (this.field_184627_bm != null)
++                if (this.itemInUse != null)
+                 {
+-                    this.field_184628_bn = this.field_184627_bm.getMaxItemUseDuration();
++                    this.field_184628_bn = this.itemInUse.getMaxItemUseDuration();
+                 }
+             }
+-            else if (!this.func_184587_cr() && this.field_184627_bm != null)
++            else if (!this.isUsingItem() && this.itemInUse != null)
+             {
+-                this.field_184627_bm = null;
++                this.itemInUse = null;
+                 this.field_184628_bn = 0;
+             }
+         }
+@@ -2691,7 +2705,7 @@ public abstract class EntityLivingBase extends Entity
+ 
+     protected void func_184584_a(ItemStack p_184584_1_, int p_184584_2_)
+     {
+-        if (p_184584_1_ != null && this.func_184587_cr())
++        if (p_184584_1_ != null && this.isUsingItem())
+         {
+             if (p_184584_1_.getItemUseAction() == EnumAction.DRINK)
+             {
+@@ -2731,10 +2745,10 @@ public abstract class EntityLivingBase extends Entity
+      */
+     protected void onItemUseFinish()
+     {
+-        if (this.field_184627_bm != null && this.func_184587_cr())
++        if (this.itemInUse != null && this.isUsingItem())
+         {
+-            this.func_184584_a(this.field_184627_bm, 16);
+-            ItemStack itemstack = this.field_184627_bm.onItemUseFinish(this.worldObj, this);
++            this.func_184584_a(this.itemInUse, 16);
++            ItemStack itemstack = this.itemInUse.onItemUseFinish(this.worldObj, this);
+ 
+             if (itemstack != null && itemstack.stackSize == 0)
+             {
+@@ -2748,7 +2762,7 @@ public abstract class EntityLivingBase extends Entity
+ 
+     public ItemStack func_184607_cu()
+     {
+-        return this.field_184627_bm;
++        return this.itemInUse;
+     }
+ 
+     public int getItemInUseCount()
+@@ -2756,16 +2770,16 @@ public abstract class EntityLivingBase extends Entity
+         return this.field_184628_bn;
+     }
+ 
+-    public int func_184612_cw()
++    public int getItemInUseDuration()
+     {
+-        return this.func_184587_cr() ? this.field_184627_bm.getMaxItemUseDuration() - this.getItemInUseCount() : 0;
++        return this.isUsingItem() ? this.itemInUse.getMaxItemUseDuration() - this.getItemInUseCount() : 0;
+     }
+ 
+     public void func_184597_cx()
+     {
+-        if (this.field_184627_bm != null)
++        if (this.itemInUse != null)
+         {
+-            this.field_184627_bm.onPlayerStoppedUsing(this.worldObj, this, this.getItemInUseCount());
++            this.itemInUse.onPlayerStoppedUsing(this.worldObj, this, this.getItemInUseCount());
+         }
+ 
+         this.func_184602_cy();
+@@ -2778,16 +2792,16 @@ public abstract class EntityLivingBase extends Entity
+             this.dataWatcher.set(field_184621_as, Byte.valueOf((byte)0));
+         }
+ 
+-        this.field_184627_bm = null;
++        this.itemInUse = null;
+         this.field_184628_bn = 0;
+     }
+ 
+     public boolean func_184585_cz()
+     {
+-        if (this.func_184587_cr() && this.field_184627_bm != null)
++        if (this.isUsingItem() && this.itemInUse != null)
+         {
+-            Item item = this.field_184627_bm.getItem();
+-            return item.getItemUseAction(this.field_184627_bm) != EnumAction.BLOCK ? false : item.getMaxItemUseDuration(this.field_184627_bm) - this.field_184628_bn >= 5;
++            Item item = this.itemInUse.getItem();
++            return item.getItemUseAction(this.itemInUse) != EnumAction.BLOCK ? false : item.getMaxItemUseDuration(this.itemInUse) - this.field_184628_bn >= 5;
+         }
+         else
+         {
+diff --git a/src/net/minecraft/entity/ai/EntityAIAttackRangedBow.java b/src/net/minecraft/entity/ai/EntityAIAttackRangedBow.java
+index b5de1b7..a30c530 100644
+--- a/src/net/minecraft/entity/ai/EntityAIAttackRangedBow.java
++++ b/src/net/minecraft/entity/ai/EntityAIAttackRangedBow.java
+@@ -141,7 +141,7 @@ public class EntityAIAttackRangedBow extends EntityAIBase
+                 this.field_188499_a.getLookHelper().setLookPositionWithEntity(entitylivingbase, 30.0F, 30.0F);
+             }
+ 
+-            if (this.field_188499_a.func_184587_cr())
++            if (this.field_188499_a.isUsingItem())
+             {
+                 if (!flag && this.field_188504_f < -60)
+                 {
+@@ -149,7 +149,7 @@ public class EntityAIAttackRangedBow extends EntityAIBase
+                 }
+                 else if (flag)
+                 {
+-                    int i = this.field_188499_a.func_184612_cw();
++                    int i = this.field_188499_a.getItemInUseDuration();
+ 
+                     if (i >= 20)
+                     {
+diff --git a/src/net/minecraft/entity/monster/EntityMob.java b/src/net/minecraft/entity/monster/EntityMob.java
+index f54bf34..cb986d9 100644
+--- a/src/net/minecraft/entity/monster/EntityMob.java
++++ b/src/net/minecraft/entity/monster/EntityMob.java
+@@ -128,7 +128,7 @@ public abstract class EntityMob extends EntityCreature implements IMob
+             {
+                 EntityPlayer entityplayer = (EntityPlayer)entityIn;
+                 ItemStack itemstack = this.getHeldItemMainhand();
+-                ItemStack itemstack1 = entityplayer.func_184587_cr() ? entityplayer.func_184607_cu() : null;
++                ItemStack itemstack1 = entityplayer.isUsingItem() ? entityplayer.func_184607_cu() : null;
+ 
+                 if (itemstack != null && itemstack1 != null && itemstack.getItem() instanceof ItemAxe && itemstack1.getItem() == Items.shield)
+                 {
 diff --git a/src/net/minecraft/entity/monster/EntityZombie.java b/src/net/minecraft/entity/monster/EntityZombie.java
 index a65657e..9d9e562 100644
 --- a/src/net/minecraft/entity/monster/EntityZombie.java
@@ -2979,7 +3280,7 @@ index a65657e..9d9e562 100644
          this.worldObj.setEntityState(this, (byte)16);
      }
 diff --git a/src/net/minecraft/entity/player/EntityPlayer.java b/src/net/minecraft/entity/player/EntityPlayer.java
-index 23d8999..7d93bbc 100644
+index 23d8999..542b3e6 100644
 --- a/src/net/minecraft/entity/player/EntityPlayer.java
 +++ b/src/net/minecraft/entity/player/EntityPlayer.java
 @@ -3,15 +3,20 @@ package net.minecraft.entity.player;
@@ -3014,6 +3315,40 @@ index 23d8999..7d93bbc 100644
          super.onDeath(cause);
          this.setSize(0.2F, 0.2F);
          this.setPosition(this.posX, this.posY, this.posZ);
+@@ -1060,12 +1069,12 @@ public abstract class EntityPlayer extends EntityLivingBase
+ 
+     protected void func_184590_k(float p_184590_1_)
+     {
+-        if (p_184590_1_ > 0.0F && this.field_184627_bm != null && this.field_184627_bm.getItem() == Items.shield)
++        if (p_184590_1_ > 0.0F && this.itemInUse != null && this.itemInUse.getItem() == Items.shield)
+         {
+             int i = 1 + MathHelper.floor_float(p_184590_1_);
+-            this.field_184627_bm.damageItem(i, this);
++            this.itemInUse.damageItem(i, this);
+ 
+-            if (this.field_184627_bm.stackSize <= 0)
++            if (this.itemInUse.stackSize <= 0)
+             {
+                 EnumHand enumhand = this.func_184600_cs();
+ 
+@@ -1078,7 +1087,7 @@ public abstract class EntityPlayer extends EntityLivingBase
+                     this.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, (ItemStack)null);
+                 }
+ 
+-                this.field_184627_bm = null;
++                this.itemInUse = null;
+                 this.playSound(SoundEvents.item_shield_break, 0.8F, 0.8F + this.worldObj.rand.nextFloat() * 0.4F);
+             }
+         }
+@@ -1390,7 +1399,7 @@ public abstract class EntityPlayer extends EntityLivingBase
+                         {
+                             EntityPlayer entityplayer = (EntityPlayer)targetEntity;
+                             ItemStack itemstack2 = this.getHeldItemMainhand();
+-                            ItemStack itemstack3 = entityplayer.func_184587_cr() ? entityplayer.func_184607_cu() : null;
++                            ItemStack itemstack3 = entityplayer.isUsingItem() ? entityplayer.func_184607_cu() : null;
+ 
+                             if (itemstack2 != null && itemstack3 != null && itemstack2.getItem() instanceof ItemAxe && itemstack3.getItem() == Items.shield)
+                             {
 @@ -2342,7 +2351,9 @@ public abstract class EntityPlayer extends EntityLivingBase
  
      public boolean isPushedByWater()
@@ -3025,6 +3360,45 @@ index 23d8999..7d93bbc 100644
      }
  
      public Scoreboard getWorldScoreboard()
+diff --git a/src/net/minecraft/entity/player/EntityPlayerMP.java b/src/net/minecraft/entity/player/EntityPlayerMP.java
+index a6a3dc2..fc8d954 100644
+--- a/src/net/minecraft/entity/player/EntityPlayerMP.java
++++ b/src/net/minecraft/entity/player/EntityPlayerMP.java
+@@ -1091,7 +1091,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
+      */
+     protected void onItemUseFinish()
+     {
+-        if (this.field_184627_bm != null && this.func_184587_cr())
++        if (this.itemInUse != null && this.isUsingItem())
+         {
+             this.playerNetServerHandler.sendPacket(new SPacketEntityStatus(this, (byte)9));
+             super.onItemUseFinish();
+diff --git a/src/net/minecraft/item/ItemBow.java b/src/net/minecraft/item/ItemBow.java
+index 59ad015..025f525 100644
+--- a/src/net/minecraft/item/ItemBow.java
++++ b/src/net/minecraft/item/ItemBow.java
+@@ -42,7 +42,7 @@ public class ItemBow extends Item
+         {
+             public float apply(ItemStack stack, World worldIn, EntityLivingBase entityIn)
+             {
+-                return entityIn != null && entityIn.func_184587_cr() && entityIn.func_184607_cu() == stack ? 1.0F : 0.0F;
++                return entityIn != null && entityIn.isUsingItem() && entityIn.func_184607_cu() == stack ? 1.0F : 0.0F;
+             }
+         });
+     }
+diff --git a/src/net/minecraft/item/ItemShield.java b/src/net/minecraft/item/ItemShield.java
+index b98ca23..f3e4bed 100644
+--- a/src/net/minecraft/item/ItemShield.java
++++ b/src/net/minecraft/item/ItemShield.java
+@@ -25,7 +25,7 @@ public class ItemShield extends Item
+         {
+             public float apply(ItemStack stack, World worldIn, EntityLivingBase entityIn)
+             {
+-                return entityIn != null && entityIn.func_184587_cr() && entityIn.func_184607_cu() == stack ? 1.0F : 0.0F;
++                return entityIn != null && entityIn.isUsingItem() && entityIn.func_184607_cu() == stack ? 1.0F : 0.0F;
+             }
+         });
+     }
 diff --git a/src/net/minecraft/network/NetworkManager.java b/src/net/minecraft/network/NetworkManager.java
 index 0d831b0..31ff3d6 100644
 --- a/src/net/minecraft/network/NetworkManager.java
@@ -3125,6 +3499,19 @@ index 3cba0d7..3243c19 100644
 +        return Minecraft.getMinecraft().currentScreen != null && Minecraft.getMinecraft().currentScreen instanceof GuiWurstMainMenu;
      }
  }
+diff --git a/src/net/minecraft/server/management/PlayerInteractionManager.java b/src/net/minecraft/server/management/PlayerInteractionManager.java
+index 178c78b..2390cfe 100644
+--- a/src/net/minecraft/server/management/PlayerInteractionManager.java
++++ b/src/net/minecraft/server/management/PlayerInteractionManager.java
+@@ -390,7 +390,7 @@ public class PlayerInteractionManager
+                     p_187250_1_.setHeldItem(p_187250_4_, (ItemStack)null);
+                 }
+ 
+-                if (!p_187250_1_.func_184587_cr())
++                if (!p_187250_1_.isUsingItem())
+                 {
+                     ((EntityPlayerMP)p_187250_1_).sendContainerToPlayer(p_187250_1_.inventoryContainer);
+                 }
 diff --git a/src/net/minecraft/tileentity/TileEntitySign.java b/src/net/minecraft/tileentity/TileEntitySign.java
 index f5cab9e..d422622 100644
 --- a/src/net/minecraft/tileentity/TileEntitySign.java
