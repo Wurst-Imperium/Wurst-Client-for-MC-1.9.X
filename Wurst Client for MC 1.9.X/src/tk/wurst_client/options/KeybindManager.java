@@ -15,7 +15,6 @@ public class KeybindManager extends TreeMap<String, String>
 	{
 		put("B", ".t fastbreak");
 		put("C", ".t fullbright");
-		put("F", ".t fastplace");
 		put("G", ".t flight");
 		put("GRAVE", ".t speednuker");
 		put("H", ".t /home");

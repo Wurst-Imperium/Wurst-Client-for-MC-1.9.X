@@ -15,16 +15,24 @@ import net.minecraft.util.EnumHand;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
+import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.navigator.settings.ModeSetting;
 
 @Info(category = Category.COMBAT,
 	description = "Automatically leaves the server when your health is low.\n"
 		+ "The Chars, TP and SelfHurt modes can bypass CombatLog and similar plugins.",
-	name = "AutoLeave")
+	name = "AutoLeave",
+	tutorial = "Mods/AutoLeave")
 public class AutoLeaveMod extends Mod implements UpdateListener
 {
 	private int mode = 0;
 	private String[] modes = new String[]{"Quit", "Chars", "TP", "SelfHurt"};
+	
+	@Override
+	public NavigatorItem[] getSeeAlso()
+	{
+		return new NavigatorItem[]{wurst.commands.leaveCmd};
+	}
 	
 	@Override
 	public String getRenderName()

@@ -107,29 +107,27 @@ public class ArenaBrawlMod extends Mod implements ChatInputListener,
 			double x = blockTarget[0];
 			double y = blockTarget[1];
 			double z = blockTarget[2];
-			RenderUtils.box(x, y, z, x + 1, y + 2, z + 1, new Color(255, 0, 0,
-				64));
+			RenderUtils.box(x, y, z, x + 1, y + 2, z + 1, 1F, 0F, 0F, 0.25F);
 		}else if(targetType == TargetType.BLOCK_F)
 		{
 			double x = blockTarget[0];
 			double y = blockTarget[1];
 			double z = blockTarget[2];
-			RenderUtils.box(x, y, z, x + 1, y + 2, z + 1, new Color(0, 255, 0,
-				64));
+			RenderUtils.box(x, y, z, x + 1, y + 2, z + 1, 0F, 1F, 0F, 0.25F);
 		}else if(targetType == TargetType.ENTITY_E && entityTarget != null)
 		{
 			double x = entityTarget.posX;
 			double y = entityTarget.posY;
 			double z = entityTarget.posZ;
 			RenderUtils.box(x - 0.35, y, z - 0.35, x + 0.35, y + 1.9, z + 0.35,
-				new Color(255, 0, 0, 64));
+				1F, 0F, 0F, 0.25F);
 		}else if(targetType == TargetType.ENTITY_F && entityTarget != null)
 		{
 			double x = entityTarget.posX;
 			double y = entityTarget.posY;
 			double z = entityTarget.posZ;
 			RenderUtils.box(x - 0.35, y, z - 0.35, x + 0.35, y + 1.9, z + 0.35,
-				new Color(0, 255, 0, 64));
+				0F, 1F, 0F, 0.25F);
 		}
 		if(EntityUtils.searchEntityByNameRaw(formatSBName(5)) != null)
 		{

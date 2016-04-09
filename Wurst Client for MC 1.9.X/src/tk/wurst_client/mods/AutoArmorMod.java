@@ -40,9 +40,7 @@ public class AutoArmorMod extends Mod implements UpdateListener
 		updateMS();
 		if(hasTimePassedM(3000))
 		{
-			bestArmor = new int[4];
-			for(int i = 0; i < bestArmor.length; i++)
-				bestArmor[i] = -1;
+			bestArmor = new int[]{-1, -1, -1, -1};
 			for(int i = 0; i < 36; i++)
 			{
 				ItemStack itemstack = mc.thePlayer.inventory.getStackInSlot(i);
@@ -50,8 +48,9 @@ public class AutoArmorMod extends Mod implements UpdateListener
 					&& itemstack.getItem() instanceof ItemArmor)
 				{
 					ItemArmor armor = (ItemArmor)itemstack.getItem();
-					if(armor.damageReduceAmount > bestArmor[3 - armor.armorType])
-						bestArmor[3 - armor.armorType] = i;
+					if(armor.damageReduceAmount > bestArmor[armor.armorType
+						.ordinal() - 2])
+						bestArmor[armor.armorType.ordinal() - 2] = i;
 				}
 			}
 			for(int i = 0; i < 4; i++)
@@ -79,10 +78,10 @@ public class AutoArmorMod extends Mod implements UpdateListener
 						|| currentArmor == null)
 					{
 						mc.playerController.windowClick(0, 8 - i, 0,
-							ClickType.PICKUP, mc.thePlayer);
+							ClickType.QUICK_MOVE, mc.thePlayer);
 						mc.playerController.windowClick(0,
 							this.bestArmor[i] < 9 ? 36 + this.bestArmor[i]
-								: this.bestArmor[i], 0, ClickType.PICKUP,
+								: this.bestArmor[i], 0, ClickType.QUICK_MOVE,
 							Minecraft.getMinecraft().thePlayer);
 					}
 			}

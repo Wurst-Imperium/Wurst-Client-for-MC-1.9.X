@@ -18,7 +18,9 @@ import tk.wurst_client.utils.BlockUtils;
 @Info(name = "AntiAFK",
 	description = "Walks around randomly to hide you from AFK detectors.\n"
 		+ "Needs 3x3 blocks of free space.",
-	category = Category.MISC)
+	category = Category.MISC,
+	tags = "AFKBot,anti afk,afk bot",
+	tutorial = "Mods/AntiAFK")
 public class AntiAfkMod extends Mod implements UpdateListener
 {
 	private BlockPos block;
