@@ -1,9 +1,10 @@
-From f42dad548b5f0ec2cf8102415630c11db00d392c Mon Sep 17 00:00:00 2001
+From 24d8f252d3f2f7584413074807d1df8dabf8b43a Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Wed, 6 Apr 2016 09:53:55 +0200
+Date: Mon, 11 Apr 2016 15:45:17 +0200
 Subject: [PATCH] Wurst
 
 ---
+ .gitignore                                         |   1 +
  src/net/minecraft/block/Block.java                 |  17 ++-
  src/net/minecraft/block/BlockCactus.java           |  11 +-
  src/net/minecraft/block/BlockLiquid.java           |  14 +-
@@ -18,7 +19,7 @@ Subject: [PATCH] Wurst
  src/net/minecraft/client/gui/GuiButton.java        |  16 +-
  src/net/minecraft/client/gui/GuiDisconnected.java  |  87 +++++++++++
  src/net/minecraft/client/gui/GuiGameOver.java      |  13 +-
- src/net/minecraft/client/gui/GuiIngame.java        |  23 ++-
+ src/net/minecraft/client/gui/GuiIngame.java        |  25 +++-
  src/net/minecraft/client/gui/GuiIngameMenu.java    |  50 ++++++-
  .../client/gui/GuiListWorldSelectionEntry.java     |   2 +-
  src/net/minecraft/client/gui/GuiMainMenu.java      |  20 ++-
@@ -41,6 +42,7 @@ Subject: [PATCH] Wurst
  .../client/network/NetworkPlayerInfo.java          |  10 ++
  .../client/renderer/BlockModelRenderer.java        |   8 +-
  .../minecraft/client/renderer/EntityRenderer.java  |  47 +++++-
+ .../client/renderer/InventoryEffectRenderer.java   |   2 +-
  .../minecraft/client/renderer/ItemRenderer.java    |   4 +-
  .../minecraft/client/renderer/RenderGlobal.java    |   2 +-
  .../minecraft/client/renderer/chunk/VisGraph.java  |   4 +-
@@ -51,20 +53,37 @@ Subject: [PATCH] Wurst
  src/net/minecraft/command/CommandEffect.java       |   2 +-
  src/net/minecraft/crash/CrashReport.java           |  56 ++++++-
  src/net/minecraft/entity/Entity.java               |  48 ++++--
- src/net/minecraft/entity/EntityLivingBase.java     |  76 ++++++----
+ .../minecraft/entity/EntityAreaEffectCloud.java    |   6 +-
+ src/net/minecraft/entity/EntityLivingBase.java     |  90 ++++++-----
  .../entity/ai/EntityAIAttackRangedBow.java         |   4 +-
  src/net/minecraft/entity/monster/EntityMob.java    |   2 +-
+ src/net/minecraft/entity/monster/EntitySpider.java |   2 +-
  src/net/minecraft/entity/monster/EntityZombie.java |   2 +-
  src/net/minecraft/entity/player/EntityPlayer.java  |  23 ++-
- .../minecraft/entity/player/EntityPlayerMP.java    |   2 +-
+ .../minecraft/entity/player/EntityPlayerMP.java    |   4 +-
+ .../minecraft/entity/projectile/EntityPotion.java  |   4 +-
+ .../entity/projectile/EntityTippedArrow.java       |   2 +-
  src/net/minecraft/item/ItemBow.java                |   2 +-
  src/net/minecraft/item/ItemShield.java             |   2 +-
  src/net/minecraft/network/NetworkManager.java      |  26 ++++
+ .../network/play/server/SPacketEntityEffect.java   |   2 +-
+ src/net/minecraft/potion/PotionEffect.java         |  26 ++--
+ src/net/minecraft/potion/PotionType.java           |   2 +-
+ src/net/minecraft/potion/PotionUtils.java          |   4 +-
  src/net/minecraft/realms/Realms.java               |   4 +-
  .../management/PlayerInteractionManager.java       |   2 +-
  src/net/minecraft/tileentity/TileEntitySign.java   |   2 +-
- 59 files changed, 1080 insertions(+), 233 deletions(-)
+ 69 files changed, 1115 insertions(+), 267 deletions(-)
 
+diff --git a/.gitignore b/.gitignore
+index eba4a99..e4f2785 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -2,3 +2,4 @@
+ /.settings
+ .classpath
+ .project
++/tmp
 diff --git a/src/net/minecraft/block/Block.java b/src/net/minecraft/block/Block.java
 index b386ea0..44bfcdc 100644
 --- a/src/net/minecraft/block/Block.java
@@ -888,7 +907,7 @@ index cdb4e57..82cb9ea 100644
  
      public int getButtonWidth()
 diff --git a/src/net/minecraft/client/gui/GuiDisconnected.java b/src/net/minecraft/client/gui/GuiDisconnected.java
-index 4a7f37e..a4a75f7 100644
+index 4a7f37e..c6d2061 100644
 --- a/src/net/minecraft/client/gui/GuiDisconnected.java
 +++ b/src/net/minecraft/client/gui/GuiDisconnected.java
 @@ -2,6 +2,11 @@ package net.minecraft.client.gui;
@@ -906,7 +925,7 @@ index 4a7f37e..a4a75f7 100644
 @@ -13,11 +18,20 @@ public class GuiDisconnected extends GuiScreen
      private final GuiScreen parentScreen;
      private int field_175353_i;
-     
+ 
 +    //TODO: Client
 +	private int autoReconnectTimer;
 +
@@ -1008,7 +1027,7 @@ index 4a7f37e..a4a75f7 100644
 +			servers.serverListSelector.setSelectedSlotIndex(-1);
 +			servers.serverListSelector.func_148195_a(servers.savedServerList);
 +			mc.displayGuiScreen(servers);
- 		}
+         }
      }
  
 diff --git a/src/net/minecraft/client/gui/GuiGameOver.java b/src/net/minecraft/client/gui/GuiGameOver.java
@@ -1057,7 +1076,7 @@ index 08d7720..0404908 100644
      }
  }
 diff --git a/src/net/minecraft/client/gui/GuiIngame.java b/src/net/minecraft/client/gui/GuiIngame.java
-index 8c38552..6f0e7c2 100644
+index 8c38552..269a8c3 100644
 --- a/src/net/minecraft/client/gui/GuiIngame.java
 +++ b/src/net/minecraft/client/gui/GuiIngame.java
 @@ -4,9 +4,14 @@ import com.google.common.base.Predicate;
@@ -1092,6 +1111,15 @@ index 8c38552..6f0e7c2 100644
  
          GlStateManager.enableBlend();
          GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+@@ -446,7 +455,7 @@ public class GuiIngame extends Gui
+ 
+             for (PotionEffect potioneffect : Ordering.natural().reverse().sortedCopy(collection))
+             {
+-                Potion potion = potioneffect.func_188419_a();
++                Potion potion = potioneffect.getPotion();
+ 
+                 if (potion.hasStatusIcon() && potioneffect.func_188418_e())
+                 {
 @@ -728,11 +737,18 @@ public class GuiIngame extends Gui
          int l1 = scaledRes.getScaledWidth() - i - k1;
          int j = 0;
@@ -1122,7 +1150,7 @@ index 8c38552..6f0e7c2 100644
  
      private void renderPlayerStats(ScaledResolution scaledRes)
 diff --git a/src/net/minecraft/client/gui/GuiIngameMenu.java b/src/net/minecraft/client/gui/GuiIngameMenu.java
-index b93bf8a..553ddd2 100644
+index b93bf8a..a3e642a 100644
 --- a/src/net/minecraft/client/gui/GuiIngameMenu.java
 +++ b/src/net/minecraft/client/gui/GuiIngameMenu.java
 @@ -1,17 +1,34 @@
@@ -1152,7 +1180,7 @@ index b93bf8a..553ddd2 100644
  {
      private int field_146445_a;
      private int field_146444_f;
-     
+ 
 +	// TODO: Client
 +	private static final ResourceLocation wurstTextures = new ResourceLocation(
 +		"wurst/wurst_128.png");
@@ -1656,7 +1684,7 @@ index b43a7c5..f5ca79d 100644
          logger.info("[CHAT] " + field_184062_f.join(field_184061_a.split(chatComponent.getUnformattedText())));
      }
 diff --git a/src/net/minecraft/client/gui/GuiScreenBook.java b/src/net/minecraft/client/gui/GuiScreenBook.java
-index 884aeb0..6aa6df0 100644
+index 884aeb0..236a335 100644
 --- a/src/net/minecraft/client/gui/GuiScreenBook.java
 +++ b/src/net/minecraft/client/gui/GuiScreenBook.java
 @@ -1,10 +1,10 @@
@@ -1793,7 +1821,7 @@ index 884aeb0..6aa6df0 100644
 +		}
 +	}
 +
- 	private void addNewPage()
+     private void addNewPage()
      {
          if (this.bookPages != null && this.bookPages.tagCount() < 50)
 diff --git a/src/net/minecraft/client/gui/GuiScreenOptionsSounds.java b/src/net/minecraft/client/gui/GuiScreenOptionsSounds.java
@@ -2222,7 +2250,7 @@ index b14a4e1..3dccc01 100644
                  this.mc.displayGuiScreen((GuiScreen)null);
              }
 diff --git a/src/net/minecraft/client/multiplayer/PlayerControllerMP.java b/src/net/minecraft/client/multiplayer/PlayerControllerMP.java
-index a54fc8f..e3255c1 100644
+index a54fc8f..d7cfc8e 100644
 --- a/src/net/minecraft/client/multiplayer/PlayerControllerMP.java
 +++ b/src/net/minecraft/client/multiplayer/PlayerControllerMP.java
 @@ -1,5 +1,7 @@
@@ -2347,7 +2375,7 @@ index a54fc8f..e3255c1 100644
 +						.addToSendQueue(new CPacketPlayerDigging(
 +							CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK,
 +							posBlock, directionFacing));
- 				}
+                 }
  
                  this.mc.theWorld.sendBlockBreakProgress(this.mc.thePlayer.getEntityId(), this.currentBlock, (int)(this.curBlockDamageMP * 10.0F) - 1);
 @@ -468,7 +487,7 @@ public class PlayerControllerMP
@@ -2472,7 +2500,7 @@ index 628f4dd..92dc601 100644
              this.renderQuadsSmooth(worldIn, stateIn, posIn, buffer, list1, afloat, bitset, blockmodelrenderer$ambientocclusionface);
              flag = true;
 diff --git a/src/net/minecraft/client/renderer/EntityRenderer.java b/src/net/minecraft/client/renderer/EntityRenderer.java
-index e8fdae5..791db14 100644
+index e8fdae5..13503fb 100644
 --- a/src/net/minecraft/client/renderer/EntityRenderer.java
 +++ b/src/net/minecraft/client/renderer/EntityRenderer.java
 @@ -3,6 +3,7 @@ package net.minecraft.client.renderer;
@@ -2581,7 +2609,7 @@ index e8fdae5..791db14 100644
 +        
 +		// TODO: Client
 +		if(!WurstClient.INSTANCE.mods.caveFinderMod.isActive())
- 			GlStateManager.enableDepth();
+         GlStateManager.enableDepth();
 +		
          GlStateManager.enableAlpha();
          GlStateManager.alphaFunc(516, 0.5F);
@@ -2623,6 +2651,19 @@ index e8fdae5..791db14 100644
          {
              float f1 = 5.0F;
              int i = ((EntityLivingBase)entity).getActivePotionEffect(MobEffects.blindness).getDuration();
+diff --git a/src/net/minecraft/client/renderer/InventoryEffectRenderer.java b/src/net/minecraft/client/renderer/InventoryEffectRenderer.java
+index a6221d7..d45b658 100644
+--- a/src/net/minecraft/client/renderer/InventoryEffectRenderer.java
++++ b/src/net/minecraft/client/renderer/InventoryEffectRenderer.java
+@@ -78,7 +78,7 @@ public abstract class InventoryEffectRenderer extends GuiContainer
+ 
+             for (PotionEffect potioneffect : Ordering.natural().sortedCopy(collection))
+             {
+-                Potion potion = potioneffect.func_188419_a();
++                Potion potion = potioneffect.getPotion();
+                 GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+                 this.mc.getTextureManager().bindTexture(inventoryBackground);
+                 this.drawTexturedModalRect(i, j, 0, 166, 140, 32);
 diff --git a/src/net/minecraft/client/renderer/ItemRenderer.java b/src/net/minecraft/client/renderer/ItemRenderer.java
 index 4b843db..dbd2679 100644
 --- a/src/net/minecraft/client/renderer/ItemRenderer.java
@@ -3015,8 +3056,33 @@ index 85a68a2..3268834 100644
      }
  
      public void handleStatusUpdate(byte id)
+diff --git a/src/net/minecraft/entity/EntityAreaEffectCloud.java b/src/net/minecraft/entity/EntityAreaEffectCloud.java
+index 0e4a8e5..2bd1e64 100644
+--- a/src/net/minecraft/entity/EntityAreaEffectCloud.java
++++ b/src/net/minecraft/entity/EntityAreaEffectCloud.java
+@@ -276,7 +276,7 @@ public class EntityAreaEffectCloud extends Entity
+ 
+                 for (PotionEffect potioneffect1 : this.field_184502_e.getEffects())
+                 {
+-                    potions.add(new PotionEffect(potioneffect1.func_188419_a(), potioneffect1.getDuration() / 4, potioneffect1.getAmplifier(), potioneffect1.getIsAmbient(), potioneffect1.func_188418_e()));
++                    potions.add(new PotionEffect(potioneffect1.getPotion(), potioneffect1.getDuration() / 4, potioneffect1.getAmplifier(), potioneffect1.getIsAmbient(), potioneffect1.func_188418_e()));
+                 }
+ 
+                 potions.addAll(this.field_184503_f);
+@@ -305,9 +305,9 @@ public class EntityAreaEffectCloud extends Entity
+ 
+                                     for (PotionEffect potioneffect : potions)
+                                     {
+-                                        if (potioneffect.func_188419_a().isInstant())
++                                        if (potioneffect.getPotion().isInstant())
+                                         {
+-                                            potioneffect.func_188419_a().affectEntity(this, this.func_184494_w(), entitylivingbase, potioneffect.getAmplifier(), 0.5D);
++                                            potioneffect.getPotion().affectEntity(this, this.func_184494_w(), entitylivingbase, potioneffect.getAmplifier(), 0.5D);
+                                         }
+                                         else
+                                         {
 diff --git a/src/net/minecraft/entity/EntityLivingBase.java b/src/net/minecraft/entity/EntityLivingBase.java
-index d1580a1..b87c535 100644
+index d1580a1..7ac54a0 100644
 --- a/src/net/minecraft/entity/EntityLivingBase.java
 +++ b/src/net/minecraft/entity/EntityLivingBase.java
 @@ -2,12 +2,16 @@ package net.minecraft.entity;
@@ -3045,6 +3111,38 @@ index d1580a1..b87c535 100644
      protected int field_184628_bn;
      protected int field_184629_bo;
      private BlockPos field_184620_bC;
+@@ -632,7 +636,7 @@ public abstract class EntityLivingBase extends Entity
+ 
+                 if (potioneffect != null)
+                 {
+-                    this.activePotionsMap.put(potioneffect.func_188419_a(), potioneffect);
++                    this.activePotionsMap.put(potioneffect.getPotion(), potioneffect);
+                 }
+             }
+         }
+@@ -798,11 +802,11 @@ public abstract class EntityLivingBase extends Entity
+     {
+         if (this.isPotionApplicable(potioneffectIn))
+         {
+-            PotionEffect potioneffect = (PotionEffect)this.activePotionsMap.get(potioneffectIn.func_188419_a());
++            PotionEffect potioneffect = (PotionEffect)this.activePotionsMap.get(potioneffectIn.getPotion());
+ 
+             if (potioneffect == null)
+             {
+-                this.activePotionsMap.put(potioneffectIn.func_188419_a(), potioneffectIn);
++                this.activePotionsMap.put(potioneffectIn.getPotion(), potioneffectIn);
+                 this.onNewPotionEffect(potioneffectIn);
+             }
+             else
+@@ -817,7 +821,7 @@ public abstract class EntityLivingBase extends Entity
+     {
+         if (this.getCreatureAttribute() == EnumCreatureAttribute.UNDEAD)
+         {
+-            Potion potion = potioneffectIn.func_188419_a();
++            Potion potion = potioneffectIn.getPotion();
+ 
+             if (potion == MobEffects.regeneration || potion == MobEffects.poison)
+             {
 @@ -836,14 +840,14 @@ public abstract class EntityLivingBase extends Entity
          return this.getCreatureAttribute() == EnumCreatureAttribute.UNDEAD;
      }
@@ -3063,6 +3161,33 @@ index d1580a1..b87c535 100644
  
          if (potioneffect != null)
          {
+@@ -857,7 +861,7 @@ public abstract class EntityLivingBase extends Entity
+ 
+         if (!this.worldObj.isRemote)
+         {
+-            id.func_188419_a().applyAttributesModifiersToEntity(this, this.getAttributeMap(), id.getAmplifier());
++            id.getPotion().applyAttributesModifiersToEntity(this, this.getAttributeMap(), id.getAmplifier());
+         }
+     }
+ 
+@@ -867,7 +871,7 @@ public abstract class EntityLivingBase extends Entity
+ 
+         if (p_70695_2_ && !this.worldObj.isRemote)
+         {
+-            Potion potion = id.func_188419_a();
++            Potion potion = id.getPotion();
+             potion.removeAttributesModifiersFromEntity(this, this.getAttributeMap(), id.getAmplifier());
+             potion.applyAttributesModifiersToEntity(this, this.getAttributeMap(), id.getAmplifier());
+         }
+@@ -879,7 +883,7 @@ public abstract class EntityLivingBase extends Entity
+ 
+         if (!this.worldObj.isRemote)
+         {
+-            effect.func_188419_a().removeAttributesModifiersFromEntity(this, this.getAttributeMap(), effect.getAmplifier());
++            effect.getPotion().removeAttributesModifiersFromEntity(this, this.getAttributeMap(), effect.getAmplifier());
+         }
+     }
+ 
 @@ -1761,7 +1765,12 @@ public abstract class EntityLivingBase extends Entity
       */
      protected void jump()
@@ -3087,7 +3212,7 @@ index d1580a1..b87c535 100644
 +				|| WurstClient.INSTANCE.mods.noSlowdownMod.isActive()
 +				|| this instanceof EntityPlayer
 +				&& ((EntityPlayer)this).capabilities.isFlying)
- 			{
+             {
 +            	
                  if (!this.isInLava() || this instanceof EntityPlayer && ((EntityPlayer)this).capabilities.isFlying)
                  {
@@ -3266,6 +3391,19 @@ index f54bf34..cb986d9 100644
  
                  if (itemstack != null && itemstack1 != null && itemstack.getItem() instanceof ItemAxe && itemstack1.getItem() == Items.shield)
                  {
+diff --git a/src/net/minecraft/entity/monster/EntitySpider.java b/src/net/minecraft/entity/monster/EntitySpider.java
+index da8b120..e4e3531 100644
+--- a/src/net/minecraft/entity/monster/EntitySpider.java
++++ b/src/net/minecraft/entity/monster/EntitySpider.java
+@@ -147,7 +147,7 @@ public class EntitySpider extends EntityMob
+ 
+     public boolean isPotionApplicable(PotionEffect potioneffectIn)
+     {
+-        return potioneffectIn.func_188419_a() == MobEffects.poison ? false : super.isPotionApplicable(potioneffectIn);
++        return potioneffectIn.getPotion() == MobEffects.poison ? false : super.isPotionApplicable(potioneffectIn);
+     }
+ 
+     /**
 diff --git a/src/net/minecraft/entity/monster/EntityZombie.java b/src/net/minecraft/entity/monster/EntityZombie.java
 index a65657e..9d9e562 100644
 --- a/src/net/minecraft/entity/monster/EntityZombie.java
@@ -3361,7 +3499,7 @@ index 23d8999..542b3e6 100644
  
      public Scoreboard getWorldScoreboard()
 diff --git a/src/net/minecraft/entity/player/EntityPlayerMP.java b/src/net/minecraft/entity/player/EntityPlayerMP.java
-index a6a3dc2..fc8d954 100644
+index a6a3dc2..d6631a0 100644
 --- a/src/net/minecraft/entity/player/EntityPlayerMP.java
 +++ b/src/net/minecraft/entity/player/EntityPlayerMP.java
 @@ -1091,7 +1091,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
@@ -3373,6 +3511,50 @@ index a6a3dc2..fc8d954 100644
          {
              this.playerNetServerHandler.sendPacket(new SPacketEntityStatus(this, (byte)9));
              super.onItemUseFinish();
+@@ -1126,7 +1126,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
+     protected void onFinishedPotionEffect(PotionEffect effect)
+     {
+         super.onFinishedPotionEffect(effect);
+-        this.playerNetServerHandler.sendPacket(new SPacketRemoveEntityEffect(this.getEntityId(), effect.func_188419_a()));
++        this.playerNetServerHandler.sendPacket(new SPacketRemoveEntityEffect(this.getEntityId(), effect.getPotion()));
+     }
+ 
+     /**
+diff --git a/src/net/minecraft/entity/projectile/EntityPotion.java b/src/net/minecraft/entity/projectile/EntityPotion.java
+index 1d5b680..52497f5 100644
+--- a/src/net/minecraft/entity/projectile/EntityPotion.java
++++ b/src/net/minecraft/entity/projectile/EntityPotion.java
+@@ -129,7 +129,7 @@ public class EntityPotion extends EntityThrowable
+ 
+                         for (PotionEffect potioneffect : PotionUtils.func_185190_b(itemstack))
+                         {
+-                            entityareaeffectcloud.func_184496_a(new PotionEffect(potioneffect.func_188419_a(), potioneffect.getDuration(), potioneffect.getAmplifier()));
++                            entityareaeffectcloud.func_184496_a(new PotionEffect(potioneffect.getPotion(), potioneffect.getDuration(), potioneffect.getAmplifier()));
+                         }
+ 
+                         this.worldObj.spawnEntityInWorld(entityareaeffectcloud);
+@@ -158,7 +158,7 @@ public class EntityPotion extends EntityThrowable
+ 
+                                         for (PotionEffect potioneffect1 : list)
+                                         {
+-                                            Potion potion = potioneffect1.func_188419_a();
++                                            Potion potion = potioneffect1.getPotion();
+ 
+                                             if (potion.isInstant())
+                                             {
+diff --git a/src/net/minecraft/entity/projectile/EntityTippedArrow.java b/src/net/minecraft/entity/projectile/EntityTippedArrow.java
+index cae123a..25014cd 100644
+--- a/src/net/minecraft/entity/projectile/EntityTippedArrow.java
++++ b/src/net/minecraft/entity/projectile/EntityTippedArrow.java
+@@ -183,7 +183,7 @@ public class EntityTippedArrow extends EntityArrow
+ 
+         for (PotionEffect potioneffect : this.field_184560_g.getEffects())
+         {
+-            p_184548_1_.addPotionEffect(new PotionEffect(potioneffect.func_188419_a(), potioneffect.getDuration() / 8, potioneffect.getAmplifier(), potioneffect.getIsAmbient(), potioneffect.func_188418_e()));
++            p_184548_1_.addPotionEffect(new PotionEffect(potioneffect.getPotion(), potioneffect.getDuration() / 8, potioneffect.getAmplifier(), potioneffect.getIsAmbient(), potioneffect.func_188418_e()));
+         }
+ 
+         if (!this.field_184561_h.isEmpty())
 diff --git a/src/net/minecraft/item/ItemBow.java b/src/net/minecraft/item/ItemBow.java
 index 59ad015..025f525 100644
 --- a/src/net/minecraft/item/ItemBow.java
@@ -3400,7 +3582,7 @@ index b98ca23..f3e4bed 100644
          });
      }
 diff --git a/src/net/minecraft/network/NetworkManager.java b/src/net/minecraft/network/NetworkManager.java
-index 0d831b0..31ff3d6 100644
+index 0d831b0..0f7f0de 100644
 --- a/src/net/minecraft/network/NetworkManager.java
 +++ b/src/net/minecraft/network/NetworkManager.java
 @@ -2,6 +2,7 @@ package net.minecraft.network;
@@ -3462,7 +3644,7 @@ index 0d831b0..31ff3d6 100644
 +						+ "You are using a §ocracked§r alt on a §opremium§r server."
 +						+ "\n§cDon't do that!");
 +			
- 		}
+         }
          else
          {
 @@ -147,6 +167,12 @@ public class NetworkManager extends SimpleChannelInboundHandler < Packet<? >>
@@ -3478,6 +3660,164 @@ index 0d831b0..31ff3d6 100644
              try
              {
                  ((Packet<INetHandler>)p_channelRead0_2_).processPacket(this.packetListener);
+diff --git a/src/net/minecraft/network/play/server/SPacketEntityEffect.java b/src/net/minecraft/network/play/server/SPacketEntityEffect.java
+index d15a596..bf98ab1 100644
+--- a/src/net/minecraft/network/play/server/SPacketEntityEffect.java
++++ b/src/net/minecraft/network/play/server/SPacketEntityEffect.java
+@@ -22,7 +22,7 @@ public class SPacketEntityEffect implements Packet<INetHandlerPlayClient>
+     public SPacketEntityEffect(int entityIdIn, PotionEffect effect)
+     {
+         this.entityId = entityIdIn;
+-        this.effectId = (byte)(Potion.getIdFromPotion(effect.func_188419_a()) & 255);
++        this.effectId = (byte)(Potion.getIdFromPotion(effect.getPotion()) & 255);
+         this.amplifier = (byte)(effect.getAmplifier() & 255);
+ 
+         if (effect.getDuration() > 32767)
+diff --git a/src/net/minecraft/potion/PotionEffect.java b/src/net/minecraft/potion/PotionEffect.java
+index 72152cb..3f7253d 100644
+--- a/src/net/minecraft/potion/PotionEffect.java
++++ b/src/net/minecraft/potion/PotionEffect.java
+@@ -9,7 +9,7 @@ import org.apache.logging.log4j.Logger;
+ public class PotionEffect implements Comparable<PotionEffect>
+ {
+     private static final Logger LOGGER = LogManager.getLogger();
+-    private final Potion field_188420_b;
++    private final Potion potion;
+ 
+     /** The duration of the potion effect */
+     private int duration;
+@@ -44,7 +44,7 @@ public class PotionEffect implements Comparable<PotionEffect>
+ 
+     public PotionEffect(Potion p_i46814_1_, int p_i46814_2_, int p_i46814_3_, boolean p_i46814_4_, boolean p_i46814_5_)
+     {
+-        this.field_188420_b = p_i46814_1_;
++        this.potion = p_i46814_1_;
+         this.duration = p_i46814_2_;
+         this.amplifier = p_i46814_3_;
+         this.isAmbient = p_i46814_4_;
+@@ -53,7 +53,7 @@ public class PotionEffect implements Comparable<PotionEffect>
+ 
+     public PotionEffect(PotionEffect other)
+     {
+-        this.field_188420_b = other.field_188420_b;
++        this.potion = other.potion;
+         this.duration = other.duration;
+         this.amplifier = other.amplifier;
+         this.isAmbient = other.isAmbient;
+@@ -66,7 +66,7 @@ public class PotionEffect implements Comparable<PotionEffect>
+      */
+     public void combine(PotionEffect other)
+     {
+-        if (this.field_188420_b != other.field_188420_b)
++        if (this.potion != other.potion)
+         {
+             LOGGER.warn("This method should only be called for matching effects!");
+         }
+@@ -88,9 +88,9 @@ public class PotionEffect implements Comparable<PotionEffect>
+         this.field_188421_h = other.field_188421_h;
+     }
+ 
+-    public Potion func_188419_a()
++    public Potion getPotion()
+     {
+-        return this.field_188420_b;
++        return this.potion;
+     }
+ 
+     public int getDuration()
+@@ -120,7 +120,7 @@ public class PotionEffect implements Comparable<PotionEffect>
+     {
+         if (this.duration > 0)
+         {
+-            if (this.field_188420_b.isReady(this.duration, this.amplifier))
++            if (this.potion.isReady(this.duration, this.amplifier))
+             {
+                 this.performEffect(entityIn);
+             }
+@@ -140,13 +140,13 @@ public class PotionEffect implements Comparable<PotionEffect>
+     {
+         if (this.duration > 0)
+         {
+-            this.field_188420_b.performEffect(entityIn, this.amplifier);
++            this.potion.performEffect(entityIn, this.amplifier);
+         }
+     }
+ 
+     public String getEffectName()
+     {
+-        return this.field_188420_b.getName();
++        return this.potion.getName();
+     }
+ 
+     public String toString()
+@@ -188,13 +188,13 @@ public class PotionEffect implements Comparable<PotionEffect>
+         else
+         {
+             PotionEffect potioneffect = (PotionEffect)p_equals_1_;
+-            return this.duration == potioneffect.duration && this.amplifier == potioneffect.amplifier && this.isSplashPotion == potioneffect.isSplashPotion && this.isAmbient == potioneffect.isAmbient && this.field_188420_b.equals(potioneffect.field_188420_b);
++            return this.duration == potioneffect.duration && this.amplifier == potioneffect.amplifier && this.isSplashPotion == potioneffect.isSplashPotion && this.isAmbient == potioneffect.isAmbient && this.potion.equals(potioneffect.potion);
+         }
+     }
+ 
+     public int hashCode()
+     {
+-        int i = this.field_188420_b.hashCode();
++        int i = this.potion.hashCode();
+         i = 31 * i + this.duration;
+         i = 31 * i + this.amplifier;
+         i = 31 * i + (this.isSplashPotion ? 1 : 0);
+@@ -207,7 +207,7 @@ public class PotionEffect implements Comparable<PotionEffect>
+      */
+     public NBTTagCompound writeCustomPotionEffectToNBT(NBTTagCompound nbt)
+     {
+-        nbt.setByte("Id", (byte)Potion.getIdFromPotion(this.func_188419_a()));
++        nbt.setByte("Id", (byte)Potion.getIdFromPotion(this.getPotion()));
+         nbt.setByte("Amplifier", (byte)this.getAmplifier());
+         nbt.setInteger("Duration", this.getDuration());
+         nbt.setBoolean("Ambient", this.getIsAmbient());
+@@ -259,6 +259,6 @@ public class PotionEffect implements Comparable<PotionEffect>
+     public int compareTo(PotionEffect p_compareTo_1_)
+     {
+         int i = 32147;
+-        return (this.getDuration() <= 32147 || p_compareTo_1_.getDuration() <= 32147) && (!this.getIsAmbient() || !p_compareTo_1_.getIsAmbient()) ? ComparisonChain.start().compare(Boolean.valueOf(this.getIsAmbient()), Boolean.valueOf(p_compareTo_1_.getIsAmbient())).compare(this.getDuration(), p_compareTo_1_.getDuration()).compare(this.func_188419_a().getLiquidColor(), p_compareTo_1_.func_188419_a().getLiquidColor()).result() : ComparisonChain.start().compare(Boolean.valueOf(this.getIsAmbient()), Boolean.valueOf(p_compareTo_1_.getIsAmbient())).compare(this.func_188419_a().getLiquidColor(), p_compareTo_1_.func_188419_a().getLiquidColor()).result();
++        return (this.getDuration() <= 32147 || p_compareTo_1_.getDuration() <= 32147) && (!this.getIsAmbient() || !p_compareTo_1_.getIsAmbient()) ? ComparisonChain.start().compare(Boolean.valueOf(this.getIsAmbient()), Boolean.valueOf(p_compareTo_1_.getIsAmbient())).compare(this.getDuration(), p_compareTo_1_.getDuration()).compare(this.getPotion().getLiquidColor(), p_compareTo_1_.getPotion().getLiquidColor()).result() : ComparisonChain.start().compare(Boolean.valueOf(this.getIsAmbient()), Boolean.valueOf(p_compareTo_1_.getIsAmbient())).compare(this.getPotion().getLiquidColor(), p_compareTo_1_.getPotion().getLiquidColor()).result();
+     }
+ }
+diff --git a/src/net/minecraft/potion/PotionType.java b/src/net/minecraft/potion/PotionType.java
+index 1e14085..9852929 100644
+--- a/src/net/minecraft/potion/PotionType.java
++++ b/src/net/minecraft/potion/PotionType.java
+@@ -103,7 +103,7 @@ public class PotionType
+         {
+             for (PotionEffect potioneffect : this.effects)
+             {
+-                if (potioneffect.func_188419_a().isInstant())
++                if (potioneffect.getPotion().isInstant())
+                 {
+                     return true;
+                 }
+diff --git a/src/net/minecraft/potion/PotionUtils.java b/src/net/minecraft/potion/PotionUtils.java
+index 0d35fb3..ec99258 100644
+--- a/src/net/minecraft/potion/PotionUtils.java
++++ b/src/net/minecraft/potion/PotionUtils.java
+@@ -95,7 +95,7 @@ public class PotionUtils
+             {
+                 if (potioneffect.func_188418_e())
+                 {
+-                    int k = potioneffect.func_188419_a().getLiquidColor();
++                    int k = potioneffect.getPotion().getLiquidColor();
+                     int l = potioneffect.getAmplifier() + 1;
+                     f += (float)(l * (k >> 16 & 255)) / 255.0F;
+                     f1 += (float)(l * (k >> 8 & 255)) / 255.0F;
+@@ -179,7 +179,7 @@ public class PotionUtils
+             for (PotionEffect potioneffect : list)
+             {
+                 String s1 = I18n.translateToLocal(potioneffect.getEffectName()).trim();
+-                Potion potion = potioneffect.func_188419_a();
++                Potion potion = potioneffect.getPotion();
+                 Map<IAttribute, AttributeModifier> map = potion.getAttributeModifierMap();
+ 
+                 if (!map.isEmpty())
 diff --git a/src/net/minecraft/realms/Realms.java b/src/net/minecraft/realms/Realms.java
 index 3cba0d7..3243c19 100644
 --- a/src/net/minecraft/realms/Realms.java
