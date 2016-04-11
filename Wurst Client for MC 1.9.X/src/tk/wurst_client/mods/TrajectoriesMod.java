@@ -143,13 +143,13 @@ public class TrajectoriesMod extends Mod implements RenderListener
 				- renderManager.renderPosY, arrowPosZ
 				- renderManager.renderPosZ);
 			
-			arrowPosX += arrowMotionX;
-			arrowPosY += arrowMotionY;
-			arrowPosZ += arrowMotionZ;
-			arrowMotionX *= 0.99D;
-			arrowMotionY *= 0.99D;
-			arrowMotionZ *= 0.99D;
-			arrowMotionY -= gravity;
+			arrowPosX += arrowMotionX * 0.1;
+			arrowPosY += arrowMotionY * 0.1;
+			arrowPosZ += arrowMotionZ * 0.1;
+			arrowMotionX *= 0.999D;
+			arrowMotionY *= 0.999D;
+			arrowMotionZ *= 0.999D;
+			arrowMotionY -= gravity * 0.1;
 			
 			if(mc.theWorld.rayTraceBlocks(playerVector, new Vec3d(arrowPosX,
 				arrowPosY, arrowPosZ)) != null)
