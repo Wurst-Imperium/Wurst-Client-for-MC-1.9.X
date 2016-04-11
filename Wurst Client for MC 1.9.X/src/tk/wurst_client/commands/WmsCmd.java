@@ -21,7 +21,7 @@ public class WmsCmd extends Cmd
 			syntaxError();
 		if(args[0].equalsIgnoreCase("on") || args[0].equalsIgnoreCase("off"))
 			wurst.chat.setEnabled(args[0].equalsIgnoreCase("on"));
-		else if(args[0].equalsIgnoreCase("echo") && args.length == 2)
+		else if(args[0].equalsIgnoreCase("echo") && args.length >= 2)
 		{
 			String message = args[1];
 			for(int i = 2; i < args.length; i++)
