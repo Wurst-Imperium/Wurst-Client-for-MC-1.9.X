@@ -56,7 +56,8 @@ public class TrajectoriesMod extends Mod implements RenderListener
 		// check if item is throwable
 		Item item = stack.getItem();
 		if(!(item instanceof ItemBow || item instanceof ItemSnowball
-			|| item instanceof ItemEgg || item instanceof ItemEnderPearl || item instanceof ItemSplashPotion))
+			|| item instanceof ItemEgg || item instanceof ItemEnderPearl
+			|| item instanceof ItemSplashPotion || item instanceof ItemLingeringPotion))
 			return;
 		
 		boolean usingBow =
