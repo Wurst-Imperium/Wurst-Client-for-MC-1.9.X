@@ -1,10 +1,9 @@
-From 1c84ebb9fa22794a9494f80ebefb686c86b85ab7 Mon Sep 17 00:00:00 2001
+From 8173cbb31fb7c07eb9f81386a1914571b841ca37 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Mon, 11 Apr 2016 16:10:57 +0200
+Date: Tue, 12 Apr 2016 06:37:38 +0200
 Subject: [PATCH] Wurst
 
 ---
- .gitignore                                         |   1 +
  src/net/minecraft/block/Block.java                 |  17 ++-
  src/net/minecraft/block/BlockCactus.java           |  11 +-
  src/net/minecraft/block/BlockLiquid.java           |  14 +-
@@ -41,7 +40,7 @@ Subject: [PATCH] Wurst
  .../client/network/NetHandlerPlayClient.java       |   6 +-
  .../client/network/NetworkPlayerInfo.java          |  10 ++
  .../client/renderer/BlockModelRenderer.java        |   8 +-
- .../minecraft/client/renderer/EntityRenderer.java  |  48 +++++-
+ .../minecraft/client/renderer/EntityRenderer.java  |  47 +++++-
  .../client/renderer/InventoryEffectRenderer.java   |   2 +-
  .../minecraft/client/renderer/ItemRenderer.java    |   4 +-
  .../minecraft/client/renderer/RenderGlobal.java    |   2 +-
@@ -73,17 +72,8 @@ Subject: [PATCH] Wurst
  src/net/minecraft/realms/Realms.java               |   4 +-
  .../management/PlayerInteractionManager.java       |   2 +-
  src/net/minecraft/tileentity/TileEntitySign.java   |   2 +-
- 69 files changed, 1116 insertions(+), 267 deletions(-)
+ 68 files changed, 1114 insertions(+), 267 deletions(-)
 
-diff --git a/.gitignore b/.gitignore
-index eba4a99..e4f2785 100644
---- a/.gitignore
-+++ b/.gitignore
-@@ -2,3 +2,4 @@
- /.settings
- .classpath
- .project
-+/tmp
 diff --git a/src/net/minecraft/block/Block.java b/src/net/minecraft/block/Block.java
 index b386ea0..44bfcdc 100644
 --- a/src/net/minecraft/block/Block.java
@@ -2500,7 +2490,7 @@ index 628f4dd..92dc601 100644
              this.renderQuadsSmooth(worldIn, stateIn, posIn, buffer, list1, afloat, bitset, blockmodelrenderer$ambientocclusionface);
              flag = true;
 diff --git a/src/net/minecraft/client/renderer/EntityRenderer.java b/src/net/minecraft/client/renderer/EntityRenderer.java
-index e8fdae5..114ca22 100644
+index e8fdae5..13503fb 100644
 --- a/src/net/minecraft/client/renderer/EntityRenderer.java
 +++ b/src/net/minecraft/client/renderer/EntityRenderer.java
 @@ -3,6 +3,7 @@ package net.minecraft.client.renderer;
@@ -2582,15 +2572,14 @@ index e8fdae5..114ca22 100644
                  f = f * (this.fovModifierHandPrev + (this.fovModifierHand - this.fovModifierHandPrev) * partialTicks);
              }
  
-@@ -751,14 +764,18 @@ public class EntityRenderer implements IResourceManagerReloadListener
+@@ -751,14 +764,17 @@ public class EntityRenderer implements IResourceManagerReloadListener
  
          this.hurtCameraEffect(partialTicks);
  
 -        if (this.mc.gameSettings.viewBobbing)
 +		// TODO: Client
 +		if(this.mc.gameSettings.viewBobbing
-+			&& !WurstClient.INSTANCE.mods.tracersMod.isActive()
-+			&& !WurstClient.INSTANCE.mods.trajectoriesMod.isActive())
++			&& !WurstClient.INSTANCE.mods.tracersMod.isActive())
          {
              this.setupViewBobbing(partialTicks);
          }
@@ -2603,7 +2592,7 @@ index e8fdae5..114ca22 100644
          {
              int i = 20;
  
-@@ -1293,7 +1310,11 @@ public class EntityRenderer implements IResourceManagerReloadListener
+@@ -1293,7 +1309,11 @@ public class EntityRenderer implements IResourceManagerReloadListener
          }
  
          this.getMouseOver(partialTicks);
@@ -2615,7 +2604,7 @@ index e8fdae5..114ca22 100644
          GlStateManager.enableAlpha();
          GlStateManager.alphaFunc(516, 0.5F);
          this.mc.mcProfiler.startSection("center");
-@@ -1463,6 +1484,10 @@ public class EntityRenderer implements IResourceManagerReloadListener
+@@ -1463,6 +1483,10 @@ public class EntityRenderer implements IResourceManagerReloadListener
  
          this.mc.mcProfiler.endStartSection("hand");
  
@@ -2626,7 +2615,7 @@ index e8fdae5..114ca22 100644
          if (this.renderHand)
          {
              GlStateManager.clear(256);
-@@ -1847,8 +1872,12 @@ public class EntityRenderer implements IResourceManagerReloadListener
+@@ -1847,8 +1871,12 @@ public class EntityRenderer implements IResourceManagerReloadListener
          this.fogColorBlue *= f13;
          double d1 = (entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double)partialTicks) * world.provider.getVoidFogYFactor();
  
@@ -2640,7 +2629,7 @@ index e8fdae5..114ca22 100644
              int i = ((EntityLivingBase)entity).getActivePotionEffect(MobEffects.blindness).getDuration();
  
              if (i < 20)
-@@ -1927,7 +1956,10 @@ public class EntityRenderer implements IResourceManagerReloadListener
+@@ -1927,7 +1955,10 @@ public class EntityRenderer implements IResourceManagerReloadListener
          GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
          IBlockState iblockstate = ActiveRenderInfo.func_186703_a(this.mc.theWorld, entity, partialTicks);
  
