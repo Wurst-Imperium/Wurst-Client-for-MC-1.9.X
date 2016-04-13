@@ -17,6 +17,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.NavigatorItem;
+import tk.wurst_client.navigator.settings.CheckboxSetting;
 import tk.wurst_client.navigator.settings.SliderSetting;
 import tk.wurst_client.utils.EntityUtils;
 
@@ -32,21 +33,12 @@ public class KillauraMod extends Mod implements UpdateListener
 	public int fov = 360;
 	public float realSpeed;
 	public float realRange;
+	public CheckboxSetting useCooldown = new CheckboxSetting(
+		"Use Attack Cooldown as Speed", true);
 	
 	@Override
 	public void initSettings()
 	{
-		settings.add(new SliderSetting("Speed", normalSpeed, 2, 20, 0.1,
-			ValueDisplay.DECIMAL)
-		{
-			@Override
-			public void update()
-			{
-				normalSpeed = (float)getValue();
-				yesCheatSpeed = Math.min(normalSpeed, 12F);
-				updateSpeedAndRange();
-			}
-		});
 		settings.add(new SliderSetting("Range", normalRange, 1, 6, 0.05,
 			ValueDisplay.DECIMAL)
 		{
@@ -55,6 +47,18 @@ public class KillauraMod extends Mod implements UpdateListener
 			{
 				normalRange = (float)getValue();
 				yesCheatRange = Math.min(normalRange, 4.25F);
+				updateSpeedAndRange();
+			}
+		});
+		settings.add(useCooldown);
+		settings.add(new SliderSetting("Speed", normalSpeed, 2, 20, 0.1,
+			ValueDisplay.DECIMAL)
+		{
+			@Override
+			public void update()
+			{
+				normalSpeed = (float)getValue();
+				yesCheatSpeed = Math.min(normalSpeed, 12F);
 				updateSpeedAndRange();
 			}
 		});
@@ -101,18 +105,21 @@ public class KillauraMod extends Mod implements UpdateListener
 		updateSpeedAndRange();
 		updateMS();
 		EntityLivingBase en = EntityUtils.getClosestEntity(true, true);
-		if(hasTimePassedS(realSpeed) && en != null)
-			if(mc.thePlayer.getDistanceToEntity(en) <= realRange)
-			{
-				if(wurst.mods.autoSwordMod.isActive())
-					AutoSwordMod.setSlot();
-				wurst.mods.criticalsMod.doCritical();
-				wurst.mods.blockHitMod.doBlock();
-				EntityUtils.faceEntityPacket(en);
-				mc.thePlayer.swingArm(EnumHand.MAIN_HAND);
-				mc.thePlayer.sendQueue.addToSendQueue(new CPacketUseEntity(en));
-				updateLastMS();
-			}
+		if((useCooldown.isChecked() ? mc.thePlayer.getSwordCooldown(0F) >= 1F
+			: hasTimePassedS(realSpeed))
+			&& en != null
+			&& mc.thePlayer.getDistanceToEntity(en) <= realRange)
+		{
+			if(wurst.mods.autoSwordMod.isActive())
+				AutoSwordMod.setSlot();
+			wurst.mods.criticalsMod.doCritical();
+			wurst.mods.blockHitMod.doBlock();
+			EntityUtils.faceEntityPacket(en);
+			mc.thePlayer.swingArm(EnumHand.MAIN_HAND);
+			mc.thePlayer.sendQueue.addToSendQueue(new CPacketUseEntity(en));
+			mc.thePlayer.resetSwordCooldown();
+			updateLastMS();
+		}
 	}
 	
 	@Override
