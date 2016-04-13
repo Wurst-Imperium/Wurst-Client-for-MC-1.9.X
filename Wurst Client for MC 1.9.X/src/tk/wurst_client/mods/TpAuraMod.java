@@ -57,23 +57,26 @@ public class TpAuraMod extends Mod implements UpdateListener
 	{
 		updateMS();
 		EntityLivingBase en = EntityUtils.getClosestEntity(true, true);
-		if(hasTimePassedS(wurst.mods.killauraMod.realSpeed) && en != null)
+		if(en != null
+			&& mc.thePlayer.getDistanceToEntity(en) <= wurst.mods.killauraMod.realRange
+			&& hasTimePassedS(wurst.mods.killauraMod.realSpeed))
 		{
+			mc.thePlayer.setPosition(en.posX + random.nextInt(3) * 2 - 2,
+				en.posY, en.posZ + random.nextInt(3) * 2 - 2);
 			
-			if(mc.thePlayer.getDistanceToEntity(en) <= wurst.mods.killauraMod.realRange)
+			if(!wurst.mods.killauraMod.useCooldown.isChecked()
+				|| mc.thePlayer.getSwordCooldown(0F) >= 1F)
 			{
-				mc.thePlayer.setPosition(en.posX + random.nextInt(3) * 2 - 2,
-					en.posY, en.posZ + random.nextInt(3) * 2 - 2);
 				if(wurst.mods.autoSwordMod.isActive())
 					AutoSwordMod.setSlot();
 				wurst.mods.criticalsMod.doCritical();
 				wurst.mods.blockHitMod.doBlock();
 				EntityUtils.faceEntityPacket(en);
 				mc.thePlayer.swingArm(EnumHand.MAIN_HAND);
-				mc.thePlayer.sendQueue.addToSendQueue(new CPacketUseEntity(en,
-					EnumHand.MAIN_HAND));
-				updateLastMS();
+				mc.thePlayer.sendQueue.addToSendQueue(new CPacketUseEntity(en));
+				mc.thePlayer.resetSwordCooldown();
 			}
+			updateLastMS();
 		}
 	}
 	
