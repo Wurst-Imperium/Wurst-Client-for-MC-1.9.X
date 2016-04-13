@@ -252,6 +252,13 @@ public class GuiAlts extends GuiScreen
 		super.mouseClicked(par1, par2, par3);
 	}
 	
+	@Override
+	public void handleMouseInput() throws IOException
+	{
+		super.handleMouseInput();
+		altList.handleMouseInput();
+	}
+	
 	/**
 	 * Draws the screen and all the components in it.
 	 */
