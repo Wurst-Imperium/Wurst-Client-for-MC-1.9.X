@@ -1,6 +1,6 @@
-From 2a8bfd2647433d3bcd6fd45dcab041d1fe836ec0 Mon Sep 17 00:00:00 2001
+From 3e65c01277c0f1ecf34a50cdbeb160e25fb44e99 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Wed, 13 Apr 2016 07:29:44 +0200
+Date: Wed, 13 Apr 2016 08:11:49 +0200
 Subject: [PATCH] Wurst
 
 ---
@@ -11,7 +11,7 @@ Subject: [PATCH] Wurst
  src/net/minecraft/block/BlockSoulSand.java         |   5 +
  .../minecraft/block/state/BlockStateContainer.java |   3 +-
  src/net/minecraft/block/state/IBlockState.java     |   2 +-
- src/net/minecraft/client/Minecraft.java            |  80 +++++++---
+ src/net/minecraft/client/Minecraft.java            |  82 ++++++++---
  .../client/audio/PositionedSoundRecord.java        |   2 +-
  .../client/entity/AbstractClientPlayer.java        |   4 +-
  .../minecraft/client/entity/EntityPlayerSP.java    | 164 ++++++++++++++++-----
@@ -35,7 +35,7 @@ Subject: [PATCH] Wurst
  .../client/gui/inventory/GuiContainer.java         |  40 ++---
  .../client/gui/inventory/GuiContainerCreative.java |   2 +-
  .../client/gui/inventory/GuiEditSign.java          |  18 +++
- .../client/multiplayer/PlayerControllerMP.java     |  61 +++++---
+ .../client/multiplayer/PlayerControllerMP.java     |  65 +++++---
  .../minecraft/client/multiplayer/ServerList.java   |   6 +
  .../client/network/NetHandlerPlayClient.java       |  10 +-
  .../client/network/NetworkPlayerInfo.java          |  10 ++
@@ -60,8 +60,8 @@ Subject: [PATCH] Wurst
  src/net/minecraft/entity/monster/EntityMob.java    |   4 +-
  src/net/minecraft/entity/monster/EntitySpider.java |   2 +-
  src/net/minecraft/entity/monster/EntityZombie.java |   2 +-
- src/net/minecraft/entity/player/EntityPlayer.java  |  31 ++--
- .../minecraft/entity/player/EntityPlayerMP.java    |   4 +-
+ src/net/minecraft/entity/player/EntityPlayer.java  |  37 +++--
+ .../minecraft/entity/player/EntityPlayerMP.java    |   6 +-
  .../minecraft/entity/projectile/EntityPotion.java  |   4 +-
  .../entity/projectile/EntityTippedArrow.java       |   2 +-
  src/net/minecraft/item/Item.java                   |   2 +-
@@ -77,7 +77,7 @@ Subject: [PATCH] Wurst
  src/net/minecraft/realms/Realms.java               |   4 +-
  .../management/PlayerInteractionManager.java       |   6 +-
  src/net/minecraft/tileentity/TileEntitySign.java   |   2 +-
- 73 files changed, 1142 insertions(+), 295 deletions(-)
+ 73 files changed, 1149 insertions(+), 302 deletions(-)
 
 diff --git a/src/net/minecraft/block/Block.java b/src/net/minecraft/block/Block.java
 index b386ea0..44bfcdc 100644
@@ -278,7 +278,7 @@ index e590b46..157dc4b 100644
      <T extends Comparable<T>> IBlockState cycleProperty(IProperty<T> property);
  
 diff --git a/src/net/minecraft/client/Minecraft.java b/src/net/minecraft/client/Minecraft.java
-index 61b2545..9b4392e 100644
+index 61b2545..1965f46 100644
 --- a/src/net/minecraft/client/Minecraft.java
 +++ b/src/net/minecraft/client/Minecraft.java
 @@ -12,6 +12,7 @@ import com.mojang.authlib.GameProfileRepository;
@@ -428,6 +428,15 @@ index 61b2545..9b4392e 100644
              if (this.objectMouseOver == null)
              {
                  logger.error("Null returned as \'hitResult\', this shouldn\'t happen!");
+@@ -1563,7 +1584,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo
+                             this.leftClickCounter = 10;
+                         }
+ 
+-                        this.thePlayer.func_184821_cY();
++                        this.thePlayer.resetSwordCooldown();
+                 }
+ 
+                 this.thePlayer.swingArm(EnumHand.MAIN_HAND);
 @@ -1571,12 +1592,12 @@ public class Minecraft implements IThreadListener, ISnooperInfo
          }
      }
@@ -2278,7 +2287,7 @@ index b14a4e1..3dccc01 100644
                  this.mc.displayGuiScreen((GuiScreen)null);
              }
 diff --git a/src/net/minecraft/client/multiplayer/PlayerControllerMP.java b/src/net/minecraft/client/multiplayer/PlayerControllerMP.java
-index a54fc8f..86872c9 100644
+index a54fc8f..f02d560 100644
 --- a/src/net/minecraft/client/multiplayer/PlayerControllerMP.java
 +++ b/src/net/minecraft/client/multiplayer/PlayerControllerMP.java
 @@ -1,5 +1,7 @@
@@ -2354,6 +2363,15 @@ index a54fc8f..86872c9 100644
                  }
                  else
                  {
+@@ -286,7 +283,7 @@ public class PlayerControllerMP
+             this.isHittingBlock = false;
+             this.curBlockDamageMP = 0.0F;
+             this.mc.theWorld.sendBlockBreakProgress(this.mc.thePlayer.getEntityId(), this.currentBlock, -1);
+-            this.mc.thePlayer.func_184821_cY();
++            this.mc.thePlayer.resetSwordCooldown();
+         }
+     }
+ 
 @@ -301,7 +298,9 @@ public class PlayerControllerMP
          }
          else if (this.currentGameType.isCreative() && this.mc.theWorld.getWorldBorder().contains(posBlock))
@@ -2433,6 +2451,15 @@ index a54fc8f..86872c9 100644
              {
                  return EnumActionResult.PASS;
              }
+@@ -520,7 +539,7 @@ public class PlayerControllerMP
+         if (this.currentGameType != WorldSettings.GameType.SPECTATOR)
+         {
+             playerIn.attackTargetEntityWithCurrentItem(targetEntity);
+-            playerIn.func_184821_cY();
++            playerIn.resetSwordCooldown();
+         }
+     }
+ 
 @@ -539,7 +558,7 @@ public class PlayerControllerMP
          return this.currentGameType == WorldSettings.GameType.SPECTATOR ? EnumActionResult.PASS : p_187102_2_.func_184199_a(p_187102_1_, vec3d, p_187102_4_, p_187102_5_);
      }
@@ -3568,7 +3595,7 @@ index a65657e..9d9e562 100644
          this.worldObj.setEntityState(this, (byte)16);
      }
 diff --git a/src/net/minecraft/entity/player/EntityPlayer.java b/src/net/minecraft/entity/player/EntityPlayer.java
-index 23d8999..2ade59c 100644
+index 23d8999..47c754e 100644
 --- a/src/net/minecraft/entity/player/EntityPlayer.java
 +++ b/src/net/minecraft/entity/player/EntityPlayer.java
 @@ -3,15 +3,20 @@ package net.minecraft.entity.player;
@@ -3592,6 +3619,15 @@ index 23d8999..2ade59c 100644
  import net.minecraft.enchantment.EnchantmentHelper;
  import net.minecraft.entity.Entity;
  import net.minecraft.entity.EntityList;
+@@ -319,7 +324,7 @@ public abstract class EntityPlayer extends EntityLivingBase
+         {
+             if (!ItemStack.func_185132_d(this.field_184831_bT, itemstack))
+             {
+-                this.func_184821_cY();
++                this.resetSwordCooldown();
+             }
+ 
+             this.field_184831_bT = itemstack == null ? null : itemstack.copy();
 @@ -656,6 +661,10 @@ public abstract class EntityPlayer extends EntityLivingBase
       */
      public void onDeath(DamageSource cause)
@@ -3628,7 +3664,7 @@ index 23d8999..2ade59c 100644
                  this.playSound(SoundEvents.item_shield_break, 0.8F, 0.8F + this.worldObj.rand.nextFloat() * 0.4F);
              }
          }
-@@ -1259,7 +1268,7 @@ public abstract class EntityPlayer extends EntityLivingBase
+@@ -1259,10 +1268,10 @@ public abstract class EntityPlayer extends EntityLivingBase
                      f1 = EnchantmentHelper.getModifierForCreature(this.getHeldItemMainhand(), EnumCreatureAttribute.UNDEFINED);
                  }
  
@@ -3636,7 +3672,11 @@ index 23d8999..2ade59c 100644
 +                float f2 = this.getSwordCooldown(0.5F);
                  f = f * (0.2F + f2 * f2 * 0.8F);
                  f1 = f1 * f2;
-                 this.func_184821_cY();
+-                this.func_184821_cY();
++                this.resetSwordCooldown();
+ 
+                 if (f > 0.0F || f1 > 0.0F)
+                 {
 @@ -1390,7 +1399,7 @@ public abstract class EntityPlayer extends EntityLivingBase
                          {
                              EntityPlayer entityplayer = (EntityPlayer)targetEntity;
@@ -3666,7 +3706,7 @@ index 23d8999..2ade59c 100644
      }
  
      public Scoreboard getWorldScoreboard()
-@@ -2561,7 +2572,7 @@ public abstract class EntityPlayer extends EntityLivingBase
+@@ -2561,17 +2572,17 @@ public abstract class EntityPlayer extends EntityLivingBase
          return (float)(1.0D / this.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).getAttributeValue() * 20.0D);
      }
  
@@ -3675,7 +3715,10 @@ index 23d8999..2ade59c 100644
      {
          return MathHelper.clamp_float(((float)this.field_184617_aD + p_184825_1_) / this.func_184818_cX(), 0.0F, 1.0F);
      }
-@@ -2571,7 +2582,7 @@ public abstract class EntityPlayer extends EntityLivingBase
+ 
+-    public void func_184821_cY()
++    public void resetSwordCooldown()
+     {
          this.field_184617_aD = 0;
      }
  
@@ -3685,7 +3728,7 @@ index 23d8999..2ade59c 100644
          return this.cooldownTracker;
      }
 diff --git a/src/net/minecraft/entity/player/EntityPlayerMP.java b/src/net/minecraft/entity/player/EntityPlayerMP.java
-index a6a3dc2..d6631a0 100644
+index a6a3dc2..655b8ab 100644
 --- a/src/net/minecraft/entity/player/EntityPlayerMP.java
 +++ b/src/net/minecraft/entity/player/EntityPlayerMP.java
 @@ -1091,7 +1091,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
@@ -3706,6 +3749,15 @@ index a6a3dc2..d6631a0 100644
      }
  
      /**
+@@ -1385,7 +1385,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
+     public void swingArm(EnumHand hand)
+     {
+         super.swingArm(hand);
+-        this.func_184821_cY();
++        this.resetSwordCooldown();
+     }
+ 
+     public boolean func_184850_K()
 diff --git a/src/net/minecraft/entity/projectile/EntityPotion.java b/src/net/minecraft/entity/projectile/EntityPotion.java
 index 1d5b680..52497f5 100644
 --- a/src/net/minecraft/entity/projectile/EntityPotion.java
