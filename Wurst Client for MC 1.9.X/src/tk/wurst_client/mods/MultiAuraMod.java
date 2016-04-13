@@ -58,7 +58,9 @@ public class MultiAuraMod extends Mod implements UpdateListener
 		EntityLivingBase closestEntity =
 			EntityUtils.getClosestEntity(true, false);
 		if(closestEntity != null
-			&& mc.thePlayer.getDistanceToEntity(closestEntity) <= range)
+			&& mc.thePlayer.getDistanceToEntity(closestEntity) <= range
+			&& (wurst.mods.killauraMod.useCooldown.isChecked() ? mc.thePlayer
+				.getSwordCooldown(0F) >= 1F : true))
 		{
 			if(wurst.mods.autoSwordMod.isActive())
 				AutoSwordMod.setSlot();
@@ -73,6 +75,7 @@ public class MultiAuraMod extends Mod implements UpdateListener
 				mc.thePlayer.swingArm(EnumHand.MAIN_HAND);
 				mc.thePlayer.sendQueue.addToSendQueue(new CPacketUseEntity(en));
 			}
+			mc.thePlayer.resetSwordCooldown();
 			updateLastMS();
 		}
 	}
