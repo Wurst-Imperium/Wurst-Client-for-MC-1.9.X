@@ -35,16 +35,16 @@ public class AltRenderer
 			else
 				glColor4f(0.9F, 0.9F, 0.9F, 1.0F);
 			// Face
-			float fw = 32;
-			float fh = 32;
-			float u = 32;
-			float v = 32;
+			float fw = 192;
+			float fh = 192;
+			float u = 24;
+			float v = 24;
 			Gui.drawModalRectWithCustomSizedTexture(x, y, u, v, w, h, fw, fh);
 			// Hat
-			fw = 32;
-			fh = 32;
-			u = 160;
-			v = 32;
+			fw = 192;
+			fh = 192;
+			u = 120;
+			v = 24;
 			Gui.drawModalRectWithCustomSizedTexture(x, y, u, v, w, h, fw, fh);
 			glDisable(GL_BLEND);
 		}catch(Exception e)
