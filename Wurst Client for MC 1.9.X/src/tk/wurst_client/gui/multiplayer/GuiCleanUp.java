@@ -137,7 +137,7 @@ public class GuiCleanUp extends GuiScreen
 						&& server.serverMOTD.equals(TextFormatting.DARK_RED
 							+ "Can\'t resolve hostname")
 						|| WurstClient.INSTANCE.options.cleanupOutdated
-						&& server.version != 47
+						&& (server.version < 107 || server.version > 109)
 						|| WurstClient.INSTANCE.options.cleanupFailed
 						&& server.pingToServer != -2L
 						&& server.pingToServer < 0L
