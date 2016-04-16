@@ -48,8 +48,6 @@ public class GuiWurstMainMenu extends GuiMainMenu
 		"wurst/wurst_380.png");
 	private static final ResourceLocation santaHat = new ResourceLocation(
 		"wurst/santa_hat.png");
-	private static final ResourceLocation buttons = new ResourceLocation(
-		"wurst/buttons.png");
 	private XMLElementList news;
 	private String newsTicker;
 	private int newsWidth;
@@ -112,21 +110,6 @@ public class GuiWurstMainMenu extends GuiMainMenu
 			((GuiButton)buttonList.get(i)).yPosition =
 				Math.min(((GuiButton)buttonList.get(i)).yPosition, height - 56);
 		
-		// social buttons
-		for(int i = 0; i < 3; i++)
-		{
-			GuiButton button =
-				new GuiButton(20 + i, 8 + i * 24, height - 36, 20, 20, "");
-			buttonList.add(button);
-		}
-		for(int i = 0; i < 3; i++)
-		{
-			GuiButton button =
-				new GuiButton(25 - i, width - 28 - i * 24, height - 36, 20, 20,
-					"");
-			buttonList.add(button);
-		}
-		
 		// notice
 		this.noticeWidth1 =
 			this.fontRendererObj.getStringWidth(this.noticeText);
@@ -187,24 +170,6 @@ public class GuiWurstMainMenu extends GuiMainMenu
 		{
 			case 3:
 				mc.displayGuiScreen(new GuiAlts(this));
-				break;
-			case 20:
-				MiscUtils.openLink("https://www.wurst-client.tk/youtube");
-				break;
-			case 21:
-				MiscUtils.openLink("https://www.wurst-client.tk/twitter");
-				break;
-			case 22:
-				MiscUtils.openLink("https://www.wurst-client.tk/gplus");
-				break;
-			case 23:
-				MiscUtils.openLink("https://www.wurst-client.tk/github");
-				break;
-			case 24:
-				MiscUtils.openLink("https://www.wurst-client.tk/feedback");
-				break;
-			case 25:
-				MiscUtils.openLink("https://www.wurst-client.tk/fanshop");
 				break;
 		}
 	}
@@ -379,24 +344,6 @@ public class GuiWurstMainMenu extends GuiMainMenu
 		// buttons
 		for(Object button : buttonList)
 			((GuiButton)button).drawButton(mc, mouseX, mouseY);
-		
-		// social buttons
-		mc.getTextureManager().bindTexture(buttons);
-		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		for(int i = 0; i < 6; i++)
-		{
-			x = i < 3 ? width - 26 - i * 24 : 10 + (5 - i) * 24;
-			y = height - 34;
-			h = 16;
-			w = 16;
-			fw = 96;
-			fh = 16;
-			u = 96 * 5 / 6 - i * 96 / 6;
-			v = 0;
-			drawModalRectWithCustomSizedTexture(x, y, u, v, w, h, fw, fh);
-		}
 		
 		// news
 		if(!newsTicker.isEmpty() && newsWidth != 0)
