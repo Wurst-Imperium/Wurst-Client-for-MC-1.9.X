@@ -66,9 +66,9 @@ public class GuiCleanUp extends GuiScreen
 	{
 		Keyboard.enableRepeatEvents(true);
 		buttonList.clear();
-		buttonList.add(new GuiButton(0, width / 2 - 100, height / 4 + 144 + 12,
+		buttonList.add(new GuiButton(0, width / 2 - 100, height / 4 + 168 + 12,
 			"Cancel"));
-		buttonList.add(new GuiButton(1, width / 2 - 100, height / 4 + 168 + 12,
+		buttonList.add(new GuiButton(1, width / 2 - 100, height / 4 + 144 + 12,
 			"Clean Up"));
 		buttonList.add(new GuiButton(2, width / 2 - 100, height / 4 - 24 + 12,
 			"Unknown Hosts: "
