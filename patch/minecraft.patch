@@ -1,9 +1,10 @@
-From 3e65c01277c0f1ecf34a50cdbeb160e25fb44e99 Mon Sep 17 00:00:00 2001
+From ac86657d02e702adde2dfb69f11e068e31836ba9 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Wed, 13 Apr 2016 08:11:49 +0200
+Date: Sat, 16 Apr 2016 19:29:22 +0200
 Subject: [PATCH] Wurst
 
 ---
+ .gitignore                                         |   1 +
  src/net/minecraft/block/Block.java                 |  17 ++-
  src/net/minecraft/block/BlockCactus.java           |  11 +-
  src/net/minecraft/block/BlockLiquid.java           |  14 +-
@@ -77,8 +78,18 @@ Subject: [PATCH] Wurst
  src/net/minecraft/realms/Realms.java               |   4 +-
  .../management/PlayerInteractionManager.java       |   6 +-
  src/net/minecraft/tileentity/TileEntitySign.java   |   2 +-
- 73 files changed, 1149 insertions(+), 302 deletions(-)
+ src/net/minecraft/util/Timer.java                  |   6 +
+ 75 files changed, 1156 insertions(+), 302 deletions(-)
 
+diff --git a/.gitignore b/.gitignore
+index eba4a99..e4f2785 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -2,3 +2,4 @@
+ /.settings
+ .classpath
+ .project
++/tmp
 diff --git a/src/net/minecraft/block/Block.java b/src/net/minecraft/block/Block.java
 index b386ea0..44bfcdc 100644
 --- a/src/net/minecraft/block/Block.java
@@ -4160,6 +4171,29 @@ index f5cab9e..d422622 100644
  
      /**
       * The index of the line currently being edited. Only used on client side, but defined on both. Note this is only
+diff --git a/src/net/minecraft/util/Timer.java b/src/net/minecraft/util/Timer.java
+index 078063f..2de9183 100644
+--- a/src/net/minecraft/util/Timer.java
++++ b/src/net/minecraft/util/Timer.java
+@@ -1,5 +1,7 @@
+ package net.minecraft.util;
+ 
++import tk.wurst_client.WurstClient;
++import tk.wurst_client.mods.TimerMod;
+ import net.minecraft.client.Minecraft;
+ import net.minecraft.util.math.MathHelper;
+ 
+@@ -65,6 +67,10 @@ public class Timer
+      */
+     public void updateTimer()
+     {
++		// TODO: Client
++		TimerMod timerMod = WurstClient.INSTANCE.mods.timerMod;
++		timerSpeed = timerMod.isActive() ? timerMod.speed : 1F;
++		
+         long i = Minecraft.getSystemTime();
+         long j = i - this.lastSyncSysClock;
+         long k = System.nanoTime() / 1000000L;
 -- 
 2.0.0
 
