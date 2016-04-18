@@ -17,9 +17,8 @@ import tk.wurst_client.events.listeners.ChatOutputListener;
 	description = "Replaces some character with funny leet\n"
 		+ "characters. e.g. Th3 qu1ck br0wn f0x...",
 	category = Category.CHAT,
-	tags = "l33t,1337,31337,3l33t",
-	tutorial = "Mods/AntiAFK")
-public class AntiAfkMod extends Mod implements UpdateListener
+	tags = "l33t,1337,31337,3l33t")
+public class LeetSpeakMod extends Mod
 {
 	
 	
