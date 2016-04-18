@@ -18,7 +18,7 @@ import tk.wurst_client.events.listeners.ChatOutputListener;
 		+ "characters. e.g. Th3 qu1ck br0wn f0x...",
 	category = Category.CHAT,
 	tags = "l33t,1337,31337,3l33t")
-public class LeetSpeakMod extends Mod
+public class LeetSpeakMod extends Mod implements ChatOutputListener
 {
 	
 	
