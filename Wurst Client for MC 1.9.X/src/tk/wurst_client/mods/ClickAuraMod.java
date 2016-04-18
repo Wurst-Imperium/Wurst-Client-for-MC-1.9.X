@@ -52,19 +52,23 @@ public class ClickAuraMod extends Mod implements UpdateListener
 	{
 		updateMS();
 		EntityLivingBase en = EntityUtils.getClosestEntity(true, true);
-		if(hasTimePassedS(wurst.mods.killauraMod.realSpeed) && en != null
-			&& mc.gameSettings.keyBindAttack.pressed)
-			if(mc.thePlayer.getDistanceToEntity(en) <= wurst.mods.killauraMod.realRange)
-			{
-				if(wurst.mods.autoSwordMod.isActive())
-					AutoSwordMod.setSlot();
-				wurst.mods.criticalsMod.doCritical();
-				wurst.mods.blockHitMod.doBlock();
-				EntityUtils.faceEntityPacket(en);
-				mc.thePlayer.swingArm(EnumHand.MAIN_HAND);
-				mc.thePlayer.sendQueue.addToSendQueue(new CPacketUseEntity(en));
-				updateLastMS();
-			}
+		if(mc.gameSettings.keyBindAttack.pressed
+			&& (wurst.mods.killauraMod.useCooldown.isChecked() ? mc.thePlayer
+				.getSwordCooldown(0F) >= 1F
+				: hasTimePassedS(wurst.mods.killauraMod.realSpeed))
+			&& en != null
+			&& mc.thePlayer.getDistanceToEntity(en) <= wurst.mods.killauraMod.realRange)
+		{
+			if(wurst.mods.autoSwordMod.isActive())
+				AutoSwordMod.setSlot();
+			wurst.mods.criticalsMod.doCritical();
+			wurst.mods.blockHitMod.doBlock();
+			EntityUtils.faceEntityPacket(en);
+			mc.thePlayer.swingArm(EnumHand.MAIN_HAND);
+			mc.thePlayer.sendQueue.addToSendQueue(new CPacketUseEntity(en));
+			mc.thePlayer.resetSwordCooldown();
+			updateLastMS();
+		}
 	}
 	
 	@Override

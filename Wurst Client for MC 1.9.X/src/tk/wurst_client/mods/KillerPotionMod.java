@@ -34,8 +34,7 @@ public class KillerPotionMod extends Mod
 			return;
 		}
 		
-		ItemStack stack = new ItemStack(Items.potionitem);
-		stack.setItemDamage(16384);
+		ItemStack stack = new ItemStack(Items.splash_potion);
 		NBTTagList effects = new NBTTagList();
 		NBTTagCompound effect = new NBTTagCompound();
 		effect.setInteger("Amplifier", 125);

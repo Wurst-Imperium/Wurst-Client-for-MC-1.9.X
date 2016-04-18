@@ -16,7 +16,9 @@ import tk.wurst_client.mods.Mod.Info;
 		+ "you place. Once activated, you can write normally on\n"
 		+ "one sign to specify the text for all other signs.",
 	name = "AutoSign",
-	noCheatCompatible = false)
+	noCheatCompatible = false,
+	tags = "auto sign",
+	tutorial = "Mods/AutoSign")
 public class AutoSignMod extends Mod
 {
 	public ITextComponent[] signText;

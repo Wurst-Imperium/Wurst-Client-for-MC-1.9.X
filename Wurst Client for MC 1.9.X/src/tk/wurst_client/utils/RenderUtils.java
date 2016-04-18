@@ -21,6 +21,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 
 import org.darkstorm.minecraft.gui.util.RenderUtil;
 import org.lwjgl.opengl.GL11;
@@ -449,9 +450,20 @@ public class RenderUtils
 			GL11.glColor4d(1, 0, 0, 0.5F);
 		else if(mode == 4)// Team
 			GL11.glColor4d(0, 1, 0, 0.5F);
+		
+		Vec3d eyes =
+			new Vec3d(0, 0, 1)
+				.rotatePitch(
+					-(float)Math.toRadians(Minecraft.getMinecraft().thePlayer.rotationPitch))
+				.rotateYaw(
+					-(float)Math.toRadians(Minecraft.getMinecraft().thePlayer.rotationYaw));
+		
 		glBegin(GL_LINES);
 		{
-			glVertex3d(0, Minecraft.getMinecraft().thePlayer.getEyeHeight(), 0);
+			glVertex3d(
+				eyes.xCoord,
+				Minecraft.getMinecraft().thePlayer.getEyeHeight() + eyes.yCoord,
+				eyes.zCoord);
 			glVertex3d(x, y, z);
 		}
 		glEnd();

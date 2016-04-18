@@ -18,7 +18,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketHeldItemChange;
 import net.minecraft.network.play.client.CPacketPlayerBlockPlacement;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.EnumHand;
 
 import org.darkstorm.minecraft.gui.component.BoundedRangeComponent.ValueDisplay;
 
@@ -89,30 +89,25 @@ public class AutoSoupMod extends Mod implements UpdateListener
 		PlayerControllerMP playerController = mc.playerController;
 		
 		// sort empty bowls
-		for(int i = 9; i < 45; i++)
+		for(int i = 10; i < 45; i++)
 		{
 			ItemStack stack = inventoryContainer.getSlot(i).getStack();
 			if(stack != null && stack.getItem() == Items.bowl)
 			{
 				playerController.windowClick(0, i, 0, ClickType.PICKUP, player);
-				playerController
-					.windowClick(0, 18, 0, ClickType.PICKUP, player);
+				playerController.windowClick(0, 9, 0, ClickType.PICKUP, player);
 			}
 		}
 		
 		if(soupInHotbar != -1)
 		{
 			// eat soup in hotbar
-			int oldSlot = player.inventory.currentItem;
 			NetHandlerPlayClient sendQueue = player.sendQueue;
-			
 			sendQueue.addToSendQueue(new CPacketHeldItemChange(
 				soupInHotbar - 36));
-			playerController.updateController();
 			sendQueue.addToSendQueue(new CPacketPlayerBlockPlacement(
-				new BlockPos(-1, -1, -1), -1, inventoryContainer.getSlot(
-					soupInHotbar).getStack(), 0.0F, 0.0F, 0.0F));
-			sendQueue.addToSendQueue(new CPacketHeldItemChange(oldSlot));
+				EnumHand.MAIN_HAND));
+			playerController.updateController();
 		}else
 			// move soup in inventory to hotbar
 			playerController.windowClick(0, soupInInventory, 0,

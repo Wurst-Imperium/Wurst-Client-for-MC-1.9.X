@@ -136,6 +136,13 @@ public class GuiKeybindManager extends GuiScreen
 		super.mouseClicked(par1, par2, par3);
 	}
 	
+	@Override
+	public void handleMouseInput() throws IOException
+	{
+		super.handleMouseInput();
+		bindList.handleMouseInput();
+	}
+	
 	/**
 	 * Draws the screen and all the components in it.
 	 */

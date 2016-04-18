@@ -98,6 +98,13 @@ public class GuiXRayBlocksManager extends GuiScreen
 		super.mouseClicked(par1, par2, par3);
 	}
 	
+	@Override
+	public void handleMouseInput() throws IOException
+	{
+		super.handleMouseInput();
+		blockList.handleMouseInput();
+	}
+	
 	/**
 	 * Draws the screen and all the components in it.
 	 */

@@ -33,8 +33,7 @@ public class TrollPotionMod extends Mod
 			setEnabled(false);
 			return;
 		}
-		ItemStack stack = new ItemStack(Items.potionitem);
-		stack.setItemDamage(16384);
+		ItemStack stack = new ItemStack(Items.splash_potion);
 		NBTTagList effects = new NBTTagList();
 		for(int i = 1; i <= 23; i++)
 		{

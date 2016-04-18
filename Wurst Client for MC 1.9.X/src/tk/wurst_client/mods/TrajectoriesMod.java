@@ -56,7 +56,9 @@ public class TrajectoriesMod extends Mod implements RenderListener
 		// check if item is throwable
 		Item item = stack.getItem();
 		if(!(item instanceof ItemBow || item instanceof ItemSnowball
-			|| item instanceof ItemEgg || item instanceof ItemEnderPearl || item instanceof ItemSplashPotion))
+			|| item instanceof ItemEgg || item instanceof ItemEnderPearl
+			|| item instanceof ItemSplashPotion
+			|| item instanceof ItemLingeringPotion || item instanceof ItemFishingRod))
 			return;
 		
 		boolean usingBow =
@@ -130,7 +132,7 @@ public class TrajectoriesMod extends Mod implements RenderListener
 		
 		// draw trajectory line
 		double gravity =
-			usingBow ? 0.05D : item instanceof ItemPotion ? 0.4D : 0.03D;
+			usingBow ? 0.05D : item instanceof ItemPotion ? 0.4D : item instanceof ItemFishingRod ? 0.15D : 0.03D;
 		Vec3d playerVector =
 			new Vec3d(player.posX, player.posY + player.getEyeHeight(),
 				player.posZ);
@@ -142,13 +144,13 @@ public class TrajectoriesMod extends Mod implements RenderListener
 				- renderManager.renderPosY, arrowPosZ
 				- renderManager.renderPosZ);
 			
-			arrowPosX += arrowMotionX;
-			arrowPosY += arrowMotionY;
-			arrowPosZ += arrowMotionZ;
-			arrowMotionX *= 0.99D;
-			arrowMotionY *= 0.99D;
-			arrowMotionZ *= 0.99D;
-			arrowMotionY -= gravity;
+			arrowPosX += arrowMotionX * 0.1;
+			arrowPosY += arrowMotionY * 0.1;
+			arrowPosZ += arrowMotionZ * 0.1;
+			arrowMotionX *= 0.999D;
+			arrowMotionY *= 0.999D;
+			arrowMotionZ *= 0.999D;
+			arrowMotionY -= gravity * 0.1;
 			
 			if(mc.theWorld.rayTraceBlocks(playerVector, new Vec3d(arrowPosX,
 				arrowPosY, arrowPosZ)) != null)

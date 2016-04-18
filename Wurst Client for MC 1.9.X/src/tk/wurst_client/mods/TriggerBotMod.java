@@ -52,34 +52,28 @@ public class TriggerBotMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		if(mc.objectMouseOver != null
-			&& mc.objectMouseOver.typeOfHit == Type.ENTITY
-			&& mc.objectMouseOver.entityHit instanceof EntityLivingBase)
+		updateMS();
+		
+		if(mc.objectMouseOver == null
+			|| mc.objectMouseOver.typeOfHit != Type.ENTITY
+			|| !(mc.objectMouseOver.entityHit instanceof EntityLivingBase))
+			return;
+		EntityLivingBase en = (EntityLivingBase)mc.objectMouseOver.entityHit;
+		
+		if((wurst.mods.killauraMod.useCooldown.isChecked() ? mc.thePlayer
+			.getSwordCooldown(0F) >= 1F
+			: hasTimePassedS(wurst.mods.killauraMod.realSpeed))
+			&& mc.thePlayer.getDistanceToEntity(en) <= wurst.mods.killauraMod.realRange
+			&& EntityUtils.isCorrectEntity(en, true))
 		{
-			updateMS();
-			boolean yesCheatMode = wurst.mods.yesCheatMod.isActive();
-			if(yesCheatMode
-				&& hasTimePassedS(wurst.mods.killauraMod.yesCheatSpeed)
-				|| !yesCheatMode
-				&& hasTimePassedS(wurst.mods.killauraMod.normalSpeed))
-			{
-				EntityLivingBase en =
-					(EntityLivingBase)mc.objectMouseOver.entityHit;
-				if((yesCheatMode
-					&& mc.thePlayer.getDistanceToEntity(en) <= wurst.mods.killauraMod.yesCheatRange || !yesCheatMode
-					&& mc.thePlayer.getDistanceToEntity(en) <= wurst.mods.killauraMod.normalRange)
-					&& EntityUtils.isCorrectEntity(en, true))
-				{
-					if(wurst.mods.autoSwordMod.isActive())
-						AutoSwordMod.setSlot();
-					wurst.mods.criticalsMod.doCritical();
-					wurst.mods.blockHitMod.doBlock();
-					mc.thePlayer.swingArm(EnumHand.MAIN_HAND);
-					mc.thePlayer.sendQueue.addToSendQueue(new CPacketUseEntity(
-						en));
-					updateLastMS();
-				}
-			}
+			if(wurst.mods.autoSwordMod.isActive())
+				AutoSwordMod.setSlot();
+			wurst.mods.criticalsMod.doCritical();
+			wurst.mods.blockHitMod.doBlock();
+			mc.thePlayer.swingArm(EnumHand.MAIN_HAND);
+			mc.thePlayer.sendQueue.addToSendQueue(new CPacketUseEntity(en));
+			mc.thePlayer.resetSwordCooldown();
+			updateLastMS();
 		}
 	}
 	
