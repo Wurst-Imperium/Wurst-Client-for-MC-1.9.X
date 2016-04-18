@@ -1,5 +1,5 @@
 /*
- * Copyright Â© 2014 - 2016 | Wurst-Imperium | All rights reserved.
+ * Copyright © 2014 - 2016 | Wurst-Imperium | All rights reserved.
  * 
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -15,7 +15,7 @@ import tk.wurst_client.events.listeners.ChatOutputListener;
 
 @Info(name = "LeetSpeak",
 	description = "Replaces some character with funny leet\n"
-		+ "characters. e.g. Th3 qu1ck br0wn f0x",
+		+ "characters. e.g. Th3 qu1ck br0wn f0x...",
 	category = Category.CHAT,
 	tags = "l33t,1337,31337,3l33t",
 	tutorial = "Mods/AntiAFK")
@@ -28,7 +28,7 @@ public class AntiAfkMod extends Mod implements UpdateListener
 	{
 		wurst.events.add(ChatOutputListener.class, this);
 		if(wurst.mods.fancyChatMod.isEnabled())
-			wurst.mods.fancyChattMod.setEnabled(false);
+			wurst.mods.fancyChatMod.setEnabled(false);
 	}
 	
 @Override
@@ -64,11 +64,12 @@ public class AntiAfkMod extends Mod implements UpdateListener
 		out = out.replace("l", "7");
 		out = out.replace("L", "7");
 		
-		out = out.replace("f", "ph");
-		out = out.replace("F", "Ph");
 		
 		out = out.replace("h", "4");
 		out = out.replace("H", "4");
+		
+		out = out.replace("f", "ph");
+		out = out.replace("F", "Ph");
 		
 		out = out.replace("u", "|_|");
 		out = out.replace("U", "|_|");
