@@ -39,6 +39,8 @@ public class LeetSpeakMod extends Mod implements ChatOutputListener
 		
 		String out = event.getmessage();
 		
+		out = out.replace("0", "()");
+		
 		out = out.replace("a", "4");
 		out = out.replace("A", "4");
 		
@@ -47,9 +49,6 @@ public class LeetSpeakMod extends Mod implements ChatOutputListener
 				
 		out = out.replace("g", "6");
 		out = out.replace("G", "6");
-				
-		out = out.replace("h", "4");
-		out = out.replace("H", "4");
 				
 		out = out.replace("i", "1");
 		out = out.replace("I", "1");
@@ -63,21 +62,19 @@ public class LeetSpeakMod extends Mod implements ChatOutputListener
 		out = out.replace("l", "7");
 		out = out.replace("L", "7");
 		
-		
 		out = out.replace("h", "4");
 		out = out.replace("H", "4");
 		
 		out = out.replace("f", "ph");
 		out = out.replace("F", "Ph");
 		
-		out = out.replace("u", "|_|");
-		out = out.replace("U", "|_|");
-		
 		out = out.replace("v", "\/");
 		out = out.replace("V", "\/");
 		
-		out = out.replace("n", "|\|");
-		out = out.replace("N", "|\|");
+		out = out.replace("Th3", "T3h");
+		out = out.replace("TH3", "T3h");
+		out = out.replace("th3", "T3h");
+		out = out.replace("tH3", "T3h");
 		
 		
 		event.setMessage(out);
