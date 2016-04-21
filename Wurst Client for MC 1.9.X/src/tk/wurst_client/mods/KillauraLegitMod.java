@@ -66,8 +66,10 @@ public class KillauraLegitMod extends Mod implements UpdateListener
 				else
 				{
 					EntityUtils.faceEntityClient(en);
-					mc.thePlayer.swingArm(EnumHand.MAIN_HAND);
+					
 					mc.playerController.attackEntity(mc.thePlayer, en);
+					mc.thePlayer.swingArm(EnumHand.MAIN_HAND);
+					
 					updateLastMS();
 				}
 			}
