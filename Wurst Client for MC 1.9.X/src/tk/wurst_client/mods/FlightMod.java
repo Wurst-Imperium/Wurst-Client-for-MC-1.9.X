@@ -1,5 +1,5 @@
 /*
- * Copyright © 2014 - 2016 | Wurst-Imperium | All rights reserved.
+ * Copyright Â© 2014 - 2016 | Wurst-Imperium | All rights reserved.
  * 
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -53,8 +53,7 @@ public class FlightMod extends Mod implements UpdateListener
 	@Override
 	public void onEnable()
 	{
-		if(wurst.mods.jetpackMod.isEnabled())
-			wurst.mods.jetpackMod.setEnabled(false);
+		wurst.mods.jetpackMod.setEnabled(false);
 		
 		if(wurst.mods.yesCheatMod.isActive()
 			|| wurst.mods.antiMacMod.isActive())
