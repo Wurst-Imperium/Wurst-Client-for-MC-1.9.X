@@ -165,7 +165,7 @@ public class Mod implements NavigatorItem
 	{
 		this.enabled = enabled;
 		active = enabled && !blocked;
-		if((blocked && enabled) || (this.isEnabled() && enabled) || (!this.isEnabled() && !enabled))
+		if((blocked && enabled) || this.isEnabled() == enabled)
 			return;
 		try
 		{
