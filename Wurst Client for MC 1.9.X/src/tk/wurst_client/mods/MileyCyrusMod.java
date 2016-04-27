@@ -13,7 +13,7 @@ import tk.wurst_client.mods.Mod.Info;
 
 @Info(category = Category.FUN,
 	description = "Makes you twerk like Miley Cyrus!",
-	name = "Miley Cyrus")
+	name = "MileyCyrus")
 public class MileyCyrusMod extends Mod implements UpdateListener
 {
 	private int timer;

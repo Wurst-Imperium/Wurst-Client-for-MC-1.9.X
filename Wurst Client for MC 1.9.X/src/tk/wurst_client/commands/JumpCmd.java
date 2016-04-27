@@ -17,7 +17,7 @@ public class JumpCmd extends Cmd
 	{
 		if(args.length != 0)
 			syntaxError();
-		if(!mc.thePlayer.onGround)
+		if(!mc.thePlayer.onGround && !wurst.mods.jetpackMod.isActive())
 			error("Can't jump in mid-air.");
 		mc.thePlayer.jump();
 	}

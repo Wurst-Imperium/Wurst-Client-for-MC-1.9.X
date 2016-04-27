@@ -52,6 +52,7 @@ public class ModManager
 	public final BaseFinderMod baseFinderMod = new BaseFinderMod();
 	public final BlinkMod blinkMod = new BlinkMod();
 	public final BlockHitMod blockHitMod = new BlockHitMod();
+	public final BoatFlyMod boatFlyMod = new BoatFlyMod();
 	public final BowAimbotMod bowAimbotMod = new BowAimbotMod();
 	public final BuildRandomMod buildRandomMod = new BuildRandomMod();
 	public final BunnyHopMod bunnyHopMod = new BunnyHopMod();
