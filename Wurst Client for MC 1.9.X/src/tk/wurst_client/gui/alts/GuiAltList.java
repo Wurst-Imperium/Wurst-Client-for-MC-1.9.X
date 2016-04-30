@@ -15,7 +15,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiSlot;
 import net.minecraft.util.math.MathHelper;
 
@@ -25,11 +25,13 @@ import tk.wurst_client.alts.Alt;
 
 public class GuiAltList extends GuiSlot
 {
-	public GuiAltList(Minecraft par1Minecraft, GuiScreen prevMenu)
+	public GuiAltList(Minecraft mc, GuiAlts prevMenu)
 	{
-		super(par1Minecraft, prevMenu.width, prevMenu.height, 36,
+		super(mc, prevMenu.width, prevMenu.height, 36,
 			prevMenu.height - 56, 30);
-		mc = par1Minecraft;
+		
+		this.mc = mc;
+		this.prevMenu = prevMenu;
 	}
 	
 	private int selectedSlot;
@@ -37,6 +39,7 @@ public class GuiAltList extends GuiSlot
 	public static ArrayList<Alt> alts = new ArrayList<Alt>();
 	public static int premiumAlts;
 	public static int crackedAlts;
+	private GuiAlts prevMenu;
 	
 	public static void sortAlts()
 	{
@@ -98,9 +101,11 @@ public class GuiAltList extends GuiSlot
 	}
 	
 	@Override
-	protected void elementClicked(int var1, boolean var2, int var3, int var4)
+	protected void elementClicked(int var1, boolean doubleClick, int var3, int var4)
 	{
 		selectedSlot = var1;
+		if(doubleClick)
+			prevMenu.actionPerformed(new GuiButton(0, 0, 0, null));
 	}
 	
 	@Override

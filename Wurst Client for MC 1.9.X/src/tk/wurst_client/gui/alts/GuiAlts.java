@@ -95,7 +95,7 @@ public class GuiAlts extends GuiScreen
 	}
 	
 	@Override
-	protected void actionPerformed(GuiButton clickedButton)
+	public void actionPerformed(GuiButton clickedButton)
 	{
 		if(clickedButton.enabled)
 			if(clickedButton.id == 0)
