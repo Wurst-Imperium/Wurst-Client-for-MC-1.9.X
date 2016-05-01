@@ -51,12 +51,12 @@ public class Alt
 	
 	public String getName()
 	{
-		if(name != null)
-			return name;
-		else if(email != null)
-			return email;
-		else
-			return "";
+		return name;
+	}
+	
+	public String getNameOrEmail()
+	{
+		return unchecked ? email : name;
 	}
 	
 	public String getPassword()

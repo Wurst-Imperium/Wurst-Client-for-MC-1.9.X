@@ -103,7 +103,7 @@ public class GuiAlts extends GuiScreen
 				Alt alt = GuiAltList.alts.get(altList.getSelectedSlot());
 				if(alt.isCracked())
 				{// Cracked
-					LoginManager.changeCrackedName(alt.getName());
+					LoginManager.changeCrackedName(alt.getEmail());
 					mc.displayGuiScreen(prevMenu);
 				}else
 				{// Premium
@@ -113,6 +113,7 @@ public class GuiAlts extends GuiScreen
 					{
 						mc.displayGuiScreen(prevMenu);
 						alt.setChecked(mc.session.getUsername());
+						WurstClient.INSTANCE.files.saveAlts();
 					}else
 					{
 						errorTimer = 8;
@@ -144,7 +145,7 @@ public class GuiAlts extends GuiScreen
 				String deleteQuestion =
 					"Are you sure you want to remove this alt?";
 				String deleteWarning =
-					"\"" + alt.getName()
+					"\"" + alt.getNameOrEmail()
 						+ "\" will be lost forever! (A long time!)";
 				mc.displayGuiScreen(new GuiYesNo(this, deleteQuestion,
 					deleteWarning, "Delete", "Cancel", 1));
@@ -213,7 +214,8 @@ public class GuiAlts extends GuiScreen
 			if(par1)
 			{
 				for(int i = 0; i < 8; i++)
-					GuiAltList.alts.add(new Alt(NameGenerator.generateName(), null, null));
+					GuiAltList.alts.add(new Alt(NameGenerator.generateName(),
+						null, null));
 				GuiAltList.sortAlts();
 				WurstClient.INSTANCE.files.saveAlts();
 			}
@@ -273,9 +275,9 @@ public class GuiAlts extends GuiScreen
 			&& altList.getSelectedSlot() < GuiAltList.alts.size())
 		{
 			Alt alt = GuiAltList.alts.get(altList.getSelectedSlot());
-			AltRenderer.drawAltBack(alt.getName(), (width / 2 - 125) / 2 - 32,
+			AltRenderer.drawAltBack(alt.getNameOrEmail(), (width / 2 - 125) / 2 - 32,
 				height / 2 - 64 - 9, 64, 128);
-			AltRenderer.drawAltBody(alt.getName(), width - (width / 2 - 140)
+			AltRenderer.drawAltBody(alt.getNameOrEmail(), width - (width / 2 - 140)
 				/ 2 - 32, height / 2 - 64 - 9, 64, 128);
 		}
 		drawCenteredString(fontRendererObj, "Alt Manager", width / 2, 4,
