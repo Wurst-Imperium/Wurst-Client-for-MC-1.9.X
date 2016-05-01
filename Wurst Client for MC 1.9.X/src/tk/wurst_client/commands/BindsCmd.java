@@ -9,6 +9,7 @@ package tk.wurst_client.commands;
 
 import java.util.Iterator;
 import java.util.Map.Entry;
+import java.util.TreeSet;
 
 import tk.wurst_client.commands.Cmd.Info;
 import tk.wurst_client.utils.MiscUtils;
@@ -37,14 +38,17 @@ public class BindsCmd extends Cmd
 				+ Integer.toString(wurst.keybinds.size()));
 			wurst.chat.message("Keybind list (page " + page + "/" + pages
 				+ "):");
-			Iterator<Entry<String, String>> itr =
+			Iterator<Entry<String, TreeSet<String>>> itr =
 				wurst.keybinds.entrySet().iterator();
 			for(int i = 0; itr.hasNext(); i++)
 			{
-				Entry<String, String> entry = itr.next();
+				Entry<String, TreeSet<String>> entry = itr.next();
+				
 				if(i >= (page - 1) * 8 && i < (page - 1) * 8 + 8)
-					wurst.chat
-						.message(entry.getKey() + ": " + entry.getValue());
+					entry.getValue()
+						.forEach(
+							(cmd) -> wurst.chat.message(entry.getKey() + ": "
+								+ cmd));
 			}
 		}else
 			syntaxError("Not a number: \"" + args[0] + "\"");

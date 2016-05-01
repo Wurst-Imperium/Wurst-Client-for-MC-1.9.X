@@ -9,6 +9,8 @@ package tk.wurst_client.gui.options.keybinds;
 
 import java.io.IOException;
 import java.util.Map.Entry;
+import java.util.Arrays;
+import java.util.TreeSet;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -24,10 +26,11 @@ public class GuiKeybindChange extends GuiScreen implements GuiPressAKeyCallback
 {
 	private GuiScreen prevMenu;
 	private GuiTextField commandBox;
-	private Entry<String, String> entry;
+	private Entry<String, TreeSet<String>> entry;
 	private String key = "NONE";
 	
-	public GuiKeybindChange(GuiScreen prevMenu, Entry<String, String> entry)
+	public GuiKeybindChange(GuiScreen prevMenu,
+		Entry<String, TreeSet<String>> entry)
 	{
 		this.prevMenu = prevMenu;
 		this.entry = entry;
@@ -51,7 +54,6 @@ public class GuiKeybindChange extends GuiScreen implements GuiPressAKeyCallback
 	public void initGui()
 	{
 		Keyboard.enableRepeatEvents(true);
-		buttonList.clear();
 		buttonList.add(new GuiButton(0, width / 2 - 100, 60, "Change Key"));
 		buttonList.add(new GuiButton(1, width / 2 - 100, height / 4 + 72,
 			"Save"));
@@ -59,10 +61,19 @@ public class GuiKeybindChange extends GuiScreen implements GuiPressAKeyCallback
 			"Cancel"));
 		commandBox =
 			new GuiTextField(0, fontRendererObj, width / 2 - 100, 100, 200, 20);
-		commandBox.setMaxStringLength(128);
+		commandBox.setMaxStringLength(65536);
 		commandBox.setFocused(true);
 		if(entry != null)
-			commandBox.setText(entry.getValue());
+		{
+			String cmds = "";
+			for(String cmd : entry.getValue())
+			{
+				if(!cmds.isEmpty())
+					cmds += ";";
+				cmds += cmd;
+			}
+			commandBox.setText(cmds);
+		}
 	}
 	
 	/**
@@ -84,7 +95,8 @@ public class GuiKeybindChange extends GuiScreen implements GuiPressAKeyCallback
 			{
 				if(entry != null)
 					WurstClient.INSTANCE.keybinds.remove(entry.getKey());
-				WurstClient.INSTANCE.keybinds.put(key, commandBox.getText());
+				WurstClient.INSTANCE.keybinds.put(key, new TreeSet<String>(
+					Arrays.asList(commandBox.getText().split(";"))));
 				WurstClient.INSTANCE.files.saveKeybinds();
 				mc.displayGuiScreen(prevMenu);
 				WurstClient.INSTANCE.analytics.trackEvent("keybinds", "set",
@@ -133,7 +145,7 @@ public class GuiKeybindChange extends GuiScreen implements GuiPressAKeyCallback
 			+ " Keybind", width / 2, 20, 16777215);
 		drawString(fontRendererObj, "Key: " + key, width / 2 - 100, 47,
 			10526880);
-		drawString(fontRendererObj, "Command", width / 2 - 100, 87, 10526880);
+		drawString(fontRendererObj, "Commands (separated by \";\")", width / 2 - 100, 87, 10526880);
 		commandBox.drawTextBox();
 		super.drawScreen(par1, par2, par3);
 	}

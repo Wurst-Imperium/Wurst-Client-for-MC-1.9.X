@@ -57,8 +57,12 @@ public class NavigatorNewKeybindScreen extends NavigatorScreen
 				if(choosingKey)
 				{
 					WurstClient wurst = WurstClient.INSTANCE;
-					wurst.keybinds.put(selectedKey,
-						possibleKeybinds.get(selectedCommand).getCommand());
+					if(wurst.keybinds.get(selectedKey) != null)
+						wurst.keybinds.get(selectedKey).add(
+							possibleKeybinds.get(selectedCommand).getCommand());
+					else
+						wurst.keybinds.put(selectedKey,
+							possibleKeybinds.get(selectedCommand).getCommand());
 					wurst.files.saveKeybinds();
 					mc.displayGuiScreen(parent);
 					wurst.navigator.addPreference(parent.getItem().getName());
@@ -134,10 +138,13 @@ public class NavigatorNewKeybindScreen extends NavigatorScreen
 			{
 				text += "\n\nKey: " + selectedKey;
 				KeybindManager keybinds = WurstClient.INSTANCE.keybinds;
-				if(keybinds.containsKey(selectedKey))
+				if(keybinds.get(selectedKey) != null)
+				{
 					text +=
-						"\n\nWARNING! This will overwrite an existing keybind:\n"
-							+ selectedKey + ": " + keybinds.get(selectedKey);
+						"\n\nWARNING: This key is already bound to the following command(s):";
+					keybinds.get(selectedKey).forEach(
+						(cmd) -> text += "\n- " + cmd);
+				}
 			}
 		}else
 			text = "Select what this keybind should do.";

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiButton;
@@ -150,18 +151,22 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 					possibleKeybind.getDescription());
 			TreeMap<String, PossibleKeybind> existingKeybinds = new TreeMap<>();
 			boolean noKeybindsSet = true;
-			for(Entry<String, String> entry : WurstClient.INSTANCE.keybinds
+			for(Entry<String, TreeSet<String>> entry : WurstClient.INSTANCE.keybinds
 				.entrySet())
 			{
-				String keybindDescription =
-					possibleKeybindsMap.get(entry.getValue());
-				if(keybindDescription != null)
+				for(String command : entry.getValue())
 				{
-					if(noKeybindsSet)
-						noKeybindsSet = false;
-					text += "\n" + entry.getKey() + ": " + keybindDescription;
-					existingKeybinds.put(entry.getKey(), new PossibleKeybind(
-						entry.getValue(), keybindDescription));
+					String keybindDescription =
+						possibleKeybindsMap.get(command);
+					if(keybindDescription != null)
+					{
+						if(noKeybindsSet)
+							noKeybindsSet = false;
+						text +=
+							"\n" + entry.getKey() + ": " + keybindDescription;
+						existingKeybinds.put(entry.getKey(),
+							new PossibleKeybind(command, keybindDescription));
+					}
 				}
 			}
 			if(noKeybindsSet)

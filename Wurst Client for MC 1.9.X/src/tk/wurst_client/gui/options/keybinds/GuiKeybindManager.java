@@ -9,6 +9,7 @@ package tk.wurst_client.gui.options.keybinds;
 
 import java.io.IOException;
 import java.util.Map.Entry;
+import java.util.TreeSet;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -79,7 +80,7 @@ public class GuiKeybindManager extends GuiScreen
 						WurstClient.INSTANCE.keybinds.size(), false, 0, 0);
 				if(clickedButton.id == 1)
 				{
-					Entry<String, String> entry =
+					Entry<String, TreeSet<String>> entry =
 						WurstClient.INSTANCE.keybinds.entrySet().toArray(
 							new Entry[WurstClient.INSTANCE.keybinds.size()])[bindList
 							.getSelectedSlot()];

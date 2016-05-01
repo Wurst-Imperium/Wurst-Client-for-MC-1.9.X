@@ -4,7 +4,6 @@ import static org.lwjgl.opengl.GL11.*;
 
 import java.awt.Rectangle;
 import java.io.IOException;
-import java.util.Map.Entry;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -12,9 +11,6 @@ import net.minecraft.client.gui.GuiScreen;
 import org.darkstorm.minecraft.gui.GuiManager;
 import org.darkstorm.minecraft.gui.component.Component;
 import org.darkstorm.minecraft.gui.component.Frame;
-
-import tk.wurst_client.WurstClient;
-import tk.wurst_client.utils.MiscUtils;
 
 public class GuiManagerDisplayScreen extends GuiScreen
 {
@@ -32,26 +28,6 @@ public class GuiManagerDisplayScreen extends GuiScreen
 			"Switch to the new GUI"));
 		buttonList
 			.add(new GuiButton(1, 156, height - 20, 150, 16, "Learn More"));
-	}
-	
-	@Override
-	protected void actionPerformed(GuiButton button) throws IOException
-	{
-		switch(button.id)
-		{
-			case 0:
-				for(Entry<String, String> entry : WurstClient.INSTANCE.keybinds
-					.entrySet())
-					if(entry.getValue().equalsIgnoreCase(".t clickgui"))
-						entry.setValue(".t navigator");
-				WurstClient.INSTANCE.files.saveKeybinds();
-				mc.displayGuiScreen(null);
-				mc.thePlayer.sendAutomaticChatMessage(".t navigator");
-				break;
-			case 1:
-				MiscUtils.openLink("https://www.wurst-client.tk/navigator/");
-				break;
-		}
 	}
 	
 	@Override

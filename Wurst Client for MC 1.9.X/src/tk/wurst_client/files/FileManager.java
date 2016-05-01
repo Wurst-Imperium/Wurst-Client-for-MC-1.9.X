@@ -16,6 +16,7 @@ import java.nio.file.Files;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map.Entry;
+import java.util.TreeSet;
 import java.util.function.Consumer;
 
 import net.minecraft.block.Block;
@@ -38,6 +39,7 @@ import com.google.common.collect.Sets;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 public class FileManager
 {
@@ -185,12 +187,15 @@ public class FileManager
 		try
 		{
 			JsonObject json = new JsonObject();
-			Iterator<Entry<String, String>> itr =
+			Iterator<Entry<String, TreeSet<String>>> itr =
 				WurstClient.INSTANCE.keybinds.entrySet().iterator();
 			while(itr.hasNext())
 			{
-				Entry<String, String> entry = itr.next();
-				json.addProperty(entry.getKey(), entry.getValue());
+				Entry<String, TreeSet<String>> entry = itr.next();
+				JsonArray jsonCmds = new JsonArray();
+				entry.getValue().forEach(
+					(cmd) -> jsonCmds.add(new JsonPrimitive(cmd)));
+				json.add(entry.getKey(), jsonCmds);
 			}
 			PrintWriter save = new PrintWriter(new FileWriter(keybinds));
 			save.println(JsonUtils.prettyGson.toJson(json));
@@ -221,14 +226,25 @@ public class FileManager
 			{
 				Entry<String, JsonElement> entry = itr.next();
 				
-				String command = entry.getValue().getAsString();
-				if(command.equalsIgnoreCase(".t clickgui"))
+				if(entry.getValue().isJsonArray())
 				{
-					command = ".t navigator";
-					needsUpdate = true;
+					TreeSet<String> commmands = new TreeSet<>();
+					entry.getValue().getAsJsonArray()
+						.forEach((cmd) -> commmands.add(cmd.getAsString()));
+					WurstClient.INSTANCE.keybinds
+						.put(entry.getKey(), commmands);
+					
+				}else
+				{
+					String command = entry.getValue().getAsString();
+					if(command.equalsIgnoreCase(".t clickgui"))
+					{
+						command = ".t navigator";
+						needsUpdate = true;
+					}
+					
+					WurstClient.INSTANCE.keybinds.put(entry.getKey(), command);
 				}
-				
-				WurstClient.INSTANCE.keybinds.put(entry.getKey(), command);
 			}
 			
 			// update file

@@ -7,13 +7,15 @@
  */
 package tk.wurst_client.options;
 
+import java.util.Arrays;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
-public class KeybindManager extends TreeMap<String, String>
+public class KeybindManager extends TreeMap<String, TreeSet<String>>
 {
 	public KeybindManager()
 	{
-		put("B", ".t fastbreak");
+		put("B", ".t fastbreak", ".t fastplace");
 		put("C", ".t fullbright");
 		put("G", ".t flight");
 		put("GRAVE", ".t speednuker");
@@ -27,5 +29,10 @@ public class KeybindManager extends TreeMap<String, String>
 		put("U", ".t freecam");
 		put("X", ".t x-ray");
 		put("Z", ".t sneak");
+	}
+	
+	public void put(String key, String... commands)
+	{
+		put(key, new TreeSet<String>(Arrays.asList(commands)));
 	}
 }
