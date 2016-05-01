@@ -403,9 +403,8 @@ public class FileManager
 			for(Alt alt : GuiAltList.alts)
 			{
 				JsonObject jsonAlt = new JsonObject();
-				jsonAlt.addProperty("name", alt.getName());
 				jsonAlt.addProperty("password", alt.getPassword());
-				jsonAlt.addProperty("cracked", alt.isCracked());
+				jsonAlt.addProperty("name", alt.getName());
 				jsonAlt.addProperty("starred", alt.isStarred());
 				json.add(alt.getEmail(), jsonAlt);
 			}
@@ -434,24 +433,19 @@ public class FileManager
 			{
 				Entry<String, JsonElement> entry = itr.next();
 				JsonObject jsonAlt = entry.getValue().getAsJsonObject();
+				
 				String email = entry.getKey();
-				String name =
-					jsonAlt.get("name") == null ? "" : jsonAlt.get("name")
-						.getAsString();
 				String password =
 					jsonAlt.get("password") == null ? "" : jsonAlt.get(
 						"password").getAsString();
-				boolean cracked =
-					jsonAlt.get("cracked") == null ? true : jsonAlt.get(
-						"cracked").getAsBoolean();
+				String name =
+					jsonAlt.get("name") == null ? "" : jsonAlt.get("name")
+						.getAsString();
 				boolean starred =
 					jsonAlt.get("starred") == null ? false : jsonAlt.get(
 						"starred").getAsBoolean();
-				if(cracked)
-					GuiAltList.alts.add(new Alt(email, starred));
-				else
-					GuiAltList.alts
-						.add(new Alt(email, name, password, starred));
+				
+				GuiAltList.alts.add(new Alt(email, password, name, starred));
 			}
 			GuiAltList.sortAlts();
 		}catch(Exception e)

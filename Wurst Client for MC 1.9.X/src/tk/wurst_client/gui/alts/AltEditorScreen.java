@@ -65,17 +65,7 @@ public abstract class AltEditorScreen extends GuiScreen
 	
 	protected String getName()
 	{
-		if(alt == null)
-			alt = new Alt(emailBox.getText(), passwordBox.getText());
-		if(lastNameCheck + 3000 < System.currentTimeMillis())
-		{
-			if(!alt.getEmail().equals(emailBox.getText()))
-				alt.setEmail(emailBox.getText());
-			if(!alt.getPassword().equals(passwordBox.getText()))
-				alt.setPassword(passwordBox.getText());
-			lastNameCheck = System.currentTimeMillis();
-		}
-		return alt.getName();
+		return emailBox.getText();
 	}
 	
 	/**

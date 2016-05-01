@@ -44,27 +44,29 @@ public class GuiAltEdit extends AltEditorScreen
 	@Override
 	protected void onDoneButtonClick(GuiButton button)
 	{// Save
-		Alt newAlt =
-			new Alt(emailBox.getText(), passwordBox.getText(),
-				editedAlt.isStarred());
 		if(passwordBox.getText().length() == 0)
-		{// Cracked
-			GuiAltList.alts.set(GuiAltList.alts.indexOf(editedAlt), newAlt);
+		{
+			// Cracked
 			displayText = "";
+			GuiAltList.alts.set(GuiAltList.alts.indexOf(editedAlt), new Alt(
+				emailBox.getText(), null, null, editedAlt.isStarred()));
+			
 		}else
-		{// Premium
+		{
+			// Premium
 			displayText =
-				LoginManager.check(emailBox.getText(), passwordBox.getText());
+				LoginManager.login(emailBox.getText(), passwordBox.getText());
 			if(displayText.equals(""))
-				GuiAltList.alts.set(GuiAltList.alts.indexOf(editedAlt), newAlt);
+				GuiAltList.alts.set(GuiAltList.alts.indexOf(editedAlt),
+					new Alt(emailBox.getText(), passwordBox.getText(),
+						mc.session.getUsername(), editedAlt.isStarred()));
 		}
+		
 		if(displayText.equals(""))
 		{
 			GuiAltList.sortAlts();
 			WurstClient.INSTANCE.files.saveAlts();
 			mc.displayGuiScreen(prevMenu);
-			GuiAlts.altList.elementClicked(GuiAltList.alts.indexOf(newAlt),
-				false, 0, 0);
 		}else
 			errorTimer = 8;
 	}

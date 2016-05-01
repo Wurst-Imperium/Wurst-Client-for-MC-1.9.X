@@ -13,84 +13,40 @@ public class Alt
 	private String name;
 	private String password;
 	private boolean cracked;
+	private boolean unchecked;
 	private boolean starred;
 	
-	public Alt(String email, String password)
+	public Alt(String email, String password, String name)
 	{
-		this(email, password, false);
+		this(email, password, name, false);
 	}
 	
-	public Alt(String email, String password, boolean starred)
+	public Alt(String email, String password, String name, boolean starred)
 	{
 		this.email = email;
 		this.starred = starred;
+		
 		if(password == null || password.isEmpty())
 		{
-			name = email;
-			this.password = null;
 			cracked = true;
-		}else
-		{
-			name = LoginManager.getName(email, password);
-			this.password = password;
-			cracked = false;
-		}
-	}
-	
-	public Alt(String email, String name, String password)
-	{
-		this(email, name, password, false);
-	}
-	
-	public Alt(String email, String name, String password, boolean starred)
-	{
-		this.email = email;
-		this.starred = starred;
-		if(password == null || password.isEmpty())
-		{
+			unchecked = false;
+			
 			this.name = email;
 			this.password = null;
-			cracked = true;
+			
 		}else
 		{
+			cracked = false;
+			unchecked = name == null || name.isEmpty();
+			
 			this.name = name;
 			this.password = password;
-			cracked = false;
 		}
-	}
-	
-	public Alt(String crackedName)
-	{
-		this(crackedName, false);
-	}
-	
-	public Alt(String crackedName, boolean starred)
-	{
-		email = crackedName;
-		name = crackedName;
-		password = null;
-		cracked = true;
-		this.starred = starred;
 	}
 	
 	public String getEmail()
 	{
 		return email;
-	}
-	
-	public void setEmail(String email)
-	{
-		this.email = email;
-		if(password == null || password.isEmpty())
-		{
-			name = email;
-			password = null;
-			cracked = true;
-		}else
-		{
-			name = LoginManager.getName(email, password);
-			cracked = false;
-		}
 	}
 	
 	public String getName()
@@ -103,11 +59,6 @@ public class Alt
 			return "";
 	}
 	
-	public void setName(String name)
-	{
-		this.name = name;
-	}
-	
 	public String getPassword()
 	{
 		if(password == null || password.isEmpty())
@@ -118,32 +69,9 @@ public class Alt
 			return password;
 	}
 	
-	public void setPassword(String password)
-	{
-		this.password = password;
-		if(password == null || password.isEmpty())
-		{
-			name = email;
-			this.password = null;
-			cracked = true;
-		}else
-		{
-			name = LoginManager.getName(email, password);
-			this.password = password;
-			cracked = false;
-		}
-	}
-	
 	public boolean isCracked()
 	{
 		return cracked;
-	}
-	
-	public void setCracked()
-	{
-		name = email;
-		password = null;
-		cracked = true;
 	}
 	
 	public boolean isStarred()
@@ -154,5 +82,16 @@ public class Alt
 	public void setStarred(boolean starred)
 	{
 		this.starred = starred;
+	}
+
+	public boolean isUnchecked()
+	{
+		return unchecked;
+	}
+
+	public void setChecked(String name)
+	{
+		this.name = name;
+		unchecked = false;
 	}
 }

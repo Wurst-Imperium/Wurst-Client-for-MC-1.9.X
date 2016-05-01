@@ -44,15 +44,15 @@ public class GuiAltAdd extends AltEditorScreen
 	{
 		if(passwordBox.getText().length() == 0)
 		{// Cracked
-			GuiAltList.alts.add(new Alt(emailBox.getText()));
+			GuiAltList.alts.add(new Alt(emailBox.getText(), null, null));
 			displayText = "";
 		}else
 		{// Premium
 			displayText =
-				LoginManager.check(emailBox.getText(), passwordBox.getText());
+				LoginManager.login(emailBox.getText(), passwordBox.getText());
 			if(displayText.equals(""))
 				GuiAltList.alts.add(new Alt(emailBox.getText(), passwordBox
-					.getText()));
+					.getText(), mc.session.getUsername()));
 		}
 		if(displayText.equals(""))
 		{

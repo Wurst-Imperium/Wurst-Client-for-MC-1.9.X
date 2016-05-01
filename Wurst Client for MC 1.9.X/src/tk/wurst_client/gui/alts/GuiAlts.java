@@ -110,8 +110,10 @@ public class GuiAlts extends GuiScreen
 					String reply =
 						LoginManager.login(alt.getEmail(), alt.getPassword());
 					if(reply.equals(""))
+					{
 						mc.displayGuiScreen(prevMenu);
-					else
+						alt.setChecked(mc.session.getUsername());
+					}else
 					{
 						errorTimer = 8;
 						if(reply.equals("§4§lWrong password!"))
@@ -187,7 +189,7 @@ public class GuiAlts extends GuiScreen
 									if(data.length != 2)
 										continue;
 									GuiAltList.alts.add(new Alt(data[0],
-										data[1]));
+										data[1], null));
 								}
 								load.close();
 								GuiAltList.sortAlts();
@@ -211,7 +213,7 @@ public class GuiAlts extends GuiScreen
 			if(par1)
 			{
 				for(int i = 0; i < 8; i++)
-					GuiAltList.alts.add(new Alt(NameGenerator.generateName()));
+					GuiAltList.alts.add(new Alt(NameGenerator.generateName(), null, null));
 				GuiAltList.sortAlts();
 				WurstClient.INSTANCE.files.saveAlts();
 			}

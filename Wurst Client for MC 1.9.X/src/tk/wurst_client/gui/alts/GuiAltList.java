@@ -142,8 +142,14 @@ public class GuiAltList extends GuiSlot
 			GuiAlts.altList.isSelected(GuiAltList.alts.indexOf(alt)));
 		mc.fontRendererObj.drawString("Name: " + alt.getName(), x + 31, y + 3,
 			10526880);
-		mc.fontRendererObj.drawString((alt.isCracked() ? "§8cracked"
-			: "§2premium") + (alt.isStarred() ? "§r & §estarred" : ""), x + 31,
+		
+		String tags = alt.isCracked() ? "§8cracked"
+			: "§2premium";
+		if(alt.isStarred())
+			tags += "§r, §estarred";
+		if(alt.isUnchecked())
+			tags += "§r, §cunchecked";
+		mc.fontRendererObj.drawString(tags, x + 31,
 			y + 15, 10526880);
 	}
 }

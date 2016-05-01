@@ -36,9 +36,9 @@ public class AddAltCmd extends Cmd
 					StringUtils.stripControlCodes(info.getPlayerNameForReal());
 				if(crackedName.equals(mc.thePlayer.getName())
 					|| crackedName.equals("Alexander01998")
-					|| GuiAltList.alts.contains(new Alt(crackedName)))
+					|| GuiAltList.alts.contains(new Alt(crackedName, null, null)))
 					continue;
-				GuiAltList.alts.add(new Alt(crackedName));
+				GuiAltList.alts.add(new Alt(crackedName, null, null));
 				alts++;
 			}
 			if(alts == 1)
@@ -49,7 +49,7 @@ public class AddAltCmd extends Cmd
 			wurst.files.saveAlts();
 		}else if(!args[0].equals("Alexander01998"))
 		{
-			GuiAltList.alts.add(new Alt(args[0]));
+			GuiAltList.alts.add(new Alt(args[0], null, null));
 			GuiAltList.sortAlts();
 			wurst.files.saveAlts();
 			wurst.chat.message("Added \"" + args[0] + "\" to the alt list.");
