@@ -13,6 +13,7 @@ import net.minecraft.network.play.client.CPacketAnimation;
 import net.minecraft.network.play.client.CPacketPlayerDigging;
 import net.minecraft.network.play.client.CPacketPlayerDigging.Action;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 
@@ -100,7 +101,7 @@ public class KaboomMod extends Mod implements UpdateListener
 								EnumFacing side = mc.objectMouseOver.sideHit;
 								BlockUtils.faceBlockPacket(pos);
 								mc.thePlayer.sendQueue
-									.addToSendQueue(new CPacketAnimation());
+									.addToSendQueue(new CPacketAnimation(EnumHand.MAIN_HAND));
 								mc.thePlayer.sendQueue
 									.addToSendQueue(new CPacketPlayerDigging(
 										Action.START_DESTROY_BLOCK, pos, side));
