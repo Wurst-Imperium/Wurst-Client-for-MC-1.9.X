@@ -12,7 +12,8 @@ import tk.wurst_client.mods.RemoteViewMod;
 
 @Info(help = "Toggles RemoteView or makes it target a specific entity.",
 	name = "rv",
-	syntax = {"[<Player>]"})
+	syntax = {"[<Player>]"},
+	tutorial = "Commands/rv")
 public class RvCmd extends Cmd
 {
 	@Override

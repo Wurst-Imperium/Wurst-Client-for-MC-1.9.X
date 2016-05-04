@@ -13,7 +13,8 @@ import tk.wurst_client.hooks.ServerHook;
 
 @Info(help = "Shows the version of the server you are currently playing on.",
 	name = "sv",
-	syntax = {})
+	syntax = {},
+	tutorial = "Commands/sv")
 public class SvCmd extends Cmd
 {
 	@Override

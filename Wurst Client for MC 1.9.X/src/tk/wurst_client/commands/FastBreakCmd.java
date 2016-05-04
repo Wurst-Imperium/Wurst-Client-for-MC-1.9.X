@@ -11,7 +11,8 @@ import tk.wurst_client.commands.Cmd.Info;
 
 @Info(help = "Changes the settings of FastBreak.",
 	name = "fastbreak",
-	syntax = {"mode (normal|instant)"})
+	syntax = {"mode (normal|instant)"},
+	tutorial = "Commands/fastbreak")
 public class FastBreakCmd extends Cmd
 {
 	@Override

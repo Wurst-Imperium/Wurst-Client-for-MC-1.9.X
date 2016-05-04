@@ -13,7 +13,8 @@ import tk.wurst_client.commands.Cmd.Info;
 
 @Info(help = "Walks or flies you to a specific location.",
 	name = "goto",
-	syntax = {"<x> <y> <z>", "<entity>"})
+	syntax = {"<x> <y> <z>", "<entity>"},
+	tutorial = "Commands/goto")
 public class GoToCmd extends Cmd
 {
 	@Override

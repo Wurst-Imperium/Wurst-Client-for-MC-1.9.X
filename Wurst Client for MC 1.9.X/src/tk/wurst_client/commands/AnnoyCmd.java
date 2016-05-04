@@ -13,7 +13,8 @@ import tk.wurst_client.events.listeners.ChatInputListener;
 
 @Info(help = "Annoys a player by repeating everything he says.",
 	name = "annoy",
-	syntax = {"[<player>]"})
+	syntax = {"[<player>]"},
+	tutorial = "Commands/annoy")
 public class AnnoyCmd extends Cmd implements ChatInputListener
 {
 	private boolean toggled;

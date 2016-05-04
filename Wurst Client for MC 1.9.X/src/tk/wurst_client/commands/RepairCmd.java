@@ -14,7 +14,8 @@ import tk.wurst_client.events.ChatOutputEvent;
 
 @Cmd.Info(help = "Repairs the held item. Requires creative mode.",
 	name = "repair",
-	syntax = {})
+	syntax = {},
+	tutorial = "Commands/repair")
 public class RepairCmd extends Cmd
 {
 	@Override

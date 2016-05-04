@@ -14,7 +14,8 @@ import tk.wurst_client.special.Spf;
 
 @Info(help = "Shows the feature count and some over statistics.",
 	name = "features",
-	syntax = {})
+	syntax = {},
+	tutorial = "Commands/features")
 public class FeaturesCmd extends Cmd
 {
 	@Override

@@ -12,7 +12,8 @@ import tk.wurst_client.utils.MiscUtils;
 
 @Info(help = "Changes the amount of Throw or toggles it.",
 	name = "throw",
-	syntax = {"[amount <amount>]"})
+	syntax = {"[amount <amount>]"},
+	tutorial = "Commands/throw")
 public class ThrowCmd extends Cmd
 {
 	@Override

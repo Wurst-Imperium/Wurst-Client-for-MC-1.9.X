@@ -14,7 +14,8 @@ import tk.wurst_client.events.listeners.RenderListener;
 
 @Info(help = "Allows you to see parts of another player's inventory.",
 	name = "invsee",
-	syntax = {"<player>"})
+	syntax = {"<player>"},
+	tutorial = "Commands/invsee")
 public class InvseeCmd extends Cmd implements RenderListener
 {
 	private String playerName;

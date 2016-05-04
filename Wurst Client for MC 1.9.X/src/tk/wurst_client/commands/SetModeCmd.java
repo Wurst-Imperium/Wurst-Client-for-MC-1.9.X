@@ -16,7 +16,8 @@ import tk.wurst_client.navigator.settings.NavigatorSetting;
 @Cmd.Info(help = "Changes a mode setting of a feature. Allows you to\n"
 	+ "switch modes through keybinds.",
 	name = "setmode",
-	syntax = {"<feature> <mode_setting> (<mode>|next|prev)"})
+	syntax = {"<feature> <mode_setting> (<mode>|next|prev)"},
+	tutorial = "Commands/setmode")
 public class SetModeCmd extends Cmd
 {
 	@Override

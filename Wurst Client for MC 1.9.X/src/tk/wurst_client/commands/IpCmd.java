@@ -16,7 +16,8 @@ import tk.wurst_client.hooks.ServerHook;
 
 @Info(help = "Shows the IP of the server you are currently playing on or copies it to the clipboard.",
 	name = "ip",
-	syntax = {"[copy]"})
+	syntax = {"[copy]"},
+	tutorial = "Commands/ip")
 public class IpCmd extends Cmd
 {
 	@Override

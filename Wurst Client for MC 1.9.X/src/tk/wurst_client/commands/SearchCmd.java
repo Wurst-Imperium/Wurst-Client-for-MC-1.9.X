@@ -13,7 +13,8 @@ import tk.wurst_client.utils.MiscUtils;
 
 @Info(help = "Changes the settings of Search or toggles it.",
 	name = "search",
-	syntax = {"id <block_id>", "name <block_name>"})
+	syntax = {"id <block_id>", "name <block_name>"},
+	tutorial = "Commands/search")
 public class SearchCmd extends Cmd
 {
 	@Override

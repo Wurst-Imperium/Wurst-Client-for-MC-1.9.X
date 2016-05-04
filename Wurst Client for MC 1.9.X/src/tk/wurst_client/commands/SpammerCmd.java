@@ -14,7 +14,8 @@ import tk.wurst_client.utils.MiscUtils;
 
 @Info(help = "Changes the delay of Spammer or spams spam from a file.",
 	name = "spammer",
-	syntax = {"delay <delay_in_ms>", "spam <file>"})
+	syntax = {"delay <delay_in_ms>", "spam <file>"},
+	tutorial = "Commands/spammer")
 public class SpammerCmd extends Cmd
 {
 	@Override

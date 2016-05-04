@@ -22,7 +22,8 @@ import tk.wurst_client.events.listeners.UpdateListener;
 @Info(help = "Spawns a dancing taco on your hotbar.\n"
 	+ "\"I love that little guy. So cute!\" -WiZARD",
 	name = "taco",
-	syntax = {})
+	syntax = {},
+	tutorial = "Commands/taco")
 public class TacoCmd extends Cmd implements GUIRenderListener, UpdateListener
 {
 	private static final ResourceLocation tacoTexture1 = new ResourceLocation(

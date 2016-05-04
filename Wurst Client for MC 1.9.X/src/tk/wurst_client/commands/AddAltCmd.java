@@ -17,7 +17,8 @@ import tk.wurst_client.gui.alts.GuiAltList;
 
 @Info(help = "Adds a player or all players on a server to your alt list.",
 	name = "addalt",
-	syntax = {"<player>", "all"})
+	syntax = {"<player>", "all"},
+	tutorial = "Commands/addalt")
 public class AddAltCmd extends Cmd
 {
 	@Override

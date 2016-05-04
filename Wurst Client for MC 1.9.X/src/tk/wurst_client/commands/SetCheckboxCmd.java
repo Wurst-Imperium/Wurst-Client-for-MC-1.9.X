@@ -16,7 +16,8 @@ import tk.wurst_client.navigator.settings.NavigatorSetting;
 @Cmd.Info(help = "Changes a checkbox setting of a feature. Allows you\n"
 	+ "to toggle checkboxes through keybinds.",
 	name = "setcheckbox",
-	syntax = {"<feature> <checkbox_setting> (on|off|toggle)"})
+	syntax = {"<feature> <checkbox_setting> (on|off|toggle)"},
+	tutorial = "Commands/setcheckbox")
 public class SetCheckboxCmd extends Cmd
 {
 	@Override

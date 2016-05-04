@@ -13,7 +13,7 @@ import tk.wurst_client.commands.Cmd.Info;
 @Info(help = "Sends a chat message, even if the message starts with a dot.",
 	name = "say",
 	syntax = {"<message>"},
-	tags = ".legit,dots in chat,command bypass,prefix",
+	tags = ".legit, dots in chat, command bypass, prefix",
 	tutorial = "Commands/say")
 public class SayCmd extends Cmd
 {

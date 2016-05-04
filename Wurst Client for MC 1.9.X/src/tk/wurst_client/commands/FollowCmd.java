@@ -12,7 +12,8 @@ import tk.wurst_client.utils.EntityUtils;
 
 @Cmd.Info(help = "Toggles Follow or makes it target a specific entity.",
 	name = "follow",
-	syntax = {"[<entity>]"})
+	syntax = {"[<entity>]"},
+	tutorial = "Commands/follow")
 public class FollowCmd extends Cmd
 {
 	@Override

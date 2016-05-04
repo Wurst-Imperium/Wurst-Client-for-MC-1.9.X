@@ -11,7 +11,8 @@ import tk.wurst_client.commands.Cmd.Info;
 
 @Info(help = "Teleports you up to 100 blocks away.\nOnly works on vanilla servers!",
 	name = "tp",
-	syntax = {"<x> <y> <z>", "<entity>"})
+	syntax = {"<x> <y> <z>", "<entity>"},
+	tutorial = "Commands/tp")
 public class TpCmd extends Cmd
 {
 	@Override

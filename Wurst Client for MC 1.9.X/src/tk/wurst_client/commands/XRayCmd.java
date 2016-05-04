@@ -18,7 +18,8 @@ import tk.wurst_client.utils.MiscUtils;
 
 @Info(help = "Manages or toggles X-Ray.", name = "xray", syntax = {
 	"add (id <block_id>|name <block_name>)",
-	"remove (id <block_id>|name <block_name>)", "list [<page>]"})
+	"remove (id <block_id>|name <block_name>)", "list [<page>]"},
+	tutorial = "Commands/xray")
 public class XRayCmd extends Cmd
 {
 	@Override

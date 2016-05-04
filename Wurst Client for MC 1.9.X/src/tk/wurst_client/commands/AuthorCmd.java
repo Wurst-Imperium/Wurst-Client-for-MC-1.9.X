@@ -14,7 +14,8 @@ import tk.wurst_client.commands.Cmd.Info;
 
 @Info(help = "Changes the held book's author.",
 	name = "author",
-	syntax = {"<author>"})
+	syntax = {"<author>"},
+	tutorial = "Commands/author")
 public class AuthorCmd extends Cmd
 {
 	@Override

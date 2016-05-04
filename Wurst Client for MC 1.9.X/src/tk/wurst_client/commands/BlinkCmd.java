@@ -9,7 +9,8 @@ package tk.wurst_client.commands;
 
 @Cmd.Info(help = "Enables, disables or cancels Blink.",
 	name = "blink",
-	syntax = {"[(on|off|cancel)]"})
+	syntax = {"[(on|off|cancel)]"},
+	tutorial = "Commands/blink")
 public class BlinkCmd extends Cmd
 {
 	@Override

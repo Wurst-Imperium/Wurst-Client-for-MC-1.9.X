@@ -17,7 +17,8 @@ import tk.wurst_client.utils.MiscUtils;
 @Cmd.Info(help = "Changes a slider setting of a feature. Allows you to\n"
 	+ "move sliders through keybinds.",
 	name = "setslider",
-	syntax = {"<feature> <slider_setting> (<value>|more|less)"})
+	syntax = {"<feature> <slider_setting> (<value>|more|less)"},
+	tutorial = "Commands/setslider")
 public class SetSliderCmd extends Cmd
 {
 	@Override

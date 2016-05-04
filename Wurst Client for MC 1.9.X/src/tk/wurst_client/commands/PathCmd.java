@@ -16,7 +16,8 @@ import tk.wurst_client.utils.RenderUtils;
 
 @Info(help = "Shows the shortest path to a specific point. Useful for labyrinths and caves.",
 	name = "path",
-	syntax = {"<x> <y> <z>", "<entity>"})
+	syntax = {"<x> <y> <z>", "<entity>"},
+	tutorial = "Commands/path")
 public class PathCmd extends Cmd implements RenderListener
 {
 	private PathPoint path;

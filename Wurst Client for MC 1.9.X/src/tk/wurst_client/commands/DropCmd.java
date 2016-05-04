@@ -18,7 +18,8 @@ import tk.wurst_client.events.listeners.UpdateListener;
 
 @Info(help = "Drops all your items on the ground.",
 	name = "drop",
-	syntax = {"[infinite]"})
+	syntax = {"[infinite]"},
+	tutorial = "Commands/drop")
 public class DropCmd extends Cmd implements UpdateListener
 {
 	private int timer;

@@ -12,7 +12,8 @@ import tk.wurst_client.events.ChatOutputEvent;
 
 @Info(help = "Does nothing. Useful for scripting.",
 	name = "nothing",
-	syntax = {})
+	syntax = {},
+	tutorial = "Commands/nothing")
 public class NothingCmd extends Cmd
 {
 	@Override

@@ -15,7 +15,8 @@ import tk.wurst_client.events.ChatOutputEvent;
 
 @Info(help = "Enchants items with everything.",
 	name = "enchant",
-	syntax = {"[all]"})
+	syntax = {"[all]"},
+	tutorial = "Commands/enchant")
 public class EnchantCmd extends Cmd
 {
 	@Override

@@ -14,7 +14,8 @@ import tk.wurst_client.utils.MiscUtils;
 
 @Info(help = "Shows the command list or the help for a command.",
 	name = "help",
-	syntax = {"[<page>]", "[<command>]"})
+	syntax = {"[<page>]", "[<command>]"},
+	tutorial = "Commands/help")
 public class HelpCmd extends Cmd
 {
 	@Override

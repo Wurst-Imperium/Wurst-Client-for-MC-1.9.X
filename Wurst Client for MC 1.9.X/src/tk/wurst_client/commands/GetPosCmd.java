@@ -15,7 +15,8 @@ import tk.wurst_client.events.ChatOutputEvent;
 
 @Cmd.Info(help = "Shows your current position or copies it to the clipboard.",
 	name = "getpos",
-	syntax = {"[copy]"})
+	syntax = {"[copy]"},
+	tutorial = "Commands/getpos")
 public class GetPosCmd extends Cmd
 {
 	@Override

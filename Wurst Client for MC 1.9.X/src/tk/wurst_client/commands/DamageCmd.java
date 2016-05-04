@@ -13,7 +13,8 @@ import tk.wurst_client.utils.MiscUtils;
 
 @Cmd.Info(help = "Applies the given amount of damage.",
 	name = "damage",
-	syntax = {"<amount>"})
+	syntax = {"<amount>"},
+	tutorial = "Commands/damage")
 public class DamageCmd extends Cmd
 {
 	@Override

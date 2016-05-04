@@ -12,7 +12,8 @@ import tk.wurst_client.utils.EntityUtils;
 
 @Cmd.Info(help = "Toggles Protect or makes it protect a specific entity.",
 	name = "protect",
-	syntax = {"[<entity>]"})
+	syntax = {"[<entity>]"},
+	tutorial = "Commands/protect")
 public class ProtectCmd extends Cmd
 {
 	@Override

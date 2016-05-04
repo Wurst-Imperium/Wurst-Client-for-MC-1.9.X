@@ -11,7 +11,8 @@ import tk.wurst_client.commands.Cmd.Info;
 
 @Info(help = "Types \"/gamemode <args>\".\nUseful for servers that don't support /gm.",
 	name = "gm",
-	syntax = {"<gamemode>"})
+	syntax = {"<gamemode>"},
+	tutorial = "Commands/gm")
 public class GmCmd extends Cmd
 {
 	@Override

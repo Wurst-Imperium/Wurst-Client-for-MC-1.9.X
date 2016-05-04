@@ -12,7 +12,8 @@ import tk.wurst_client.commands.Cmd.Info;
 
 @Info(help = "Renames the item in your hand. Use $ for colors, use $$ for $.",
 	name = "rename",
-	syntax = {"<new_name>"})
+	syntax = {"<new_name>"},
+	tutorial = "Commands/rename")
 public class RenameCmd extends Cmd
 {
 	@Override
