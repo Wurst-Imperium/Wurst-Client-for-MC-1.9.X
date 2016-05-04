@@ -15,7 +15,9 @@ import tk.wurst_client.mods.Mod.Info;
 
 @Info(category = Category.RENDER,
 	description = "Allows you to see ores through walls.",
-	name = "X-Ray")
+	name = "X-Ray",
+	tags = "xray, x ray",
+	tutorial = "Mods/X-Ray")
 public class XRayMod extends Mod
 {
 	public static ArrayList<Block> xrayBlocks = new ArrayList<Block>();

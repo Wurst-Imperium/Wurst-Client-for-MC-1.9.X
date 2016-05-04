@@ -17,7 +17,9 @@ import tk.wurst_client.mods.Mod.Info;
 		+ "this mod is enabled, that player will be unable to see\n"
 		+ "you. Only works on vanilla servers!",
 	name = "Invisibility",
-	noCheatCompatible = false)
+	noCheatCompatible = false,
+	tags = "Invisible, GodMode, god mode",
+	tutorial = "Mods/Invisibility")
 public class InvisibilityMod extends Mod implements UpdateListener
 {
 	@Override

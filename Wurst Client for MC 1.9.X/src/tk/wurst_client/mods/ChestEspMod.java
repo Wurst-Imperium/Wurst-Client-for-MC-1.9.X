@@ -18,7 +18,9 @@ import tk.wurst_client.utils.RenderUtils;
 
 @Info(category = Category.RENDER,
 	description = "Allows you to see chests through walls.",
-	name = "ChestESP")
+	name = "ChestESP",
+	tags = "ChestFinder, chest esp, chest finder",
+	tutorial = "Mods/ChestESP")
 public class ChestEspMod extends Mod implements RenderListener
 {
 	private int maxChests = 1000;

@@ -12,7 +12,9 @@ import tk.wurst_client.events.listeners.UpdateListener;
 @Mod.Info(category = Mod.Category.MOVEMENT,
 	description = "Allows you to fly with boats and rideable entities.\n"
 		+ "Bypasses NoCheat+, at least for now.",
-	name = "BoatFly")
+	name = "BoatFly",
+	tags = "BoatFlight, boat fly, boat flight",
+	tutorial = "Mods/BoatFly")
 public class BoatFlyMod extends Mod implements UpdateListener
 {
 	@Override

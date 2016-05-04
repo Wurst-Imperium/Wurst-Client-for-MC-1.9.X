@@ -17,7 +17,9 @@ import tk.wurst_client.navigator.settings.SliderSetting;
 @Info(category = Category.BLOCKS,
 	description = "Allows you to break blocks faster.\n"
 		+ "Tip: This works with Nuker.",
-	name = "FastBreak")
+	name = "FastBreak",
+	tags = "SpeedyGonzales, fast break, speedy gonzales",
+	tutorial = "Mods/FastBreak")
 public class FastBreakMod extends Mod
 {
 	public float speed = 2;

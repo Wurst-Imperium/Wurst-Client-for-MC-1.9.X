@@ -17,6 +17,7 @@ import tk.wurst_client.mods.Mod.Info;
 		+ "Can cause unwanted \"Flying is not enabled!\" kicks.",
 	name = "Regen",
 	noCheatCompatible = false,
+	tags = "GodMode, god mode",
 	tutorial = "Mods/Regen")
 public class RegenMod extends Mod implements UpdateListener
 {

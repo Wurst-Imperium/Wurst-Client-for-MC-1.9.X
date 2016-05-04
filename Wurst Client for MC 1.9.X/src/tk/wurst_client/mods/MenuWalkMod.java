@@ -18,7 +18,9 @@ import tk.wurst_client.navigator.gui.NavigatorScreen;
 @Mod.Info(category = Mod.Category.MOVEMENT,
 	description = "Allows you to walk while viewing a menu (e.g. the inventory\n"
 		+ "menu).",
-	name = "MenuWalk")
+	name = "MenuWalk",
+	tags = "InventoryWalk, menu walk, inventory walk",
+	tutorial = "Mods/MenuWalk")
 public class MenuWalkMod extends Mod
 {
 	public boolean shouldAllowWalking()

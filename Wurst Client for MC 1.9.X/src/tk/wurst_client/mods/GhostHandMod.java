@@ -11,7 +11,9 @@ package tk.wurst_client.mods;
 	description = "Allows you to reach specific blocks through walls.\n"
 		+ "Use .ghosthand id <block id> or .ghosthand name <block name>\n"
 		+ "to specify it.",
-	name = "GhostHand")
+	name = "GhostHand",
+	tags = "ghost hand",
+	tutorial = "Mods/GhostHand")
 public class GhostHandMod extends Mod
 {
 	@Override

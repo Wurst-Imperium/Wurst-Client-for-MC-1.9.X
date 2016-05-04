@@ -14,7 +14,9 @@ import tk.wurst_client.mods.Mod.Info;
 @Info(category = Category.MISC,
 	description = "Instantly turns off all enabled mods.\n"
 		+ "Be careful with this!",
-	name = "Panic")
+	name = "Panic",
+	tags = "legit, disable",
+	tutorial = "Mods/Panic")
 public class PanicMod extends Mod implements UpdateListener
 {
 	@Override

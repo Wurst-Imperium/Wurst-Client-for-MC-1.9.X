@@ -15,7 +15,8 @@ import tk.wurst_client.mods.Mod.Info;
 @Info(category = Category.MOVEMENT,
 	description = "Makes you fall like if you had a hang glider.",
 	name = "Glide",
-	noCheatCompatible = false)
+	noCheatCompatible = false,
+	tutorial = "Mods/Glide")
 public class GlideMod extends Mod implements UpdateListener
 {
 	@Override

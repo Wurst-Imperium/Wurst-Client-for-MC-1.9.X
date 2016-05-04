@@ -19,7 +19,9 @@ import tk.wurst_client.navigator.settings.ModeSetting;
 
 @Info(category = Category.COMBAT,
 	description = "Changes all your hits to critical hits.",
-	name = "Criticals")
+	name = "Criticals",
+	tags = "Crits",
+	tutorial = "Mods/Criticals")
 public class CriticalsMod extends Mod implements LeftClickListener
 {
 	private int mode = 1;

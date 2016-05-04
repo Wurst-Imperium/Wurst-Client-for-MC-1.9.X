@@ -14,7 +14,9 @@ import tk.wurst_client.mods.Mod.Info;
 @Info(category = Category.EXPLOITS,
 	description = "Exploits a bug in NoCheat+ that allows you to glitch\n"
 		+ "through blocks.",
-	name = "Phase")
+	name = "Phase",
+	tags = "Phaze",
+	tutorial = "Mods/Phase")
 public class PhaseMod extends Mod implements UpdateListener
 {
 	@Override

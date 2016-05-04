@@ -17,7 +17,9 @@ import tk.wurst_client.utils.EntityUtils;
 @Info(category = Category.COMBAT,
 	description = "A bot that automatically fights for you.\n"
 		+ "It walks around and kills everything.\n" + "Good for MobArena.",
-	name = "FightBot")
+	name = "FightBot",
+	tags = "fight bot",
+	tutorial = "Mods/FightBot")
 public class FightBotMod extends Mod implements UpdateListener
 {
 	private float speed;

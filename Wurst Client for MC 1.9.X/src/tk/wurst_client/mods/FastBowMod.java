@@ -24,7 +24,9 @@ import tk.wurst_client.navigator.NavigatorItem;
 	description = "Turns your bow into a machine gun.\n"
 		+ "Tip: This works with BowAimbot.",
 	name = "FastBow",
-	noCheatCompatible = false)
+	noCheatCompatible = false,
+	tags = "RapidFire, BowSpam, fast bow, rapid fire, bow spam",
+	tutorial = "Mods/FastBow")
 public class FastBowMod extends Mod implements UpdateListener
 {
 	@Override

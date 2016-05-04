@@ -11,7 +11,8 @@ package tk.wurst_client.mods;
 	description = "Allows you to walk on water.\n"
 		+ "The real Jesus used this hack ~2000 years ago.\n"
 		+ "Bypasses NoCheat+ if YesCheat+ is enabled.",
-	name = "Jesus")
+	name = "Jesus",
+	tutorial = "Mods/Jesus")
 public class JesusMod extends Mod
 {	
 	

@@ -16,7 +16,9 @@ import tk.wurst_client.mods.Mod.Info;
 	description = "Replaces ASCII characters in sent chat messages with fancier unicode characters. Can be\n"
 		+ "used to bypass curse word filters on some servers. Does not work on servers that block\n"
 		+ "unicode characters.",
-	name = "FancyChat")
+	name = "FancyChat",
+	tags = "fancy chat",
+	tutorial = "Mods/FancyChat")
 public class FancyChatMod extends Mod implements ChatOutputListener
 {
 	private final String blacklist = "(){}[]|";

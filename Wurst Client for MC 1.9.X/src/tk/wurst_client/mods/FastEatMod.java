@@ -16,7 +16,9 @@ import tk.wurst_client.mods.Mod.Info;
 @Info(category = Category.MISC,
 	description = "Allows you to eat food much faster.\n" + "OM! NOM! NOM!",
 	name = "FastEat",
-	noCheatCompatible = false)
+	noCheatCompatible = false,
+	tags = "FastNom, fast eat, fast nom",
+	tutorial = "Mods/FastEat")
 public class FastEatMod extends Mod implements UpdateListener
 {
 	@Override

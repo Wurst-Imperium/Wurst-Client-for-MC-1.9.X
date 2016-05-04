@@ -20,7 +20,9 @@ import tk.wurst_client.utils.EntityUtils;
 @Info(category = Category.RENDER,
 	description = "Allows you to see the world as someone else.\n"
 		+ "Use the .rv command to make it target a specific entity.",
-	name = "RemoteView")
+	name = "RemoteView",
+	tags = "remote view",
+	tutorial = "Mods/RemoteView")
 public class RemoteViewMod extends Mod implements UpdateListener
 {
 	private EntityPlayerSP newView = null;

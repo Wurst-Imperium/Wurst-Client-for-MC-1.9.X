@@ -21,7 +21,8 @@ import tk.wurst_client.utils.RenderUtils;
 	description = "Helps you to find specific blocks.\n"
 		+ "Use .search id <block id> or .search name <block name>\n"
 		+ "to specify it.",
-	name = "Search")
+	name = "Search",
+	tutorial = "Mods/Search")
 public class SearchMod extends Mod implements UpdateListener, RenderListener
 {
 	private ArrayList<BlockPos> matchingBlocks = new ArrayList<BlockPos>();

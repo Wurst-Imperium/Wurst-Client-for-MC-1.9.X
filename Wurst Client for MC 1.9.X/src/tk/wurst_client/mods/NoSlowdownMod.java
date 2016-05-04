@@ -15,7 +15,9 @@ import tk.wurst_client.mods.Mod.Info;
 	description = "Cancels slowness effects caused by water, soul sand and\n"
 		+ "using items.",
 	name = "NoSlowdown",
-	noCheatCompatible = false)
+	noCheatCompatible = false,
+	tags = "no slowdown, no slow down",
+	tutorial = "Mods/NoSlowdown")
 public class NoSlowdownMod extends Mod implements UpdateListener
 {
 	@Override

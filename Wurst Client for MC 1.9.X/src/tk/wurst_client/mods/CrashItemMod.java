@@ -13,7 +13,9 @@ import net.minecraft.item.ItemNameTag;
 @Mod.Info(category = Mod.Category.EXPLOITS,
 	description = "Generates a CrashItem.\n"
 		+ "Right click a mob with it to kick nearby players from the server.",
-	name = "CrashItem")
+	name = "CrashItem",
+	tags = "CrashNametag, CrashTag, crash item, crash nametag, crash tag",
+	tutorial = "Mods/CrashItem")
 public class CrashItemMod extends Mod
 {
 	@Override

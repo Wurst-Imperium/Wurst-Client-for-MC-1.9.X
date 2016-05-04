@@ -19,7 +19,9 @@ import tk.wurst_client.mods.Mod.Info;
 
 @Info(category = Category.COMBAT,
 	description = "Manages your armor automatically.",
-	name = "AutoArmor")
+	name = "AutoArmor",
+	tags = "auto armor",
+	tutorial = "Mods/AutoArmor")
 public class AutoArmorMod extends Mod implements UpdateListener
 {
 	private int[] bestArmor;

@@ -16,7 +16,9 @@ import tk.wurst_client.navigator.settings.SliderSetting;
 @Info(category = Category.MOVEMENT,
 	description = "Makes you jump much higher.",
 	name = "HighJump",
-	noCheatCompatible = false)
+	noCheatCompatible = false,
+	tags = "high jump",
+	tutorial = "Mods/HighJump")
 public class HighJumpMod extends Mod
 {
 	public int jumpHeight = 6;

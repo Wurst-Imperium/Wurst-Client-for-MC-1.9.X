@@ -16,7 +16,9 @@ import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
 @Mod.Info(category = Mod.Category.EXPLOITS,
 	description = "Generates a potion that can kill players in Creative mode.\n"
 		+ "Requires Creative mode.",
-	name = "KillerPotion")
+	name = "KillerPotion",
+	tags = "killer potion",
+	tutorial = "Mods/KillerPotion")
 public class KillerPotionMod extends Mod
 {
 	@Override

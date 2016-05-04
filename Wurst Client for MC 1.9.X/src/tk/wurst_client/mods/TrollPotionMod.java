@@ -16,7 +16,9 @@ import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
 @Mod.Info(category = Mod.Category.FUN,
 	description = "Generates an incredibly annoying potion.\n"
 		+ "Tip: AntiBlind makes you partially immune to it.",
-	name = "TrollPotion")
+	name = "TrollPotion",
+	tags = "troll potion",
+	tutorial = "Mods/TrollPotion")
 public class TrollPotionMod extends Mod
 {
 	@Override

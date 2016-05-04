@@ -41,7 +41,8 @@ import tk.wurst_client.utils.MiscUtils;
 		+ "Special features:\n" + ">ASCII art\n" + ">Run any Wurst command\n"
 		+ ">Variables\n" + ">HTML-like tags & comments\n"
 		+ ">Integrated help system",
-	name = "Spammer")
+	name = "Spammer",
+	tutorial = "Mods/Spammer")
 public class SpammerMod extends Mod
 {
 	private JDialog dialog;

@@ -16,7 +16,8 @@ import tk.wurst_client.mods.Mod.Info;
 @Info(category = Category.FUN,
 	description = "While this is active, other people will think you are\n"
 		+ "extremely tired and about to fall asleep!",
-	name = "Tired")
+	name = "Tired",
+	tutorial = "Mods/Tired")
 public class TiredMod extends Mod implements UpdateListener
 {
 	@Override

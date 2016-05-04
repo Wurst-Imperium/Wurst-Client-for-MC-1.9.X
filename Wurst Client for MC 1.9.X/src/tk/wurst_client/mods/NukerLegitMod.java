@@ -30,7 +30,9 @@ import tk.wurst_client.utils.RenderUtils;
 @Info(category = Category.BLOCKS,
 	description = "Slower Nuker that bypasses any cheat prevention\n"
 		+ "PlugIn. Not required on most NoCheat+ servers!",
-	name = "NukerLegit")
+	name = "NukerLegit",
+	tags = "LegitNuker, nuker legit, legit nuker",
+	tutorial = "Mods/NukerLegit")
 public class NukerLegitMod extends Mod implements LeftClickListener,
 	RenderListener, UpdateListener
 {

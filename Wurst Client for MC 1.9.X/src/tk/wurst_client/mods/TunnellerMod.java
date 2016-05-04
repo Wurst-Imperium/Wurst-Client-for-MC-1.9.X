@@ -22,7 +22,8 @@ import tk.wurst_client.utils.RenderUtils;
 
 @Mod.Info(category = Mod.Category.BLOCKS,
 	description = "Digs a 3x3 tunnel around you.",
-	name = "Tunneller")
+	name = "Tunneller",
+	tutorial = "Mods/Tunneller")
 public class TunnellerMod extends Mod implements RenderListener, UpdateListener
 {
 	private static Block currentBlock;

@@ -21,7 +21,9 @@ import tk.wurst_client.navigator.NavigatorItem;
 	description = "Automatically uses the best weapon in your hotbar to attack\n"
 		+ "entities. Tip: This works with Killaura.",
 	name = "AutoSword",
-	noCheatCompatible = false)
+	noCheatCompatible = false,
+	tags = "auto sword",
+	tutorial = "Mods/AutoSword")
 public class AutoSwordMod extends Mod implements LeftClickListener,
 	UpdateListener
 {

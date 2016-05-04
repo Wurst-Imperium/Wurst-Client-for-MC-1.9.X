@@ -15,7 +15,9 @@ import tk.wurst_client.utils.EntityUtils;
 @Mod.Info(category = Mod.Category.FUN,
 	description = "Pushes mobs like crazy.\n" + "They'll literally fly away!\n"
 		+ "Can sometimes get you kicked for \"Flying is not enabled\".",
-	name = "ForcePush")
+	name = "ForcePush",
+	tags = "force push",
+	tutorial = "Mods/ForcePush")
 public class ForcePushMod extends Mod implements UpdateListener
 {
 	@Override

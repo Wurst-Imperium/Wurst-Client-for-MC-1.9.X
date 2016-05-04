@@ -15,7 +15,9 @@ import tk.wurst_client.mods.Mod.Info;
 	description = "Allows you to jump in mid-air.\n"
 		+ "Looks as if you had a jetpack.",
 	name = "Jetpack",
-	noCheatCompatible = false)
+	noCheatCompatible = false,
+	tags = "jet pack",
+	tutorial = "Mods/Jetpack")
 public class JetpackMod extends Mod implements UpdateListener
 {
 	@Override

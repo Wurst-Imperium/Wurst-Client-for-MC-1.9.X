@@ -16,7 +16,9 @@ import tk.wurst_client.mods.Mod.Info;
 	description = "While this is active, other people will think you are\n"
 		+ "derping around.",
 	name = "Derp",
-	noCheatCompatible = false)
+	noCheatCompatible = false,
+	tags = "Retarded",
+	tutorial = "Mods/Derp")
 public class DerpMod extends Mod implements UpdateListener
 {
 	@Override

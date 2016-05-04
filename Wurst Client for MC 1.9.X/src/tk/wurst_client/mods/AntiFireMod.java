@@ -17,7 +17,9 @@ import tk.wurst_client.mods.Mod.Info;
 		+ "Does NOT block damage from standing inside of fire.\n"
 		+ "Requires a full hunger bar.",
 	name = "AntiFire",
-	noCheatCompatible = false)
+	noCheatCompatible = false,
+	tags = "anti fire, AntiBurn, anti burn, NoFire, no fire",
+	tutorial = "Mods/AntiFire")
 public class AntiFireMod extends Mod implements UpdateListener
 {
 	@Override

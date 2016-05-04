@@ -9,7 +9,9 @@ package tk.wurst_client.mods;
 
 @Mod.Info(category = Mod.Category.BLOCKS,
 	description = "Protects you from cactus damage.",
-	name = "AntiCactus")
+	name = "AntiCactus",
+	tags = "anti cactus",
+	tutorial = "Mods/AntiCactus")
 public class AntiCactusMod extends Mod
 {	
 	

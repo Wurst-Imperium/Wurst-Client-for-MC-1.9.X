@@ -17,7 +17,8 @@ import tk.wurst_client.utils.RenderUtils;
 
 @Info(category = Category.RENDER,
 	description = "Draws lines to players around you.",
-	name = "Tracers")
+	name = "Tracers",
+	tutorial = "Mods/Tracers")
 public class TracersMod extends Mod implements RenderListener
 {
 	@Override

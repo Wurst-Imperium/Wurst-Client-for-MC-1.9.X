@@ -13,7 +13,9 @@ import tk.wurst_client.mods.Mod.Info;
 
 @Info(category = Category.MOVEMENT,
 	description = "Automatically swims like a dolphin.",
-	name = "Dolphin")
+	name = "Dolphin",
+	tags = "AutoSwim, auto swim",
+	tutorial = "Mods/Dolphin")
 public class DolphinMod extends Mod implements UpdateListener
 {
 	@Override

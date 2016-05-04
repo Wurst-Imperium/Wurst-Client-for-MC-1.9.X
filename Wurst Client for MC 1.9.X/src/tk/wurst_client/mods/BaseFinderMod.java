@@ -20,7 +20,9 @@ import tk.wurst_client.utils.RenderUtils;
 @Info(category = Category.RENDER,
 	description = "Finds player bases by searching for man-made blocks.\n"
 		+ "Good for finding faction bases.",
-	name = "BaseFinder")
+	name = "BaseFinder",
+	tags = "base finder, factions",
+	tutorial = "Mods/BaseFinder")
 public class BaseFinderMod extends Mod implements UpdateListener,
 	RenderListener
 {

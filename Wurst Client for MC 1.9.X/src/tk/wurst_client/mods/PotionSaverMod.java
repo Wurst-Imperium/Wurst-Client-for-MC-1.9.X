@@ -9,7 +9,9 @@ package tk.wurst_client.mods;
 
 @Mod.Info(category = Mod.Category.COMBAT,
 	description = "Freezes all potion effects while you are standing still.",
-	name = "PotionSaver")
+	name = "PotionSaver",
+	tags = "potion saver",
+	tutorial = "Mods/PotionSaver")
 public class PotionSaverMod extends Mod
 {	
 	

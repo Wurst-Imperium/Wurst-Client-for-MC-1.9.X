@@ -22,8 +22,8 @@ import tk.wurst_client.navigator.settings.SliderSetting;
 		+ "Bypasses NoCheat+ if YesCheat+ is enabled.\n"
 		+ "Bypasses MAC if AntiMAC is enabled.",
 	name = "Flight",
-	tutorial = "Mods/Flight",
-	tags = "FlyHack,fly hack,flying")
+	tags = "FlyHack,fly hack,flying",
+	tutorial = "Mods/Flight")
 public class FlightMod extends Mod implements UpdateListener
 {
 	public float speed = 1F;
@@ -65,11 +65,11 @@ public class FlightMod extends Mod implements UpdateListener
 			for(int i = 0; i < 4; i++)
 			{
 				mc.thePlayer.sendQueue
-					.addToSendQueue(new C04PacketPlayerPosition(
-						startX, startY + 1.01, startZ, false));
+					.addToSendQueue(new C04PacketPlayerPosition(startX,
+						startY + 1.01, startZ, false));
 				mc.thePlayer.sendQueue
-					.addToSendQueue(new C04PacketPlayerPosition(
-						startX, startY, startZ, false));
+					.addToSendQueue(new C04PacketPlayerPosition(startX, startY,
+						startZ, false));
 			}
 			mc.thePlayer.jump();
 		}

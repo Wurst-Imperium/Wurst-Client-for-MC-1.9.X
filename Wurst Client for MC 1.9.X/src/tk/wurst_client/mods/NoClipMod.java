@@ -15,7 +15,9 @@ import tk.wurst_client.mods.Mod.Info;
 	description = "Allows you to freely move through blocks.\n"
 		+ "A block (e.g. sand) must fall on your head to activate it.\n"
 		+ "Warning: You will take damage while moving through blocks!",
-	name = "NoClip")
+	name = "NoClip",
+	tags = "no clip",
+	tutorial = "Mods/NoClip")
 public class NoClipMod extends Mod implements UpdateListener
 {
 	@Override

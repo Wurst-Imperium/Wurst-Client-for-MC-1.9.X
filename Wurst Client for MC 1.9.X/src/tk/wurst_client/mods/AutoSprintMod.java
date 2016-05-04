@@ -13,7 +13,9 @@ import tk.wurst_client.mods.Mod.Info;
 
 @Info(category = Category.MOVEMENT,
 	description = "Makes you sprint whenever you walk.",
-	name = "AutoSprint")
+	name = "AutoSprint",
+	tags = "auto sprint",
+	tutorial = "Mods/AutoSprint")
 public class AutoSprintMod extends Mod implements UpdateListener
 {
 	@Override

@@ -19,7 +19,7 @@ import tk.wurst_client.utils.EntityUtils;
 	description = "Automatically attacks the closest valid entity while teleporting around it.",
 	name = "TP-Aura",
 	noCheatCompatible = false,
-	tags = "TpAura,tp aura,EnderAura,ender aura",
+	tags = "TpAura, EnderAura, tp aura, ender aura",
 	tutorial = "Mods/TP-Aura")
 public class TpAuraMod extends Mod implements UpdateListener
 {

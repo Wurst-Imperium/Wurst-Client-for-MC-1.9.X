@@ -12,7 +12,9 @@ import tk.wurst_client.mods.Mod.Info;
 
 @Info(category = Category.RENDER,
 	description = "Adds the health of players to their nametags.",
-	name = "HealthTags")
+	name = "HealthTags",
+	tags = "health tags",
+	tutorial = "Mods/HealthTags")
 public class HealthTagsMod extends Mod
 {	
 	

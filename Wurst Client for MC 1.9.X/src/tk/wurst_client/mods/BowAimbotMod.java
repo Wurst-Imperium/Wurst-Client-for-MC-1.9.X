@@ -31,7 +31,9 @@ import tk.wurst_client.utils.RenderUtils;
 @Info(category = Category.COMBAT,
 	description = "Automatically aims your bow at the closest entity.\n"
 		+ "Tip: This works with FastBow.",
-	name = "BowAimbot")
+	name = "BowAimbot",
+	tags = "bow aimbot",
+	tutorial = "Mods/BowAimbot")
 public class BowAimbotMod extends Mod implements UpdateListener,
 	RenderListener, GUIRenderListener
 {

@@ -15,7 +15,9 @@ import tk.wurst_client.mods.Mod.Info;
 @Info(category = Category.RENDER,
 	description = "Allows you to fly out of your body.\n"
 		+ "Looks similar to spectator mode.",
-	name = "Freecam")
+	name = "Freecam",
+	tags = "free cam, spectator",
+	tutorial = "Mods/Freecam")
 public class FreecamMod extends Mod implements UpdateListener
 {
 	private EntityOtherPlayerMP fakePlayer = null;

@@ -18,7 +18,9 @@ import tk.wurst_client.mods.Mod.Info;
 	description = "Automatically blocks whenever you hit something with a\n"
 		+ "sword. Some say that you will receive less damage in PVP when doing\n"
 		+ "this.",
-	name = "BlockHit")
+	name = "BlockHit",
+	tags = "AutoBlock, BlockHitting, auto block, block hitting",
+	tutorial = "Mods/BlockHit")
 public class BlockHitMod extends Mod implements LeftClickListener
 {
 	@Override

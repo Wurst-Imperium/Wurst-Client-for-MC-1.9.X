@@ -20,7 +20,9 @@ import tk.wurst_client.navigator.NavigatorItem;
 @Info(category = Category.BLOCKS,
 	description = "Automatically uses the best tool in your hotbar to\n"
 		+ "mine blocks. Tip: This works with Nuker.",
-	name = "AutoTool")
+	name = "AutoTool",
+	tags = "auto tool",
+	tutorial = "Mods/AutoTool")
 public class AutoToolMod extends Mod implements LeftClickListener,
 	UpdateListener
 {

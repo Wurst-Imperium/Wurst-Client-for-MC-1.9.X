@@ -12,7 +12,9 @@ import tk.wurst_client.mods.Mod.Info;
 
 @Info(category = Category.RENDER,
 	description = "Blocks blindness and nausea.",
-	name = "AntiBlind")
+	name = "AntiBlind",
+	tags = "AntiBlindness, anti blindness",
+	tutorial = "Mods/AntiBlind")
 public class AntiBlindMod extends Mod
 {	
 	

@@ -16,7 +16,8 @@ import tk.wurst_client.mods.Mod.Info;
 		+ "This can cause a lot of lag and even crash a server.\n"
 		+ "Works best with snowballs or eggs.\n"
 		+ "Use the .throw command to change the amount of uses per click.",
-	name = "Throw")
+	name = "Throw",
+	tutorial = "Mods/Throw")
 public class ThrowMod extends Mod implements UpdateListener
 {
 	@Override

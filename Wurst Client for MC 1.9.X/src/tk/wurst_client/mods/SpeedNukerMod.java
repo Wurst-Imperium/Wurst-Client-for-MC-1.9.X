@@ -22,7 +22,9 @@ import tk.wurst_client.utils.BlockUtils;
 
 @Info(category = Category.BLOCKS,
 	description = "Faster Nuker that cannot bypass NoCheat+.",
-	name = "SpeedNuker")
+	name = "SpeedNuker",
+	tags = "FastNuker, speed nuker, fast nuker",
+	tutorial = "Mods/SpeedNuker")
 public class SpeedNukerMod extends Mod implements LeftClickListener,
 	UpdateListener
 {

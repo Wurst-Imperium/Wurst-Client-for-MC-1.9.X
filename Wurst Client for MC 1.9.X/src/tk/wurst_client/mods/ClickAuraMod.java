@@ -20,7 +20,8 @@ import tk.wurst_client.utils.EntityUtils;
 		+ "and are easier to detect. It is recommended to use Killaura or\n"
 		+ "TriggerBot instead.",
 	name = "ClickAura",
-	tags = "Click Aura,ClickAimbot,Click Aimbot")
+	tags = "Click Aura,ClickAimbot,Click Aimbot",
+	tutorial = "Mods/ClickAura")
 public class ClickAuraMod extends Mod implements UpdateListener
 {
 	@Override

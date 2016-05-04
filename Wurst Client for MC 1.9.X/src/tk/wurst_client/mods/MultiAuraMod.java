@@ -20,7 +20,9 @@ import tk.wurst_client.utils.EntityUtils;
 @Info(category = Category.COMBAT,
 	description = "Faster Killaura that attacks multiple entities at once.",
 	name = "MultiAura",
-	noCheatCompatible = false)
+	noCheatCompatible = false,
+	tags = "ForceField, multi aura, force field",
+	tutorial = "Mods/MultiAura")
 public class MultiAuraMod extends Mod implements UpdateListener
 {
 	private float range = 6F;

@@ -30,7 +30,8 @@ import tk.wurst_client.utils.BlockUtils;
 		+ "doesn't have NoCheat+. It works best with fast tools\n"
 		+ "and weak blocks.\n" + "Note that this is not an actual explosion.",
 	name = "Kaboom",
-	noCheatCompatible = false)
+	noCheatCompatible = false,
+	tutorial = "Mods/Kaboom")
 public class KaboomMod extends Mod implements UpdateListener
 {
 	private int range = 6;

@@ -15,7 +15,9 @@ import tk.wurst_client.events.listeners.UpdateListener;
 		+ "Notice: This mod was patched in NoCheat+ version 3.13.2. It will\n"
 		+ "only bypass older versions of NoCheat+. Type \"/ncp version\" to\n"
 		+ "check the NoCheat+ version of a server.",
-	name = "SpeedHack")
+	name = "SpeedHack",
+	tags = "speed hack",
+	tutorial = "Mods/SpeedHack")
 public class SpeedHackMod extends Mod implements UpdateListener
 {
 	@Override

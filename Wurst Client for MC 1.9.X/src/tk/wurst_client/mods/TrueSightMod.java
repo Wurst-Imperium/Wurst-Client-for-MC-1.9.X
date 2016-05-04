@@ -12,7 +12,9 @@ import tk.wurst_client.mods.Mod.Info;
 
 @Info(category = Category.RENDER,
 	description = "Allows you to see invisible entities.",
-	name = "TrueSight")
+	name = "TrueSight",
+	tags = "true sight",
+	tutorial = "Mods/TrueSight")
 public class TrueSightMod extends Mod
 {	
 	
