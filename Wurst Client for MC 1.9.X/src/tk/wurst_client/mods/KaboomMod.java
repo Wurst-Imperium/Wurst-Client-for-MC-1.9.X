@@ -100,7 +100,7 @@ public class KaboomMod extends Mod implements UpdateListener
 								EnumFacing side = mc.objectMouseOver.sideHit;
 								BlockUtils.faceBlockPacket(pos);
 								mc.thePlayer.sendQueue
-									.addToSendQueue(new CPacketAnimation());
+									.addToSendQueue(new CPacketAnimation(EnumHand.MAIN_HAND));
 								mc.thePlayer.sendQueue
 									.addToSendQueue(new CPacketPlayerDigging(
 										Action.START_DESTROY_BLOCK, pos, side));
