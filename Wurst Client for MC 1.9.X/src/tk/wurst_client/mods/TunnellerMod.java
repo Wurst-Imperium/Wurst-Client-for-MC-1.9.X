@@ -118,7 +118,7 @@ public class TunnellerMod extends Mod implements RenderListener, UpdateListener
 		}
 		if(wurst.mods.autoToolMod.isActive())
 			AutoToolMod.setSlot(pos);
-		mc.thePlayer.sendQueue.addToSendQueue(new CPacketAnimation());
+		mc.thePlayer.sendQueue.addToSendQueue(new CPacketAnimation(EnumHand.MAIN_HAND));
 		shouldRenderESP = true;
 		BlockUtils.faceBlockPacket(pos);
 		currentDamage +=
