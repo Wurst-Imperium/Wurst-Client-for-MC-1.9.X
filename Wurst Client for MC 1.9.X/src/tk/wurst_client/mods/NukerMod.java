@@ -181,7 +181,7 @@ public class NukerMod extends Mod implements LeftClickListener, RenderListener,
 		}
 		if(wurst.mods.autoToolMod.isActive())
 			AutoToolMod.setSlot(pos);
-		mc.thePlayer.sendQueue.addToSendQueue(new CPacketAnimation());
+		mc.thePlayer.sendQueue.addToSendQueue(new CPacketAnimation(EnumHand.MAIN_HAND));
 		shouldRenderESP = true;
 		BlockUtils.faceBlockPacket(pos);
 		currentDamage +=
