@@ -47,18 +47,19 @@ public class EntityUtils
 		}
 	}
 	
-	public synchronized static void faceEntityPacket(EntityLivingBase entity)
+	public synchronized static boolean faceEntityPacket(EntityLivingBase entity)
 	{
 		float[] rotations = getRotationsNeeded(entity);
 		if(rotations != null)
 		{
 			yaw =
 				limitAngleChange(
-					Minecraft.getMinecraft().thePlayer.prevRotationYaw,
-					rotations[0], 55);// NoCheat+
+					yaw,
+					rotations[0], 30);// NoCheat+
 			pitch = rotations[1];
-			lookChanged = true;
+			return yaw == rotations[0];
 		}
+		return true;
 	}
 	
 	public static float[] getRotationsNeeded(Entity entity)
@@ -97,7 +98,7 @@ public class EntityUtils
 		
 	}
 	
-	private final static float limitAngleChange(final float current,
+	public final static float limitAngleChange(final float current,
 		final float intended, final float maxChange)
 	{
 		float change = intended - current;

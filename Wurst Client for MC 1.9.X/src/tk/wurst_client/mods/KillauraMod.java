@@ -106,19 +106,26 @@ public class KillauraMod extends Mod implements UpdateListener
 		updateSpeedAndRange();
 		updateMS();
 		EntityLivingBase en = EntityUtils.getClosestEntity(true, true);
+		if(en == null)
+		{
+			EntityUtils.lookChanged = false;
+			return;
+		}
+		EntityUtils.lookChanged = true;
 		if((useCooldown.isChecked() ? mc.thePlayer.getSwordCooldown(0F) >= 1F
 			: hasTimePassedS(realSpeed))
-			&& en != null
 			&& mc.thePlayer.getDistanceToEntity(en) <= realRange)
 		{
 			if(wurst.mods.autoSwordMod.isActive())
 				AutoSwordMod.setSlot();
 			wurst.mods.criticalsMod.doCritical();
 			wurst.mods.blockHitMod.doBlock();
-			EntityUtils.faceEntityPacket(en);
 			
-			mc.playerController.attackEntity(mc.thePlayer, en);
-			mc.thePlayer.swingArm(EnumHand.MAIN_HAND);
+			if(EntityUtils.faceEntityPacket(en))
+			{
+				mc.playerController.attackEntity(mc.thePlayer, en);
+				mc.thePlayer.swingArm(EnumHand.MAIN_HAND);
+			}
 			
 			updateLastMS();
 		}
@@ -128,6 +135,7 @@ public class KillauraMod extends Mod implements UpdateListener
 	public void onDisable()
 	{
 		wurst.events.remove(UpdateListener.class, this);
+		EntityUtils.lookChanged = false;
 	}
 	
 	private void updateSpeedAndRange()

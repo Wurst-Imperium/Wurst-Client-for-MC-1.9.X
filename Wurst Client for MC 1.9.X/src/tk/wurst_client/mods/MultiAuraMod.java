@@ -58,8 +58,13 @@ public class MultiAuraMod extends Mod implements UpdateListener
 		updateMS();
 		EntityLivingBase closestEntity =
 			EntityUtils.getClosestEntity(true, false);
-		if(closestEntity != null
-			&& mc.thePlayer.getDistanceToEntity(closestEntity) <= range
+		if(closestEntity == null)
+		{
+			EntityUtils.lookChanged = false;
+			return;
+		}
+		EntityUtils.lookChanged = true;
+		if(mc.thePlayer.getDistanceToEntity(closestEntity) <= range
 			&& (wurst.mods.killauraMod.useCooldown.isChecked() ? mc.thePlayer
 				.getSwordCooldown(0F) >= 1F : true))
 		{
@@ -85,5 +90,6 @@ public class MultiAuraMod extends Mod implements UpdateListener
 	public void onDisable()
 	{
 		wurst.events.remove(UpdateListener.class, this);
+		EntityUtils.lookChanged = false;
 	}
 }
