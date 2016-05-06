@@ -65,11 +65,11 @@ public class MassTpaMod extends Mod implements UpdateListener,
 				for(int i = 1; i < args.length; i++)
 				message += " " + args[i];
 		//	mc.thePlayer.sendQueue.addToSendQueue(new CPacketChatMessage(message));
-		mc.thePlayer.sendChatMessage(message);
+			mc.thePlayer.sendChatMessage(message);
 		
 			updateLastMS();
 			i++;
-			if(i == players.size())
+			if(i >= players.size())
 				setEnabled(false);
 		}
 	}
