@@ -23,14 +23,8 @@ public class MassTpaMod extends Cmd implements UpdateListener,
 			wurst.mods.massMsgCmdMod.setEnabled(true);
 			
 			
-			if(args.length > 1)
-		{
-			String message = "½$" + args[0];
-			for(int i = 1; i < args.length; i++)
-				message += " " + args[i];
-			mc.thePlayer.sendQueue.addToSendQueue(new CPacketChatMessage(
-				message));
-		}
+			if(args.length < 2)
+		SynatxError();
 			
 		
 		}
