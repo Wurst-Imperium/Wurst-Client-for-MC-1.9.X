@@ -19,13 +19,11 @@ public class MassTpaMod extends Cmd implements UpdateListener,
 	@Override
 	public void execute(String[] args) throws Error
 	{
+		if(args.length < 2)
+		SynatxError();
+		
 		if(!wurst.mods.massMsgCmdMod.isEnabled())
 			wurst.mods.massMsgCmdMod.setEnabled(true);
 			
-			
-			if(args.length < 2)
-		SynatxError();
-			
-		
 		}
 }
