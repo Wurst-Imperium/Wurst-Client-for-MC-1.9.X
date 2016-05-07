@@ -7,6 +7,8 @@
  */
 package tk.wurst_client.mods;
 
+import org.darkstorm.minecraft.gui.component.BoundedRangeComponent.ValueDisplay;
+
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
@@ -14,6 +16,8 @@ import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.NavigatorItem;
+import tk.wurst_client.navigator.settings.ModeSetting;
+import tk.wurst_client.navigator.settings.SliderSetting;
 
 @Info(category = Category.MISC,
 	description = "Automatically eats food when necessary.",
@@ -24,11 +28,25 @@ public class AutoEatMod extends Mod implements UpdateListener
 {
 	private int oldSlot;
 	private int bestSlot;
+	private int hungerMinimal = 15;
 	
 	@Override
 	public NavigatorItem[] getSeeAlso()
 	{
 		return new NavigatorItem[]{wurst.mods.autoSoupMod};
+	}
+	
+	public void initSettings()
+	{
+		settings.add(new SliderSetting("Minimal", hungerMinimal, 0, 20, 1,
+			ValueDisplay.INTEGER)
+		{
+			@Override
+			public void update()
+			{
+				hungerMinimal = (int)getValue();				
+			}
+		});		
 	}
 	
 	@Override
@@ -42,7 +60,7 @@ public class AutoEatMod extends Mod implements UpdateListener
 	public void onUpdate()
 	{
 		if(oldSlot != -1 || mc.thePlayer.capabilities.isCreativeMode
-			|| mc.thePlayer.getFoodStats().getFoodLevel() >= 20)
+			|| mc.thePlayer.getFoodStats().getFoodLevel() > hungerMinimal)
 			return;
 		float bestSaturation = 0F;
 		bestSlot = -1;
