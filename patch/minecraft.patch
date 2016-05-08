@@ -1,6 +1,6 @@
-From 804fbed70ba9071256fcf4e16dc2b64ed42ba156 Mon Sep 17 00:00:00 2001
+From b26f272da581e8317f6a5ae3b6a2fd048696d699 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Sat, 7 May 2016 16:30:28 +0200
+Date: Sun, 8 May 2016 10:01:49 +0200
 Subject: [PATCH] Wurst
 
 ---
@@ -46,7 +46,7 @@ Subject: [PATCH] Wurst
  .../minecraft/client/renderer/RenderGlobal.java    |   2 +-
  src/net/minecraft/client/renderer/RenderItem.java  |   2 +-
  .../minecraft/client/renderer/chunk/VisGraph.java  |   4 +-
- .../minecraft/client/renderer/entity/Render.java   |  25 ++-
+ .../minecraft/client/renderer/entity/Render.java   |  46 +++++-
  .../client/renderer/entity/RenderManager.java      |   6 +-
  .../minecraft/client/resources/SkinManager.java    |   6 +
  .../minecraft/client/settings/GameSettings.java    |  14 +-
@@ -78,7 +78,7 @@ Subject: [PATCH] Wurst
  .../management/PlayerInteractionManager.java       |   6 +-
  src/net/minecraft/tileentity/TileEntitySign.java   |   2 +-
  src/net/minecraft/util/Timer.java                  |   6 +
- 74 files changed, 1180 insertions(+), 379 deletions(-)
+ 74 files changed, 1201 insertions(+), 379 deletions(-)
 
 diff --git a/src/net/minecraft/block/Block.java b/src/net/minecraft/block/Block.java
 index b386ea0..0909994 100644
@@ -2950,7 +2950,7 @@ index 1fe434a..d585cf4 100644
      }
  
 diff --git a/src/net/minecraft/client/renderer/entity/Render.java b/src/net/minecraft/client/renderer/entity/Render.java
-index 884e95f..4d98ae8 100644
+index 884e95f..c9d09fd 100644
 --- a/src/net/minecraft/client/renderer/entity/Render.java
 +++ b/src/net/minecraft/client/renderer/entity/Render.java
 @@ -1,5 +1,6 @@
@@ -2960,7 +2960,15 @@ index 884e95f..4d98ae8 100644
  import net.minecraft.block.state.IBlockState;
  import net.minecraft.client.Minecraft;
  import net.minecraft.client.gui.FontRenderer;
-@@ -364,14 +365,34 @@ public abstract class Render<T extends Entity>
+@@ -12,6 +13,7 @@ import net.minecraft.client.renderer.texture.TextureMap;
+ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+ import net.minecraft.entity.Entity;
+ import net.minecraft.entity.EntityLiving;
++import net.minecraft.entity.EntityLivingBase;
+ import net.minecraft.entity.player.EntityPlayer;
+ import net.minecraft.scoreboard.ScorePlayerTeam;
+ import net.minecraft.util.EnumBlockRenderType;
+@@ -364,14 +366,34 @@ public abstract class Render<T extends Entity>
  
          if (d0 <= (double)(maxDistance * maxDistance))
          {
@@ -2997,6 +3005,33 @@ index 884e95f..4d98ae8 100644
              GlStateManager.disableLighting();
              GlStateManager.depthMask(false);
  
+@@ -383,6 +405,26 @@ public abstract class Render<T extends Entity>
+             GlStateManager.enableBlend();
+             GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+             int i = str.equals("deadmau5") ? -10 : 0;
++            
++			// TODO: Client
++			if(WurstClient.INSTANCE.friends.contains(entityIn.getName()))
++				str = "§2" + (str.startsWith("§") ? str.substring(2) : str);
++			if(entityIn instanceof EntityLivingBase
++				&& WurstClient.INSTANCE.mods.healthTagsMod.isActive())
++			{
++				str += " ";
++				int health = (int)((EntityLivingBase)entityIn).getHealth();
++				if(health <= 5)
++					str += "§4";
++				else if(health <= 10)
++					str += "§6";
++				else if(health <= 15)
++					str += "§e";
++				else
++					str += "§a";
++				str += health;
++			}
++            
+             FontRenderer fontrenderer = this.getFontRendererFromRenderManager();
+             int j = fontrenderer.getStringWidth(str) / 2;
+             GlStateManager.disableTexture2D();
 diff --git a/src/net/minecraft/client/renderer/entity/RenderManager.java b/src/net/minecraft/client/renderer/entity/RenderManager.java
 index 6701a94..49e0a97 100644
 --- a/src/net/minecraft/client/renderer/entity/RenderManager.java
