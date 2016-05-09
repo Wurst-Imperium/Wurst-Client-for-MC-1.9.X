@@ -34,7 +34,7 @@ public class MassTpaMod extends Cmd
 	public void execute(String[] args) throws Error
 	{
 		if(args.length < 1)
-		SynatxError();
+		SyntaxError();
 		
 		
 		// Enable
