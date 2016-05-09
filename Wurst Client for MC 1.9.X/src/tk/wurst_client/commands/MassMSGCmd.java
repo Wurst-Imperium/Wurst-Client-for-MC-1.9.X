@@ -22,13 +22,12 @@ import net.minecraft.network.play.client.CPacketChatMessage;
 	syntax = {"/<command> <message>"},
 public class MassTpaMod extends Cmd
 {
-  private string message = "";
-
+	private string message = "";
 	private float speed = 1F;
 	private int i;
 	private ArrayList<String> players;
 	private Random random = new Random();
-  private string name = "";
+	private string name = "";
   
 	@Override
 	public void execute(String[] args) throws Error
@@ -48,7 +47,7 @@ public class MassTpaMod extends Cmd
 				.next()).getPlayerNameForReal()));
 		Collections.shuffle(players, random);
 		
-		message = args[0] + "⊇" // I made this ⊇ because players can't use this.
+		message = args[0] + " ⊇"
 		
 		for(int i = 1; i < args.length; i++)
 				message += " " + args[i];
@@ -66,14 +65,6 @@ public class MassTpaMod extends Cmd
 			i++;
 			name = players.get(i);
 			}
-			//	mc.thePlayer.sendChatMessage(args[0] + name);
-		//		message = (args[0] + name);
-				
-		//		for(int i = 1; i < args.length; i++)
-			//	message += " " + args[i];
-		//	mc.thePlayer.sendQueue.addToSendQueue(new CPacketChatMessage(message));
-		
-		
 			mc.thePlayer.sendChatMessage(message.replace("⊇", name));
 		
 			updateLastMS();
@@ -81,21 +72,16 @@ public class MassTpaMod extends Cmd
 			if(i >= players.size()){
 				
 				// end
-				message = "";
-				i = 0;
-				name = "";
-				Arrays.fill(players, null);
-				random = new Random();
-				}else{
-				// Restart
-				mc.thePlayer
-		.sendAutomaticChatMessage(".massmsg Continue");
+		message = "";
+		i = 0;
+		name = "";
+		Arrays.fill(players, null);
+		random = new Random();
+		}else{
+			// Restart
+			mc.thePlayer.sendAutomaticChatMessage(".massmsg Continue");
 				}
-		}
-			
-			}else
-			SyntaxError();
-			
-		
+			}
+		}else SyntaxError();
 	}
 }
