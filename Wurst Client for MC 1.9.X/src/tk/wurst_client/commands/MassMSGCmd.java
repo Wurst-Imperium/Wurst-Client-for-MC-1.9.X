@@ -37,7 +37,7 @@ public class MassTpaMod extends Cmd
 		
 		
 		// Enable
-		if(args[0] != "Continue"){
+		if(!args[0].equals("Continue") && !args[0].equalsIgnoreCase("stop"){
 		
 		i = 0;
 		Iterator itr = mc.getNetHandler().getPlayerInfoMap().iterator();
@@ -56,11 +56,11 @@ public class MassTpaMod extends Cmd
 		// Start Continue
 		mc.thePlayer
 		.sendAutomaticChatMessage(".massmsg Continue");
-			}else if(args[0] = "stop"){
+			}else if(args[0].equalsIgnoreCase("stop")){
 			
 			i = players.size
 			
-			}else if(args[0] = "Continue"){
+			}else if(args[0].equals("Continue")){
 			updateMS();
 		if(hasTimePassedS(speed))
 		{
