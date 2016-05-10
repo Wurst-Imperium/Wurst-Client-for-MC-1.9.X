@@ -47,7 +47,7 @@ public class MassTpaMod extends Cmd
 				.next()).getPlayerNameForReal()));
 		Collections.shuffle(players, random);
 		
-		message = args[0] + " ⊇"
+		message = args[0] + " ⊇";
 		
 		for(int i = 1; i < args.length; i++)
 				message += " " + args[i];
@@ -58,7 +58,7 @@ public class MassTpaMod extends Cmd
 		.sendAutomaticChatMessage(".massmsg Continue");
 			}else if(args[0].equalsIgnoreCase("stop")){
 			
-			i = players.size
+			i = players.size;
 			
 			}else if(args[0].equals("Continue")){
 			updateMS();
