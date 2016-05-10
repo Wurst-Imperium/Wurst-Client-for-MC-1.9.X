@@ -19,7 +19,7 @@ import net.minecraft.network.play.client.CPacketChatMessage;
 
 @Info(help = "Allows you to spam other players text.",
 	name = "massmsg",
-	syntax = {"/<command> <message>"},
+	syntax = {"/<command> <message>", "stop"})
 public class MassTpaMod extends Cmd
 {
 	private string message = "";
@@ -56,6 +56,10 @@ public class MassTpaMod extends Cmd
 		// Start Continue
 		mc.thePlayer
 		.sendAutomaticChatMessage(".massmsg Continue");
+			}else if(args[0] = "stop"){
+			
+			i = players.size
+			
 			}else if(args[0] = "Continue"){
 			updateMS();
 		if(hasTimePassedS(speed))
