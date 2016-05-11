@@ -40,7 +40,7 @@ public class ProtectMod extends Mod implements UpdateListener
 	public void onEnable()
 	{
 		friend = null;
-		EntityLivingBase en = EntityUtils.getClosestEntity(false, true);
+		EntityLivingBase en = EntityUtils.getClosestEntity(false, true, false);
 		if(en != null && mc.thePlayer.getDistanceToEntity(en) <= range)
 			friend = en;
 		wurst.events.add(UpdateListener.class, this);

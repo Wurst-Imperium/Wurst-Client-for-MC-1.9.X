@@ -52,7 +52,7 @@ public class KillauraLegitMod extends Mod implements UpdateListener
 	public void onUpdate()
 	{
 		updateMS();
-		EntityLivingBase en = EntityUtils.getClosestEntity(true, true);
+		EntityLivingBase en = EntityUtils.getClosestEntity(true, true, false);
 		KillauraMod killaura = wurst.mods.killauraMod;
 		if(en != null
 			&& mc.thePlayer.getDistanceToEntity(en) <= killaura.yesCheatRange)

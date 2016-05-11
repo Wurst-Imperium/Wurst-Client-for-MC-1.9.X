@@ -51,7 +51,9 @@ public class ClickAuraMod extends Mod implements UpdateListener
 	public void onUpdate()
 	{
 		updateMS();
-		EntityLivingBase en = EntityUtils.getClosestEntity(true, true);
+		EntityLivingBase en =
+			EntityUtils.getClosestEntity(true, true,
+				wurst.mods.killauraMod.hitThroughWalls.isChecked());
 		if(en == null)
 		{
 			EntityUtils.lookChanged = false;
