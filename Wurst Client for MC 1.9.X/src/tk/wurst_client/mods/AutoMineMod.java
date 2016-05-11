@@ -1,5 +1,5 @@
 /*
- * Copyright © 2014 - 2016 | Wurst-Imperium | All rights reserved.
+ * Copyright Â© 2014 - 2016 | Wurst-Imperium | All rights reserved.
  * 
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -33,9 +33,11 @@ public class AutoMineMod extends Mod implements UpdateListener
 			|| mc.objectMouseOver.getBlockPos() == null)
 			return;
 		if(Block.getIdFromBlock(mc.theWorld.getBlockState(
-			mc.objectMouseOver.getBlockPos()).getBlock()) != 0)
-			mc.gameSettings.keyBindAttack.pressed = true;
-		else
+			mc.objectMouseOver.getBlockPos()).getBlock()) != 0){
+			if(wurst.mods.autoToolMod.isActive())
+				AutoToolMod.setSlot(mc.objectMouseOver.getBlockPos());
+				mc.gameSettings.keyBindAttack.pressed = true;
+			}else
 			mc.gameSettings.keyBindAttack.pressed = false;
 		
 	}
