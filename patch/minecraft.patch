@@ -1,6 +1,6 @@
-From 70d5a0b93166a1c2138fca6b0959f0e0ade72aa2 Mon Sep 17 00:00:00 2001
+From 17252873bdf262dc64c8109317b8a31a1a9a98e7 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Tue, 10 May 2016 21:40:08 +0200
+Date: Wed, 11 May 2016 17:41:51 +0200
 Subject: [PATCH] Wurst
 
 ---
@@ -41,7 +41,7 @@ Subject: [PATCH] Wurst
  .../client/network/NetHandlerPlayClient.java       |  10 +-
  .../client/network/NetworkPlayerInfo.java          |  10 ++
  .../client/renderer/BlockModelRenderer.java        |   8 +-
- .../minecraft/client/renderer/EntityRenderer.java  |  47 +++++-
+ .../minecraft/client/renderer/EntityRenderer.java  |  51 +++++-
  .../client/renderer/InventoryEffectRenderer.java   |   2 +-
  .../minecraft/client/renderer/ItemRenderer.java    |   6 +-
  .../minecraft/client/renderer/RenderGlobal.java    |   2 +-
@@ -80,7 +80,7 @@ Subject: [PATCH] Wurst
  .../management/PlayerInteractionManager.java       |   6 +-
  src/net/minecraft/tileentity/TileEntitySign.java   |   2 +-
  src/net/minecraft/util/Timer.java                  |   6 +
- 76 files changed, 1228 insertions(+), 380 deletions(-)
+ 76 files changed, 1232 insertions(+), 380 deletions(-)
 
 diff --git a/src/net/minecraft/block/Block.java b/src/net/minecraft/block/Block.java
 index b386ea0..0909994 100644
@@ -2766,7 +2766,7 @@ index 628f4dd..ca96301 100644
              this.renderQuadsSmooth(worldIn, stateIn, posIn, buffer, list1, afloat, bitset, blockmodelrenderer$ambientocclusionface);
              flag = true;
 diff --git a/src/net/minecraft/client/renderer/EntityRenderer.java b/src/net/minecraft/client/renderer/EntityRenderer.java
-index e8fdae5..4774e37 100644
+index e8fdae5..2c47df5 100644
 --- a/src/net/minecraft/client/renderer/EntityRenderer.java
 +++ b/src/net/minecraft/client/renderer/EntityRenderer.java
 @@ -3,6 +3,7 @@ package net.minecraft.client.renderer;
@@ -2848,7 +2848,18 @@ index e8fdae5..4774e37 100644
                  f = f * (this.fovModifierHandPrev + (this.fovModifierHand - this.fovModifierHandPrev) * partialTicks);
              }
  
-@@ -751,14 +764,17 @@ public class EntityRenderer implements IResourceManagerReloadListener
+@@ -561,6 +574,10 @@ public class EntityRenderer implements IResourceManagerReloadListener
+ 
+     private void hurtCameraEffect(float partialTicks)
+     {
++		// TODO: Client
++		if(WurstClient.INSTANCE.mods.noHurtcamMod.isActive())
++			return;
++    	
+         if (this.mc.getRenderViewEntity() instanceof EntityLivingBase)
+         {
+             EntityLivingBase entitylivingbase = (EntityLivingBase)this.mc.getRenderViewEntity();
+@@ -751,14 +768,17 @@ public class EntityRenderer implements IResourceManagerReloadListener
  
          this.hurtCameraEffect(partialTicks);
  
@@ -2868,7 +2879,7 @@ index e8fdae5..4774e37 100644
          {
              int i = 20;
  
-@@ -1293,7 +1309,11 @@ public class EntityRenderer implements IResourceManagerReloadListener
+@@ -1293,7 +1313,11 @@ public class EntityRenderer implements IResourceManagerReloadListener
          }
  
          this.getMouseOver(partialTicks);
@@ -2880,7 +2891,7 @@ index e8fdae5..4774e37 100644
          GlStateManager.enableAlpha();
          GlStateManager.alphaFunc(516, 0.5F);
          this.mc.mcProfiler.startSection("center");
-@@ -1463,6 +1483,10 @@ public class EntityRenderer implements IResourceManagerReloadListener
+@@ -1463,6 +1487,10 @@ public class EntityRenderer implements IResourceManagerReloadListener
  
          this.mc.mcProfiler.endStartSection("hand");
  
@@ -2891,7 +2902,7 @@ index e8fdae5..4774e37 100644
          if (this.renderHand)
          {
              GlStateManager.clear(256);
-@@ -1847,8 +1871,12 @@ public class EntityRenderer implements IResourceManagerReloadListener
+@@ -1847,8 +1875,12 @@ public class EntityRenderer implements IResourceManagerReloadListener
          this.fogColorBlue *= f13;
          double d1 = (entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double)partialTicks) * world.provider.getVoidFogYFactor();
  
@@ -2905,7 +2916,7 @@ index e8fdae5..4774e37 100644
              int i = ((EntityLivingBase)entity).getActivePotionEffect(MobEffects.blindness).getDuration();
  
              if (i < 20)
-@@ -1927,7 +1955,10 @@ public class EntityRenderer implements IResourceManagerReloadListener
+@@ -1927,7 +1959,10 @@ public class EntityRenderer implements IResourceManagerReloadListener
          GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
          IBlockState iblockstate = ActiveRenderInfo.func_186703_a(this.mc.theWorld, entity, partialTicks);
  
