@@ -106,8 +106,8 @@ public class GuiWurstOptions extends GuiScreen
 			100, 20, "Wurst on YouTube"));
 		buttonList.add(new GuiButton(13, width / 2 + 54, height / 4 + 72 - 16,
 			100, 20, "Wurst on Twitter"));
-		// buttonList.add(new GuiButton(14, width / 2 + 54, height / 4 + 96 -
-		// 16, 100, 20, "???"));
+		buttonList.add(new GuiButton(14, width / 2 + 54, height / 4 + 96 - 16,
+			100, 20, "Report a Bug"));
 		// buttonList.add(new GuiButton(15, width / 2 + 54, height / 4 + 120 -
 		// 16, 100, 20, "???"));
 		((GuiButton)buttonList.get(3)).enabled = !Minecraft.isRunningOnMac;
@@ -200,18 +200,18 @@ public class GuiWurstOptions extends GuiScreen
 					"wurst website");
 			}else if(clickedButton.id == 12)
 			{
-				MiscUtils.openLink("https://www.wurst-client.tk/youtube");
+				MiscUtils.openLink("https://www.wurst-client.tk/youtube/");
 				WurstClient.INSTANCE.analytics.trackEvent("options",
 					"youtube channel");
 			}else if(clickedButton.id == 13)
 			{
-				MiscUtils.openLink("https://www.wurst-client.tk/twitter");
+				MiscUtils.openLink("https://www.wurst-client.tk/twitter/");
 				WurstClient.INSTANCE.analytics.trackEvent("options", "twitter");
 			}else if(clickedButton.id == 14)
 			{
-				MiscUtils.openLink("https://www.wurst-client.tk/feedback");
-				WurstClient.INSTANCE.analytics
-					.trackEvent("options", "feedback");
+				MiscUtils.openLink("https://www.wurst-client.tk/bugs/");
+				WurstClient.INSTANCE.analytics.trackEvent("options",
+					"bug tracker");
 			}else if(clickedButton.id == 15)
 			{	
 				
