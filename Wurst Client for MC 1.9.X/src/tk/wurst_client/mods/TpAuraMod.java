@@ -58,14 +58,14 @@ public class TpAuraMod extends Mod implements UpdateListener
 		EntityLivingBase en =
 			EntityUtils.getClosestEntity(true, true,
 				wurst.mods.killauraMod.hitThroughWalls.isChecked());
-		if(en == null)
+		if(en == null
+			|| mc.thePlayer.getDistanceToEntity(en) > wurst.mods.killauraMod.realRange)
 		{
 			EntityUtils.lookChanged = false;
 			return;
 		}
 		EntityUtils.lookChanged = true;
-		if(mc.thePlayer.getDistanceToEntity(en) <= wurst.mods.killauraMod.realRange
-			&& hasTimePassedS(wurst.mods.killauraMod.realSpeed))
+		if(hasTimePassedS(wurst.mods.killauraMod.realSpeed))
 		{
 			mc.thePlayer.setPosition(en.posX + random.nextInt(3) * 2 - 2,
 				en.posY, en.posZ + random.nextInt(3) * 2 - 2);

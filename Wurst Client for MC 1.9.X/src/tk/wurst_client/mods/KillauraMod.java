@@ -111,15 +111,14 @@ public class KillauraMod extends Mod implements UpdateListener
 		EntityLivingBase en =
 			EntityUtils.getClosestEntity(true, true,
 				hitThroughWalls.isChecked());
-		if(en == null)
+		if(en == null || mc.thePlayer.getDistanceToEntity(en) > realRange)
 		{
 			EntityUtils.lookChanged = false;
 			return;
 		}
 		EntityUtils.lookChanged = true;
 		if((useCooldown.isChecked() ? mc.thePlayer.getSwordCooldown(0F) >= 1F
-			: hasTimePassedS(realSpeed))
-			&& mc.thePlayer.getDistanceToEntity(en) <= realRange)
+			: hasTimePassedS(realSpeed)))
 		{
 			if(wurst.mods.autoSwordMod.isActive())
 				AutoSwordMod.setSlot();
