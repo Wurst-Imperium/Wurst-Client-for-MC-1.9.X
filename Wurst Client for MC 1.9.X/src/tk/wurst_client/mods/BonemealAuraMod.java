@@ -34,10 +34,10 @@ import tk.wurst_client.utils.BlockUtils;
 
 @Info(category = Category.MISC,
 	description = "Automatically uses bone mole.",
-	name = "AutoBone",
-	tags = "auto bone",
-	tutorial = "Mods/AutoBone")
-public class AutoBoneMod extends Mod implements UpdateListener
+	name = "BonemealAura",
+	tags = "bonemeal aura, bone meal aura, AutoBone, auto bone",
+	tutorial = "Mods/BonemealAura")
+public class BonemealAuraMod extends Mod implements UpdateListener
 {
 	public float normalRange = 5F;
 	public float yesCheatRange = 4.25F;
