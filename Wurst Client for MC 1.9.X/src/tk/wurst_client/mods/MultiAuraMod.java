@@ -57,23 +57,25 @@ public class MultiAuraMod extends Mod implements UpdateListener
 	{
 		updateMS();
 		EntityLivingBase closestEntity =
-			EntityUtils.getClosestEntity(true, false);
-		if(closestEntity == null)
+			EntityUtils.getClosestEntity(true, false,
+				wurst.mods.killauraMod.hitThroughWalls.isChecked());
+		if(closestEntity == null
+			|| mc.thePlayer.getDistanceToEntity(closestEntity) > range)
 		{
 			EntityUtils.lookChanged = false;
 			return;
 		}
 		EntityUtils.lookChanged = true;
-		if(mc.thePlayer.getDistanceToEntity(closestEntity) <= range
-			&& (wurst.mods.killauraMod.useCooldown.isChecked() ? mc.thePlayer
-				.getSwordCooldown(0F) >= 1F : true))
+		if((wurst.mods.killauraMod.useCooldown.isChecked() ? mc.thePlayer
+			.getSwordCooldown(0F) >= 1F : true))
 		{
 			if(wurst.mods.autoSwordMod.isActive())
 				AutoSwordMod.setSlot();
 			wurst.mods.criticalsMod.doCritical();
 			wurst.mods.blockHitMod.doBlock();
 			ArrayList<EntityLivingBase> entities =
-				EntityUtils.getCloseEntities(true, range);
+				EntityUtils.getCloseEntities(true, range,
+					wurst.mods.killauraMod.hitThroughWalls.isChecked());
 			for(int i = 0; i < Math.min(entities.size(), 64); i++)
 			{
 				EntityLivingBase en = entities.get(i);
