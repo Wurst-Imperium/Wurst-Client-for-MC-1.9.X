@@ -33,7 +33,7 @@ import tk.wurst_client.navigator.settings.SliderSetting;
 import tk.wurst_client.utils.BlockUtils;
 
 @Info(category = Category.MISC,
-	description = "Automatically uses bone mole.",
+	description = "Automatically uses bone meal.",
 	name = "BonemealAura",
 	tags = "bonemeal aura, bone meal aura, AutoBone, auto bone",
 	tutorial = "Mods/BonemealAura")
@@ -85,7 +85,7 @@ public class BonemealAuraMod extends Mod implements UpdateListener
 		ItemStack item =
 			mc.thePlayer.inventory
 				.getStackInSlot(mc.thePlayer.inventory.currentItem);
-		if(!isBoneMole(item))
+		if(!isBoneMeal(item))
 			return;
 		
 		int range =
@@ -139,7 +139,7 @@ public class BonemealAuraMod extends Mod implements UpdateListener
 		return false;
 	}
 	
-	private boolean isBoneMole(ItemStack itemStack)
+	private boolean isBoneMeal(ItemStack itemStack)
 	{
 		if(itemStack == null || !(itemStack.getItem() instanceof ItemDye))
 			return false;
