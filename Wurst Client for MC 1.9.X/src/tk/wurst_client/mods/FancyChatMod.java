@@ -27,6 +27,8 @@ public class FancyChatMod extends Mod implements ChatOutputListener
 	public void onEnable()
 	{
 		wurst.events.add(ChatOutputListener.class, this);
+		if(wurst.mods.leetSpeakMod.isEnabled())
+			wurst.mods.leetSpeakMod.setEnabled(false);
 	}
 	
 	@Override
