@@ -27,13 +27,13 @@ import org.darkstorm.minecraft.gui.component.BoundedRangeComponent.ValueDisplay;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
-import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.navigator.settings.CheckboxSetting;
 import tk.wurst_client.navigator.settings.SliderSetting;
 import tk.wurst_client.utils.BlockUtils;
 
 @Info(category = Category.MISC,
-	description = "Automatically uses bone meal.",
+	description = "Automatically uses bone meal on specific types of plants.\n"
+		+ "Use the checkboxes to specify the types of plants.",
 	name = "BonemealAura",
 	tags = "bonemeal aura, bone meal aura, AutoBone, auto bone",
 	tutorial = "Mods/BonemealAura")
@@ -41,10 +41,14 @@ public class BonemealAuraMod extends Mod implements UpdateListener
 {
 	public float normalRange = 5F;
 	public float yesCheatRange = 4.25F;
-	private String[] targets = new String[]{"All (all growable block)",
-		"Sapling", "Carrot + Potato + Wheat", "Melon + Pumpkin", "Cocoa"};
-	private CheckboxSetting[] targetsEnabled =
-		new CheckboxSetting[targets.length];
+	private final CheckboxSetting saplings = new CheckboxSetting("Saplings",
+		true);
+	private final CheckboxSetting crops = new CheckboxSetting(
+		"Carrots, Potatoes & Wheat", true);
+	private final CheckboxSetting stems = new CheckboxSetting(
+		"Melons & Pumpkins", true);
+	private final CheckboxSetting cocoa = new CheckboxSetting("Cocoa", true);
+	private final CheckboxSetting other = new CheckboxSetting("Other", false);
 	
 	@Override
 	public void initSettings()
@@ -60,17 +64,11 @@ public class BonemealAuraMod extends Mod implements UpdateListener
 			}
 		});
 		
-		for(int i = 0; i < targets.length; i++)
-		{
-			targetsEnabled[i] = new CheckboxSetting(targets[i], false);
-			settings.add(targetsEnabled[i]);
-		}
-	}
-	
-	@Override
-	public NavigatorItem[] getSeeAlso()
-	{
-		return new NavigatorItem[]{wurst.mods.buildRandomMod};
+		settings.add(saplings);
+		settings.add(crops);
+		settings.add(stems);
+		settings.add(cocoa);
+		settings.add(other);
 	}
 	
 	@Override
@@ -85,66 +83,48 @@ public class BonemealAuraMod extends Mod implements UpdateListener
 		ItemStack item =
 			mc.thePlayer.inventory
 				.getStackInSlot(mc.thePlayer.inventory.currentItem);
-		if(!isBoneMeal(item))
+		if(item == null || !(item.getItem() instanceof ItemDye)
+			|| item.getMetadata() != 15)
 			return;
 		
-		int range =
-			(int)(wurst.mods.yesCheatMod.isActive() ? yesCheatRange
-				: normalRange);
+		float range =
+			wurst.mods.yesCheatMod.isActive() ? yesCheatRange : normalRange;
 		BlockPos pos = mc.thePlayer.getPosition();
-		for(int y = -range; y < range; y++)
-			for(int x = -range; x < range; x++)
-				for(int z = -range; z < range; z++)
+		for(int y = (int)-range - 1; y < (int)range + 1; y++)
+			for(int x = (int)-range - 1; x < (int)range + 1; x++)
+				for(int z = (int)-range - 1; z < (int)range + 1; z++)
 				{
 					BlockPos currentPos = pos.add(x, y, z);
-					if(isCorrectBlock(currentPos,
-						mc.theWorld.getBlockState(currentPos)))
-					{
-						BlockUtils.faceBlockPacket(currentPos);
-						mc.thePlayer.sendQueue
-							.addToSendQueue(new CPacketPlayerTryUseItem(
-								currentPos, EnumFacing.UP, EnumHand.MAIN_HAND,
-								0.5F, 1F, 0.5F));
-					}
+					if(BlockUtils.getPlayerBlockDistance(currentPos) > range
+						|| !isCorrectBlock(currentPos))
+						continue;
+					
+					BlockUtils.faceBlockPacket(currentPos);
+					mc.thePlayer.sendQueue
+						.addToSendQueue(new CPacketPlayerTryUseItem(currentPos,
+							EnumFacing.UP, EnumHand.MAIN_HAND, 0.5F, 1F, 0.5F));
 				}
 	}
 	
-	private boolean isCorrectBlock(BlockPos position, IBlockState blockState)
+	private boolean isCorrectBlock(BlockPos pos)
 	{
-		Block block = blockState.getBlock();
+		IBlockState state = mc.theWorld.getBlockState(pos);
+		Block block = state.getBlock();
 		
-		if(block instanceof IGrowable && !(block instanceof BlockGrass))
-		{
-			boolean flag = false;
-			
-			if(targetsEnabled[0].isChecked())
-				flag = true;
-			else if(block instanceof BlockSapling
-				&& targetsEnabled[1].isChecked())
-				flag = true;
-			else if(block instanceof BlockCrops
-				&& targetsEnabled[2].isChecked())
-				flag = true;
-			else if(block instanceof BlockStem && targetsEnabled[3].isChecked())
-				flag = true;
-			else if(block instanceof BlockCocoa
-				&& targetsEnabled[4].isChecked())
-				flag = true;
-			
-			return flag
-				&& ((IGrowable)block).canGrow(mc.theWorld, position,
-					blockState, false);
-		}
-		
-		return false;
-	}
-	
-	private boolean isBoneMeal(ItemStack itemStack)
-	{
-		if(itemStack == null || !(itemStack.getItem() instanceof ItemDye))
+		if(!(block instanceof IGrowable) || block instanceof BlockGrass
+			|| !((IGrowable)block).canGrow(mc.theWorld, pos, state, false))
 			return false;
 		
-		return itemStack.getMetadata() == 15;
+		if(block instanceof BlockSapling)
+			return saplings.isChecked();
+		else if(block instanceof BlockCrops)
+			return crops.isChecked();
+		else if(block instanceof BlockStem)
+			return stems.isChecked();
+		else if(block instanceof BlockCocoa)
+			return cocoa.isChecked();
+		else
+			return other.isChecked();
 	}
 	
 	@Override
