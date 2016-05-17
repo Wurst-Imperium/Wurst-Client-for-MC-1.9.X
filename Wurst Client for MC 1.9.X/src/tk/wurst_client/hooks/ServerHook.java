@@ -28,6 +28,7 @@ import net.minecraft.client.gui.ServerListEntryLanDetected;
 import net.minecraft.client.gui.ServerListEntryNormal;
 import net.minecraft.client.multiplayer.GuiConnecting;
 import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.network.PacketBuffer;
 import tk.wurst_client.WurstClient;
 import tk.wurst_client.utils.MiscUtils;
 
@@ -35,6 +36,7 @@ public class ServerHook
 {
 	private static String currentServerIP = "127.0.0.1:25565";
 	private static ServerListEntryNormal lastServer;
+	private static int protocolVersion = 107;
 	
 	public static void importServers(GuiMultiplayer guiMultiplayer)
 	{
@@ -65,7 +67,8 @@ public class ServerHook
 				{
 					i++;
 					guiMultiplayer.savedServerList
-						.addServerData(new ServerData("Grief me #" + i, line, false));
+						.addServerData(new ServerData("Grief me #" + i, line,
+							false));
 					guiMultiplayer.savedServerList.saveServerList();
 					guiMultiplayer.serverListSelector.setSelectedSlotIndex(-1);
 					guiMultiplayer.serverListSelector
@@ -205,5 +208,61 @@ public class ServerHook
 	public static ServerData getLastServerData()
 	{
 		return lastServer.getServerData();
+	}
+	
+	public static void switchProtocolVersion()
+	{
+		if(protocolVersion < 110)
+			protocolVersion++;
+		else
+			protocolVersion = 107;
+	}
+	
+	public static String getVersionButtonText()
+	{
+		String text = "Version: ";
+		switch(protocolVersion)
+		{
+			case 107:
+				text += "1.9";
+				break;
+			case 108:
+				text += "1.9.1";
+				break;
+			case 109:
+				text += "1.9.2";
+				break;
+			case 110:
+				text += "1.9.3/4";
+				break;
+			default:
+				text += "unknown";
+				break;
+		}
+		return text;
+	}
+	
+	public static void fixPacketBuffer(PacketBuffer buf)
+	{
+		int bytes;
+		switch(protocolVersion)
+		{
+			case 108:
+			case 109:
+			case 110:
+				bytes = 10;
+				break;
+			case 107:
+			default:
+				bytes = 0;
+				break;
+		}
+        for(int i2 = 0; i2 < bytes; i2++)
+			buf.readByte();
+	}
+	
+	public static int getProtocolVersion()
+	{
+		return protocolVersion;
 	}
 }
