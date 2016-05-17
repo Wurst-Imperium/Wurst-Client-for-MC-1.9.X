@@ -52,10 +52,7 @@ public class EntityUtils
 		float[] rotations = getRotationsNeeded(entity);
 		if(rotations != null)
 		{
-			yaw =
-				limitAngleChange(
-					yaw,
-					rotations[0], 30);// NoCheat+
+			yaw = limitAngleChange(yaw, rotations[0], 30);// NoCheat+
 			pitch = rotations[1];
 			return yaw == rotations[0];
 		}
@@ -204,7 +201,7 @@ public class EntityUtils
 	}
 	
 	public static EntityLivingBase getClosestEntity(boolean ignoreFriends,
-		boolean useFOV)
+		boolean useFOV, boolean hitThroughWalls)
 	{
 		EntityLivingBase closestEntity = null;
 		for(Object o : Minecraft.getMinecraft().theWorld.loadedEntityList)
@@ -215,7 +212,8 @@ public class EntityUtils
 				if(!(o instanceof EntityPlayerSP)
 					&& !en.isDead
 					&& en.getHealth() > 0
-					&& Minecraft.getMinecraft().thePlayer.canEntityBeSeen(en)
+					&& (hitThroughWalls || Minecraft.getMinecraft().thePlayer
+						.canEntityBeSeen(en))
 					&& !en.getName().equals(
 						Minecraft.getMinecraft().thePlayer.getName()))
 					if(closestEntity == null
@@ -228,7 +226,7 @@ public class EntityUtils
 	}
 	
 	public static ArrayList<EntityLivingBase> getCloseEntities(
-		boolean ignoreFriends, float range)
+		boolean ignoreFriends, float range, boolean hitThroughWalls)
 	{
 		ArrayList<EntityLivingBase> closeEntities =
 			new ArrayList<EntityLivingBase>();
@@ -239,7 +237,8 @@ public class EntityUtils
 				if(!(o instanceof EntityPlayerSP)
 					&& !en.isDead
 					&& en.getHealth() > 0
-					&& Minecraft.getMinecraft().thePlayer.canEntityBeSeen(en)
+					&& (hitThroughWalls || Minecraft.getMinecraft().thePlayer
+						.canEntityBeSeen(en))
 					&& !en.getName().equals(
 						Minecraft.getMinecraft().thePlayer.getName())
 					&& Minecraft.getMinecraft().thePlayer

@@ -51,8 +51,11 @@ public class ClickAuraMod extends Mod implements UpdateListener
 	public void onUpdate()
 	{
 		updateMS();
-		EntityLivingBase en = EntityUtils.getClosestEntity(true, true);
-		if(en == null)
+		EntityLivingBase en =
+			EntityUtils.getClosestEntity(true, true,
+				wurst.mods.killauraMod.hitThroughWalls.isChecked());
+		if(en == null
+			|| mc.thePlayer.getDistanceToEntity(en) > wurst.mods.killauraMod.realRange)
 		{
 			EntityUtils.lookChanged = false;
 			return;
@@ -61,8 +64,7 @@ public class ClickAuraMod extends Mod implements UpdateListener
 		if(mc.gameSettings.keyBindAttack.pressed
 			&& (wurst.mods.killauraMod.useCooldown.isChecked() ? mc.thePlayer
 				.getSwordCooldown(0F) >= 1F
-				: hasTimePassedS(wurst.mods.killauraMod.realSpeed))
-			&& mc.thePlayer.getDistanceToEntity(en) <= wurst.mods.killauraMod.realRange)
+				: hasTimePassedS(wurst.mods.killauraMod.realSpeed)))
 		{
 			if(wurst.mods.autoSwordMod.isActive())
 				AutoSwordMod.setSlot();

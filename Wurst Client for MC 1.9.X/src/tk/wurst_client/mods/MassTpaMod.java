@@ -59,7 +59,7 @@ public class MassTpaMod extends Mod implements UpdateListener,
 				mc.thePlayer.sendChatMessage("/tpa " + name);
 			updateLastMS();
 			i++;
-			if(i == players.size())
+			if(i >= players.size())
 				setEnabled(false);
 		}
 	}

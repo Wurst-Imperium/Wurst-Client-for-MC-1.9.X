@@ -36,6 +36,8 @@ public class KillauraMod extends Mod implements UpdateListener
 	public float realRange;
 	public CheckboxSetting useCooldown = new CheckboxSetting(
 		"Use Attack Cooldown as Speed", true);
+	public CheckboxSetting hitThroughWalls = new CheckboxSetting(
+		"Hit through walls", false);
 	
 	@Override
 	public void initSettings()
@@ -72,6 +74,7 @@ public class KillauraMod extends Mod implements UpdateListener
 				fov = (int)getValue();
 			}
 		});
+		settings.add(hitThroughWalls);
 	}
 	
 	@Override
@@ -105,16 +108,17 @@ public class KillauraMod extends Mod implements UpdateListener
 	{
 		updateSpeedAndRange();
 		updateMS();
-		EntityLivingBase en = EntityUtils.getClosestEntity(true, true);
-		if(en == null)
+		EntityLivingBase en =
+			EntityUtils.getClosestEntity(true, true,
+				hitThroughWalls.isChecked());
+		if(en == null || mc.thePlayer.getDistanceToEntity(en) > realRange)
 		{
 			EntityUtils.lookChanged = false;
 			return;
 		}
 		EntityUtils.lookChanged = true;
 		if((useCooldown.isChecked() ? mc.thePlayer.getSwordCooldown(0F) >= 1F
-			: hasTimePassedS(realSpeed))
-			&& mc.thePlayer.getDistanceToEntity(en) <= realRange)
+			: hasTimePassedS(realSpeed)))
 		{
 			if(wurst.mods.autoSwordMod.isActive())
 				AutoSwordMod.setSlot();
