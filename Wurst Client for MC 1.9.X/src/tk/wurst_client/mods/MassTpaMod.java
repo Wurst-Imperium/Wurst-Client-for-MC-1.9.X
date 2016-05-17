@@ -1,5 +1,5 @@
 /*
- * Copyright Â© 2014 - 2016 | Wurst-Imperium | All rights reserved.
+ * Copyright © 2014 - 2016 | Wurst-Imperium | All rights reserved.
  * 
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -75,13 +75,13 @@ public class MassTpaMod extends Mod implements UpdateListener,
 	public void onReceivedMessage(ChatInputEvent event)
 	{
 		String message = event.getComponent().getUnformattedText();
-		if(message.startsWith("Â§c[Â§6WurstÂ§c]Â§f "))
+		if(message.startsWith("§c[§6Wurst§c]§f "))
 			return;
 		if(message.toLowerCase().contains("/help")
 			|| message.toLowerCase().contains("permission"))
 		{
 			event.cancel();
-			wurst.chat.message("Â§4Â§lERROR:Â§f This server doesn't have TPA.");
+			wurst.chat.message("§4§lERROR:§f This server doesn't have TPA.");
 			setEnabled(false);
 		}else if(message.toLowerCase().contains("accepted")
 			&& message.toLowerCase().contains("request")
