@@ -9,10 +9,10 @@ package tk.wurst_client.commands;
 
 import tk.wurst_client.commands.Cmd.Info;
 
-@Info(help = "Teleports you up to 100 blocks away.\nOnly works on vanilla servers!",
+@Info(description = "Teleports you up to 100 blocks away.\nOnly works on vanilla servers!",
 	name = "tp",
 	syntax = {"<x> <y> <z>", "<entity>"},
-	tutorial = "Commands/tp")
+	help = "Commands/tp")
 public class TpCmd extends Cmd
 {
 	@Override

@@ -22,7 +22,7 @@ import tk.wurst_client.utils.RenderUtils;
 		+ "Good for finding faction bases.",
 	name = "BaseFinder",
 	tags = "base finder, factions",
-	tutorial = "Mods/BaseFinder")
+	help = "Mods/BaseFinder")
 public class BaseFinderMod extends Mod implements UpdateListener,
 	RenderListener
 {

@@ -12,7 +12,7 @@ package tk.wurst_client.mods;
 		+ "The real Jesus used this hack ~2000 years ago.\n"
 		+ "Bypasses NoCheat+ if YesCheat+ is enabled.",
 	name = "Jesus",
-	tutorial = "Mods/Jesus")
+	help = "Mods/Jesus")
 public class JesusMod extends Mod
 {	
 	

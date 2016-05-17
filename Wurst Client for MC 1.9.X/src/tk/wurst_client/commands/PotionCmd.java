@@ -20,11 +20,11 @@ import net.minecraft.potion.PotionUtils;
 import tk.wurst_client.commands.Cmd.Info;
 import tk.wurst_client.utils.MiscUtils;
 
-@Info(help = "Changes the effects of the held potion.",
+@Info(description = "Changes the effects of the held potion.",
 	name = "potion",
 	syntax = {"add (<effect> <amplifier> <duration>)...",
 		"set (<effect> <amplifier> <duration>)...", "remove <effect>"},
-		tutorial = "Commands/potion")
+		help = "Commands/potion")
 public class PotionCmd extends Cmd
 {
 	@Override

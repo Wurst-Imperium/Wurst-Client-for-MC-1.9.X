@@ -11,10 +11,10 @@ import net.minecraft.block.Block;
 import tk.wurst_client.commands.Cmd.Info;
 import tk.wurst_client.utils.MiscUtils;
 
-@Info(help = "Changes the settings of Search or toggles it.",
+@Info(description = "Changes the settings of Search or toggles it.",
 	name = "search",
 	syntax = {"id <block_id>", "name <block_name>"},
-	tutorial = "Commands/search")
+	help = "Commands/search")
 public class SearchCmd extends Cmd
 {
 	@Override

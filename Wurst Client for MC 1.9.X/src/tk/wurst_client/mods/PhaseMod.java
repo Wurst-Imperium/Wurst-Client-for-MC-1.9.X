@@ -16,7 +16,7 @@ import tk.wurst_client.mods.Mod.Info;
 		+ "through blocks.",
 	name = "Phase",
 	tags = "Phaze",
-	tutorial = "Mods/Phase")
+	help = "Mods/Phase")
 public class PhaseMod extends Mod implements UpdateListener
 {
 	@Override

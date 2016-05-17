@@ -11,7 +11,7 @@ package tk.wurst_client.mods;
 	description = "Allows you to interact with liquid blocks.",
 	name = "Liquids",
 	noCheatCompatible = false,
-	tutorial = "Mods/Liquids")
+	help = "Mods/Liquids")
 public class LiquidsMod extends Mod
 {	
 	

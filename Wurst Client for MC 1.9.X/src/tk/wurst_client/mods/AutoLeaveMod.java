@@ -23,7 +23,7 @@ import tk.wurst_client.navigator.settings.ModeSetting;
 		+ "The Chars, TP and SelfHurt modes can bypass CombatLog and similar plugins.",
 	name = "AutoLeave",
 	tags = "AutoDisconnect, auto leave, auto disconnect",
-	tutorial = "Mods/AutoLeave")
+	help = "Mods/AutoLeave")
 public class AutoLeaveMod extends Mod implements UpdateListener
 {
 	private int mode = 0;

@@ -20,7 +20,7 @@ import tk.wurst_client.utils.BlockUtils;
 		+ "Needs 3x3 blocks of free space.",
 	category = Category.MISC,
 	tags = "AFKBot,anti afk,afk bot",
-	tutorial = "Mods/AntiAFK")
+	help = "Mods/AntiAFK")
 public class AntiAfkMod extends Mod implements UpdateListener
 {
 	private BlockPos block;

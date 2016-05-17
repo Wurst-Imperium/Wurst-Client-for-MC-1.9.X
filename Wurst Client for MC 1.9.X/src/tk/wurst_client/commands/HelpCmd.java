@@ -12,10 +12,10 @@ import java.util.Iterator;
 import tk.wurst_client.commands.Cmd.Info;
 import tk.wurst_client.utils.MiscUtils;
 
-@Info(help = "Shows the command list or the help for a command.",
+@Info(description = "Shows the command list or the help for a command.",
 	name = "help",
 	syntax = {"[<page>]", "[<command>]"},
-	tutorial = "Commands/help")
+	help = "Commands/help")
 public class HelpCmd extends Cmd
 {
 	@Override

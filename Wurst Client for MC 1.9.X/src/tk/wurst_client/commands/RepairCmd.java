@@ -12,10 +12,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
 import tk.wurst_client.events.ChatOutputEvent;
 
-@Cmd.Info(help = "Repairs the held item. Requires creative mode.",
+@Cmd.Info(description = "Repairs the held item. Requires creative mode.",
 	name = "repair",
 	syntax = {},
-	tutorial = "Commands/repair")
+	help = "Commands/repair")
 public class RepairCmd extends Cmd
 {
 	@Override

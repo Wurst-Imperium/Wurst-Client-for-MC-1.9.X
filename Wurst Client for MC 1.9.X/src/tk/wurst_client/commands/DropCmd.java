@@ -16,10 +16,10 @@ import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
 import tk.wurst_client.commands.Cmd.Info;
 import tk.wurst_client.events.listeners.UpdateListener;
 
-@Info(help = "Drops all your items on the ground.",
+@Info(description = "Drops all your items on the ground.",
 	name = "drop",
 	syntax = {"[infinite]"},
-	tutorial = "Commands/drop")
+	help = "Commands/drop")
 public class DropCmd extends Cmd implements UpdateListener
 {
 	private int timer;

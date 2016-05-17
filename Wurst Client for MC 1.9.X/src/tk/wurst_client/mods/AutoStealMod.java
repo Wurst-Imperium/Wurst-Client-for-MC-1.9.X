@@ -15,7 +15,7 @@ import tk.wurst_client.mods.Mod.Info;
 		+ "open.",
 	name = "AutoSteal",
 	tags = "auto steal",
-	tutorial = "Mods/AutoSteal")
+	help = "Mods/AutoSteal")
 public class AutoStealMod extends Mod
 {	
 	

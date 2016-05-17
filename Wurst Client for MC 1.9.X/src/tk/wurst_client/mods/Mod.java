@@ -27,8 +27,7 @@ public class Mod implements NavigatorItem
 	private final Category category = getClass().getAnnotation(Info.class)
 		.category();
 	private final String tags = getClass().getAnnotation(Info.class).tags();
-	private final String tutorial = getClass().getAnnotation(Info.class)
-		.tutorial();
+	private final String help = getClass().getAnnotation(Info.class).help();
 	private boolean enabled;
 	private boolean blocked;
 	private boolean active;
@@ -66,7 +65,7 @@ public class Mod implements NavigatorItem
 		
 		String tags() default "";
 		
-		String tutorial() default "";
+		String help() default "";
 	}
 	
 	@Override
@@ -134,9 +133,9 @@ public class Mod implements NavigatorItem
 	}
 	
 	@Override
-	public final String getTutorialPage()
+	public final String getHelpPage()
 	{
-		return tutorial;
+		return help;
 	}
 	
 	@Override

@@ -15,7 +15,7 @@ import tk.wurst_client.navigator.gui.NavigatorMainScreen;
 	description = "",
 	name = "Navigator",
 	tags = "ClickGUI",
-	tutorial = "Mods/Navigator")
+	help = "Mods/Navigator")
 public class NavigatorMod extends Mod
 {
 	@Override

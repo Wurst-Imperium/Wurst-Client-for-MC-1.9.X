@@ -22,7 +22,7 @@ import tk.wurst_client.navigator.NavigatorItem;
 		+ "mine blocks. Tip: This works with Nuker.",
 	name = "AutoTool",
 	tags = "auto tool",
-	tutorial = "Mods/AutoTool")
+	help = "Mods/AutoTool")
 public class AutoToolMod extends Mod implements LeftClickListener,
 	UpdateListener
 {

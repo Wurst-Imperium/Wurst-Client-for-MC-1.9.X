@@ -14,10 +14,10 @@ import tk.wurst_client.commands.Cmd.Info;
 import tk.wurst_client.events.ChatOutputEvent;
 import tk.wurst_client.hooks.ServerHook;
 
-@Info(help = "Shows the IP of the server you are currently playing on or copies it to the clipboard.",
+@Info(description = "Shows the IP of the server you are currently playing on or copies it to the clipboard.",
 	name = "ip",
 	syntax = {"[copy]"},
-	tutorial = "Commands/ip")
+	help = "Commands/ip")
 public class IpCmd extends Cmd
 {
 	@Override

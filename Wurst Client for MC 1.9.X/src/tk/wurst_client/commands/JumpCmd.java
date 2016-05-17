@@ -9,10 +9,10 @@ package tk.wurst_client.commands;
 
 import tk.wurst_client.events.ChatOutputEvent;
 
-@Cmd.Info(help = "Makes you jump once.",
+@Cmd.Info(description = "Makes you jump once.",
 	name = "jump",
 	syntax = {},
-	tutorial = "Commands/jump")
+	help = "Commands/jump")
 public class JumpCmd extends Cmd
 {
 	@Override

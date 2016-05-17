@@ -18,7 +18,7 @@ import tk.wurst_client.mods.Mod.Info;
 	name = "FastEat",
 	noCheatCompatible = false,
 	tags = "FastNom, fast eat, fast nom",
-	tutorial = "Mods/FastEat")
+	help = "Mods/FastEat")
 public class FastEatMod extends Mod implements UpdateListener
 {
 	@Override

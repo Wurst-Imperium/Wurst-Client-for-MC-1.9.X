@@ -17,11 +17,11 @@ import net.minecraft.util.ResourceLocation;
 import tk.wurst_client.commands.Cmd.Info;
 import tk.wurst_client.utils.MiscUtils;
 
-@Info(help = "Gives you an item with custom NBT data. Requires creative mode.",
+@Info(description = "Gives you an item with custom NBT data. Requires creative mode.",
 	name = "give",
 	syntax = {"(<item_name>|<item_id>) [<amount>] [<metadata>] [<nbt>]",
 		"template <template_id> [<amount>]", "templates"},
-		tutorial = "Commands/give")
+		help = "Commands/give")
 public class GiveCmd extends Cmd
 {
 	private static class ItemTemplate

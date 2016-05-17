@@ -20,7 +20,7 @@ import tk.wurst_client.mods.Mod.Info;
 @Info(category = Category.EXPLOITS,
 	description = "Fills the server console with errors so that admins can't see what you are doing.",
 	name = "LogSpammer",
-	tutorial = "Mods/LogSpammer")
+	help = "Mods/LogSpammer")
 public class LogSpammerMod extends Mod implements UpdateListener
 {
 	private PacketBuffer payload;

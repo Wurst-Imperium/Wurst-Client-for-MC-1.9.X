@@ -19,7 +19,7 @@ import tk.wurst_client.mods.Mod.Info;
 	name = "AntiFire",
 	noCheatCompatible = false,
 	tags = "anti fire, AntiBurn, anti burn, NoFire, no fire",
-	tutorial = "Mods/AntiFire")
+	help = "Mods/AntiFire")
 public class AntiFireMod extends Mod implements UpdateListener
 {
 	@Override

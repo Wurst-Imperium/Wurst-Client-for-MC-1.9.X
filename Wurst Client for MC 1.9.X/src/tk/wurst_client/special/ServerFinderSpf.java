@@ -11,7 +11,7 @@ package tk.wurst_client.special;
 	+ "It usually finds around 75 - 200 servers.",
 	name = "ServerFinder",
 	tags = "Server Finder",
-	tutorial = "Special_Features/Server_Finder")
+	help = "Special_Features/Server_Finder")
 public class ServerFinderSpf extends Spf
 {	
 	

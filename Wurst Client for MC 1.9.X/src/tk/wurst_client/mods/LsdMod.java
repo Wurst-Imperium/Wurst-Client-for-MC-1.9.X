@@ -19,7 +19,7 @@ import tk.wurst_client.mods.Mod.Info;
 @Info(category = Category.FUN,
 	description = "Thousands of colors!",
 	name = "LSD",
-	tutorial = "Mods/LSD")
+	help = "Mods/LSD")
 public class LsdMod extends Mod implements UpdateListener
 {
 	@Override

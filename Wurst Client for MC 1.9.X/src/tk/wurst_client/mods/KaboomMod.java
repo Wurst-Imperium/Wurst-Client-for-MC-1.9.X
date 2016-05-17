@@ -32,7 +32,7 @@ import tk.wurst_client.utils.BlockUtils;
 		+ "and weak blocks.\n" + "Note that this is not an actual explosion.",
 	name = "Kaboom",
 	noCheatCompatible = false,
-	tutorial = "Mods/Kaboom")
+	help = "Mods/Kaboom")
 public class KaboomMod extends Mod implements UpdateListener
 {
 	private int range = 6;

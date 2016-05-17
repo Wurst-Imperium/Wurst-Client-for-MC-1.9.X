@@ -14,7 +14,7 @@ import tk.wurst_client.mods.Mod.Info;
 	description = "Adds the health of players to their nametags.",
 	name = "HealthTags",
 	tags = "health tags",
-	tutorial = "Mods/HealthTags")
+	help = "Mods/HealthTags")
 public class HealthTagsMod extends Mod
 {	
 	

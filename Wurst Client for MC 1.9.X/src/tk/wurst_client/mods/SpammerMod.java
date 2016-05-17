@@ -42,7 +42,7 @@ import tk.wurst_client.utils.MiscUtils;
 		+ ">Variables\n" + ">HTML-like tags & comments\n"
 		+ ">Integrated help system",
 	name = "Spammer",
-	tutorial = "Mods/Spammer")
+	help = "Mods/Spammer")
 public class SpammerMod extends Mod
 {
 	private JDialog dialog;

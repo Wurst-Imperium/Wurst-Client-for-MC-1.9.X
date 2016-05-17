@@ -11,7 +11,7 @@ package tk.wurst_client.mods;
 	description = "Protects you from cactus damage.",
 	name = "AntiCactus",
 	tags = "anti cactus",
-	tutorial = "Mods/AntiCactus")
+	help = "Mods/AntiCactus")
 public class AntiCactusMod extends Mod
 {	
 	

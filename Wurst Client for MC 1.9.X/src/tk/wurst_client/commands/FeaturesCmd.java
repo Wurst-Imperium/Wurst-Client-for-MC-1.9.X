@@ -12,10 +12,10 @@ import tk.wurst_client.events.ChatOutputEvent;
 import tk.wurst_client.mods.Mod;
 import tk.wurst_client.special.Spf;
 
-@Info(help = "Shows the feature count and some over statistics.",
+@Info(description = "Shows the feature count and some over statistics.",
 	name = "features",
 	syntax = {},
-	tutorial = "Commands/features")
+	help = "Commands/features")
 public class FeaturesCmd extends Cmd
 {
 	@Override

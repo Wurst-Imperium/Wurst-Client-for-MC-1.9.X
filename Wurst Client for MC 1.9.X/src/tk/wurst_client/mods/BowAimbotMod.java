@@ -33,7 +33,7 @@ import tk.wurst_client.utils.RenderUtils;
 		+ "Tip: This works with FastBow.",
 	name = "BowAimbot",
 	tags = "bow aimbot",
-	tutorial = "Mods/BowAimbot")
+	help = "Mods/BowAimbot")
 public class BowAimbotMod extends Mod implements UpdateListener,
 	RenderListener, GUIRenderListener
 {

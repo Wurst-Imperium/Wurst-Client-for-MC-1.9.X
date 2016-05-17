@@ -13,7 +13,7 @@ package tk.wurst_client.mods;
 		+ "to specify it.",
 	name = "GhostHand",
 	tags = "ghost hand",
-	tutorial = "Mods/GhostHand")
+	help = "Mods/GhostHand")
 public class GhostHandMod extends Mod
 {
 	@Override

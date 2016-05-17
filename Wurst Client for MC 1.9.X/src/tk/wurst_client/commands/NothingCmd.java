@@ -10,10 +10,10 @@ package tk.wurst_client.commands;
 import tk.wurst_client.commands.Cmd.Info;
 import tk.wurst_client.events.ChatOutputEvent;
 
-@Info(help = "Does nothing. Useful for scripting.",
+@Info(description = "Does nothing. Useful for scripting.",
 	name = "nothing",
 	syntax = {},
-	tutorial = "Commands/nothing")
+	help = "Commands/nothing")
 public class NothingCmd extends Cmd
 {
 	@Override

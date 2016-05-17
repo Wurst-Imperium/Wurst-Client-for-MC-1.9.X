@@ -16,7 +16,7 @@ import tk.wurst_client.mods.Mod.Info;
 		+ "Be careful with this!",
 	name = "Panic",
 	tags = "legit, disable",
-	tutorial = "Mods/Panic")
+	help = "Mods/Panic")
 public class PanicMod extends Mod implements UpdateListener
 {
 	@Override

@@ -17,7 +17,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 		+ "Requires a skin with a jacket, a hat or something similar.",
 	name = "SkinBlinker",
 	tags = "SpookySkin, skin blinker, spooky skin",
-	tutorial = "Mods/SkinBlinker")
+	help = "Mods/SkinBlinker")
 public class SkinBlinkerMod extends Mod implements UpdateListener
 {
 	@Override

@@ -33,7 +33,7 @@ public interface NavigatorItem
 	
 	public void doPrimaryAction();
 	
-	public String getTutorialPage();
+	public String getHelpPage();
 	
 	public NavigatorItem[] getSeeAlso();
 }

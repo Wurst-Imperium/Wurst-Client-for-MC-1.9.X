@@ -20,7 +20,7 @@ import tk.wurst_client.utils.EntityUtils;
 	name = "TP-Aura",
 	noCheatCompatible = false,
 	tags = "TpAura, EnderAura, tp aura, ender aura",
-	tutorial = "Mods/TP-Aura")
+	help = "Mods/TP-Aura")
 public class TpAuraMod extends Mod implements UpdateListener
 {
 	private Random random = new Random();

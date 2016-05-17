@@ -14,7 +14,7 @@ import tk.wurst_client.mods.Mod.Info;
 	description = "Blocks blindness and nausea.",
 	name = "AntiBlind",
 	tags = "AntiBlindness, anti blindness",
-	tutorial = "Mods/AntiBlind")
+	help = "Mods/AntiBlind")
 public class AntiBlindMod extends Mod
 {	
 	

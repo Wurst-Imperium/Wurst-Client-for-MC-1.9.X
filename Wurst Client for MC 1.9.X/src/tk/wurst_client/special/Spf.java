@@ -23,8 +23,8 @@ public class Spf implements NavigatorItem
 	private final String description = getClass().getAnnotation(Info.class)
 		.description();
 	private final String tags = getClass().getAnnotation(Info.class).tags();
-	private final String tutorial = getClass().getAnnotation(Info.class)
-		.tutorial();
+	private final String help = getClass().getAnnotation(Info.class)
+		.help();
 	protected ArrayList<NavigatorSetting> settings = new ArrayList<>();
 	
 	protected static final WurstClient wurst = WurstClient.INSTANCE;
@@ -39,7 +39,7 @@ public class Spf implements NavigatorItem
 		
 		String tags() default "";
 		
-		String tutorial() default "";
+		String help() default "";
 	}
 	
 	@Override
@@ -109,9 +109,9 @@ public class Spf implements NavigatorItem
 	}
 	
 	@Override
-	public final String getTutorialPage()
+	public final String getHelpPage()
 	{
-		return tutorial;
+		return help;
 	}
 	
 	@Override

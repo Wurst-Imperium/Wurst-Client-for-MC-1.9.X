@@ -13,10 +13,10 @@ import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.util.EnumHand;
 import tk.wurst_client.events.ChatOutputEvent;
 
-@Cmd.Info(help = "Leaves the current server or changes the mode of AutoLeave.",
+@Cmd.Info(description = "Leaves the current server or changes the mode of AutoLeave.",
 	name = "leave",
 	syntax = {"[chars|tp|selfhurt|quit]", "mode chars|tp|selfhurt|quit"},
-	tutorial = "Commands/leave")
+	help = "Commands/leave")
 public class LeaveCmd extends Cmd
 {
 	@Override

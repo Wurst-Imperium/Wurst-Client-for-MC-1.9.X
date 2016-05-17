@@ -17,7 +17,7 @@ import tk.wurst_client.mods.Mod.Info;
 		+ "if they can't.",
 	name = "AntiMAC",
 	tags = "anti mac, Mineplex AntiCheat, mineplex anti cheat, AntiMineplex, anti mineplex",
-	tutorial = "Mods/AntiMAC")
+	help = "Mods/AntiMAC")
 public class AntiMacMod extends Mod
 {
 	private HashSet<Mod> blockedMods;

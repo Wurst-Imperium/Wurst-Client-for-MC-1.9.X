@@ -17,7 +17,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 		+ "check the NoCheat+ version of a server.",
 	name = "SpeedHack",
 	tags = "speed hack",
-	tutorial = "Mods/SpeedHack")
+	help = "Mods/SpeedHack")
 public class SpeedHackMod extends Mod implements UpdateListener
 {
 	@Override

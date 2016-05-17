@@ -18,7 +18,7 @@ import tk.wurst_client.navigator.NavigatorItem;
 		+ "having a lot of different colored wool blocks in your\n" + "hotbar.",
 	name = "AutoSwitch",
 	tags = "auto switch",
-	tutorial = "Mods/AutoSwitch")
+	help = "Mods/AutoSwitch")
 public class AutoSwitchMod extends Mod implements UpdateListener
 {
 	@Override

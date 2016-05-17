@@ -24,7 +24,7 @@ import tk.wurst_client.utils.EntityUtils;
 	description = "Automatically attacks everything in your range.",
 	name = "Killaura",
 	tags = "kill aura",
-	tutorial = "Mods/Killaura")
+	help = "Mods/Killaura")
 public class KillauraMod extends Mod implements UpdateListener
 {
 	public float normalSpeed = 20F;

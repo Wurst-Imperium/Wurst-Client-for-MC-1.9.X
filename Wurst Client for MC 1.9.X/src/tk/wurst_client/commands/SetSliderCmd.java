@@ -14,11 +14,11 @@ import tk.wurst_client.navigator.settings.NavigatorSetting;
 import tk.wurst_client.navigator.settings.SliderSetting;
 import tk.wurst_client.utils.MiscUtils;
 
-@Cmd.Info(help = "Changes a slider setting of a feature. Allows you to\n"
+@Cmd.Info(description = "Changes a slider setting of a feature. Allows you to\n"
 	+ "move sliders through keybinds.",
 	name = "setslider",
 	syntax = {"<feature> <slider_setting> (<value>|more|less)"},
-	tutorial = "Commands/setslider")
+	help = "Commands/setslider")
 public class SetSliderCmd extends Cmd
 {
 	@Override

@@ -19,7 +19,7 @@ import tk.wurst_client.utils.RenderUtils;
 	description = "Allows you to see items through walls.",
 	name = "ItemESP",
 	tags = "item esp",
-	tutorial = "Mods/ItemESP")
+	help = "Mods/ItemESP")
 public class ItemEspMod extends Mod implements RenderListener
 {
 	@Override

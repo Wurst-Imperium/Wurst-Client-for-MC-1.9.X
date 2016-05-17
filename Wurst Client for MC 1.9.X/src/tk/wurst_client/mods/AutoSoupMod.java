@@ -32,7 +32,7 @@ import tk.wurst_client.navigator.settings.SliderSetting;
 	description = "Automatically eats soup if your health is below the set value.",
 	name = "AutoSoup",
 	tags = "auto soup",
-	tutorial = "Mods/AutoSoup")
+	help = "Mods/AutoSoup")
 public class AutoSoupMod extends Mod implements UpdateListener
 {
 	public float health = 20F;

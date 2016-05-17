@@ -23,7 +23,7 @@ import tk.wurst_client.navigator.settings.SliderSetting;
 		+ "Bypasses MAC if AntiMAC is enabled.",
 	name = "Flight",
 	tags = "FlyHack,fly hack,flying",
-	tutorial = "Mods/Flight")
+	help = "Mods/Flight")
 public class FlightMod extends Mod implements UpdateListener
 {
 	public float speed = 1F;

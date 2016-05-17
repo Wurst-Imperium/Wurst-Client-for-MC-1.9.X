@@ -9,10 +9,10 @@ package tk.wurst_client.commands;
 
 import tk.wurst_client.commands.Cmd.Info;
 
-@Info(help = "Enables/disables Wurst messages or sends a message.",
+@Info(description = "Enables/disables Wurst messages or sends a message.",
 	name = "wms",
 	syntax = {"(on | off)", "echo <message>"},
-	tutorial = "Commands/wms")
+	help = "Commands/wms")
 public class WmsCmd extends Cmd
 {
 	@Override

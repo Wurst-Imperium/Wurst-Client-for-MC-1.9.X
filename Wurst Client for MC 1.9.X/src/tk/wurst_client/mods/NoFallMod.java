@@ -16,7 +16,7 @@ import tk.wurst_client.mods.Mod.Info;
 	description = "Protects you from fall damage.\n" + "Bypasses AntiCheat.",
 	name = "NoFall",
 	tags = "no fall",
-	tutorial = "Mods/NoFall")
+	help = "Mods/NoFall")
 public class NoFallMod extends Mod implements UpdateListener
 {
 	@Override

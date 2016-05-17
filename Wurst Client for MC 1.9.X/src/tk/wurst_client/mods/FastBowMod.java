@@ -26,7 +26,7 @@ import tk.wurst_client.navigator.NavigatorItem;
 	name = "FastBow",
 	noCheatCompatible = false,
 	tags = "RapidFire, BowSpam, fast bow, rapid fire, bow spam",
-	tutorial = "Mods/FastBow")
+	help = "Mods/FastBow")
 public class FastBowMod extends Mod implements UpdateListener
 {
 	@Override

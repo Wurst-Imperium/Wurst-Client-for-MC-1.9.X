@@ -19,7 +19,7 @@ import tk.wurst_client.mods.Mod.Info;
 	name = "AntiPotion",
 	noCheatCompatible = false,
 	tags = "NoPotion, Zoot, anti potions, no potions",
-	tutorial = "Mods/AntiPotion")
+	help = "Mods/AntiPotion")
 public class AntiPotionMod extends Mod implements UpdateListener
 {
 	@Override

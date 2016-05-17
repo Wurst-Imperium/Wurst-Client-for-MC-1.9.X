@@ -13,10 +13,10 @@ import net.minecraft.item.ItemStack;
 import tk.wurst_client.commands.Cmd.Info;
 import tk.wurst_client.events.ChatOutputEvent;
 
-@Info(help = "Enchants items with everything.",
+@Info(description = "Enchants items with everything.",
 	name = "enchant",
 	syntax = {"[all]"},
-	tutorial = "Commands/enchant")
+	help = "Commands/enchant")
 public class EnchantCmd extends Cmd
 {
 	@Override

@@ -16,10 +16,10 @@ import tk.wurst_client.commands.Cmd.Info;
 import tk.wurst_client.mods.XRayMod;
 import tk.wurst_client.utils.MiscUtils;
 
-@Info(help = "Manages or toggles X-Ray.", name = "xray", syntax = {
+@Info(description = "Manages or toggles X-Ray.", name = "xray", syntax = {
 	"add (id <block_id>|name <block_name>)",
 	"remove (id <block_id>|name <block_name>)", "list [<page>]"},
-	tutorial = "Commands/xray")
+	help = "Commands/xray")
 public class XRayCmd extends Cmd
 {
 	@Override

@@ -12,10 +12,10 @@ import net.minecraft.client.gui.inventory.GuiInventory;
 import tk.wurst_client.commands.Cmd.Info;
 import tk.wurst_client.events.listeners.RenderListener;
 
-@Info(help = "Allows you to see parts of another player's inventory.",
+@Info(description = "Allows you to see parts of another player's inventory.",
 	name = "invsee",
 	syntax = {"<player>"},
-	tutorial = "Commands/invsee")
+	help = "Commands/invsee")
 public class InvseeCmd extends Cmd implements RenderListener
 {
 	private String playerName;

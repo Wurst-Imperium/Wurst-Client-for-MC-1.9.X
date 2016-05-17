@@ -16,10 +16,10 @@ import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
 import tk.wurst_client.commands.Cmd.Info;
 import tk.wurst_client.utils.MiscUtils;
 
-@Info(help = "Modifies items in creative mode.",
+@Info(description = "Modifies items in creative mode.",
 	name = "modify",
 	syntax = {"add <nbt>", "remove <nbt_path>", "set <nbt>", "metadata <value>"},
-	tutorial = "Commands/modify")
+	help = "Commands/modify")
 public class ModifyCmd extends Cmd
 {
 	@Override

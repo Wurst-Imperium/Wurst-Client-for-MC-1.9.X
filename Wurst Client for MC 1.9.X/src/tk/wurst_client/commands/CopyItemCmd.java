@@ -12,11 +12,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
 import tk.wurst_client.commands.Cmd.Info;
 
-@Info(help = "Allows you to copy items that other people are holding\n"
+@Info(description = "Allows you to copy items that other people are holding\n"
 	+ "or wearing. Requires creative mode.",
 	name = "copyitem",
 	syntax = {"<player> (hand|head|chest|legs|feet)"},
-	tutorial = "Commands/copyitem")
+	help = "Commands/copyitem")
 public class CopyItemCmd extends Cmd
 {
 	@Override

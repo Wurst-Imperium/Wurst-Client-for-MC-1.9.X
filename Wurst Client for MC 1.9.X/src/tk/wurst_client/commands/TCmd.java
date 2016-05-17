@@ -10,8 +10,8 @@ package tk.wurst_client.commands;
 import tk.wurst_client.commands.Cmd.Info;
 import tk.wurst_client.mods.Mod;
 
-@Info(help = "Toggles a mod.", name = "t", syntax = {"<mod> [(on|off)]"},
-tutorial = "Commands/t")
+@Info(description = "Toggles a mod.", name = "t", syntax = {"<mod> [(on|off)]"},
+help = "Commands/t")
 public class TCmd extends Cmd
 {
 	@Override

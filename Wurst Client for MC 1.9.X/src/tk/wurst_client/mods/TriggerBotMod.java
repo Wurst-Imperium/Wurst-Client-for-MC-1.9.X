@@ -20,7 +20,7 @@ import tk.wurst_client.utils.EntityUtils;
 	description = "Automatically attacks the entity you're looking at.",
 	name = "TriggerBot",
 	tags = "trigger bot",
-	tutorial = "Mods/TriggerBot")
+	help = "Mods/TriggerBot")
 public class TriggerBotMod extends Mod implements UpdateListener
 {
 	

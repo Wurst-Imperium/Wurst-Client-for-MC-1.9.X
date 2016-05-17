@@ -21,7 +21,7 @@ import tk.wurst_client.utils.RenderUtils;
 	description = "Allows you to see fake blocks in Prophunt.",
 	name = "ProphuntESP",
 	tags = "prophunt esp",
-	tutorial = "Mods/ProphuntESP")
+	help = "Mods/ProphuntESP")
 public class ProphuntEspMod extends Mod implements RenderListener
 {
 	@Override

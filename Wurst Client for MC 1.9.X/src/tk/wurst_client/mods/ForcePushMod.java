@@ -17,7 +17,7 @@ import tk.wurst_client.utils.EntityUtils;
 		+ "Can sometimes get you kicked for \"Flying is not enabled\".",
 	name = "ForcePush",
 	tags = "force push",
-	tutorial = "Mods/ForcePush")
+	help = "Mods/ForcePush")
 public class ForcePushMod extends Mod implements UpdateListener
 {
 	@Override

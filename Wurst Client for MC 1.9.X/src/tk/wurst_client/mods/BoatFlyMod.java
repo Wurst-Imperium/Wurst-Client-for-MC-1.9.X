@@ -14,7 +14,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 		+ "Bypasses NoCheat+, at least for now.",
 	name = "BoatFly",
 	tags = "BoatFlight, boat fly, boat flight",
-	tutorial = "Mods/BoatFly")
+	help = "Mods/BoatFly")
 public class BoatFlyMod extends Mod implements UpdateListener
 {
 	@Override

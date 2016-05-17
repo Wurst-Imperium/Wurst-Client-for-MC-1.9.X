@@ -65,8 +65,8 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 				break;
 			case 1:
 				MiscUtils.openLink("https://www.wurst-client.tk/wiki/"
-					+ item.getTutorialPage() + "/");
-				wurst.navigator.analytics.trackEvent("tutorial", "open",
+					+ item.getHelpPage() + "/");
+				wurst.navigator.analytics.trackEvent("help", "open",
 					item.getName());
 				break;
 		}
@@ -83,20 +83,20 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 		// primary button
 		String primaryAction = item.getPrimaryAction();
 		boolean hasPrimaryAction = !primaryAction.isEmpty();
-		boolean hasTutorial = !item.getTutorialPage().isEmpty();
+		boolean hasHelp = !item.getHelpPage().isEmpty();
 		if(hasPrimaryAction)
 		{
 			primaryButton =
-				new GuiButton(0, width / 2 - 151, height - 65, hasTutorial
+				new GuiButton(0, width / 2 - 151, height - 65, hasHelp
 					? 149 : 302, 18, primaryAction);
 			buttonList.add(primaryButton);
 		}
 		
-		// tutorial button
-		if(hasTutorial)
+		// help button
+		if(hasHelp)
 			buttonList.add(new GuiButton(1, width / 2
 				+ (hasPrimaryAction ? 2 : -151), height - 65, hasPrimaryAction
-				? 149 : 302, 20, "Tutorial"));
+				? 149 : 302, 20, "Help"));
 		
 		// type
 		text = "Type: " + item.getType();

@@ -20,7 +20,7 @@ import tk.wurst_client.utils.EntityUtils;
 		+ "PlugIn. Not required on most NoCheat+ servers!",
 	name = "KillauraLegit",
 	tags = "LegitAura, killaura legit, kill aura legit, legit aura",
-	tutorial = "Mods/KillauraLegit")
+	help = "Mods/KillauraLegit")
 public class KillauraLegitMod extends Mod implements UpdateListener
 {
 	@Override

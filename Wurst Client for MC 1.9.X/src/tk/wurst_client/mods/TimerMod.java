@@ -18,7 +18,7 @@ import tk.wurst_client.navigator.settings.SliderSetting;
 		+ "Tip: Slow speeds make aiming easier and work well with\n"
 		+ "NoCheat+.",
 	name = "Timer",
-	tutorial = "Mods/Timer")
+	help = "Mods/Timer")
 public class TimerMod extends Mod
 {
 	public float speed = 2.0F;

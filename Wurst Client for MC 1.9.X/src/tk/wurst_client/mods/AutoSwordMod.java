@@ -23,7 +23,7 @@ import tk.wurst_client.navigator.NavigatorItem;
 	name = "AutoSword",
 	noCheatCompatible = false,
 	tags = "auto sword",
-	tutorial = "Mods/AutoSword")
+	help = "Mods/AutoSword")
 public class AutoSwordMod extends Mod implements LeftClickListener,
 	UpdateListener
 {

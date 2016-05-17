@@ -22,7 +22,7 @@ import tk.wurst_client.utils.EntityUtils;
 	name = "MultiAura",
 	noCheatCompatible = false,
 	tags = "ForceField, multi aura, force field",
-	tutorial = "Mods/MultiAura")
+	help = "Mods/MultiAura")
 public class MultiAuraMod extends Mod implements UpdateListener
 {
 	private float range = 6F;

@@ -107,14 +107,14 @@ public class NavigatorMainScreen extends NavigatorScreen
 			{
 				// right click
 				NavigatorItem item = navigatorDisplayList.get(hoveredItem);
-				if(item.getTutorialPage().isEmpty())
+				if(item.getHelpPage().isEmpty())
 					return;
 				MiscUtils.openLink("https://www.wurst-client.tk/wiki/"
-					+ item.getTutorialPage() + "/");
+					+ item.getHelpPage() + "/");
 				WurstClient wurst = WurstClient.INSTANCE;
 				wurst.navigator.addPreference(item.getName());
 				wurst.files.saveNavigatorData();
-				wurst.navigator.analytics.trackEvent("tutorial", "open",
+				wurst.navigator.analytics.trackEvent("help", "open",
 					item.getName());
 			}
 	}

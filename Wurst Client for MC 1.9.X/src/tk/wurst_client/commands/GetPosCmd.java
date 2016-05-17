@@ -13,10 +13,10 @@ import java.awt.datatransfer.StringSelection;
 import net.minecraft.util.math.BlockPos;
 import tk.wurst_client.events.ChatOutputEvent;
 
-@Cmd.Info(help = "Shows your current position or copies it to the clipboard.",
+@Cmd.Info(description = "Shows your current position or copies it to the clipboard.",
 	name = "getpos",
 	syntax = {"[copy]"},
-	tutorial = "Commands/getpos")
+	help = "Commands/getpos")
 public class GetPosCmd extends Cmd
 {
 	@Override

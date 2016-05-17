@@ -17,7 +17,7 @@ import tk.wurst_client.mods.Mod.Info;
 	name = "Jetpack",
 	noCheatCompatible = false,
 	tags = "jet pack",
-	tutorial = "Mods/Jetpack")
+	help = "Mods/Jetpack")
 public class JetpackMod extends Mod implements UpdateListener
 {
 	@Override

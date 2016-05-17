@@ -12,10 +12,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagString;
 import tk.wurst_client.commands.Cmd.Info;
 
-@Info(help = "Changes the held book's author.",
+@Info(description = "Changes the held book's author.",
 	name = "author",
 	syntax = {"<author>"},
-	tutorial = "Commands/author")
+	help = "Commands/author")
 public class AuthorCmd extends Cmd
 {
 	@Override

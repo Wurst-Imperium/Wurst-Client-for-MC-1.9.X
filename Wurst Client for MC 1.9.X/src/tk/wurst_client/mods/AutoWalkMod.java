@@ -15,7 +15,7 @@ import tk.wurst_client.mods.Mod.Info;
 	description = "Automatically walks all the time.",
 	name = "AutoWalk",
 	tags = "auto walk",
-	tutorial = "Mods/AutoWalk")
+	help = "Mods/AutoWalk")
 public class AutoWalkMod extends Mod implements UpdateListener
 {
 	@Override

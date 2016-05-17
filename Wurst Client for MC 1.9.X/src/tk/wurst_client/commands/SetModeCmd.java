@@ -13,11 +13,11 @@ import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.navigator.settings.ModeSetting;
 import tk.wurst_client.navigator.settings.NavigatorSetting;
 
-@Cmd.Info(help = "Changes a mode setting of a feature. Allows you to\n"
+@Cmd.Info(description = "Changes a mode setting of a feature. Allows you to\n"
 	+ "switch modes through keybinds.",
 	name = "setmode",
 	syntax = {"<feature> <mode_setting> (<mode>|next|prev)"},
-	tutorial = "Commands/setmode")
+	help = "Commands/setmode")
 public class SetModeCmd extends Cmd
 {
 	@Override

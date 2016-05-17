@@ -22,7 +22,7 @@ import tk.wurst_client.utils.RenderUtils;
 		+ "Use .search id <block id> or .search name <block name>\n"
 		+ "to specify it.",
 	name = "Search",
-	tutorial = "Mods/Search")
+	help = "Mods/Search")
 public class SearchMod extends Mod implements UpdateListener, RenderListener
 {
 	private ArrayList<BlockPos> matchingBlocks = new ArrayList<BlockPos>();

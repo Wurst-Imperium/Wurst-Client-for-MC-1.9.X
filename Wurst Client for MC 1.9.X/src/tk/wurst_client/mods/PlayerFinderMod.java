@@ -27,7 +27,7 @@ import tk.wurst_client.utils.RenderUtils;
 	description = "Finds far players during thunderstorms.",
 	name = "PlayerFinder",
 	tags = "player finder",
-	tutorial = "Mods/PlayerFinder")
+	help = "Mods/PlayerFinder")
 public class PlayerFinderMod extends Mod implements PacketInputListener,
 	RenderListener
 {

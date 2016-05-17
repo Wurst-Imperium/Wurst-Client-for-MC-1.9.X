@@ -20,7 +20,7 @@ import tk.wurst_client.navigator.settings.SliderSetting;
 		+ "Tip: This works with Nuker.",
 	name = "FastBreak",
 	tags = "SpeedyGonzales, fast break, speedy gonzales",
-	tutorial = "Mods/FastBreak")
+	help = "Mods/FastBreak")
 public class FastBreakMod extends Mod
 {
 	public float speed = 2;

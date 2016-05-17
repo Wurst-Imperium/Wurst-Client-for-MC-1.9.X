@@ -18,7 +18,7 @@ import net.minecraft.nbt.NBTTagList;
 		+ "ever again!",
 	name = "CrashChest",
 	tags = "crash chest",
-	tutorial = "Mods/CrashChest")
+	help = "Mods/CrashChest")
 public class CrashChestMod extends Mod
 {
 	@Override

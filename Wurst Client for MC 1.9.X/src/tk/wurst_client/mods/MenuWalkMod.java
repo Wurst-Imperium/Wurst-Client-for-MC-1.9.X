@@ -20,7 +20,7 @@ import tk.wurst_client.navigator.gui.NavigatorScreen;
 		+ "menu).",
 	name = "MenuWalk",
 	tags = "InventoryWalk, menu walk, inventory walk",
-	tutorial = "Mods/MenuWalk")
+	help = "Mods/MenuWalk")
 public class MenuWalkMod extends Mod
 {
 	public boolean shouldAllowWalking()

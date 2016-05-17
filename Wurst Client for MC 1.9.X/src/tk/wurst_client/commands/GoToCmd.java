@@ -11,10 +11,10 @@ import net.minecraft.util.math.BlockPos;
 import tk.wurst_client.ai.PathFinder;
 import tk.wurst_client.commands.Cmd.Info;
 
-@Info(help = "Walks or flies you to a specific location.",
+@Info(description = "Walks or flies you to a specific location.",
 	name = "goto",
 	syntax = {"<x> <y> <z>", "<entity>"},
-	tutorial = "Commands/goto")
+	help = "Commands/goto")
 public class GoToCmd extends Cmd
 {
 	@Override

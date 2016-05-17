@@ -19,7 +19,7 @@ import tk.wurst_client.mods.Mod.Info;
 	description = "Suspends all motion updates while enabled.\n"
 		+ "Can be used for teleportation, instant picking up of items and more.",
 	name = "Blink",
-	tutorial = "Mods/Blink")
+	help = "Mods/Blink")
 public class BlinkMod extends Mod
 {
 	private static ArrayList<Packet> packets = new ArrayList<Packet>();

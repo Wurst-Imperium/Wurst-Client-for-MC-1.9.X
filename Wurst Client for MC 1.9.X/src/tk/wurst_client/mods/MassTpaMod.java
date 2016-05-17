@@ -25,7 +25,7 @@ import tk.wurst_client.mods.Mod.Info;
 		+ "Stops if someone accepts.",
 	name = "MassTPA",
 	tags = "mass tpa",
-	tutorial = "Mods/MassTPA")
+	help = "Mods/MassTPA")
 public class MassTpaMod extends Mod implements UpdateListener,
 	ChatInputListener
 {

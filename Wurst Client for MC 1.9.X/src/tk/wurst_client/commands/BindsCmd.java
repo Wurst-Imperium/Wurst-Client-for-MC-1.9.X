@@ -14,10 +14,10 @@ import java.util.TreeSet;
 import tk.wurst_client.commands.Cmd.Info;
 import tk.wurst_client.utils.MiscUtils;
 
-@Info(help = "Lists all keybinds.",
+@Info(description = "Lists all keybinds.",
 	name = "binds",
 	syntax = {"[<page>]"},
-	tutorial = "Commands/binds")
+	help = "Commands/binds")
 public class BindsCmd extends Cmd
 {
 	@Override

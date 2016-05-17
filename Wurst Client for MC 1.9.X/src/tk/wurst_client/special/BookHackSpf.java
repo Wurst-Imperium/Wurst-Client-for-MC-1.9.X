@@ -14,7 +14,7 @@ import tk.wurst_client.navigator.NavigatorItem;
 	+ "\"/kill\".",
 	name = "BookHack",
 	tags = "Force OP,Book Hack,OP Book,command book",
-	tutorial = "Special_Features/Force_OP_(BookHack)")
+	help = "Special_Features/Force_OP_(BookHack)")
 public class BookHackSpf extends Spf
 {
 	@Override

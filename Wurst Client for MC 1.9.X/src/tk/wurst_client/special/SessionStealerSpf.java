@@ -15,7 +15,7 @@ import tk.wurst_client.navigator.NavigatorItem;
 	+ "password of the account.",
 	name = "SessionStealer",
 	tags = "Force OP,Session Stealer,Account Stealer",
-	tutorial = "Special_Features/Force_OP_(Session_Stealer)")
+	help = "Special_Features/Force_OP_(Session_Stealer)")
 public class SessionStealerSpf extends Spf
 {
 	@Override

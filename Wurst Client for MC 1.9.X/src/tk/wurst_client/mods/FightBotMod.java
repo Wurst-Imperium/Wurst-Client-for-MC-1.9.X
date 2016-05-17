@@ -19,7 +19,7 @@ import tk.wurst_client.utils.EntityUtils;
 		+ "It walks around and kills everything.\n" + "Good for MobArena.",
 	name = "FightBot",
 	tags = "fight bot",
-	tutorial = "Mods/FightBot")
+	help = "Mods/FightBot")
 public class FightBotMod extends Mod implements UpdateListener
 {
 	private float speed;

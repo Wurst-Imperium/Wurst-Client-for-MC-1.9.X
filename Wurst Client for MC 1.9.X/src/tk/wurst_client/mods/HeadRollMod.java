@@ -18,7 +18,7 @@ import tk.wurst_client.mods.Mod.Info;
 		+ "rolling your head around!\n" + "Looks a bit like nodding.",
 	name = "HeadRoll",
 	tags = "head roll",
-	tutorial = "Mods/HeadRoll")
+	help = "Mods/HeadRoll")
 public class HeadRollMod extends Mod implements UpdateListener
 {
 	@Override

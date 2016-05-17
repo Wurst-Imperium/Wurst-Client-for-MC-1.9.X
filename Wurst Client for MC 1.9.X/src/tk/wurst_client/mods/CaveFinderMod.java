@@ -11,7 +11,7 @@ package tk.wurst_client.mods;
 	description = "Allows you to see caves through walls.",
 	name = "CaveFinder",
 	tags = "cave finder",
-	tutorial = "Mods/CaveFinder")
+	help = "Mods/CaveFinder")
 public class CaveFinderMod extends Mod
 {	
 	

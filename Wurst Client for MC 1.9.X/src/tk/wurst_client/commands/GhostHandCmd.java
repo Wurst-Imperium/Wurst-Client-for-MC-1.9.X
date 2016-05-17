@@ -10,10 +10,10 @@ package tk.wurst_client.commands;
 import net.minecraft.block.Block;
 import tk.wurst_client.utils.MiscUtils;
 
-@Cmd.Info(help = "Changes the settings of GhostHand or toggles it.",
+@Cmd.Info(description = "Changes the settings of GhostHand or toggles it.",
 	name = "ghosthand",
 	syntax = {"id <block_id>", "name <block_name>"},
-	tutorial = "Commands/ghosthand")
+	help = "Commands/ghosthand")
 public class GhostHandCmd extends Cmd
 {
 	@Override

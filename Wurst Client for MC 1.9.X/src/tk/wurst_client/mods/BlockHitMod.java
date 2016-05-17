@@ -20,7 +20,7 @@ import tk.wurst_client.mods.Mod.Info;
 		+ "this.",
 	name = "BlockHit",
 	tags = "AutoBlock, BlockHitting, auto block, block hitting",
-	tutorial = "Mods/BlockHit")
+	help = "Mods/BlockHit")
 public class BlockHitMod extends Mod implements LeftClickListener
 {
 	@Override

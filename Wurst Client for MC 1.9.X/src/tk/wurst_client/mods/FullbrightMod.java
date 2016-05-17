@@ -15,7 +15,7 @@ import tk.wurst_client.mods.Mod.Info;
 	description = "Allows you to see in the dark.",
 	name = "Fullbright",
 	tags = "NightVision, full bright, brightness, night vision",
-	tutorial = "Mods/Fullbright")
+	help = "Mods/Fullbright")
 public class FullbrightMod extends Mod implements UpdateListener
 {
 	public FullbrightMod()

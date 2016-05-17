@@ -14,7 +14,7 @@ import tk.wurst_client.navigator.settings.ColorsSetting;
 @Spf.Info(description = "Controls what entities are targeted by other features (e.g. Killaura). Also allows you to\n"
 	+ "bypass AntiAura plugins by filtering out fake entities.",
 	name = "Target",
-	tutorial = "Special_Features/Target")
+	help = "Special_Features/Target")
 public class TargetSpf extends Spf
 {
 	public final CheckboxSetting players = new CheckboxSetting("Players", true);

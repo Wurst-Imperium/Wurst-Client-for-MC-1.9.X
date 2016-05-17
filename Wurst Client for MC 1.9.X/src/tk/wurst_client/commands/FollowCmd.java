@@ -10,10 +10,10 @@ package tk.wurst_client.commands;
 import net.minecraft.entity.EntityLivingBase;
 import tk.wurst_client.utils.EntityUtils;
 
-@Cmd.Info(help = "Toggles Follow or makes it target a specific entity.",
+@Cmd.Info(description = "Toggles Follow or makes it target a specific entity.",
 	name = "follow",
 	syntax = {"[<entity>]"},
-	tutorial = "Commands/follow")
+	help = "Commands/follow")
 public class FollowCmd extends Cmd
 {
 	@Override

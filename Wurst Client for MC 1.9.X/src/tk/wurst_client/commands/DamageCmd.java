@@ -11,10 +11,10 @@ import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.network.play.client.CPacketPlayer.C04PacketPlayerPosition;
 import tk.wurst_client.utils.MiscUtils;
 
-@Cmd.Info(help = "Applies the given amount of damage.",
+@Cmd.Info(description = "Applies the given amount of damage.",
 	name = "damage",
 	syntax = {"<amount>"},
-	tutorial = "Commands/damage")
+	help = "Commands/damage")
 public class DamageCmd extends Cmd
 {
 	@Override

@@ -19,7 +19,7 @@ import tk.wurst_client.utils.RenderUtils;
 	description = "Allows you to see players through walls.",
 	name = "PlayerESP",
 	tags = "player esp",
-	tutorial = "Mods/PlayerESP")
+	help = "Mods/PlayerESP")
 public class PlayerEspMod extends Mod implements RenderListener
 {
 	@Override

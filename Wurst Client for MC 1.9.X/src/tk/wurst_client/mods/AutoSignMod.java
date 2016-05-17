@@ -18,7 +18,7 @@ import tk.wurst_client.mods.Mod.Info;
 	name = "AutoSign",
 	noCheatCompatible = false,
 	tags = "auto sign",
-	tutorial = "Mods/AutoSign")
+	help = "Mods/AutoSign")
 public class AutoSignMod extends Mod
 {
 	public ITextComponent[] signText;

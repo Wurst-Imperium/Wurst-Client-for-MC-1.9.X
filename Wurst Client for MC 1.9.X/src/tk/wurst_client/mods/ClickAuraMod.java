@@ -21,7 +21,7 @@ import tk.wurst_client.utils.EntityUtils;
 		+ "TriggerBot instead.",
 	name = "ClickAura",
 	tags = "Click Aura,ClickAimbot,Click Aimbot",
-	tutorial = "Mods/ClickAura")
+	help = "Mods/ClickAura")
 public class ClickAuraMod extends Mod implements UpdateListener
 {
 	@Override

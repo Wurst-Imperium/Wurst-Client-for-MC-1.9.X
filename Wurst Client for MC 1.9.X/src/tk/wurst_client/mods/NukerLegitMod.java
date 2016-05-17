@@ -32,7 +32,7 @@ import tk.wurst_client.utils.RenderUtils;
 		+ "PlugIn. Not required on most NoCheat+ servers!",
 	name = "NukerLegit",
 	tags = "LegitNuker, nuker legit, legit nuker",
-	tutorial = "Mods/NukerLegit")
+	help = "Mods/NukerLegit")
 public class NukerLegitMod extends Mod implements LeftClickListener,
 	RenderListener, UpdateListener
 {

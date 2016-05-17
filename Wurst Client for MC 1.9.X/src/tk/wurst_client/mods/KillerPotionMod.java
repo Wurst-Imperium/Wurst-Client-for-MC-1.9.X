@@ -18,7 +18,7 @@ import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
 		+ "Requires Creative mode.",
 	name = "KillerPotion",
 	tags = "killer potion",
-	tutorial = "Mods/KillerPotion")
+	help = "Mods/KillerPotion")
 public class KillerPotionMod extends Mod
 {
 	@Override

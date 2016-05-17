@@ -17,7 +17,7 @@ import tk.wurst_client.mods.Mod.Info;
 		+ "Warning: You will take damage while moving through blocks!",
 	name = "NoClip",
 	tags = "no clip",
-	tutorial = "Mods/NoClip")
+	help = "Mods/NoClip")
 public class NoClipMod extends Mod implements UpdateListener
 {
 	@Override

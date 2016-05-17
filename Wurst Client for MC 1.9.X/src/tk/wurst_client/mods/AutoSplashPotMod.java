@@ -32,7 +32,7 @@ import tk.wurst_client.navigator.settings.SliderSetting;
 	description = "Automatically throws splash healing potions if your health is below the set value.",
 	name = "AutoSplashPot",
 	tags = "AutoPotion,auto potion,auto splash potion",
-	tutorial = "Mods/AutoSplashPot")
+	help = "Mods/AutoSplashPot")
 public class AutoSplashPotMod extends Mod implements UpdateListener
 {
 	public float health = 18F;

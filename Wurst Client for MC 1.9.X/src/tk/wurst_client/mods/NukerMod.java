@@ -36,7 +36,7 @@ import tk.wurst_client.utils.RenderUtils;
 	description = "Destroys blocks around you.\n"
 		+ "Use .nuker mode <mode> to change the mode.",
 	name = "Nuker",
-	tutorial = "Mods/Nuker")
+	help = "Mods/Nuker")
 public class NukerMod extends Mod implements LeftClickListener, RenderListener,
 	UpdateListener
 {

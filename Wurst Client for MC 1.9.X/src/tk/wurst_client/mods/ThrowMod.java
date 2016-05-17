@@ -17,7 +17,7 @@ import tk.wurst_client.mods.Mod.Info;
 		+ "Works best with snowballs or eggs.\n"
 		+ "Use the .throw command to change the amount of uses per click.",
 	name = "Throw",
-	tutorial = "Mods/Throw")
+	help = "Mods/Throw")
 public class ThrowMod extends Mod implements UpdateListener
 {
 	@Override

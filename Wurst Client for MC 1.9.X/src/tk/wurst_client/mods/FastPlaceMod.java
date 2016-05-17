@@ -17,7 +17,7 @@ import tk.wurst_client.navigator.NavigatorItem;
 		+ "Tip: This can speed up AutoBuild.",
 	name = "FastPlace",
 	tags = "fast place",
-	tutorial = "Mods/FastPlace")
+	help = "Mods/FastPlace")
 public class FastPlaceMod extends Mod implements UpdateListener
 {
 	@Override

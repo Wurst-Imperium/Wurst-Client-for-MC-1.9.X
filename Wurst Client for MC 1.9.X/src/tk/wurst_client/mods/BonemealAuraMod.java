@@ -36,7 +36,7 @@ import tk.wurst_client.utils.BlockUtils;
 		+ "Use the checkboxes to specify the types of plants.",
 	name = "BonemealAura",
 	tags = "bonemeal aura, bone meal aura, AutoBone, auto bone",
-	tutorial = "Mods/BonemealAura")
+	help = "Mods/BonemealAura")
 public class BonemealAuraMod extends Mod implements UpdateListener
 {
 	public float normalRange = 5F;

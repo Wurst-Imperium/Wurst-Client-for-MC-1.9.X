@@ -43,7 +43,7 @@ import tk.wurst_client.navigator.NavigatorItem;
 	name = "ForceOP",
 	tags = "Force OP,AuthMe Cracker,AuthMeCracker,auth me cracker,admin hack,"
 		+ "AuthMe password cracker",
-	tutorial = "Mods/Force_OP_(AuthMeCracker)")
+	help = "Mods/Force_OP_(AuthMeCracker)")
 public class ForceOpMod extends Mod implements ChatInputListener
 {
 	private String[] defaultList = {"password", "passwort", "password1",
@@ -205,7 +205,7 @@ public class ForceOpMod extends Mod implements ChatInputListener
 						try
 						{
 							String howToLink =
-								"http://www.wurst-client.tk/tutorials/forceop";
+								"http://www.wurst-client.tk/Mods/Force_OP_(AuthMeCracker)/";
 							Desktop.getDesktop().browse(new URI(howToLink));
 						}catch(Throwable var5)
 						{

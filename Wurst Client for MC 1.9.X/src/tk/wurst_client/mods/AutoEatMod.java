@@ -19,7 +19,7 @@ import tk.wurst_client.navigator.NavigatorItem;
 	description = "Automatically eats food when necessary.",
 	name = "AutoEat",
 	tags = "AutoSoup,auto eat,auto soup",
-	tutorial = "Mods/AutoEat")
+	help = "Mods/AutoEat")
 public class AutoEatMod extends Mod implements UpdateListener
 {
 	private int oldSlot;

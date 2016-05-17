@@ -12,9 +12,9 @@ import java.util.Iterator;
 import tk.wurst_client.commands.Cmd.Info;
 import tk.wurst_client.utils.MiscUtils;
 
-@Info(help = "Manages your friends list.", name = "friends", syntax = {
+@Info(description = "Manages your friends list.", name = "friends", syntax = {
 	"(add | remove) <player>", "list [<page>]"},
-	tutorial = "Commands/friends")
+	help = "Commands/friends")
 public class FriendsCmd extends Cmd
 {
 	@Override
