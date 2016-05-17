@@ -25,7 +25,6 @@ public class OptionsManager
 	public boolean wurstNews = true;
 	
 	public int modListMode = 0;
-	public int fastbreakMode = 0;
 	public int forceOPDelay = 1000;
 	public int ghostHandID = 54;
 	public int searchID = 116;

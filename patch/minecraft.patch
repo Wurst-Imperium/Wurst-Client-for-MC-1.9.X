@@ -1,6 +1,6 @@
-From 17252873bdf262dc64c8109317b8a31a1a9a98e7 Mon Sep 17 00:00:00 2001
+From 2e4070f258c80c66b37cc02fd668d7aad0e8451d Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Wed, 11 May 2016 17:41:51 +0200
+Date: Tue, 17 May 2016 14:08:05 +0200
 Subject: [PATCH] Wurst
 
 ---
@@ -2466,7 +2466,7 @@ index 74c8ca7..45d8a9e 100644
                  }
                  catch (UnknownHostException unknownhostexception)
 diff --git a/src/net/minecraft/client/multiplayer/PlayerControllerMP.java b/src/net/minecraft/client/multiplayer/PlayerControllerMP.java
-index a54fc8f..cd16e35 100644
+index a54fc8f..cb3faf7 100644
 --- a/src/net/minecraft/client/multiplayer/PlayerControllerMP.java
 +++ b/src/net/minecraft/client/multiplayer/PlayerControllerMP.java
 @@ -1,5 +1,7 @@
@@ -2575,7 +2575,7 @@ index a54fc8f..cd16e35 100644
 +							this.mc.thePlayer.worldObj, posBlock)
 +						* (fastBreak.isActive()
 +							&& !this.currentGameType.isCreative()
-+							&& WurstClient.INSTANCE.options.fastbreakMode == 0
++							&& WurstClient.INSTANCE.mods.fastBreakMod.getMode() == 0
 +							? fastBreak.speed : 1);
  
                  if (this.stepSoundTickCounter % 4.0F == 0.0F)
@@ -2593,7 +2593,7 @@ index a54fc8f..cd16e35 100644
 +					// TODO: Client
 +				}else if(!this.currentGameType.isCreative()
 +					&& WurstClient.INSTANCE.mods.fastBreakMod.isEnabled()
-+					&& WurstClient.INSTANCE.options.fastbreakMode == 1)
++					&& WurstClient.INSTANCE.mods.fastBreakMod.getMode() == 1)
 +				{
 +					
 +					this.netClientHandler
