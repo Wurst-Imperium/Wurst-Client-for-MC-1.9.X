@@ -38,19 +38,19 @@ public class LogSpammerMod extends Mod implements UpdateListener
 		random.nextBytes(rawPayload);
 		payload.writeBytes(rawPayload);
 		
-		updateMS();
 		wurst.events.add(UpdateListener.class, this);
 	}
 	
 	@Override
 	public void onUpdate()
 	{
+		updateMS();
 		if(hasTimePassedM(100))
 		{
 			mc.thePlayer.sendQueue.addToSendQueue(new CPacketCustomPayload(
 				vulnerableChannels[random.nextInt(vulnerableChannels.length)],
 				payload));
-			updateMS();
+			updateLastMS();
 		}
 	}
 	
