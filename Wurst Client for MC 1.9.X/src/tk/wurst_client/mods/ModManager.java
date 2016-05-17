@@ -97,6 +97,7 @@ public class ModManager
 	public final KillauraMod killauraMod = new KillauraMod();
 	public final KillerPotionMod killerPotionMod = new KillerPotionMod();
 	public final LiquidsMod liquidsMod = new LiquidsMod();
+	public final LogSpammerMod logSpammerMod = new LogSpammerMod();
 	public final LsdMod lsdMod = new LsdMod();
 	public final MassTpaMod massTpaMod = new MassTpaMod();
 	public final MenuWalkMod menuWalkMod = new MenuWalkMod();
