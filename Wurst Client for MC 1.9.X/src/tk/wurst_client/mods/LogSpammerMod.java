@@ -18,7 +18,7 @@ import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 
 @Info(category = Category.EXPLOITS,
-	description = "Scores errors the server console.",
+	description = "Fills the server console with errors so that admins can't see what you are doing.",
 	name = "LogSpammer",
 	tutorial = "Mods/LogSpammer")
 public class LogSpammerMod extends Mod implements UpdateListener
