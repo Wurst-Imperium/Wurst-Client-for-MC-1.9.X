@@ -4,7 +4,6 @@ Date: Wed, 18 May 2016 18:46:40 -0700
 Subject: [PATCH] Wurst
 
 ---
- .gitignore                                         |   1 +
  src/net/minecraft/block/Block.java                 |  17 +-
  src/net/minecraft/block/BlockCactus.java           |  11 +-
  src/net/minecraft/block/BlockLiquid.java           |  14 +-
@@ -82,17 +81,8 @@ Subject: [PATCH] Wurst
  .../management/PlayerInteractionManager.java       |   6 +-
  src/net/minecraft/tileentity/TileEntitySign.java   |   2 +-
  src/net/minecraft/util/Timer.java                  |   6 +
- 78 files changed, 1231 insertions(+), 378 deletions(-)
+ 77 files changed, 1230 insertions(+), 378 deletions(-)
 
-diff --git a/.gitignore b/.gitignore
-index 593cf43..9087fac 100644
---- a/.gitignore
-+++ b/.gitignore
-@@ -2,3 +2,4 @@
- /.settings
- .classpath
- .project
-+/tmp
 diff --git a/src/net/minecraft/block/Block.java b/src/net/minecraft/block/Block.java
 index 71342ba..0909994 100644
 --- a/src/net/minecraft/block/Block.java
