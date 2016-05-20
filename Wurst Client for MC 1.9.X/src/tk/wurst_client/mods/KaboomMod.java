@@ -1,5 +1,5 @@
 /*
- * Copyright © 2014 - 2016 | Wurst-Imperium | All rights reserved.
+ * Copyright Â© 2014 - 2016 | Wurst-Imperium | All rights reserved.
  * 
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -63,7 +63,7 @@ public class KaboomMod extends Mod implements UpdateListener
 	{
 		if(mc.thePlayer.capabilities.isCreativeMode)
 		{
-			wurst.chat.error("Surivival mode only.");
+			wurst.chat.error("Survival mode only.");
 			setEnabled(false);
 			return;
 		}
