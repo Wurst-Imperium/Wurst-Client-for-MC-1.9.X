@@ -1,11 +1,14 @@
 /*
  * Copyright © 2014 - 2016 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 package tk.wurst_client.mods;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.mods.Mod.Category;
@@ -19,6 +22,9 @@ import tk.wurst_client.mods.Mod.Info;
 	help = "Mods/Panic")
 public class PanicMod extends Mod implements UpdateListener
 {
+	
+	private List<Mod> hiddenMods = new ArrayList<>();
+	
 	@Override
 	public void onEnable()
 	{
@@ -30,12 +36,17 @@ public class PanicMod extends Mod implements UpdateListener
 	{
 		for(Mod mod : wurst.mods.getAllMods())
 			if(mod.getCategory() != Category.HIDDEN && mod.isEnabled())
+			{
 				mod.setEnabled(false);
+				hiddenMods.add(mod);
+			}
 	}
 	
 	@Override
 	public void onDisable()
 	{
 		wurst.events.remove(UpdateListener.class, this);
+		hiddenMods.forEach(mod -> mod.setEnabled(true));
+		hiddenMods.clear();
 	}
 }
