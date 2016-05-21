@@ -26,7 +26,7 @@ public class PanicMod extends Mod implements UpdateListener
 		wurst.events.add(UpdateListener.class, this);
 	}
 	
-	private ArrayList panicedMods[] = new ArrayList();
+	List<Mod> panicedMods = new ArrayList<>();
 	
 	@Override
 	public void onUpdate()
