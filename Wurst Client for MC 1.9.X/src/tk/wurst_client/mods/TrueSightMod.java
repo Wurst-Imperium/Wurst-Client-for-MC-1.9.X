@@ -9,6 +9,7 @@ package tk.wurst_client.mods;
 
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
+import tk.wurst_client.navigator.NavigatorItem;
 
 @Info(category = Category.RENDER,
 	description = "Allows you to see invisible entities.",
@@ -16,6 +17,12 @@ import tk.wurst_client.mods.Mod.Info;
 	tags = "true sight",
 	help = "Mods/TrueSight")
 public class TrueSightMod extends Mod
-{	
-	
+{
+	@Override
+	public NavigatorItem[] getSeeAlso()
+	{
+		return new NavigatorItem[] {
+			wurst.mods.prophuntEspMod
+		};
+	}	
 }
