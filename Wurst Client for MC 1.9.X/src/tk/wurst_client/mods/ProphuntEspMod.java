@@ -28,7 +28,8 @@ public class ProphuntEspMod extends Mod implements RenderListener
 	public NavigatorItem[] getSeeAlso()
 	{
 		return new NavigatorItem[]{wurst.mods.playerEspMod,
-			wurst.mods.mobEspMod, wurst.mods.tracersMod};
+			wurst.mods.mobEspMod, wurst.mods.tracersMod,
+			wurst.mods.trueSightMod};
 	}
 	
 	@Override
@@ -40,8 +41,8 @@ public class ProphuntEspMod extends Mod implements RenderListener
 	@Override
 	public void onRender()
 	{
-		for(Object entity : mc.theWorld.loadedEntityList)
-			if(entity instanceof EntityLiving && ((Entity)entity).isInvisible())
+		for(Entity entity : mc.theWorld.loadedEntityList)
+			if(entity instanceof EntityLiving && entity.serverInvisibility())
 			{
 				double x = ((Entity)entity).posX;
 				double y = ((Entity)entity).posY;
