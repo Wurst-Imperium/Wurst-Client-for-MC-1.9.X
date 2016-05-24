@@ -68,6 +68,20 @@ public class Mod implements NavigatorItem
 		String help() default "";
 	}
 	
+	@Retention(RetentionPolicy.RUNTIME)
+	public @interface Bypasses
+	{
+		boolean mineplexAntiCheat() default true;
+		
+		boolean antiCheat() default true;
+		
+		boolean olderNCP() default true;
+		
+		boolean latestNCP() default true;
+		
+		boolean ghostMode() default true;
+	}
+	
 	@Override
 	public final String getName()
 	{
