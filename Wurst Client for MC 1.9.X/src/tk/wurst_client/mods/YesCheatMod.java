@@ -14,8 +14,7 @@ import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.settings.ModeSetting;
 
 @Info(category = Category.MISC,
-	description = "Makes other mods bypass AntiCheat plugins or blocks them if\n"
-		+ "they can't.",
+	description = "Makes other mods bypass AntiCheat plugins or blocks them if they can't.",
 	name = "YesCheat+",
 	tags = "YesCheatPlus, NoCheat+, NoCheatPlus, AntiMAC, yes cheat plus, no cheat plus, anti mac, ncp bypasses",
 	help = "Mods/YesCheat")
