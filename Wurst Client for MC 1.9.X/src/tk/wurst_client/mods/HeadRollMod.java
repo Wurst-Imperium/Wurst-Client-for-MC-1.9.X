@@ -10,6 +10,7 @@ package tk.wurst_client.mods;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.play.client.CPacketPlayer.C05PacketPlayerLook;
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 
@@ -19,6 +20,7 @@ import tk.wurst_client.mods.Mod.Info;
 	name = "HeadRoll",
 	tags = "head roll",
 	help = "Mods/HeadRoll")
+@Bypasses(ghostMode = false, latestNCP = false, olderNCP = false)
 public class HeadRollMod extends Mod implements UpdateListener
 {
 	@Override

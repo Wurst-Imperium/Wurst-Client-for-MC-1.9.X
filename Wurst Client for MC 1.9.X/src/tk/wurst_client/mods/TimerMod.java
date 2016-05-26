@@ -9,6 +9,7 @@ package tk.wurst_client.mods;
 
 import org.darkstorm.minecraft.gui.component.BoundedRangeComponent.ValueDisplay;
 
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.settings.SliderSetting;
@@ -19,6 +20,7 @@ import tk.wurst_client.navigator.settings.SliderSetting;
 		+ "NoCheat+.",
 	name = "Timer",
 	help = "Mods/Timer")
+@Bypasses(ghostMode = false)
 public class TimerMod extends Mod
 {
 	public float speed = 2.0F;

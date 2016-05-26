@@ -10,6 +10,7 @@ package tk.wurst_client.mods;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.play.client.CPacketPlayer.C05PacketPlayerLook;
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 
@@ -18,6 +19,7 @@ import tk.wurst_client.mods.Mod.Info;
 		+ "extremely tired and about to fall asleep!",
 	name = "Tired",
 	help = "Mods/Tired")
+@Bypasses(ghostMode = false, latestNCP = false, olderNCP = false)
 public class TiredMod extends Mod implements UpdateListener
 {
 	@Override
@@ -29,10 +31,9 @@ public class TiredMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		mc.thePlayer.sendQueue
-			.addToSendQueue(new C05PacketPlayerLook(Minecraft
-				.getMinecraft().thePlayer.rotationYaw,
-				mc.thePlayer.ticksExisted % 100, mc.thePlayer.onGround));
+		mc.thePlayer.sendQueue.addToSendQueue(new C05PacketPlayerLook(Minecraft
+			.getMinecraft().thePlayer.rotationYaw,
+			mc.thePlayer.ticksExisted % 100, mc.thePlayer.onGround));
 	}
 	
 	@Override

@@ -7,6 +7,7 @@
  */
 package tk.wurst_client.mods;
 
+import tk.wurst_client.mods.Mod.Bypasses;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,6 +20,7 @@ import net.minecraft.nbt.NBTTagList;
 	name = "CrashChest",
 	tags = "crash chest",
 	help = "Mods/CrashChest")
+@Bypasses
 public class CrashChestMod extends Mod
 {
 	@Override

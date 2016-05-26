@@ -17,6 +17,7 @@ import net.minecraft.util.math.BlockPos;
 import tk.wurst_client.events.PacketInputEvent;
 import tk.wurst_client.events.listeners.PacketInputListener;
 import tk.wurst_client.events.listeners.RenderListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.NavigatorItem;
@@ -28,6 +29,7 @@ import tk.wurst_client.utils.RenderUtils;
 	name = "PlayerFinder",
 	tags = "player finder",
 	help = "Mods/PlayerFinder")
+@Bypasses
 public class PlayerFinderMod extends Mod implements PacketInputListener,
 	RenderListener
 {

@@ -10,6 +10,7 @@ package tk.wurst_client.mods;
 import org.darkstorm.minecraft.gui.component.BoundedRangeComponent.ValueDisplay;
 
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.settings.SliderSetting;
@@ -18,6 +19,7 @@ import tk.wurst_client.navigator.settings.SliderSetting;
 	description = "Allows you to step up full blocks.",
 	name = "Step",
 	help = "Mods/Step")
+@Bypasses
 public class StepMod extends Mod implements UpdateListener
 {
 	public float height = 1F;

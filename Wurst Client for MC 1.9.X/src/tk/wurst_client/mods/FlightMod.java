@@ -12,6 +12,7 @@ import net.minecraft.network.play.client.CPacketPlayer.C04PacketPlayerPosition;
 import org.darkstorm.minecraft.gui.component.BoundedRangeComponent.ValueDisplay;
 
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.NavigatorItem;
@@ -24,6 +25,7 @@ import tk.wurst_client.navigator.settings.SliderSetting;
 	name = "Flight",
 	tags = "FlyHack,fly hack,flying",
 	help = "Mods/Flight")
+@Bypasses(ghostMode = false, latestNCP = false)
 public class FlightMod extends Mod implements UpdateListener
 {
 	public float speed = 1F;

@@ -10,6 +10,7 @@ package tk.wurst_client.mods;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumHand;
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.utils.EntityUtils;
@@ -20,6 +21,7 @@ import tk.wurst_client.utils.EntityUtils;
 	name = "FightBot",
 	tags = "fight bot",
 	help = "Mods/FightBot")
+@Bypasses(ghostMode = false)
 public class FightBotMod extends Mod implements UpdateListener
 {
 	private float speed;

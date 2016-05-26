@@ -8,6 +8,7 @@
 package tk.wurst_client.mods;
 
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 
@@ -17,6 +18,7 @@ import tk.wurst_client.mods.Mod.Info;
 	name = "Panic",
 	tags = "legit, disable",
 	help = "Mods/Panic")
+@Bypasses
 public class PanicMod extends Mod implements UpdateListener
 {
 	@Override

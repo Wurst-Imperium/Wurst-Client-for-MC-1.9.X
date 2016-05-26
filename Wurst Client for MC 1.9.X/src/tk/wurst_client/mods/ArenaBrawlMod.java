@@ -34,6 +34,7 @@ import tk.wurst_client.events.listeners.ChatInputListener;
 import tk.wurst_client.events.listeners.DeathListener;
 import tk.wurst_client.events.listeners.RenderListener;
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.settings.SliderSetting;
@@ -49,6 +50,7 @@ import tk.wurst_client.utils.RenderUtils;
 		+ "has to offer.",
 	name = "ArenaBrawl",
 	help = "Mods/ArenaBrawl")
+@Bypasses(ghostMode = false)
 public class ArenaBrawlMod extends Mod implements ChatInputListener,
 	DeathListener, RenderListener, UpdateListener
 {

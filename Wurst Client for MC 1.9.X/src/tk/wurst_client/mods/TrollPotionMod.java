@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
+import tk.wurst_client.mods.Mod.Bypasses;
 
 @Mod.Info(category = Mod.Category.FUN,
 	description = "Generates an incredibly annoying potion.\n"
@@ -19,6 +20,7 @@ import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
 	name = "TrollPotion",
 	tags = "troll potion",
 	help = "Mods/TrollPotion")
+@Bypasses
 public class TrollPotionMod extends Mod
 {
 	@Override

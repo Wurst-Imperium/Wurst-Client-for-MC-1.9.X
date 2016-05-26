@@ -9,6 +9,7 @@ package tk.wurst_client.mods;
 
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 
@@ -18,6 +19,7 @@ import tk.wurst_client.mods.Mod.Info;
 	name = "Freecam",
 	tags = "free cam, spectator",
 	help = "Mods/Freecam")
+@Bypasses
 public class FreecamMod extends Mod implements UpdateListener
 {
 	private EntityOtherPlayerMP fakePlayer = null;

@@ -10,14 +10,14 @@ package tk.wurst_client.mods;
 import java.util.HashSet;
 
 import tk.wurst_client.mods.Mod.Category;
-import tk.wurst_client.mods.Mod.Info;
 
-@Info(category = Category.MISC,
+@Mod.Info(category = Category.MISC,
 	description = "Makes other mods bypass Mineplex AntiCheat or blocks them\n"
 		+ "if they can't.",
 	name = "AntiMAC",
 	tags = "anti mac, Mineplex AntiCheat, mineplex anti cheat, AntiMineplex, anti mineplex",
 	help = "Mods/AntiMAC")
+@Mod.Bypasses
 public class AntiMacMod extends Mod
 {
 	private HashSet<Mod> blockedMods;

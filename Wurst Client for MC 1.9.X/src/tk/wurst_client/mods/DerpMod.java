@@ -9,6 +9,7 @@ package tk.wurst_client.mods;
 
 import net.minecraft.network.play.client.CPacketPlayer.C05PacketPlayerLook;
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 
@@ -19,6 +20,7 @@ import tk.wurst_client.mods.Mod.Info;
 	noCheatCompatible = false,
 	tags = "Retarded",
 	help = "Mods/Derp")
+@Bypasses(ghostMode = false, latestNCP = false, olderNCP = false)
 public class DerpMod extends Mod implements UpdateListener
 {
 	@Override
@@ -33,9 +35,8 @@ public class DerpMod extends Mod implements UpdateListener
 		float yaw =
 			mc.thePlayer.rotationYaw + (float)(Math.random() * 360 - 180);
 		float pitch = (float)(Math.random() * 180 - 90);
-		mc.thePlayer.sendQueue
-			.addToSendQueue(new C05PacketPlayerLook(yaw, pitch,
-				mc.thePlayer.onGround));
+		mc.thePlayer.sendQueue.addToSendQueue(new C05PacketPlayerLook(yaw,
+			pitch, mc.thePlayer.onGround));
 	}
 	
 	@Override

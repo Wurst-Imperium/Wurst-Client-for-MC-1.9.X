@@ -8,14 +8,18 @@
 package tk.wurst_client.mods;
 
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 
 @Info(category = Category.MOVEMENT,
 	description = "Allows you to climb up walls like a spider.",
 	name = "Spider",
-	noCheatCompatible = false,
 	help = "Mods/Spider")
+@Bypasses(ghostMode = false,
+	latestNCP = false,
+	olderNCP = false,
+	antiCheat = false)
 public class SpiderMod extends Mod implements UpdateListener
 {
 	@Override

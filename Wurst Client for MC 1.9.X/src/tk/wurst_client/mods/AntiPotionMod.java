@@ -17,9 +17,9 @@ import tk.wurst_client.mods.Mod.Info;
 @Info(category = Category.MISC,
 	description = "Blocks bad potion effects.",
 	name = "AntiPotion",
-	noCheatCompatible = false,
 	tags = "NoPotion, Zoot, anti potions, no potions",
 	help = "Mods/AntiPotion")
+@Mod.Bypasses(ghostMode = false, latestNCP = false, olderNCP = false)
 public class AntiPotionMod extends Mod implements UpdateListener
 {
 	@Override

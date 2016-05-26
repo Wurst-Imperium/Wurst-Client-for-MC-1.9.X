@@ -8,6 +8,7 @@
 package tk.wurst_client.mods;
 
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 
@@ -18,6 +19,7 @@ import tk.wurst_client.mods.Mod.Info;
 		+ "Use the .throw command to change the amount of uses per click.",
 	name = "Throw",
 	help = "Mods/Throw")
+@Bypasses(ghostMode = false)
 public class ThrowMod extends Mod implements UpdateListener
 {
 	@Override

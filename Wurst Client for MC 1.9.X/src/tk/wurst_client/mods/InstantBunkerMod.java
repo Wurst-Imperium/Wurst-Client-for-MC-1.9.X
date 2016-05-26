@@ -12,6 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import tk.wurst_client.events.listeners.RenderListener;
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.utils.BuildUtils;
@@ -22,6 +23,7 @@ import tk.wurst_client.utils.RenderUtils;
 	name = "InstantBunker",
 	tags = "instant bunker",
 	help = "Mods/InstantBunker")
+@Bypasses(ghostMode = false)
 public class InstantBunkerMod extends Mod implements UpdateListener,
 	RenderListener
 {

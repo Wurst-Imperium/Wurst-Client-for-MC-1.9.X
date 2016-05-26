@@ -9,6 +9,7 @@ package tk.wurst_client.mods;
 
 import org.darkstorm.minecraft.gui.component.BoundedRangeComponent.ValueDisplay;
 
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.NavigatorItem;
@@ -21,6 +22,7 @@ import tk.wurst_client.navigator.settings.SliderSetting;
 	name = "FastBreak",
 	tags = "SpeedyGonzales, fast break, speedy gonzales",
 	help = "Mods/FastBreak")
+@Bypasses
 public class FastBreakMod extends Mod
 {
 	public float speed = 2;

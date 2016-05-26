@@ -9,6 +9,7 @@ package tk.wurst_client.mods;
 
 import org.darkstorm.minecraft.gui.component.BoundedRangeComponent.ValueDisplay;
 
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.settings.SliderSetting;
@@ -19,6 +20,11 @@ import tk.wurst_client.navigator.settings.SliderSetting;
 	noCheatCompatible = false,
 	tags = "high jump",
 	help = "Mods/HighJump")
+@Bypasses(ghostMode = false,
+	latestNCP = false,
+	olderNCP = false,
+	antiCheat = false,
+	mineplexAntiCheat = false)
 public class HighJumpMod extends Mod
 {
 	public int jumpHeight = 6;

@@ -10,6 +10,7 @@ package tk.wurst_client.mods;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumHand;
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.utils.EntityUtils;
 
@@ -22,6 +23,7 @@ import tk.wurst_client.utils.EntityUtils;
 	name = "ClickAura",
 	tags = "Click Aura,ClickAimbot,Click Aimbot",
 	help = "Mods/ClickAura")
+@Bypasses(ghostMode = false)
 public class ClickAuraMod extends Mod implements UpdateListener
 {
 	@Override

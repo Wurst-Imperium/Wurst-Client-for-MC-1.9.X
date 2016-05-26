@@ -9,6 +9,7 @@ package tk.wurst_client.mods;
 
 import java.util.HashSet;
 
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.settings.ModeSetting;
@@ -18,6 +19,7 @@ import tk.wurst_client.navigator.settings.ModeSetting;
 	name = "YesCheat+",
 	tags = "YesCheatPlus, NoCheat+, NoCheatPlus, AntiMAC, yes cheat plus, no cheat plus, anti mac, ncp bypasses",
 	help = "Mods/YesCheat")
+@Bypasses
 public class YesCheatMod extends Mod
 {
 	private final HashSet<Mod> blockedMods = new HashSet<Mod>();

@@ -12,6 +12,7 @@ import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.network.play.client.CPacketEntityAction;
 import net.minecraft.network.play.client.CPacketEntityAction.Action;
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 
@@ -20,6 +21,7 @@ import tk.wurst_client.mods.Mod.Info;
 	name = "Sneak",
 	tags = "AutoSneaking",
 	help = "Mods/Sneak")
+@Bypasses(ghostMode = false)
 public class SneakMod extends Mod implements UpdateListener
 {
 	@Override

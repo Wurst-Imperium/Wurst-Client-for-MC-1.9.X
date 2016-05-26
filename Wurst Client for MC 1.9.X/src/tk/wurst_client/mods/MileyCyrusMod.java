@@ -8,6 +8,7 @@
 package tk.wurst_client.mods;
 
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 
@@ -16,6 +17,7 @@ import tk.wurst_client.mods.Mod.Info;
 	name = "MileyCyrus",
 	tags = "miley cyrus, twerk",
 	help = "Mods/MileyCyrus")
+@Bypasses
 public class MileyCyrusMod extends Mod implements UpdateListener
 {
 	private int timer;

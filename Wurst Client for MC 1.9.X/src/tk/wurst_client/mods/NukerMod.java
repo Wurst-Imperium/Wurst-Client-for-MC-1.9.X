@@ -24,6 +24,7 @@ import org.darkstorm.minecraft.gui.component.BoundedRangeComponent.ValueDisplay;
 import tk.wurst_client.events.listeners.LeftClickListener;
 import tk.wurst_client.events.listeners.RenderListener;
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.NavigatorItem;
@@ -37,6 +38,7 @@ import tk.wurst_client.utils.RenderUtils;
 		+ "Use .nuker mode <mode> to change the mode.",
 	name = "Nuker",
 	help = "Mods/Nuker")
+@Bypasses
 public class NukerMod extends Mod implements LeftClickListener, RenderListener,
 	UpdateListener
 {

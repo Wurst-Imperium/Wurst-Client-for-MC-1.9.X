@@ -13,6 +13,7 @@ import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.EntityLivingBase;
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.utils.EntityUtils;
@@ -23,6 +24,7 @@ import tk.wurst_client.utils.EntityUtils;
 	name = "RemoteView",
 	tags = "remote view",
 	help = "Mods/RemoteView")
+@Bypasses
 public class RemoteViewMod extends Mod implements UpdateListener
 {
 	private EntityPlayerSP newView = null;

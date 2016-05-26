@@ -25,6 +25,7 @@ import net.minecraft.util.math.BlockPos;
 import org.darkstorm.minecraft.gui.component.BoundedRangeComponent.ValueDisplay;
 
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.settings.CheckboxSetting;
@@ -37,6 +38,7 @@ import tk.wurst_client.utils.BlockUtils;
 	name = "BonemealAura",
 	tags = "bonemeal aura, bone meal aura, AutoBone, auto bone",
 	help = "Mods/BonemealAura")
+@Bypasses(ghostMode = false)
 public class BonemealAuraMod extends Mod implements UpdateListener
 {
 	public float normalRange = 5F;

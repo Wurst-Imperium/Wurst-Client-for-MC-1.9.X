@@ -12,15 +12,19 @@ import java.util.Random;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumHand;
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.utils.EntityUtils;
 
 @Mod.Info(category = Mod.Category.COMBAT,
 	description = "Automatically attacks the closest valid entity while teleporting around it.",
 	name = "TP-Aura",
-	noCheatCompatible = false,
 	tags = "TpAura, EnderAura, tp aura, ender aura",
 	help = "Mods/TP-Aura")
+@Bypasses(ghostMode = false,
+	latestNCP = false,
+	olderNCP = false,
+	antiCheat = false)
 public class TpAuraMod extends Mod implements UpdateListener
 {
 	private Random random = new Random();

@@ -13,6 +13,7 @@ import net.minecraft.util.EnumHand;
 import org.darkstorm.minecraft.gui.component.BoundedRangeComponent.ValueDisplay;
 
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.NavigatorItem;
@@ -25,6 +26,7 @@ import tk.wurst_client.utils.EntityUtils;
 	name = "Killaura",
 	tags = "kill aura",
 	help = "Mods/Killaura")
+@Bypasses
 public class KillauraMod extends Mod implements UpdateListener
 {
 	public float normalSpeed = 20F;

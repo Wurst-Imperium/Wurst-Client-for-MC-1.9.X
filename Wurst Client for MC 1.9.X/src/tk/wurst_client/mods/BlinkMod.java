@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.network.Packet;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 
@@ -20,6 +21,7 @@ import tk.wurst_client.mods.Mod.Info;
 		+ "Can be used for teleportation, instant picking up of items and more.",
 	name = "Blink",
 	help = "Mods/Blink")
+@Bypasses
 public class BlinkMod extends Mod
 {
 	private static ArrayList<Packet> packets = new ArrayList<Packet>();
