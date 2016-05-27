@@ -7,9 +7,8 @@
  */
 package tk.wurst_client.mods;
 
-import org.darkstorm.minecraft.gui.component.BoundedRangeComponent.ValueDisplay;
-
 import tk.wurst_client.navigator.settings.SliderSetting;
+import tk.wurst_client.navigator.settings.SliderSetting.ValueDisplay;
 
 @Mod.Info(category = Mod.Category.COMBAT,
 	description = "Protects you from getting pushed by players, mobs and\n"

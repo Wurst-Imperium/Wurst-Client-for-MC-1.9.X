@@ -9,74 +9,60 @@ package tk.wurst_client.navigator.settings;
 
 import java.util.ArrayList;
 
-import org.darkstorm.minecraft.gui.component.basic.BasicSlider;
-
 import tk.wurst_client.navigator.PossibleKeybind;
 import tk.wurst_client.navigator.gui.NavigatorFeatureScreen;
 
 import com.google.gson.JsonObject;
 
-public abstract class SliderSetting extends BasicSlider implements
-	NavigatorSetting
+public abstract class SliderSetting implements NavigatorSetting
 {
-	public SliderSetting()
-	{
-		super();
-	}
-	
-	public SliderSetting(String text, double value, double minimum,
+	private final String name;
+	private double value;
+	private String valueString;
+	private final double minimum;
+	private final double maximum;
+	private final double increment;
+	private int x;
+	private int y;
+	private float percentage;
+	private final ValueDisplay valueDisplay;
+
+	public SliderSetting(String name, double value, double minimum,
 		double maximum, double increment, ValueDisplay display)
 	{
-		super(text, value, minimum, maximum, increment, display);
-	}
-	
-	public SliderSetting(String text, double value, double minimum,
-		double maximum, int increment)
-	{
-		super(text, value, minimum, maximum, increment);
-	}
-	
-	public SliderSetting(String text, double value, double minimum,
-		double maximum)
-	{
-		super(text, value, minimum, maximum);
-	}
-	
-	public SliderSetting(String text, double value)
-	{
-		super(text, value);
-	}
-	
-	public SliderSetting(String text)
-	{
-		super(text);
+		this.name = name;
+		this.value = value;
+		
+		this.minimum = minimum;
+		this.maximum = maximum;
+		this.increment = increment;
+		this.valueDisplay = display;
 	}
 	
 	@Override
 	public String getName()
 	{
-		return getText();
+		return name;
 	}
 	
 	@Override
 	public void addToFeatureScreen(NavigatorFeatureScreen featureScreen)
 	{
-		// text
-		featureScreen.addText("\n" + getText() + ":\n");
+		featureScreen.addText("\n" + name + ":\n");
+		y = 60 + featureScreen.getTextHeight();
+		setValue(value);
 		
-		// slider
-		featureScreen.addSlider(featureScreen.new SliderData(this,
-			60 + featureScreen.getTextHeight()));
+		featureScreen.addSlider(this);
 	}
 	
 	@Override
 	public ArrayList<PossibleKeybind> getPossibleKeybinds(String featureName)
 	{
 		ArrayList<PossibleKeybind> possibleKeybinds = new ArrayList<>();
-		String fullName = featureName + " " + getText();
+		String fullName = featureName + " " + name;
 		String command =
 			".setslider " + featureName.toLowerCase() + " "
-				+ getText().toLowerCase().replace(" ", "_") + " ";
+				+ name.toLowerCase().replace(" ", "_") + " ";
 		
 		possibleKeybinds.add(new PossibleKeybind(command + "more", "Increase "
 			+ fullName));
@@ -86,41 +72,110 @@ public abstract class SliderSetting extends BasicSlider implements
 		return possibleKeybinds;
 	}
 	
-	@Override
 	public double getValue()
 	{
-		return super.getValue();
+		return value;
 	}
 	
-	@Override
 	public void setValue(double value)
 	{
-		super.setValue(value);
+		this.value = value;
+		
+		valueString = valueDisplay.getValueString(value);
+		percentage = (float)((value - minimum) / (maximum - minimum));
+		x = (int)(percentage * 298) + 1;
+		
 		update();
 	}
 	
-	@Override
-	public abstract void update();
-	
 	public void increaseValue()
 	{
-		setValue(getValue() + getIncrement());
+		setValue(getValue() + increment);
 	}
 	
 	public void decreaseValue()
 	{
-		setValue(getValue() - getIncrement());
+		setValue(getValue() - increment);
 	}
 	
+	public String getValueString()
+	{
+		return valueString;
+	}
+
+	public double getMinimum()
+	{
+		return minimum;
+	}
+	
+	public double getMaximum()
+	{
+		return maximum;
+	}
+	
+	public double getIncrement()
+	{
+		return increment;
+	}
+	
+	public int getX()
+	{
+		return x;
+	}
+
+	public int getY()
+	{
+		return y;
+	}
+
+	public float getPercentage()
+	{
+		return percentage;
+	}
+
 	@Override
 	public void save(JsonObject json)
 	{
-		json.addProperty(getText(), getValue());
+		json.addProperty(name, getValue());
 	}
 	
 	@Override
 	public void load(JsonObject json)
 	{
-		setValue(json.get(getText()).getAsDouble());
+		value = json.get(name).getAsDouble();
+	}
+	
+	@Override
+	public void update()
+	{	
+		
+	}
+	
+	public static enum ValueDisplay
+	{
+		DECIMAL((v) -> Double.toString(v)),
+		INTEGER((v) -> Integer.toString((int)v)),
+		PERCENTAGE((v) -> v * 1e6 * 100D * 1e6 / 1e12 + "%"),
+		DEGREES((v) -> (int)v + "°"),
+		NONE((v) -> {
+			return "";
+		});
+		
+		private ValueProcessor processor;
+		
+		private ValueDisplay(ValueProcessor processor)
+		{
+			this.processor = processor;
+		}
+		
+		public String getValueString(double value)
+		{
+			return processor.getValueString(value);
+		}
+		
+		private interface ValueProcessor
+		{
+			public String getValueString(double value);
+		}
 	}
 }
