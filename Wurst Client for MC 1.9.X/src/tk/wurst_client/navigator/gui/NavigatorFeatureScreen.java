@@ -29,6 +29,7 @@ import tk.wurst_client.WurstClient;
 import tk.wurst_client.font.Fonts;
 import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.navigator.PossibleKeybind;
+import tk.wurst_client.navigator.settings.CheckboxSetting;
 import tk.wurst_client.navigator.settings.NavigatorSetting;
 import tk.wurst_client.utils.MiscUtils;
 
@@ -42,7 +43,7 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 	private String text;
 	private ArrayList<ButtonData> buttonDatas = new ArrayList<>();
 	private ArrayList<SliderData> sliderDatas = new ArrayList<>();
-	private ArrayList<CheckboxData> checkboxDatas = new ArrayList<>();
+	private ArrayList<CheckboxSetting> checkboxes = new ArrayList<>();
 	
 	public NavigatorFeatureScreen(NavigatorItem item, NavigatorMainScreen parent)
 	{
@@ -87,8 +88,8 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 		if(hasPrimaryAction)
 		{
 			primaryButton =
-				new GuiButton(0, width / 2 - 151, height - 65, hasHelp
-					? 149 : 302, 18, primaryAction);
+				new GuiButton(0, width / 2 - 151, height - 65, hasHelp ? 149
+					: 302, 18, primaryAction);
 			buttonList.add(primaryButton);
 		}
 		
@@ -115,7 +116,7 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 		{
 			text += "\n\nSettings:";
 			sliderDatas.clear();
-			checkboxDatas.clear();
+			checkboxes.clear();
 			for(NavigatorSetting setting : settings)
 				setting.addToFeatureScreen(this);
 		}
@@ -261,14 +262,13 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 		}
 		
 		// checkboxes
-		for(int i = 0; i < checkboxDatas.size(); i++)
+		for(int i = 0; i < checkboxes.size(); i++)
 		{
-			CheckboxData checkboxData = checkboxDatas.get(i);
-			area.y = checkboxData.y + scroll;
+			CheckboxSetting checkbox = checkboxes.get(i);
+			area.y = checkbox.getY() + scroll;
 			if(area.contains(x, y))
 			{
-				checkboxData.checked = !checkboxData.checked;
-				checkboxData.toggle();
+				checkbox.toggle();
 				WurstClient wurst = WurstClient.INSTANCE;
 				wurst.navigator.addPreference(item.getName());
 				wurst.files.saveNavigatorData();
@@ -383,18 +383,18 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 		}
 		
 		// checkboxes
-		for(CheckboxData checkboxData : checkboxDatas)
+		for(CheckboxSetting checkbox : checkboxes)
 		{
 			// positions
 			int x1 = bgx1 + 2;
 			int x2 = x1 + 10;
-			int y1 = checkboxData.y + scroll + 2;
+			int y1 = checkbox.getY() + scroll + 2;
 			int y2 = y1 + 10;
 			
 			// hovering
 			boolean hovering =
-				mouseX >= x1 && mouseX <= bgx2 - 2 && mouseY >= y1
-					&& mouseY <= y2;
+				!checkbox.isLocked() && mouseX >= x1 && mouseX <= bgx2 - 2
+					&& mouseY >= y1 && mouseY <= y2;
 			
 			// box
 			if(hovering)
@@ -404,7 +404,7 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 			drawBox(x1, y1, x2, y2);
 			
 			// check
-			if(checkboxData.checked)
+			if(checkbox.isChecked())
 			{
 				// check
 				glColor4f(0F, 1F, 0F, hovering ? 0.75F : 0.375F);
@@ -441,7 +441,8 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 			// name
 			x1 += 12;
 			y1 -= 1;
-			drawString(Fonts.segoe15, checkboxData.name, x1, y1, 0xffffff);
+			drawString(Fonts.segoe15, checkbox.getName(), x1, y1,
+				checkbox.isLocked() ? 0xaaaaaa : 0xffffff);
 			glDisable(GL_TEXTURE_2D);
 		}
 		
@@ -520,9 +521,9 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 		sliderDatas.add(slider);
 	}
 	
-	public void addCheckbox(CheckboxData checkbox)
+	public void addCheckbox(CheckboxSetting checkbox)
 	{
-		checkboxDatas.add(checkbox);
+		checkboxes.add(checkbox);
 	}
 	
 	public abstract class ButtonData extends Rectangle
@@ -607,21 +608,5 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 			// update slider data
 			update();
 		}
-	}
-	
-	public abstract class CheckboxData
-	{
-		public String name;
-		public boolean checked;
-		public int y;
-		
-		public CheckboxData(String name, boolean checked, int y)
-		{
-			this.name = name;
-			this.checked = checked;
-			this.y = y;
-		}
-		
-		public abstract void toggle();
 	}
 }
