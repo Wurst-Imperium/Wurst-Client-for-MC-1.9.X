@@ -17,6 +17,7 @@ import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.navigator.settings.SliderSetting;
+import tk.wurst_client.special.YesCheatSpf.BypassLevel;
 
 @Info(category = Category.MOVEMENT,
 	description = "Allows you to you fly.\n"
@@ -49,7 +50,8 @@ public class FlightMod extends Mod implements UpdateListener
 	public NavigatorItem[] getSeeAlso()
 	{
 		return new NavigatorItem[]{wurst.mods.jetpackMod, wurst.mods.glideMod,
-			wurst.mods.noFallMod, wurst.mods.yesCheatMod, wurst.mods.antiMacMod};
+			wurst.mods.noFallMod, wurst.special.yesCheatSpf,
+			wurst.mods.antiMacMod};
 	}
 	
 	@Override
@@ -58,8 +60,8 @@ public class FlightMod extends Mod implements UpdateListener
 		if(wurst.mods.jetpackMod.isEnabled())
 			wurst.mods.jetpackMod.setEnabled(false);
 		
-		if(wurst.mods.yesCheatMod.isActive()
-			|| wurst.mods.antiMacMod.isActive())
+		if(wurst.special.yesCheatSpf.getBypassLevel().ordinal() >= BypassLevel.MINEPLEX_ANTICHEAT
+			.ordinal())
 		{
 			double startX = mc.thePlayer.posX;
 			startY = mc.thePlayer.posY;
@@ -81,40 +83,47 @@ public class FlightMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		if(wurst.mods.yesCheatMod.isActive())
+		switch(wurst.special.yesCheatSpf.getBypassLevel())
 		{
-			if(!mc.thePlayer.onGround)
-				if(mc.gameSettings.keyBindJump.pressed
-					&& mc.thePlayer.posY < startY - 1)
-					mc.thePlayer.motionY = 0.2;
-				else
-					mc.thePlayer.motionY = -0.02;
-		}else if(wurst.mods.antiMacMod.isActive())
-		{
-			updateMS();
-			if(!mc.thePlayer.onGround)
-				if(mc.gameSettings.keyBindJump.pressed && hasTimePassedS(2))
-				{
-					mc.thePlayer.setPosition(mc.thePlayer.posX,
-						mc.thePlayer.posY + 8, mc.thePlayer.posZ);
-					updateLastMS();
-				}else if(mc.gameSettings.keyBindSneak.pressed)
-					mc.thePlayer.motionY = -0.4;
-				else
-					mc.thePlayer.motionY = -0.02;
-			mc.thePlayer.jumpMovementFactor = 0.04F;
-		}else
-		{
-			mc.thePlayer.capabilities.isFlying = false;
-			mc.thePlayer.motionX = 0;
-			mc.thePlayer.motionY = 0;
-			mc.thePlayer.motionZ = 0;
-			mc.thePlayer.jumpMovementFactor = speed;
+			case LATEST_NCP:
+			case OLDER_NCP:
+				if(!mc.thePlayer.onGround)
+					if(mc.gameSettings.keyBindJump.pressed
+						&& mc.thePlayer.posY < startY - 1)
+						mc.thePlayer.motionY = 0.2;
+					else
+						mc.thePlayer.motionY = -0.02;
+				break;
 			
-			if(mc.gameSettings.keyBindJump.pressed)
-				mc.thePlayer.motionY += speed;
-			if(mc.gameSettings.keyBindSneak.pressed)
-				mc.thePlayer.motionY -= speed;
+			case ANTICHEAT:
+			case MINEPLEX_ANTICHEAT:
+				updateMS();
+				if(!mc.thePlayer.onGround)
+					if(mc.gameSettings.keyBindJump.pressed && hasTimePassedS(2))
+					{
+						mc.thePlayer.setPosition(mc.thePlayer.posX,
+							mc.thePlayer.posY + 8, mc.thePlayer.posZ);
+						updateLastMS();
+					}else if(mc.gameSettings.keyBindSneak.pressed)
+						mc.thePlayer.motionY = -0.4;
+					else
+						mc.thePlayer.motionY = -0.02;
+				mc.thePlayer.jumpMovementFactor = 0.04F;
+				break;
+			
+			case OFF:
+			default:
+				mc.thePlayer.capabilities.isFlying = false;
+				mc.thePlayer.motionX = 0;
+				mc.thePlayer.motionY = 0;
+				mc.thePlayer.motionZ = 0;
+				mc.thePlayer.jumpMovementFactor = speed;
+				
+				if(mc.gameSettings.keyBindJump.pressed)
+					mc.thePlayer.motionY += speed;
+				if(mc.gameSettings.keyBindSneak.pressed)
+					mc.thePlayer.motionY -= speed;
+				break;
 		}
 	}
 	

@@ -5,72 +5,49 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package tk.wurst_client.mods;
+package tk.wurst_client.special;
 
 import java.util.HashSet;
 
+import tk.wurst_client.mods.Mod;
 import tk.wurst_client.mods.Mod.Bypasses;
-import tk.wurst_client.mods.Mod.Category;
-import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.settings.ModeSetting;
 
-@Info(category = Category.MISC,
-	description = "Makes other mods bypass AntiCheat plugins or blocks them if they can't.",
+@Spf.Info(description = "Makes other features bypass AntiCheat plugins or blocks them if they can't.",
 	name = "YesCheat+",
 	tags = "YesCheatPlus, NoCheat+, NoCheatPlus, AntiMAC, yes cheat plus, no cheat plus, anti mac, ncp bypasses",
-	help = "Mods/YesCheat")
-@Bypasses
-public class YesCheatMod extends Mod
+	help = "Special_Features/YesCheat")
+public class YesCheatSpf extends Spf
 {
 	private final HashSet<Mod> blockedMods = new HashSet<Mod>();
-	private int bypassLevel = 2;
+	private BypassLevel bypassLevel = BypassLevel.OFF;
 	
-	@Override
-	public void initSettings()
+	public YesCheatSpf()
 	{
 		settings.add(new ModeSetting("Bypass Level", BypassLevel.getNames(),
-			bypassLevel)
+			bypassLevel.ordinal())
 		{
 			@Override
 			public void update()
 			{
-				bypassLevel = getSelected();
+				bypassLevel = BypassLevel.values()[getSelected()];
 				
-				if(isActive())
-					onDisable();
+				blockedMods.forEach((mod) -> mod.setBlocked(false));
+				
 				blockedMods.clear();
-				if(isActive())
-					onEnable();
+				wurst.mods.getAllMods().forEach((mod) -> {
+					if(!bypassLevel.doesBypass(mod.getBypasses()))
+						blockedMods.add(mod);
+				});
+				
+				blockedMods.forEach((mod) -> mod.setBlocked(true));
 			}
 		});
 	}
 	
-	@Override
-	public void onEnable()
-	{
-		// TODO: Remove this
-		if(wurst.mods.antiMacMod.isEnabled())
-			wurst.mods.antiMacMod.setEnabled(false);
-		
-		if(blockedMods.isEmpty())
-			for(Mod mod : wurst.mods.getAllMods())
-				if(!getBypassLevel().doesBypass(mod.getBypasses()))
-					blockedMods.add(mod);
-		
-		for(Mod mod : blockedMods)
-			mod.setBlocked(true);
-	}
-	
-	@Override
-	public void onDisable()
-	{
-		for(Mod mod : blockedMods)
-			mod.setBlocked(false);
-	}
-	
 	public BypassLevel getBypassLevel()
 	{
-		return BypassLevel.values()[bypassLevel];
+		return bypassLevel;
 	}
 	
 	private interface BypassTest
@@ -78,8 +55,11 @@ public class YesCheatMod extends Mod
 		public boolean doesBypass(Bypasses b);
 	}
 	
-	public enum BypassLevel
+	public static enum BypassLevel
 	{
+		OFF("Off", (b) -> {
+			return true;
+		}),
 		MINEPLEX_ANTICHEAT("Mineplex AntiCheat", (b) -> b.mineplexAntiCheat()),
 		ANTICHEAT("AntiCheat", (b) -> b.antiCheat()),
 		OLDER_NCP("Older NoCheat+", (b) -> b.olderNCP()),

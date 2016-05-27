@@ -19,6 +19,7 @@ import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.navigator.settings.CheckboxSetting;
 import tk.wurst_client.navigator.settings.SliderSetting;
+import tk.wurst_client.special.YesCheatSpf.BypassLevel;
 import tk.wurst_client.utils.EntityUtils;
 
 @Info(category = Category.COMBAT,
@@ -146,7 +147,8 @@ public class KillauraMod extends Mod implements UpdateListener
 	
 	private void updateSpeedAndRange()
 	{
-		if(wurst.mods.yesCheatMod.isActive())
+		if(wurst.special.yesCheatSpf.getBypassLevel().ordinal() >= BypassLevel.ANTICHEAT
+			.ordinal())
 		{
 			realSpeed = yesCheatSpeed;
 			realRange = yesCheatRange;

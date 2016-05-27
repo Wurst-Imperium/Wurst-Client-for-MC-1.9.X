@@ -25,8 +25,6 @@ public class AntiMacMod extends Mod
 	@Override
 	public void onEnable()
 	{
-		if(wurst.mods.yesCheatMod.isEnabled())
-			wurst.mods.yesCheatMod.setEnabled(false);
 		if(blockedMods == null)
 		{
 			blockedMods = new HashSet<>();

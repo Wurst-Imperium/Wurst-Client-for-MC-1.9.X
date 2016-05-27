@@ -76,15 +76,6 @@ public class SpeedNukerMod extends Mod implements LeftClickListener,
 	@Override
 	public void onUpdate()
 	{
-		if(wurst.mods.yesCheatMod.isActive())
-		{
-			noCheatMessage();
-			setEnabled(false);
-			wurst.chat.message("Switching to " + wurst.mods.nukerMod.getName()
-				+ ".");
-			wurst.mods.nukerMod.setEnabled(true);
-			return;
-		}
 		if(mc.thePlayer.capabilities.isCreativeMode)
 		{
 			wurst.chat.error(getName() + " doesn't work in creative mode.");

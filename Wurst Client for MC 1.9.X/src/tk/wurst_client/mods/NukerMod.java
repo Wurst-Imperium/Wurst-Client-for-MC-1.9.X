@@ -30,6 +30,7 @@ import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.navigator.settings.ModeSetting;
 import tk.wurst_client.navigator.settings.SliderSetting;
+import tk.wurst_client.special.YesCheatSpf.BypassLevel;
 import tk.wurst_client.utils.BlockUtils;
 import tk.wurst_client.utils.RenderUtils;
 
@@ -132,7 +133,8 @@ public class NukerMod extends Mod implements LeftClickListener, RenderListener,
 	@Override
 	public void onUpdate()
 	{
-		if(wurst.mods.yesCheatMod.isActive())
+		if(wurst.special.yesCheatSpf.getBypassLevel().ordinal() >= BypassLevel.ANTICHEAT
+			.ordinal())
 			realRange = yesCheatRange;
 		else
 			realRange = normalRange;
@@ -170,7 +172,8 @@ public class NukerMod extends Mod implements LeftClickListener, RenderListener,
 			{
 				currentDamage = 0;
 				if(mc.thePlayer.capabilities.isCreativeMode
-					&& !wurst.mods.yesCheatMod.isActive())
+					&& wurst.special.yesCheatSpf.getBypassLevel().ordinal() <= BypassLevel.MINEPLEX_ANTICHEAT
+						.ordinal())
 					nukeAll();
 				else
 				{
@@ -281,7 +284,8 @@ public class NukerMod extends Mod implements LeftClickListener, RenderListener,
 					default:
 						return currentPos;
 				}
-			if(!wurst.mods.yesCheatMod.isActive()
+			if(wurst.special.yesCheatSpf.getBypassLevel().ordinal() <= BypassLevel.MINEPLEX_ANTICHEAT
+				.ordinal()
 				|| !mc.theWorld.getBlockState(currentPos).getBlock()
 					.getMaterial(null).blocksMovement())
 			{

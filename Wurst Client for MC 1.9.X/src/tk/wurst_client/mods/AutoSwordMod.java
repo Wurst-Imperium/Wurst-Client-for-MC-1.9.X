@@ -67,12 +67,6 @@ public class AutoSwordMod extends Mod implements LeftClickListener,
 	@Override
 	public void onLeftClick()
 	{
-		if(wurst.mods.yesCheatMod.isActive())
-		{
-			noCheatMessage();
-			setEnabled(false);
-			return;
-		}
 		if(mc.objectMouseOver != null
 			&& mc.objectMouseOver.entityHit instanceof EntityLivingBase)
 			setSlot();

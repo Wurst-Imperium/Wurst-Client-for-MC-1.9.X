@@ -144,7 +144,6 @@ public class ModManager
 	public final TrueSightMod trueSightMod = new TrueSightMod();
 	public final TunnellerMod tunnellerMod = new TunnellerMod();
 	public final XRayMod xRayMod = new XRayMod();
-	public final YesCheatMod yesCheatMod = new YesCheatMod();
 	
 	public ModManager()
 	{
