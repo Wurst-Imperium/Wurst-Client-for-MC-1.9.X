@@ -8,6 +8,7 @@
 package tk.wurst_client.mods;
 
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 
 @Mod.Info(category = Mod.Category.MOVEMENT,
 	description = "Allows you to fly with boats and rideable entities.\n"
@@ -15,6 +16,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 	name = "BoatFly",
 	tags = "BoatFlight, boat fly, boat flight",
 	help = "Mods/BoatFly")
+@Bypasses(ghostMode = false, latestNCP = false)
 public class BoatFlyMod extends Mod implements UpdateListener
 {
 	@Override

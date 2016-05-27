@@ -12,8 +12,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import tk.wurst_client.events.listeners.RenderListener;
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
+import tk.wurst_client.special.YesCheatSpf.BypassLevel;
 import tk.wurst_client.utils.BuildUtils;
 import tk.wurst_client.utils.RenderUtils;
 
@@ -22,6 +24,7 @@ import tk.wurst_client.utils.RenderUtils;
 	name = "InstantBunker",
 	tags = "instant bunker",
 	help = "Mods/InstantBunker")
+@Bypasses(ghostMode = false)
 public class InstantBunkerMod extends Mod implements UpdateListener,
 	RenderListener
 {
@@ -57,7 +60,8 @@ public class InstantBunkerMod extends Mod implements UpdateListener,
 			speed = 1000000000;
 		else
 			speed = 5;
-		if(wurst.mods.yesCheatMod.isActive())
+		if(wurst.special.yesCheatSpf.getBypassLevel().ordinal() >= BypassLevel.ANTICHEAT
+			.ordinal())
 		{
 			i = 0;
 			shouldBuild = true;

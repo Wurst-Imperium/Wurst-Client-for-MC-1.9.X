@@ -9,6 +9,7 @@ package tk.wurst_client.mods;
 
 import tk.wurst_client.events.ChatOutputEvent;
 import tk.wurst_client.events.listeners.ChatOutputListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 
@@ -19,6 +20,7 @@ import tk.wurst_client.mods.Mod.Info;
 	name = "FancyChat",
 	tags = "fancy chat",
 	help = "Mods/FancyChat")
+@Bypasses(ghostMode = false, mineplexAntiCheat = false)
 public class FancyChatMod extends Mod implements ChatOutputListener
 {
 	private final String blacklist = "(){}[]|";

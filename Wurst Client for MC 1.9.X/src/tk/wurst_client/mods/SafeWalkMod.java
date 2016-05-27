@@ -7,11 +7,14 @@
  */
 package tk.wurst_client.mods;
 
+import tk.wurst_client.mods.Mod.Bypasses;
+
 @Mod.Info(category = Mod.Category.MOVEMENT,
 	description = "Protects you from falling down as if you were sneaking.",
 	name = "SafeWalk",
 	tags = "safe walk",
 	help = "Mods/SafeWalk")
+@Bypasses
 public class SafeWalkMod extends Mod
 {	
 	

@@ -9,6 +9,7 @@ package tk.wurst_client.mods;
 
 import net.minecraft.client.Minecraft;
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 
@@ -18,6 +19,7 @@ import tk.wurst_client.mods.Mod.Info;
 	name = "BunnyHop",
 	tags = "AutoJump, BHop, bunny hop, auto jump",
 	help = "Mods/BunnyHop")
+@Bypasses
 public class BunnyHopMod extends Mod implements UpdateListener
 {
 	@Override

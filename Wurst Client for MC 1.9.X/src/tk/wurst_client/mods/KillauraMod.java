@@ -13,11 +13,13 @@ import net.minecraft.util.EnumHand;
 import org.darkstorm.minecraft.gui.component.BoundedRangeComponent.ValueDisplay;
 
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.navigator.settings.CheckboxSetting;
 import tk.wurst_client.navigator.settings.SliderSetting;
+import tk.wurst_client.special.YesCheatSpf.BypassLevel;
 import tk.wurst_client.utils.EntityUtils;
 
 @Info(category = Category.COMBAT,
@@ -25,6 +27,7 @@ import tk.wurst_client.utils.EntityUtils;
 	name = "Killaura",
 	tags = "kill aura",
 	help = "Mods/Killaura")
+@Bypasses
 public class KillauraMod extends Mod implements UpdateListener
 {
 	public float normalSpeed = 20F;
@@ -144,7 +147,8 @@ public class KillauraMod extends Mod implements UpdateListener
 	
 	private void updateSpeedAndRange()
 	{
-		if(wurst.mods.yesCheatMod.isActive())
+		if(wurst.special.yesCheatSpf.getBypassLevel().ordinal() >= BypassLevel.ANTICHEAT
+			.ordinal())
 		{
 			realSpeed = yesCheatSpeed;
 			realRange = yesCheatRange;

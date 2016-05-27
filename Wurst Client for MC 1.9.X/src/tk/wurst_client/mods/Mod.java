@@ -28,6 +28,7 @@ public class Mod implements NavigatorItem
 		.category();
 	private final String tags = getClass().getAnnotation(Info.class).tags();
 	private final String help = getClass().getAnnotation(Info.class).help();
+	private final Bypasses bypasses = getClass().getAnnotation(Bypasses.class);
 	private boolean enabled;
 	private boolean blocked;
 	private boolean active;
@@ -66,6 +67,20 @@ public class Mod implements NavigatorItem
 		String tags() default "";
 		
 		String help() default "";
+	}
+	
+	@Retention(RetentionPolicy.RUNTIME)
+	public @interface Bypasses
+	{
+		boolean mineplexAntiCheat() default true;
+		
+		boolean antiCheat() default true;
+		
+		boolean olderNCP() default true;
+		
+		boolean latestNCP() default true;
+		
+		boolean ghostMode() default true;
 	}
 	
 	@Override
@@ -138,6 +153,11 @@ public class Mod implements NavigatorItem
 		return help;
 	}
 	
+	public Bypasses getBypasses()
+	{
+		return bypasses;
+	}
+
 	@Override
 	public NavigatorItem[] getSeeAlso()
 	{

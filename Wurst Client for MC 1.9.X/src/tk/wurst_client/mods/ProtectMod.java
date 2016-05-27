@@ -10,14 +10,17 @@ package tk.wurst_client.mods;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumHand;
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
+import tk.wurst_client.special.YesCheatSpf.BypassLevel;
 import tk.wurst_client.utils.EntityUtils;
 
 @Info(category = Category.COMBAT,
 	description = "A bot that follows the closest entity and protects it.",
 	name = "Protect",
 	help = "Mods/Protect")
+@Bypasses(ghostMode = false)
 public class ProtectMod extends Mod implements UpdateListener
 {
 	private EntityLivingBase friend;
@@ -79,7 +82,8 @@ public class ProtectMod extends Mod implements UpdateListener
 			mc.thePlayer.jump();
 		if(mc.thePlayer.isInWater() && mc.thePlayer.posY < friend.posY)
 			mc.thePlayer.motionY += 0.04;
-		if(wurst.mods.yesCheatMod.isActive())
+		if(wurst.special.yesCheatSpf.getBypassLevel().ordinal() >= BypassLevel.ANTICHEAT
+			.ordinal())
 			speed = wurst.mods.killauraMod.yesCheatSpeed;
 		else
 			speed = wurst.mods.killauraMod.normalSpeed;

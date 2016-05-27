@@ -48,26 +48,23 @@ public abstract class ModeSetting implements NavigatorSetting
 		for(int i = 0; i < modes.length; i++)
 		{
 			int x = featureScreen.getMiddleX();
-			switch(i % 4)
+			switch(i % 3)
 			{
 				case 0:
-					x -= 132;
+					x -= 148;
 					featureScreen.addText("\n\n");
 					y = 60 + featureScreen.getTextHeight() - 2;
 					break;
 				case 1:
-					x -= 61;
+					x -= 48;
 					break;
 				case 2:
-					x += 11;
-					break;
-				case 3:
-					x += 83;
+					x += 52;
 					break;
 			}
 			final int iFinal = i;
 			ButtonData button =
-				featureScreen.new ButtonData(x, y, 50, 16, modes[i],
+				featureScreen.new ButtonData(x, y, 96, 16, modes[i],
 					i == selected ? 0x00ff00 : 0x404040)
 				{
 					@Override

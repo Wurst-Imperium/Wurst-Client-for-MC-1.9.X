@@ -13,6 +13,7 @@ import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
 import tk.wurst_client.events.listeners.RenderListener;
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.utils.RenderUtils;
@@ -23,6 +24,7 @@ import tk.wurst_client.utils.RenderUtils;
 	name = "BaseFinder",
 	tags = "base finder, factions",
 	help = "Mods/BaseFinder")
+@Bypasses
 public class BaseFinderMod extends Mod implements UpdateListener,
 	RenderListener
 {

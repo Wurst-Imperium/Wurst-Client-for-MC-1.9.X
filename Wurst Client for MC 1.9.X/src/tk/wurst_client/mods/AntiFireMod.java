@@ -10,16 +10,15 @@ package tk.wurst_client.mods;
 import net.minecraft.network.play.client.CPacketPlayer;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.mods.Mod.Category;
-import tk.wurst_client.mods.Mod.Info;
 
-@Info(category = Category.MISC,
+@Mod.Info(category = Category.MISC,
 	description = "Blocks damage from catching on fire.\n"
 		+ "Does NOT block damage from standing inside of fire.\n"
 		+ "Requires a full hunger bar.",
 	name = "AntiFire",
-	noCheatCompatible = false,
 	tags = "anti fire, AntiBurn, anti burn, NoFire, no fire",
 	help = "Mods/AntiFire")
+@Mod.Bypasses(ghostMode = false, latestNCP = false, olderNCP = false)
 public class AntiFireMod extends Mod implements UpdateListener
 {
 	@Override

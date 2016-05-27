@@ -11,6 +11,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.RayTraceResult.Type;
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.NavigatorItem;
@@ -21,6 +22,7 @@ import tk.wurst_client.utils.EntityUtils;
 	name = "TriggerBot",
 	tags = "trigger bot",
 	help = "Mods/TriggerBot")
+@Bypasses
 public class TriggerBotMod extends Mod implements UpdateListener
 {
 	

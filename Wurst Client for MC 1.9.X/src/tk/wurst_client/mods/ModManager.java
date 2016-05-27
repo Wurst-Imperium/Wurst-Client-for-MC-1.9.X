@@ -29,7 +29,6 @@ public class ModManager
 	public final AntiCactusMod antiCactusMod = new AntiCactusMod();
 	public final AntiFireMod antiFireMod = new AntiFireMod();
 	public final AntiKnockbackMod antiKnockbackMod = new AntiKnockbackMod();
-	public final AntiMacMod antiMacMod = new AntiMacMod();
 	public final AntiPotionMod antiPotionMod = new AntiPotionMod();
 	public final AntiSpamMod antiSpamMod = new AntiSpamMod();
 	public final ArenaBrawlMod arenaBrawlMod = new ArenaBrawlMod();
@@ -144,7 +143,6 @@ public class ModManager
 	public final TrueSightMod trueSightMod = new TrueSightMod();
 	public final TunnellerMod tunnellerMod = new TunnellerMod();
 	public final XRayMod xRayMod = new XRayMod();
-	public final YesCheatMod yesCheatMod = new YesCheatMod();
 	
 	public ModManager()
 	{

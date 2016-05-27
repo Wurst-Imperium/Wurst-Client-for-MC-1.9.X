@@ -17,6 +17,7 @@ import tk.wurst_client.navigator.settings.SliderSetting;
 	name = "AntiKnockback",
 	tags = "AntiVelocity, NoKnockback, AntiKB, anti knockback, anti velocity, no knockback, anti kb",
 	help = "Mods/AntiKnockback")
+@Mod.Bypasses(ghostMode = false)
 public class AntiKnockbackMod extends Mod
 {
 	public float strength = 1F;

@@ -24,11 +24,13 @@ import org.darkstorm.minecraft.gui.component.BoundedRangeComponent.ValueDisplay;
 import tk.wurst_client.events.listeners.LeftClickListener;
 import tk.wurst_client.events.listeners.RenderListener;
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.navigator.settings.ModeSetting;
 import tk.wurst_client.navigator.settings.SliderSetting;
+import tk.wurst_client.special.YesCheatSpf.BypassLevel;
 import tk.wurst_client.utils.BlockUtils;
 import tk.wurst_client.utils.RenderUtils;
 
@@ -37,6 +39,7 @@ import tk.wurst_client.utils.RenderUtils;
 		+ "Use .nuker mode <mode> to change the mode.",
 	name = "Nuker",
 	help = "Mods/Nuker")
+@Bypasses
 public class NukerMod extends Mod implements LeftClickListener, RenderListener,
 	UpdateListener
 {
@@ -130,7 +133,8 @@ public class NukerMod extends Mod implements LeftClickListener, RenderListener,
 	@Override
 	public void onUpdate()
 	{
-		if(wurst.mods.yesCheatMod.isActive())
+		if(wurst.special.yesCheatSpf.getBypassLevel().ordinal() >= BypassLevel.ANTICHEAT
+			.ordinal())
 			realRange = yesCheatRange;
 		else
 			realRange = normalRange;
@@ -168,7 +172,8 @@ public class NukerMod extends Mod implements LeftClickListener, RenderListener,
 			{
 				currentDamage = 0;
 				if(mc.thePlayer.capabilities.isCreativeMode
-					&& !wurst.mods.yesCheatMod.isActive())
+					&& wurst.special.yesCheatSpf.getBypassLevel().ordinal() <= BypassLevel.MINEPLEX_ANTICHEAT
+						.ordinal())
 					nukeAll();
 				else
 				{
@@ -279,7 +284,8 @@ public class NukerMod extends Mod implements LeftClickListener, RenderListener,
 					default:
 						return currentPos;
 				}
-			if(!wurst.mods.yesCheatMod.isActive()
+			if(wurst.special.yesCheatSpf.getBypassLevel().ordinal() <= BypassLevel.MINEPLEX_ANTICHEAT
+				.ordinal()
 				|| !mc.theWorld.getBlockState(currentPos).getBlock()
 					.getMaterial(null).blocksMovement())
 			{

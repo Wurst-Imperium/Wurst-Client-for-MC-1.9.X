@@ -9,6 +9,7 @@ package tk.wurst_client.mods;
 
 import net.minecraft.client.gui.GuiScreen;
 import tk.wurst_client.events.listeners.DeathListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 
@@ -17,6 +18,7 @@ import tk.wurst_client.mods.Mod.Info;
 	name = "AutoRespawn",
 	tags = "auto respawn",
 	help = "Mods/AutoRespawn")
+@Bypasses
 public class AutoRespawnMod extends Mod implements DeathListener
 {
 	@Override

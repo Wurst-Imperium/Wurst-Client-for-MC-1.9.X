@@ -29,6 +29,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.BadLocationException;
 
 import tk.wurst_client.hooks.FrameHook;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.spam.SpamProcessor;
@@ -43,6 +44,7 @@ import tk.wurst_client.utils.MiscUtils;
 		+ ">Integrated help system",
 	name = "Spammer",
 	help = "Mods/Spammer")
+@Bypasses
 public class SpammerMod extends Mod
 {
 	private JDialog dialog;

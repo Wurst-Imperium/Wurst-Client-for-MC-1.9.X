@@ -34,6 +34,7 @@ import tk.wurst_client.utils.RenderUtils;
 	name = "BowAimbot",
 	tags = "bow aimbot",
 	help = "Mods/BowAimbot")
+@Mod.Bypasses
 public class BowAimbotMod extends Mod implements UpdateListener,
 	RenderListener, GUIRenderListener
 {
