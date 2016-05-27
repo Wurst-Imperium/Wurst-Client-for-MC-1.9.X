@@ -50,8 +50,7 @@ public class FlightMod extends Mod implements UpdateListener
 	public NavigatorItem[] getSeeAlso()
 	{
 		return new NavigatorItem[]{wurst.mods.jetpackMod, wurst.mods.glideMod,
-			wurst.mods.noFallMod, wurst.special.yesCheatSpf,
-			wurst.mods.antiMacMod};
+			wurst.mods.noFallMod, wurst.special.yesCheatSpf};
 	}
 	
 	@Override
