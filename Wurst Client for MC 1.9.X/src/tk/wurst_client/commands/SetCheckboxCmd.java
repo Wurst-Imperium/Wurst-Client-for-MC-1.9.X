@@ -69,7 +69,7 @@ public class SetCheckboxCmd extends Cmd
 		else if(valueName.equalsIgnoreCase("off"))
 			checkboxSetting.setChecked(false);
 		else if(valueName.equalsIgnoreCase("toggle"))
-			checkboxSetting.setChecked(!checkboxSetting.isChecked());
+			checkboxSetting.toggle();
 		else
 			syntaxError();
 	}
