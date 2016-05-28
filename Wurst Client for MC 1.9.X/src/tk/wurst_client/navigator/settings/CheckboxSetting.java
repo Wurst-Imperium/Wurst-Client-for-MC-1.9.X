@@ -100,7 +100,7 @@ public class CheckboxSetting implements NavigatorSetting
 		return locked;
 	}
 	
-	public int getY()
+	public final int getY()
 	{
 		return y;
 	}
