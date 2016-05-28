@@ -14,7 +14,7 @@ import tk.wurst_client.navigator.gui.NavigatorFeatureScreen;
 
 import com.google.gson.JsonObject;
 
-public abstract class SliderSetting implements NavigatorSetting
+public class SliderSetting implements NavigatorSetting
 {
 	private final String name;
 	private double value;
