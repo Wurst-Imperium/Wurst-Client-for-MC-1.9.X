@@ -14,6 +14,9 @@ import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.NavigatorItem;
+import tk.wurst_client.navigator.settings.CheckboxSetting;
+import tk.wurst_client.navigator.settings.SliderSetting;
+import tk.wurst_client.navigator.settings.SliderSetting.ValueDisplay;
 import tk.wurst_client.utils.EntityUtils;
 
 @Info(category = Category.COMBAT,
@@ -25,6 +28,54 @@ import tk.wurst_client.utils.EntityUtils;
 @Bypasses
 public class KillauraLegitMod extends Mod implements UpdateListener
 {
+	public CheckboxSetting useKillaura = new CheckboxSetting(
+		"Use Killaura settings", true)
+	{
+		@Override
+		public void update()
+		{
+			if(isChecked())
+			{
+				KillauraMod killaura = wurst.mods.killauraMod;
+				useCooldown.lock(killaura.useCooldown.isChecked());
+				speed.lockToValue(killaura.speed.getValue());
+				range.lockToValue(killaura.range.getValue());
+				fov.lockToValue(killaura.fov.getValue());
+			}else
+			{
+				useCooldown.unlock();
+				speed.unlock();
+				range.unlock();
+				fov.unlock();
+			}
+		};
+	};
+	public CheckboxSetting useCooldown = new CheckboxSetting(
+		"Use Attack Cooldown as Speed", true)
+	{
+		@Override
+		public void update()
+		{
+			speed.setDisabled(isChecked());
+		};
+	};
+	public SliderSetting speed = new SliderSetting("Speed", 12, 2, 12, 0.1,
+		ValueDisplay.DECIMAL);
+	public SliderSetting range = new SliderSetting("Range", 4.25, 1, 4.25,
+		0.05, ValueDisplay.DECIMAL);
+	public SliderSetting fov = new SliderSetting("FOV", 360, 30, 360, 10,
+		ValueDisplay.DEGREES);
+	
+	@Override
+	public void initSettings()
+	{
+		settings.add(useKillaura);
+		settings.add(useCooldown);
+		settings.add(speed);
+		settings.add(range);
+		settings.add(fov);
+	}
+	
 	@Override
 	public NavigatorItem[] getSeeAlso()
 	{
@@ -54,17 +105,16 @@ public class KillauraLegitMod extends Mod implements UpdateListener
 	public void onUpdate()
 	{
 		updateMS();
-		EntityLivingBase en = EntityUtils.getClosestEntity(true, true, false);
-		KillauraMod killaura = wurst.mods.killauraMod;
+		EntityLivingBase en =
+			EntityUtils.getClosestEntity(true, fov.getValueF(), false);
 		if(en != null
-			&& mc.thePlayer.getDistanceToEntity(en) <= killaura.range
-				.getValueF())
+			&& mc.thePlayer.getDistanceToEntity(en) <= range.getValueF())
 		{
 			if(wurst.mods.criticalsMod.isActive() && mc.thePlayer.onGround)
 				mc.thePlayer.jump();
-			if((killaura.useCooldown.isChecked() ? mc.thePlayer
-				.getSwordCooldown(0F) >= 1F : hasTimePassedS(killaura.speed
-				.getValueF())))
+			if((useCooldown.isChecked()
+				? mc.thePlayer.getSwordCooldown(0F) >= 1F
+				: hasTimePassedS(speed.getValueF())))
 			{
 				if(EntityUtils.getDistanceFromMouse(en) > 55)
 					EntityUtils.faceEntityClient(en);

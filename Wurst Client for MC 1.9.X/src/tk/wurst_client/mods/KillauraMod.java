@@ -87,7 +87,7 @@ public class KillauraMod extends Mod implements UpdateListener
 	{
 		updateMS();
 		EntityLivingBase en =
-			EntityUtils.getClosestEntity(true, true,
+			EntityUtils.getClosestEntity(true, fov.getValueF(),
 				hitThroughWalls.isChecked());
 		if(en == null
 			|| mc.thePlayer.getDistanceToEntity(en) > range.getValueF())

@@ -143,11 +143,12 @@ public class SliderSetting implements NavigatorSetting
 	
 	public final void lockToMinMax(double lockMinimum, double lockMaximum)
 	{
-		this.lockMinimum = lockMinimum;
-		this.lockMaximum = lockMaximum;
+		this.lockMinimum = Math.min(maximum, Math.max(lockMinimum, minimum));
+		this.lockMaximum = Math.min(maximum, Math.max(lockMaximum, minimum));
 		locked = true;
 		
-		double lockValue = Math.min(Math.max(lockMinimum, value), lockMaximum);
+		double lockValue =
+			Math.min(Math.max(this.lockMinimum, value), this.lockMaximum);
 		valueString = valueDisplay.getValueString(lockValue);
 		percentage = (float)((lockValue - minimum) / (maximum - minimum));
 		x = (int)(percentage * 298) + 1;

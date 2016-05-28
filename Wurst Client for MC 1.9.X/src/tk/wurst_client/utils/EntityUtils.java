@@ -201,13 +201,12 @@ public class EntityUtils
 	}
 	
 	public static EntityLivingBase getClosestEntity(boolean ignoreFriends,
-		boolean useFOV, boolean hitThroughWalls)
+		float fov, boolean hitThroughWalls)
 	{
 		EntityLivingBase closestEntity = null;
 		for(Object o : Minecraft.getMinecraft().theWorld.loadedEntityList)
 			if(isCorrectEntity(o, ignoreFriends)
-				&& getDistanceFromMouse((Entity)o) <= WurstClient.INSTANCE.mods.killauraMod.fov
-					.getValueF() / 2)
+				&& getDistanceFromMouse((Entity)o) <= fov / 2)
 			{
 				EntityLivingBase en = (EntityLivingBase)o;
 				if(!(o instanceof EntityPlayerSP)

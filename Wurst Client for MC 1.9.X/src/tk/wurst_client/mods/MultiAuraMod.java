@@ -62,7 +62,7 @@ public class MultiAuraMod extends Mod implements UpdateListener
 	{
 		updateMS();
 		EntityLivingBase closestEntity =
-			EntityUtils.getClosestEntity(true, false,
+			EntityUtils.getClosestEntity(true, 360,
 				wurst.mods.killauraMod.hitThroughWalls.isChecked());
 		if(closestEntity == null
 			|| mc.thePlayer.getDistanceToEntity(closestEntity) > range)
