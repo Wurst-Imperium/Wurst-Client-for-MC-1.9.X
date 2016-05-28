@@ -26,7 +26,11 @@ public abstract class SliderSetting implements NavigatorSetting
 	private int y;
 	private float percentage;
 	private final ValueDisplay valueDisplay;
-
+	
+	private boolean locked;
+	private double lockMinimum;
+	private double lockMaximum;
+	
 	public SliderSetting(String name, double value, double minimum,
 		double maximum, double increment, ValueDisplay display)
 	{
@@ -40,13 +44,13 @@ public abstract class SliderSetting implements NavigatorSetting
 	}
 	
 	@Override
-	public String getName()
+	public final String getName()
 	{
 		return name;
 	}
 	
 	@Override
-	public void addToFeatureScreen(NavigatorFeatureScreen featureScreen)
+	public final void addToFeatureScreen(NavigatorFeatureScreen featureScreen)
 	{
 		featureScreen.addText("\n" + name + ":\n");
 		y = 60 + featureScreen.getTextHeight();
@@ -72,75 +76,129 @@ public abstract class SliderSetting implements NavigatorSetting
 		return possibleKeybinds;
 	}
 	
-	public double getValue()
+	public final double getValue()
 	{
-		return value;
+		return locked ? Math.min(Math.max(lockMinimum, value), lockMaximum)
+			: value;
 	}
 	
-	public void setValue(double value)
+	public final void setValue(double value)
 	{
-		this.value = value;
+		if(locked)
+			this.value = Math.min(Math.max(lockMinimum, value), lockMaximum);
+		else
+			this.value = Math.min(Math.max(minimum, value), maximum);
 		
-		valueString = valueDisplay.getValueString(value);
-		percentage = (float)((value - minimum) / (maximum - minimum));
+		valueString = valueDisplay.getValueString(this.value);
+		percentage = (float)((this.value - minimum) / (maximum - minimum));
 		x = (int)(percentage * 298) + 1;
 		
 		update();
 	}
 	
-	public void increaseValue()
+	public final void increaseValue()
 	{
 		setValue(getValue() + increment);
 	}
 	
-	public void decreaseValue()
+	public final void decreaseValue()
 	{
 		setValue(getValue() - increment);
 	}
 	
-	public String getValueString()
+	public final String getValueString()
 	{
 		return valueString;
 	}
-
-	public double getMinimum()
+	
+	public final double getMinimum()
 	{
 		return minimum;
 	}
 	
-	public double getMaximum()
+	public final double getMaximum()
 	{
 		return maximum;
 	}
 	
-	public double getIncrement()
+	public final double getIncrement()
 	{
 		return increment;
 	}
 	
-	public int getX()
+	public final void lockToMinMax(double lockMinimum, double lockMaximum)
+	{
+		this.lockMinimum = lockMinimum;
+		this.lockMaximum = lockMaximum;
+		locked = true;
+		
+		double lockValue = Math.min(Math.max(lockMinimum, value), lockMaximum);
+		valueString = valueDisplay.getValueString(lockValue);
+		percentage = (float)((lockValue - minimum) / (maximum - minimum));
+		x = (int)(percentage * 298) + 1;
+		
+		update();
+	}
+	
+	public final void lockToMin(double lockMinimum)
+	{
+		lockToMinMax(lockMinimum, maximum);
+	}
+	
+	public final void lockToMax(double lockMaximum)
+	{
+		lockToMinMax(minimum, lockMaximum);
+	}
+	
+	public final void lockToValue(double lockValue)
+	{
+		lockToMinMax(lockValue, lockValue);
+	}
+	
+	public final void unlock()
+	{
+		locked = false;
+		setValue(value);
+	}
+	
+	public boolean isLocked()
+	{
+		return locked;
+	}
+	
+	public int getLockMinX()
+	{
+		return (int)((lockMinimum - minimum) / (maximum - minimum) * 298);
+	}
+	
+	public int getLockMaxX()
+	{
+		return (int)((lockMaximum - minimum) / (maximum - minimum) * 298);
+	}
+	
+	public final int getX()
 	{
 		return x;
 	}
-
-	public int getY()
+	
+	public final int getY()
 	{
 		return y;
 	}
-
-	public float getPercentage()
+	
+	public final float getPercentage()
 	{
 		return percentage;
 	}
-
+	
 	@Override
-	public void save(JsonObject json)
+	public final void save(JsonObject json)
 	{
 		json.addProperty(name, getValue());
 	}
 	
 	@Override
-	public void load(JsonObject json)
+	public final void load(JsonObject json)
 	{
 		value = json.get(name).getAsDouble();
 	}

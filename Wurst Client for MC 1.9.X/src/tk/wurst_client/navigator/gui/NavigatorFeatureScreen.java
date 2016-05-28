@@ -347,6 +347,14 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 			setColorToForeground();
 			drawEngravedBox(x1, y1, x2, y2);
 			
+			// lock
+			if(slider.isLocked())
+			{
+				glColor4f(0.75F, 0.125F, 0.125F, 0.25F);
+				drawQuads(x1, y1, x1 + slider.getLockMinX(), y2);
+				drawQuads(x1 + slider.getLockMaxX(), y1, x2, y2);
+			}
+			
 			// knob
 			x1 = bgx1 + slider.getX();
 			x2 = x1 + 8;
