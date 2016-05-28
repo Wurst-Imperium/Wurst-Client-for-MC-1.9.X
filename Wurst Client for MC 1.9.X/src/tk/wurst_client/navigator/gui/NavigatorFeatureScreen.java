@@ -360,15 +360,21 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 			x2 = x1 + 8;
 			y1 -= 2;
 			y2 += 2;
-			float percentage = slider.getPercentage();
-			glColor4f(percentage, 1F - percentage, 0F, 0.75F);
+			if(slider.isDisabled())
+				glColor4f(0.5F, 0.5F, 0.5F, 0.75F);
+			else
+			{
+				float percentage = slider.getPercentage();
+				glColor4f(percentage, 1F - percentage, 0F, 0.75F);
+			}
 			drawBox(x1, y1, x2, y2);
 			
 			// value
 			String value = slider.getValueString();
 			x1 = bgx2 - Fonts.segoe15.getStringWidth(value) - 2;
 			y1 -= 12;
-			drawString(Fonts.segoe15, value, x1, y1, 0xffffff);
+			drawString(Fonts.segoe15, value, x1, y1, slider.isDisabled()
+				? 0xaaaaaa : 0xffffff);
 			glDisable(GL_TEXTURE_2D);
 		}
 		

@@ -31,6 +31,8 @@ public abstract class SliderSetting implements NavigatorSetting
 	private double lockMinimum;
 	private double lockMaximum;
 	
+	private boolean disabled;
+	
 	public SliderSetting(String name, double value, double minimum,
 		double maximum, double increment, ValueDisplay display)
 	{
@@ -84,10 +86,12 @@ public abstract class SliderSetting implements NavigatorSetting
 	
 	public final void setValue(double value)
 	{
-		if(locked)
-			this.value = Math.min(Math.max(lockMinimum, value), lockMaximum);
-		else
-			this.value = Math.min(Math.max(minimum, value), maximum);
+		if(!disabled)
+			if(locked)
+				this.value =
+					Math.min(Math.max(lockMinimum, value), lockMaximum);
+			else
+				this.value = Math.min(Math.max(minimum, value), maximum);
 		
 		valueString = valueDisplay.getValueString(this.value);
 		percentage = (float)((this.value - minimum) / (maximum - minimum));
@@ -174,6 +178,16 @@ public abstract class SliderSetting implements NavigatorSetting
 	public int getLockMaxX()
 	{
 		return (int)((lockMaximum - minimum) / (maximum - minimum) * 298);
+	}
+	
+	public boolean isDisabled()
+	{
+		return disabled;
+	}
+	
+	public void setDisabled(boolean disabled)
+	{
+		this.disabled = disabled;
 	}
 	
 	public final int getX()
