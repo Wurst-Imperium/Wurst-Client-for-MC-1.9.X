@@ -18,6 +18,7 @@ import tk.wurst_client.gui.error.GuiError;
 import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.navigator.PossibleKeybind;
 import tk.wurst_client.navigator.settings.NavigatorSetting;
+import tk.wurst_client.special.YesCheatSpf.BypassLevel;
 
 public class Mod implements NavigatorItem
 {
@@ -316,5 +317,8 @@ public class Mod implements NavigatorItem
 	{}
 	
 	public void initSettings()
+	{}
+	
+	public void onYesCheatUpdate(BypassLevel bypassLevel)
 	{}
 }

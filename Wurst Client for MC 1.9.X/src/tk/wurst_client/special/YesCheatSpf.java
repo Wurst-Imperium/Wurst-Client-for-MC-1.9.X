@@ -41,6 +41,9 @@ public class YesCheatSpf extends Spf
 				});
 				
 				blockedMods.forEach((mod) -> mod.setBlocked(true));
+				
+				wurst.mods.getAllMods().forEach(
+					(mod) -> mod.onYesCheatUpdate(bypassLevel));
 			}
 		});
 	}
