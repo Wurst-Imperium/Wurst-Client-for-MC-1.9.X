@@ -65,9 +65,9 @@ public class TriggerBotMod extends Mod implements UpdateListener
 		
 		if((wurst.mods.killauraMod.useCooldown.isChecked() ? mc.thePlayer
 			.getSwordCooldown(0F) >= 1F
-			: hasTimePassedS(wurst.mods.killauraMod.realSpeed))
-			&& mc.thePlayer.getDistanceToEntity(en) <= wurst.mods.killauraMod.realRange
-			&& EntityUtils.isCorrectEntity(en, true))
+			: hasTimePassedS(wurst.mods.killauraMod.speed.getValueF()))
+			&& mc.thePlayer.getDistanceToEntity(en) <= wurst.mods.killauraMod.range
+				.getValueF() && EntityUtils.isCorrectEntity(en, true))
 		{
 			if(wurst.mods.autoSwordMod.isActive())
 				AutoSwordMod.setSlot();

@@ -13,7 +13,6 @@ import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
-import tk.wurst_client.special.YesCheatSpf.BypassLevel;
 import tk.wurst_client.utils.EntityUtils;
 
 @Info(category = Category.COMBAT,
@@ -28,7 +27,6 @@ public class ProtectMod extends Mod implements UpdateListener
 	private float range = 6F;
 	private double distanceF = 2D;
 	private double distanceE = 3D;
-	private float speed;
 	
 	@Override
 	public String getRenderName()
@@ -82,13 +80,9 @@ public class ProtectMod extends Mod implements UpdateListener
 			mc.thePlayer.jump();
 		if(mc.thePlayer.isInWater() && mc.thePlayer.posY < friend.posY)
 			mc.thePlayer.motionY += 0.04;
-		if(wurst.special.yesCheatSpf.getBypassLevel().ordinal() >= BypassLevel.ANTICHEAT
-			.ordinal())
-			speed = wurst.mods.killauraMod.yesCheatSpeed;
-		else
-			speed = wurst.mods.killauraMod.normalSpeed;
 		updateMS();
-		if(hasTimePassedS(speed) && EntityUtils.getClosestEnemy(friend) != null)
+		if(hasTimePassedS(wurst.mods.killauraMod.speed.getValueF())
+			&& EntityUtils.getClosestEnemy(friend) != null)
 		{
 			enemy = EntityUtils.getClosestEnemy(friend);
 			if(mc.thePlayer.getDistanceToEntity(enemy) <= range)

@@ -56,7 +56,12 @@ public class SliderSetting implements NavigatorSetting
 	{
 		featureScreen.addText("\n" + name + ":\n");
 		y = 60 + featureScreen.getTextHeight();
-		setValue(value);
+		
+		double newValue = getValue();
+		valueString = valueDisplay.getValueString(newValue);
+		percentage = (float)((newValue - minimum) / (maximum - minimum));
+		x = (int)(percentage * 298) + 1;
+		update();
 		
 		featureScreen.addSlider(this);
 	}
@@ -98,8 +103,9 @@ public class SliderSetting implements NavigatorSetting
 			else
 				this.value = Math.min(Math.max(minimum, value), maximum);
 		
-		valueString = valueDisplay.getValueString(this.value);
-		percentage = (float)((this.value - minimum) / (maximum - minimum));
+		double newValue = getValue();
+		valueString = valueDisplay.getValueString(newValue);
+		percentage = (float)((newValue - minimum) / (maximum - minimum));
 		x = (int)(percentage * 298) + 1;
 		
 		update();

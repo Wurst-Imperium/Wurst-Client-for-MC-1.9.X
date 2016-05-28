@@ -40,6 +40,8 @@ public class CheckboxSetting implements NavigatorSetting
 	{
 		featureScreen.addText("\n\n");
 		y = 60 + featureScreen.getTextHeight() - 8;
+		update();
+		
 		featureScreen.addCheckbox(this);
 	}
 	
