@@ -84,6 +84,11 @@ public class SliderSetting implements NavigatorSetting
 			: value;
 	}
 	
+	public final float getValueF()
+	{
+		return (float)getValue();
+	}
+	
 	public final void setValue(double value)
 	{
 		if(!disabled)
