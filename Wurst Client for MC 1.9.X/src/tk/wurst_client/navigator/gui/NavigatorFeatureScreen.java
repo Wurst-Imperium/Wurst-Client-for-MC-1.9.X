@@ -348,7 +348,11 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 			drawEngravedBox(x1, y1, x2, y2);
 			
 			// lock
-			if(slider.isLocked())
+			boolean renderAsDisabled =
+				slider.isDisabled()
+					|| (slider.isLocked() && slider.getLockMinX() == slider
+						.getLockMaxX());
+			if(!renderAsDisabled && slider.isLocked())
 			{
 				glColor4f(0.75F, 0.125F, 0.125F, 0.25F);
 				drawQuads(x1, y1, x1 + slider.getLockMinX(), y2);
@@ -360,7 +364,7 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 			x2 = x1 + 8;
 			y1 -= 2;
 			y2 += 2;
-			if(slider.isDisabled())
+			if(renderAsDisabled)
 				glColor4f(0.5F, 0.5F, 0.5F, 0.75F);
 			else
 			{
@@ -373,7 +377,7 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 			String value = slider.getValueString();
 			x1 = bgx2 - Fonts.segoe15.getStringWidth(value) - 2;
 			y1 -= 12;
-			drawString(Fonts.segoe15, value, x1, y1, slider.isDisabled()
+			drawString(Fonts.segoe15, value, x1, y1, renderAsDisabled
 				? 0xaaaaaa : 0xffffff);
 			glDisable(GL_TEXTURE_2D);
 		}
