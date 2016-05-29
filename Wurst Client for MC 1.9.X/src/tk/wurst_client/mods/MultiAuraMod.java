@@ -16,6 +16,9 @@ import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.NavigatorItem;
+import tk.wurst_client.navigator.settings.CheckboxSetting;
+import tk.wurst_client.navigator.settings.SliderSetting;
+import tk.wurst_client.navigator.settings.SliderSetting.ValueDisplay;
 import tk.wurst_client.utils.EntityUtils;
 
 @Info(category = Category.COMBAT,
@@ -30,7 +33,58 @@ import tk.wurst_client.utils.EntityUtils;
 	antiCheat = false)
 public class MultiAuraMod extends Mod implements UpdateListener
 {
-	private float range = 6F;
+	public CheckboxSetting useKillaura = new CheckboxSetting(
+		"Use Killaura settings", false)
+	{
+		@Override
+		public void update()
+		{
+			if(isChecked())
+			{
+				KillauraMod killaura = wurst.mods.killauraMod;
+				useCooldown.lock(killaura.useCooldown.isChecked());
+				speed.lockToValue(killaura.speed.getValue());
+				range.lockToValue(killaura.range.getValue());
+				fov.lockToValue(killaura.fov.getValue());
+				hitThroughWalls.lock(killaura.hitThroughWalls.isChecked());
+			}else
+			{
+				useCooldown.unlock();
+				speed.unlock();
+				range.unlock();
+				fov.unlock();
+				hitThroughWalls.unlock();
+			}
+		};
+	};
+	public CheckboxSetting useCooldown = new CheckboxSetting(
+		"Use Attack Cooldown as Speed", true)
+	{
+		@Override
+		public void update()
+		{
+			speed.setDisabled(isChecked());
+		};
+	};
+	public SliderSetting speed = new SliderSetting("Speed", 20, 2, 20, 0.1,
+		ValueDisplay.DECIMAL);
+	public SliderSetting range = new SliderSetting("Range", 6, 1, 6, 0.05,
+		ValueDisplay.DECIMAL);
+	public SliderSetting fov = new SliderSetting("FOV", 360, 30, 360, 10,
+		ValueDisplay.DEGREES);
+	public CheckboxSetting hitThroughWalls = new CheckboxSetting(
+		"Hit through walls", true);
+	
+	@Override
+	public void initSettings()
+	{
+		settings.add(useKillaura);
+		settings.add(useCooldown);
+		settings.add(speed);
+		settings.add(range);
+		settings.add(fov);
+		settings.add(hitThroughWalls);
+	}
 	
 	@Override
 	public NavigatorItem[] getSeeAlso()
@@ -62,25 +116,26 @@ public class MultiAuraMod extends Mod implements UpdateListener
 	{
 		updateMS();
 		EntityLivingBase closestEntity =
-			EntityUtils.getClosestEntity(true, 360,
-				wurst.mods.killauraMod.hitThroughWalls.isChecked());
+			EntityUtils
+				.getClosestEntity(true, 360, hitThroughWalls.isChecked());
 		if(closestEntity == null
-			|| mc.thePlayer.getDistanceToEntity(closestEntity) > range)
+			|| mc.thePlayer.getDistanceToEntity(closestEntity) > range
+				.getValueF())
 		{
 			EntityUtils.lookChanged = false;
 			return;
 		}
 		EntityUtils.lookChanged = true;
-		if((wurst.mods.killauraMod.useCooldown.isChecked() ? mc.thePlayer
-			.getSwordCooldown(0F) >= 1F : true))
+		if((useCooldown.isChecked() ? mc.thePlayer.getSwordCooldown(0F) >= 1F
+			: true))
 		{
 			if(wurst.mods.autoSwordMod.isActive())
 				AutoSwordMod.setSlot();
 			wurst.mods.criticalsMod.doCritical();
 			wurst.mods.blockHitMod.doBlock();
 			ArrayList<EntityLivingBase> entities =
-				EntityUtils.getCloseEntities(true, range,
-					wurst.mods.killauraMod.hitThroughWalls.isChecked());
+				EntityUtils.getCloseEntities(true, range.getValueF(),
+					hitThroughWalls.isChecked());
 			for(int i = 0; i < Math.min(entities.size(), 64); i++)
 			{
 				EntityLivingBase en = entities.get(i);
