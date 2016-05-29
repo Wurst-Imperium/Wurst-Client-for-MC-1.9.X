@@ -17,7 +17,7 @@ import tk.wurst_client.navigator.gui.NavigatorFeatureScreen.ButtonData;
 
 import com.google.gson.JsonObject;
 
-public abstract class ModeSetting implements NavigatorSetting
+public class ModeSetting implements NavigatorSetting
 {
 	private String name;
 	private String[] modes;
@@ -31,13 +31,13 @@ public abstract class ModeSetting implements NavigatorSetting
 	}
 	
 	@Override
-	public String getName()
+	public final String getName()
 	{
 		return name;
 	}
 	
 	@Override
-	public void addToFeatureScreen(NavigatorFeatureScreen featureScreen)
+	public final void addToFeatureScreen(NavigatorFeatureScreen featureScreen)
 	{
 		// heading
 		featureScreen.addText("\n" + name + ":");
@@ -103,18 +103,28 @@ public abstract class ModeSetting implements NavigatorSetting
 		return possibleKeybinds;
 	}
 	
-	protected int getSelected()
+	public final int getSelected()
 	{
 		return selected;
 	}
 	
-	public void setSelected(int selected)
+	public final void setSelected(int selected)
 	{
 		this.selected = selected;
 		update();
 	}
 	
-	public void nextMode()
+	public final String[] getModes()
+	{
+		return modes;
+	}
+	
+	public final String getSelectedMode()
+	{
+		return modes[selected];
+	}
+
+	public final void nextMode()
 	{
 		selected++;
 		if(selected >= modes.length)
@@ -122,7 +132,7 @@ public abstract class ModeSetting implements NavigatorSetting
 		update();
 	}
 	
-	public void prevMode()
+	public final void prevMode()
 	{
 		selected--;
 		if(selected <= -1)
@@ -130,7 +140,7 @@ public abstract class ModeSetting implements NavigatorSetting
 		update();
 	}
 	
-	public int indexOf(String mode)
+	public final int indexOf(String mode)
 	{
 		for(int i = 0; i < modes.length; i++)
 			if(modes[i].equalsIgnoreCase(mode))
@@ -140,14 +150,20 @@ public abstract class ModeSetting implements NavigatorSetting
 	}
 	
 	@Override
-	public void save(JsonObject json)
+	public final void save(JsonObject json)
 	{
 		json.addProperty(name, selected);
 	}
 	
 	@Override
-	public void load(JsonObject json)
+	public final void load(JsonObject json)
 	{
 		setSelected(json.get(name).getAsInt());
+	}
+
+	@Override
+	public void update()
+	{
+		
 	}
 }

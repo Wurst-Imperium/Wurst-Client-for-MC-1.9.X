@@ -12,8 +12,10 @@ import tk.wurst_client.commands.Cmd.Info;
 import tk.wurst_client.mods.NukerMod;
 import tk.wurst_client.utils.MiscUtils;
 
-@Info(description = "Changes the settings of Nuker.", name = "nuker", syntax = {
-	"mode (normal|id|flat|smash)", "id <block_id>", "name <block_name>"},
+@Info(description = "Changes the settings of Nuker.",
+	name = "nuker",
+	syntax = {"mode (normal|id|flat|smash)", "id <block_id>",
+		"name <block_name>"},
 	help = "Commands/nuker")
 public class NukerCmd extends Cmd
 {
@@ -26,7 +28,7 @@ public class NukerCmd extends Cmd
 		else if(args[0].toLowerCase().equals("mode"))
 		{
 			// search mode by name
-			String[] modeNames = nuker.getModes();
+			String[] modeNames = nuker.mode.getModes();
 			String newModeName = args[1];
 			int newMode = -1;
 			for(int i = 0; i < modeNames.length; i++)
@@ -37,18 +39,18 @@ public class NukerCmd extends Cmd
 			if(newMode == -1)
 				syntaxError("Invalid mode");
 			
-			if(newMode != nuker.getMode())
+			if(newMode != nuker.mode.getSelected())
 			{
-				nuker.setMode(newMode);
+				nuker.mode.setSelected(newMode);
 				wurst.files.saveNavigatorData();
 			}
 			
 			wurst.chat.message("Nuker mode set to \"" + args[1] + "\".");
 		}else if(args[0].equalsIgnoreCase("id") && MiscUtils.isInteger(args[1]))
 		{
-			if(nuker.getMode() != 1)
+			if(nuker.mode.getSelected() != 1)
 			{
-				nuker.setMode(1);
+				nuker.mode.setSelected(1);
 				wurst.files.saveNavigatorData();
 				wurst.chat.message("Nuker mode set to \"" + args[0] + "\".");
 			}
@@ -57,9 +59,9 @@ public class NukerCmd extends Cmd
 			wurst.chat.message("Nuker ID set to \"" + args[1] + "\".");
 		}else if(args[0].equalsIgnoreCase("name"))
 		{
-			if(nuker.getMode() != 1)
+			if(nuker.mode.getSelected() != 1)
 			{
-				nuker.setMode(1);
+				nuker.mode.setSelected(1);
 				wurst.files.saveNavigatorData();
 				wurst.chat.message("Nuker mode set to \"" + args[0] + "\".");
 			}

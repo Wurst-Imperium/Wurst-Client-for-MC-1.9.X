@@ -41,14 +41,14 @@ public class SpeedNukerMod extends Mod implements LeftClickListener,
 	public String getRenderName()
 	{
 		NukerMod nuker = wurst.mods.nukerMod;
-		switch(nuker.getMode())
+		switch(nuker.mode.getSelected())
 		{
 			case 0:
 				return "SpeedNuker";
 			case 1:
 				return "IDSpeedNuker [" + NukerMod.id + "]";
 			default:
-				return nuker.getModes()[nuker.getMode()] + "SpeedNuker";
+				return nuker.mode.getSelectedMode() + "SpeedNuker";
 		}
 	}
 	
@@ -127,7 +127,7 @@ public class SpeedNukerMod extends Mod implements LeftClickListener,
 		if(mc.objectMouseOver == null
 			|| mc.objectMouseOver.getBlockPos() == null)
 			return;
-		if(wurst.mods.nukerMod.getMode() == 1
+		if(wurst.mods.nukerMod.mode.getSelected() == 1
 			&& mc.theWorld.getBlockState(mc.objectMouseOver.getBlockPos())
 				.getBlock().getMaterial(null) != Material.air)
 		{
@@ -141,12 +141,14 @@ public class SpeedNukerMod extends Mod implements LeftClickListener,
 	private BlockPos find()
 	{
 		BlockPos closest = null;
-		float closestDistance = wurst.mods.nukerMod.yesCheatRange + 1;
-		int nukerMode = wurst.mods.nukerMod.getMode();
-		for(int y = (int)wurst.mods.nukerMod.yesCheatRange; y >= (nukerMode == 2
-			? 0 : -wurst.mods.nukerMod.yesCheatRange); y--)
-			for(int x = (int)wurst.mods.nukerMod.yesCheatRange; x >= -wurst.mods.nukerMod.yesCheatRange - 1; x--)
-				for(int z = (int)wurst.mods.nukerMod.yesCheatRange; z >= -wurst.mods.nukerMod.yesCheatRange; z--)
+		float closestDistance = wurst.mods.nukerMod.range.getValueF() + 1;
+		int nukerMode = wurst.mods.nukerMod.mode.getSelected();
+		for(int y = (int)wurst.mods.nukerMod.range.getValueF(); y >= (nukerMode == 2
+			? 0 : -wurst.mods.nukerMod.range.getValueF()); y--)
+			for(int x = (int)wurst.mods.nukerMod.range.getValueF(); x >= -wurst.mods.nukerMod.range
+				.getValueF() - 1; x--)
+				for(int z = (int)wurst.mods.nukerMod.range.getValueF(); z >= -wurst.mods.nukerMod.range
+					.getValueF(); z--)
 				{
 					if(mc.thePlayer == null)
 						continue;
@@ -163,8 +165,10 @@ public class SpeedNukerMod extends Mod implements LeftClickListener,
 					float zDiff = (float)(mc.thePlayer.posZ - posZ);
 					float currentDistance =
 						BlockUtils.getBlockDistance(xDiff, yDiff, zDiff);
-					if(Block.getIdFromBlock(block) != 0 && posY >= 0
-						&& currentDistance <= wurst.mods.nukerMod.yesCheatRange)
+					if(Block.getIdFromBlock(block) != 0
+						&& posY >= 0
+						&& currentDistance <= wurst.mods.nukerMod.range
+							.getValueF())
 					{
 						if(nukerMode == 1
 							&& Block.getIdFromBlock(block) != NukerMod.id)
@@ -190,11 +194,13 @@ public class SpeedNukerMod extends Mod implements LeftClickListener,
 	
 	private void nukeAll()
 	{
-		int nukerMode = wurst.mods.nukerMod.getMode();
-		for(int y = (int)wurst.mods.nukerMod.normalRange; y >= (nukerMode == 2
-			? 0 : -wurst.mods.nukerMod.normalRange); y--)
-			for(int x = (int)wurst.mods.nukerMod.normalRange; x >= -wurst.mods.nukerMod.normalRange - 1; x--)
-				for(int z = (int)wurst.mods.nukerMod.normalRange; z >= -wurst.mods.nukerMod.normalRange; z--)
+		int nukerMode = wurst.mods.nukerMod.mode.getSelected();
+		for(int y = (int)wurst.mods.nukerMod.range.getValueF(); y >= (nukerMode == 2
+			? 0 : -wurst.mods.nukerMod.range.getValueF()); y--)
+			for(int x = (int)wurst.mods.nukerMod.range.getValueF(); x >= -wurst.mods.nukerMod.range
+				.getValueF() - 1; x--)
+				for(int z = (int)wurst.mods.nukerMod.range.getValueF(); z >= -wurst.mods.nukerMod.range
+					.getValueF(); z--)
 				{
 					int posX = (int)(Math.floor(mc.thePlayer.posX) + x);
 					int posY = (int)(Math.floor(mc.thePlayer.posY) + y);
@@ -209,8 +215,10 @@ public class SpeedNukerMod extends Mod implements LeftClickListener,
 					float zDiff = (float)(mc.thePlayer.posZ - posZ);
 					float currentDistance =
 						BlockUtils.getBlockDistance(xDiff, yDiff, zDiff);
-					if(Block.getIdFromBlock(block) != 0 && posY >= 0
-						&& currentDistance <= wurst.mods.nukerMod.normalRange)
+					if(Block.getIdFromBlock(block) != 0
+						&& posY >= 0
+						&& currentDistance <= wurst.mods.nukerMod.range
+							.getValueF())
 					{
 						if(nukerMode == 1
 							&& Block.getIdFromBlock(block) != NukerMod.id)

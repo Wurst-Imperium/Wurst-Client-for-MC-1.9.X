@@ -183,7 +183,7 @@ public class TunnellerMod extends Mod implements RenderListener, UpdateListener
 					float currentDistance = xDiff + yDiff + zDiff;
 					if(Block.getIdFromBlock(block) != 0 && posY >= 0)
 					{
-						if(wurst.mods.nukerMod.getMode() == 3
+						if(wurst.mods.nukerMod.mode.getSelected() == 3
 							&& block.getPlayerRelativeBlockHardness(
 								mc.theWorld.getBlockState(blockPos),
 								mc.thePlayer, mc.theWorld, blockPos) < 1)
@@ -217,7 +217,7 @@ public class TunnellerMod extends Mod implements RenderListener, UpdateListener
 						mc.theWorld.getBlockState(blockPos).getBlock();
 					if(Block.getIdFromBlock(block) != 0 && posY >= 0)
 					{
-						if(wurst.mods.nukerMod.getMode() == 3
+						if(wurst.mods.nukerMod.mode.getSelected() == 3
 							&& block.getPlayerRelativeBlockHardness(
 								mc.theWorld.getBlockState(blockPos),
 								mc.thePlayer, mc.theWorld, blockPos) < 1)

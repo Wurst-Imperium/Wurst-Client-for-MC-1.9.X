@@ -132,7 +132,8 @@ public class NukerLegitMod extends Mod implements LeftClickListener,
 		}
 		if(wurst.mods.autoToolMod.isActive())
 			AutoToolMod.setSlot(pos);
-		mc.thePlayer.sendQueue.addToSendQueue(new CPacketAnimation(EnumHand.MAIN_HAND));
+		mc.thePlayer.sendQueue.addToSendQueue(new CPacketAnimation(
+			EnumHand.MAIN_HAND));
 		shouldRenderESP = true;
 		currentDamage +=
 			currentBlock.getPlayerRelativeBlockHardness(
@@ -172,7 +173,7 @@ public class NukerLegitMod extends Mod implements LeftClickListener,
 		if(mc.objectMouseOver == null
 			|| mc.objectMouseOver.getBlockPos() == null)
 			return;
-		if(wurst.mods.nukerMod.getMode() == 1
+		if(wurst.mods.nukerMod.mode.getSelected() == 1
 			&& mc.theWorld.getBlockState(mc.objectMouseOver.getBlockPos())
 				.getBlock().getMaterial(null) != Material.air)
 		{
@@ -194,13 +195,14 @@ public class NukerLegitMod extends Mod implements LeftClickListener,
 			if(alreadyProcessed.contains(currentPos))
 				continue;
 			alreadyProcessed.add(currentPos);
-			if(BlockUtils.getPlayerBlockDistance(currentPos) > wurst.mods.nukerMod.yesCheatRange)
+			if(BlockUtils.getPlayerBlockDistance(currentPos) > Math.min(
+				wurst.mods.nukerMod.range.getValueF(), 4.25F))
 				continue;
 			int currentID =
 				Block.getIdFromBlock(mc.theWorld.getBlockState(currentPos)
 					.getBlock());
 			if(currentID != 0)
-				switch(wurst.mods.nukerMod.getMode())
+				switch(wurst.mods.nukerMod.mode.getSelected())
 				{
 					case 1:
 						if(currentID == NukerMod.id)
