@@ -19,6 +19,10 @@ import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.NavigatorItem;
+import tk.wurst_client.navigator.settings.CheckboxSetting;
+import tk.wurst_client.navigator.settings.ModeSetting;
+import tk.wurst_client.navigator.settings.SliderSetting;
+import tk.wurst_client.navigator.settings.SliderSetting.ValueDisplay;
 import tk.wurst_client.utils.BlockUtils;
 
 @Info(category = Category.BLOCKS,
@@ -37,18 +41,48 @@ public class SpeedNukerMod extends Mod implements LeftClickListener,
 	private BlockPos pos;
 	private int oldSlot = -1;
 	
+	public CheckboxSetting useNuker = new CheckboxSetting("Use Nuker settings",
+		true)
+	{
+		@Override
+		public void update()
+		{
+			if(isChecked())
+			{
+				NukerMod nuker = wurst.mods.nukerMod;
+				range.lockToValue(nuker.range.getValue());
+				mode.lock(nuker.mode.getSelected());
+			}else
+			{
+				range.unlock();
+				mode.unlock();
+			}
+		};
+	};
+	public final SliderSetting range = new SliderSetting("Range", 6, 1, 6,
+		0.05, ValueDisplay.DECIMAL);
+	public final ModeSetting mode = new ModeSetting("Mode", new String[]{
+		"Normal", "ID", "Flat", "Smash"}, 0);
+	
+	@Override
+	public void initSettings()
+	{
+		settings.add(useNuker);
+		settings.add(range);
+		settings.add(mode);
+	}
+	
 	@Override
 	public String getRenderName()
 	{
-		NukerMod nuker = wurst.mods.nukerMod;
-		switch(nuker.mode.getSelected())
+		switch(mode.getSelected())
 		{
 			case 0:
 				return "SpeedNuker";
 			case 1:
 				return "IDSpeedNuker [" + NukerMod.id + "]";
 			default:
-				return nuker.mode.getSelectedMode() + "SpeedNuker";
+				return mode.getSelectedMode() + "SpeedNuker";
 		}
 	}
 	
@@ -127,7 +161,7 @@ public class SpeedNukerMod extends Mod implements LeftClickListener,
 		if(mc.objectMouseOver == null
 			|| mc.objectMouseOver.getBlockPos() == null)
 			return;
-		if(wurst.mods.nukerMod.mode.getSelected() == 1
+		if(mode.getSelected() == 1
 			&& mc.theWorld.getBlockState(mc.objectMouseOver.getBlockPos())
 				.getBlock().getMaterial(null) != Material.air)
 		{
@@ -141,14 +175,12 @@ public class SpeedNukerMod extends Mod implements LeftClickListener,
 	private BlockPos find()
 	{
 		BlockPos closest = null;
-		float closestDistance = wurst.mods.nukerMod.range.getValueF() + 1;
-		int nukerMode = wurst.mods.nukerMod.mode.getSelected();
-		for(int y = (int)wurst.mods.nukerMod.range.getValueF(); y >= (nukerMode == 2
-			? 0 : -wurst.mods.nukerMod.range.getValueF()); y--)
-			for(int x = (int)wurst.mods.nukerMod.range.getValueF(); x >= -wurst.mods.nukerMod.range
-				.getValueF() - 1; x--)
-				for(int z = (int)wurst.mods.nukerMod.range.getValueF(); z >= -wurst.mods.nukerMod.range
-					.getValueF(); z--)
+		float closestDistance = range.getValueF() + 1;
+		int nukerMode = mode.getSelected();
+		for(int y = (int)range.getValueF(); y >= (nukerMode == 2 ? 0 : -range
+			.getValueF()); y--)
+			for(int x = (int)range.getValueF(); x >= -range.getValueF() - 1; x--)
+				for(int z = (int)range.getValueF(); z >= -range.getValueF(); z--)
 				{
 					if(mc.thePlayer == null)
 						continue;
@@ -165,10 +197,8 @@ public class SpeedNukerMod extends Mod implements LeftClickListener,
 					float zDiff = (float)(mc.thePlayer.posZ - posZ);
 					float currentDistance =
 						BlockUtils.getBlockDistance(xDiff, yDiff, zDiff);
-					if(Block.getIdFromBlock(block) != 0
-						&& posY >= 0
-						&& currentDistance <= wurst.mods.nukerMod.range
-							.getValueF())
+					if(Block.getIdFromBlock(block) != 0 && posY >= 0
+						&& currentDistance <= range.getValueF())
 					{
 						if(nukerMode == 1
 							&& Block.getIdFromBlock(block) != NukerMod.id)
@@ -194,13 +224,11 @@ public class SpeedNukerMod extends Mod implements LeftClickListener,
 	
 	private void nukeAll()
 	{
-		int nukerMode = wurst.mods.nukerMod.mode.getSelected();
-		for(int y = (int)wurst.mods.nukerMod.range.getValueF(); y >= (nukerMode == 2
-			? 0 : -wurst.mods.nukerMod.range.getValueF()); y--)
-			for(int x = (int)wurst.mods.nukerMod.range.getValueF(); x >= -wurst.mods.nukerMod.range
-				.getValueF() - 1; x--)
-				for(int z = (int)wurst.mods.nukerMod.range.getValueF(); z >= -wurst.mods.nukerMod.range
-					.getValueF(); z--)
+		int nukerMode = mode.getSelected();
+		for(int y = (int)range.getValueF(); y >= (nukerMode == 2 ? 0 : -range
+			.getValueF()); y--)
+			for(int x = (int)range.getValueF(); x >= -range.getValueF() - 1; x--)
+				for(int z = (int)range.getValueF(); z >= -range.getValueF(); z--)
 				{
 					int posX = (int)(Math.floor(mc.thePlayer.posX) + x);
 					int posY = (int)(Math.floor(mc.thePlayer.posY) + y);
@@ -215,10 +243,8 @@ public class SpeedNukerMod extends Mod implements LeftClickListener,
 					float zDiff = (float)(mc.thePlayer.posZ - posZ);
 					float currentDistance =
 						BlockUtils.getBlockDistance(xDiff, yDiff, zDiff);
-					if(Block.getIdFromBlock(block) != 0
-						&& posY >= 0
-						&& currentDistance <= wurst.mods.nukerMod.range
-							.getValueF())
+					if(Block.getIdFromBlock(block) != 0 && posY >= 0
+						&& currentDistance <= range.getValueF())
 					{
 						if(nukerMode == 1
 							&& Block.getIdFromBlock(block) != NukerMod.id)
