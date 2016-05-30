@@ -32,7 +32,6 @@ public class ModeSetting implements NavigatorSetting
 		this.name = name;
 		this.modes = modes;
 		this.selected = selected;
-		buttons = new ButtonData[modes.length];
 	}
 	
 	@Override
@@ -49,6 +48,7 @@ public class ModeSetting implements NavigatorSetting
 		
 		// buttons
 		int y = 0;
+		buttons = new ButtonData[modes.length];
 		for(int i = 0; i < modes.length; i++)
 		{
 			int x = featureScreen.getMiddleX();
@@ -166,9 +166,11 @@ public class ModeSetting implements NavigatorSetting
 	public final void lock(int lockSelected)
 	{
 		this.lockSelected = lockSelected;
-		for(int i = 0; i < buttons.length; i++)
-			buttons[i].color =
-				i == lockSelected ? new Color(0x00ff00) : new Color(0x404040);
+		if(buttons != null)
+			for(int i = 0; i < buttons.length; i++)
+				buttons[i].color =
+					i == lockSelected ? new Color(0x00ff00) : new Color(
+						0x404040);
 		locked = true;
 		update();
 	}

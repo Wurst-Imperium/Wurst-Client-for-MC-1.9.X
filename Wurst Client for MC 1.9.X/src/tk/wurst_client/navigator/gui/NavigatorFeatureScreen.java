@@ -412,7 +412,7 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 			// text
 			drawCenteredString(Fonts.segoe18, buttonData.buttonText,
 				(x1 + x2) / 2 - 1, y1 + (buttonData.height - 12) / 2 - 1,
-				buttonData.textColor);
+				buttonData.isLocked() ? 0xaaaaaa : buttonData.textColor);
 			glDisable(GL_TEXTURE_2D);
 		}
 		
