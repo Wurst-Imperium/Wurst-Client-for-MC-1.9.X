@@ -1,6 +1,6 @@
-From 0c6282ec1adace148e30c2d54a6007e5e6ca3ca4 Mon Sep 17 00:00:00 2001
+From 5273e00c13116882b61288a104253f694a4713b3 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Fri, 27 May 2016 08:55:15 +0200
+Date: Mon, 30 May 2016 22:28:26 +0200
 Subject: [PATCH] Wurst
 
 ---
@@ -1441,7 +1441,7 @@ index cf5b504..3f55b7c 100644
          if (this.field_186784_e.getSaveLoader().canLoadWorld(this.field_186786_g.getFileName()))
          {
 diff --git a/src/net/minecraft/client/gui/GuiMainMenu.java b/src/net/minecraft/client/gui/GuiMainMenu.java
-index b8f0b51..22c6ccb 100644
+index b8f0b51..baba45c 100644
 --- a/src/net/minecraft/client/gui/GuiMainMenu.java
 +++ b/src/net/minecraft/client/gui/GuiMainMenu.java
 @@ -1,6 +1,7 @@
@@ -1507,8 +1507,8 @@ index b8f0b51..22c6ccb 100644
 -        this.buttonList.add(this.realmsButton = new GuiButton(14, this.width / 2 - 100, p_73969_1_ + p_73969_2_ * 2, I18n.format("menu.online", new Object[0])));
 +        
 +        //TODO: Client
-+        this.buttonList.add(new GuiButton(3, this.width / 2 + 2, p_73969_1_ + p_73969_2_ * 2, 98, 20, "Alt Manager"));
-+        this.buttonList.add(this.realmsButton = new GuiButton(14, this.width / 2 - 100, p_73969_1_ + p_73969_2_ * 2, 98, 20, I18n.format("menu.online", new Object[0])));
++        this.buttonList.add(new GuiButton(3, this.width / 2 - 100, p_73969_1_ + p_73969_2_ * 2, 200, 20, "Alt Manager"));
++        //this.buttonList.add(this.realmsButton = new GuiButton(14, this.width / 2 - 100, p_73969_1_ + p_73969_2_ * 2, 98, 20, I18n.format("menu.online", new Object[0])));
      }
  
      /**
