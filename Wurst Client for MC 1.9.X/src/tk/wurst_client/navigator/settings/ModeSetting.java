@@ -121,9 +121,11 @@ public class ModeSetting implements NavigatorSetting
 		if(!locked)
 		{
 			this.selected = selected;
-			for(int i = 0; i < buttons.length; i++)
-				buttons[i].color =
-					i == selected ? new Color(0x00ff00) : new Color(0x404040);
+			if(buttons != null)
+				for(int i = 0; i < buttons.length; i++)
+					buttons[i].color =
+						i == selected ? new Color(0x00ff00) : new Color(
+							0x404040);
 			update();
 		}
 	}
