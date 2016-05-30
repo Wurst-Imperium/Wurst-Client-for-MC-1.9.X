@@ -394,7 +394,10 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 			
 			// color
 			float alpha;
-			if(mouseX >= x1 && mouseX <= x2 && mouseY >= y1 && mouseY <= y2)
+			if(buttonData.isLocked())
+				alpha = 0.25F;
+			else if(mouseX >= x1 && mouseX <= x2 && mouseY >= y1
+				&& mouseY <= y2)
 			{
 				alpha = 0.75F;
 				activeButton = buttonData;
@@ -572,5 +575,10 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 		}
 		
 		public abstract void press();
+		
+		public boolean isLocked()
+		{
+			return false;
+		}
 	}
 }
