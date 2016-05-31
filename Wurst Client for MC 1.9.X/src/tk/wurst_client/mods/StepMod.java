@@ -1,5 +1,5 @@
 /*
- * Copyright Â© 2014 - 2016 | Wurst-Imperium | All rights reserved.
+ * Copyright © 2014 - 2016 | Wurst-Imperium | All rights reserved.
  * 
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -7,6 +7,7 @@
  */
 package tk.wurst_client.mods;
 
+import net.minecraft.network.play.client.CPacketPlayer;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
@@ -51,11 +52,20 @@ public class StepMod extends Mod implements UpdateListener
 			.ordinal())
 		{
 			mc.thePlayer.stepHeight = 0.5F;
-			if(mc.thePlayer.isCollidedHorizontally & mc.thePlayer.isCollidedVertically & mc.thePlayer.isCollided & mc.thePlayer.onGround)
+			if(mc.thePlayer.isCollidedHorizontally
+				& mc.thePlayer.isCollidedVertically & mc.thePlayer.isCollided
+				& mc.thePlayer.onGround)
 			{
-				mc.getNetHandler().addToSendQueue(new CPacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + 0.42D, mc.thePlayer.posZ, mc.thePlayer.onGround));
-				mc.getNetHandler().addToSendQueue(new CPacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + 0.753D, mc.thePlayer.posZ, mc.thePlayer.onGround));
-				mc.thePlayer.setPosition(mc.thePlayer.posX, mc.thePlayer.posY + 1D, mc.thePlayer.posZ);
+				mc.getNetHandler().addToSendQueue(
+					new CPacketPlayer.C04PacketPlayerPosition(
+						mc.thePlayer.posX, mc.thePlayer.posY + 0.42D,
+						mc.thePlayer.posZ, mc.thePlayer.onGround));
+				mc.getNetHandler().addToSendQueue(
+					new CPacketPlayer.C04PacketPlayerPosition(
+						mc.thePlayer.posX, mc.thePlayer.posY + 0.753D,
+						mc.thePlayer.posZ, mc.thePlayer.onGround));
+				mc.thePlayer.setPosition(mc.thePlayer.posX,
+					mc.thePlayer.posY + 1D, mc.thePlayer.posZ);
 			}
 		}else
 			mc.thePlayer.stepHeight = isEnabled() ? height : 0.5F;
