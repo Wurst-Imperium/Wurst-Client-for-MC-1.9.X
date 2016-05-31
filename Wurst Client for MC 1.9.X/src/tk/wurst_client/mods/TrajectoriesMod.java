@@ -20,6 +20,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 
 import tk.wurst_client.events.listeners.RenderListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.utils.RenderUtils;
 
@@ -28,6 +29,7 @@ import tk.wurst_client.utils.RenderUtils;
 	category = Mod.Category.RENDER,
 	tags = "AimAssist, ArrowPrediction, aim assist, arrow prediction",
 	help = "Mods/Trajectories")
+@Bypasses
 public class TrajectoriesMod extends Mod implements RenderListener
 {
 	@Override

@@ -7,6 +7,7 @@
  */
 package tk.wurst_client.mods;
 
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 
@@ -15,6 +16,7 @@ import tk.wurst_client.mods.Mod.Info;
 	name = "TrueSight",
 	tags = "true sight",
 	help = "Mods/TrueSight")
+@Bypasses
 public class TrueSightMod extends Mod
 {	
 	

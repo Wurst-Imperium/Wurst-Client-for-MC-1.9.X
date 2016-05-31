@@ -12,14 +12,17 @@ import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.network.play.client.CPacketEntityAction;
 import net.minecraft.network.play.client.CPacketEntityAction.Action;
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
+import tk.wurst_client.special.YesCheatSpf.BypassLevel;
 
 @Info(category = Category.MOVEMENT,
 	description = "Automatically sneaks all the time.",
 	name = "Sneak",
 	tags = "AutoSneaking",
 	help = "Mods/Sneak")
+@Bypasses(ghostMode = false)
 public class SneakMod extends Mod implements UpdateListener
 {
 	@Override
@@ -31,7 +34,8 @@ public class SneakMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		if(wurst.mods.yesCheatMod.isActive())
+		if(wurst.special.yesCheatSpf.getBypassLevel().ordinal() >= BypassLevel.OLDER_NCP
+			.ordinal())
 		{
 			NetHandlerPlayClient sendQueue = mc.thePlayer.sendQueue;
 			sendQueue.addToSendQueue(new CPacketEntityAction(Minecraft

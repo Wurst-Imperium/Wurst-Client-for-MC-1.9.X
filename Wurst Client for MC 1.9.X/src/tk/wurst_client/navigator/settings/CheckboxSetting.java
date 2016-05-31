@@ -17,8 +17,11 @@ import com.google.gson.JsonObject;
 
 public class CheckboxSetting implements NavigatorSetting
 {
-	private String name;
+	private final String name;
 	private boolean checked;
+	private boolean locked;
+	private boolean lockChecked;
+	private int y;
 	
 	public CheckboxSetting(String name, boolean checked)
 	{
@@ -36,16 +39,10 @@ public class CheckboxSetting implements NavigatorSetting
 	public final void addToFeatureScreen(NavigatorFeatureScreen featureScreen)
 	{
 		featureScreen.addText("\n\n");
-		featureScreen.addCheckbox(featureScreen.new CheckboxData(name, checked,
-			60 + featureScreen.getTextHeight() - 8)
-		{
-			@Override
-			public void toggle()
-			{
-				setChecked(checked);
-				WurstClient.INSTANCE.files.saveNavigatorData();
-			}
-		});
+		y = 60 + featureScreen.getTextHeight() - 8;
+		update();
+		
+		featureScreen.addCheckbox(this);
 	}
 	
 	@Override
@@ -69,13 +66,45 @@ public class CheckboxSetting implements NavigatorSetting
 	
 	public final boolean isChecked()
 	{
-		return checked;
+		return locked ? lockChecked : checked;
 	}
 	
 	public final void setChecked(boolean checked)
 	{
-		this.checked = checked;
+		if(!locked)
+		{
+			this.checked = checked;
+			update();
+			WurstClient.INSTANCE.files.saveNavigatorData();
+		}
+	}
+	
+	public final void toggle()
+	{
+		setChecked(!isChecked());
+	}
+	
+	public final void lock(boolean lockChecked)
+	{
+		this.lockChecked = lockChecked;
+		locked = true;
 		update();
+	}
+	
+	public final void unlock()
+	{
+		locked = false;
+		update();
+	}
+	
+	public final boolean isLocked()
+	{
+		return locked;
+	}
+	
+	public final int getY()
+	{
+		return y;
 	}
 	
 	@Override

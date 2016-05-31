@@ -21,9 +21,14 @@ import net.minecraft.util.math.BlockPos;
 import tk.wurst_client.events.listeners.LeftClickListener;
 import tk.wurst_client.events.listeners.RenderListener;
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.NavigatorItem;
+import tk.wurst_client.navigator.settings.CheckboxSetting;
+import tk.wurst_client.navigator.settings.ModeSetting;
+import tk.wurst_client.navigator.settings.SliderSetting;
+import tk.wurst_client.navigator.settings.SliderSetting.ValueDisplay;
 import tk.wurst_client.utils.BlockUtils;
 import tk.wurst_client.utils.RenderUtils;
 
@@ -33,6 +38,7 @@ import tk.wurst_client.utils.RenderUtils;
 	name = "NukerLegit",
 	tags = "LegitNuker, nuker legit, legit nuker",
 	help = "Mods/NukerLegit")
+@Bypasses
 public class NukerLegitMod extends Mod implements LeftClickListener,
 	RenderListener, UpdateListener
 {
@@ -44,10 +50,49 @@ public class NukerLegitMod extends Mod implements LeftClickListener,
 	private boolean shouldRenderESP;
 	private int oldSlot = -1;
 	
+	public CheckboxSetting useNuker = new CheckboxSetting("Use Nuker settings",
+		true)
+	{
+		@Override
+		public void update()
+		{
+			if(isChecked())
+			{
+				NukerMod nuker = wurst.mods.nukerMod;
+				range.lockToValue(nuker.range.getValue());
+				mode.lock(nuker.mode.getSelected());
+			}else
+			{
+				range.unlock();
+				mode.unlock();
+			}
+		};
+	};
+	public final SliderSetting range = new SliderSetting("Range", 4.25, 1,
+		4.25, 0.05, ValueDisplay.DECIMAL);
+	public final ModeSetting mode = new ModeSetting("Mode", new String[]{
+		"Normal", "ID", "Flat", "Smash"}, 0);
+	
+	@Override
+	public void initSettings()
+	{
+		settings.add(useNuker);
+		settings.add(range);
+		settings.add(mode);
+	}
+	
 	@Override
 	public String getRenderName()
 	{
-		return wurst.mods.nukerMod.getRenderName() + "Legit";
+		switch(mode.getSelected())
+		{
+			case 0:
+				return "NukerLegit";
+			case 1:
+				return "IDNukerLegit [" + NukerMod.id + "]";
+			default:
+				return mode.getSelectedMode() + "NukerLegit";
+		}
 	}
 	
 	@Override
@@ -130,7 +175,8 @@ public class NukerLegitMod extends Mod implements LeftClickListener,
 		}
 		if(wurst.mods.autoToolMod.isActive())
 			AutoToolMod.setSlot(pos);
-		mc.thePlayer.sendQueue.addToSendQueue(new CPacketAnimation(EnumHand.MAIN_HAND));
+		mc.thePlayer.sendQueue.addToSendQueue(new CPacketAnimation(
+			EnumHand.MAIN_HAND));
 		shouldRenderESP = true;
 		currentDamage +=
 			currentBlock.getPlayerRelativeBlockHardness(
@@ -170,7 +216,7 @@ public class NukerLegitMod extends Mod implements LeftClickListener,
 		if(mc.objectMouseOver == null
 			|| mc.objectMouseOver.getBlockPos() == null)
 			return;
-		if(wurst.mods.nukerMod.getMode() == 1
+		if(mode.getSelected() == 1
 			&& mc.theWorld.getBlockState(mc.objectMouseOver.getBlockPos())
 				.getBlock().getMaterial(null) != Material.air)
 		{
@@ -192,13 +238,14 @@ public class NukerLegitMod extends Mod implements LeftClickListener,
 			if(alreadyProcessed.contains(currentPos))
 				continue;
 			alreadyProcessed.add(currentPos);
-			if(BlockUtils.getPlayerBlockDistance(currentPos) > wurst.mods.nukerMod.yesCheatRange)
+			if(BlockUtils.getPlayerBlockDistance(currentPos) > Math.min(
+				range.getValueF(), 4.25F))
 				continue;
 			int currentID =
 				Block.getIdFromBlock(mc.theWorld.getBlockState(currentPos)
 					.getBlock());
 			if(currentID != 0)
-				switch(wurst.mods.nukerMod.getMode())
+				switch(mode.getSelected())
 				{
 					case 1:
 						if(currentID == NukerMod.id)

@@ -16,13 +16,12 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
-
-import org.darkstorm.minecraft.gui.component.BoundedRangeComponent.ValueDisplay;
-
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.settings.SliderSetting;
+import tk.wurst_client.navigator.settings.SliderSetting.ValueDisplay;
 import tk.wurst_client.utils.BlockUtils;
 
 @Info(category = Category.BLOCKS,
@@ -33,6 +32,10 @@ import tk.wurst_client.utils.BlockUtils;
 	name = "Kaboom",
 	noCheatCompatible = false,
 	help = "Mods/Kaboom")
+@Bypasses(ghostMode = false,
+	latestNCP = false,
+	olderNCP = false,
+	antiCheat = false)
 public class KaboomMod extends Mod implements UpdateListener
 {
 	private int range = 6;
@@ -102,7 +105,8 @@ public class KaboomMod extends Mod implements UpdateListener
 								EnumFacing side = mc.objectMouseOver.sideHit;
 								BlockUtils.faceBlockPacket(pos);
 								mc.thePlayer.sendQueue
-									.addToSendQueue(new CPacketAnimation(EnumHand.MAIN_HAND));
+									.addToSendQueue(new CPacketAnimation(
+										EnumHand.MAIN_HAND));
 								mc.thePlayer.sendQueue
 									.addToSendQueue(new CPacketPlayerDigging(
 										Action.START_DESTROY_BLOCK, pos, side));

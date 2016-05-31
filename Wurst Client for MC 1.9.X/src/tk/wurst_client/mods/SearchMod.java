@@ -13,6 +13,7 @@ import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
 import tk.wurst_client.events.listeners.RenderListener;
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.utils.RenderUtils;
@@ -23,6 +24,7 @@ import tk.wurst_client.utils.RenderUtils;
 		+ "to specify it.",
 	name = "Search",
 	help = "Mods/Search")
+@Bypasses
 public class SearchMod extends Mod implements UpdateListener, RenderListener
 {
 	private ArrayList<BlockPos> matchingBlocks = new ArrayList<BlockPos>();

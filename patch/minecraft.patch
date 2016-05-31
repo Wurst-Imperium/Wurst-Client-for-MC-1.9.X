@@ -1,6 +1,6 @@
-From 2e4070f258c80c66b37cc02fd668d7aad0e8451d Mon Sep 17 00:00:00 2001
+From 5273e00c13116882b61288a104253f694a4713b3 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Tue, 17 May 2016 14:08:05 +0200
+Date: Mon, 30 May 2016 22:28:26 +0200
 Subject: [PATCH] Wurst
 
 ---
@@ -14,7 +14,7 @@ Subject: [PATCH] Wurst
  src/net/minecraft/client/Minecraft.java            | 180 ++++++++++-----------
  .../client/audio/PositionedSoundRecord.java        |   2 +-
  .../client/entity/AbstractClientPlayer.java        |   4 +-
- .../minecraft/client/entity/EntityPlayerSP.java    | 166 +++++++++++++++----
+ .../minecraft/client/entity/EntityPlayerSP.java    | 173 ++++++++++++++++----
  src/net/minecraft/client/gui/GuiButton.java        |  16 +-
  src/net/minecraft/client/gui/GuiDisconnected.java  |  87 ++++++++++
  src/net/minecraft/client/gui/GuiGameOver.java      |  13 +-
@@ -31,7 +31,7 @@ Subject: [PATCH] Wurst
  .../client/gui/ServerListEntryNormal.java          |  13 +-
  .../minecraft/client/gui/ServerSelectionList.java  |   2 +-
  .../minecraft/client/gui/achievement/GuiStats.java |   2 +-
- .../minecraft/client/gui/inventory/GuiChest.java   |  73 +++++++++
+ .../minecraft/client/gui/inventory/GuiChest.java   |  76 +++++++++
  .../client/gui/inventory/GuiContainer.java         |  40 ++---
  .../client/gui/inventory/GuiContainerCreative.java |   2 +-
  .../client/gui/inventory/GuiEditSign.java          |  18 +++
@@ -80,7 +80,7 @@ Subject: [PATCH] Wurst
  .../management/PlayerInteractionManager.java       |   6 +-
  src/net/minecraft/tileentity/TileEntitySign.java   |   2 +-
  src/net/minecraft/util/Timer.java                  |   6 +
- 76 files changed, 1232 insertions(+), 380 deletions(-)
+ 76 files changed, 1242 insertions(+), 380 deletions(-)
 
 diff --git a/src/net/minecraft/block/Block.java b/src/net/minecraft/block/Block.java
 index b386ea0..0909994 100644
@@ -711,7 +711,7 @@ index c30247b..f8b138e 100644
  
              if (f1 > 1.0F)
 diff --git a/src/net/minecraft/client/entity/EntityPlayerSP.java b/src/net/minecraft/client/entity/EntityPlayerSP.java
-index 61b85c2..8015573 100644
+index 61b85c2..8c712bd 100644
 --- a/src/net/minecraft/client/entity/EntityPlayerSP.java
 +++ b/src/net/minecraft/client/entity/EntityPlayerSP.java
 @@ -1,5 +1,6 @@
@@ -757,7 +757,7 @@ index 61b85c2..8015573 100644
  import net.minecraft.potion.Potion;
  import net.minecraft.potion.PotionEffect;
  import net.minecraft.stats.StatBase;
-@@ -65,6 +50,11 @@ import net.minecraft.util.math.MathHelper;
+@@ -65,6 +50,12 @@ import net.minecraft.util.math.MathHelper;
  import net.minecraft.util.text.ITextComponent;
  import net.minecraft.world.IInteractionObject;
  import net.minecraft.world.World;
@@ -765,11 +765,12 @@ index 61b85c2..8015573 100644
 +import tk.wurst_client.events.ChatOutputEvent;
 +import tk.wurst_client.events.UpdateEvent;
 +import tk.wurst_client.mods.BlinkMod;
++import tk.wurst_client.special.YesCheatSpf.BypassLevel;
 +import tk.wurst_client.utils.EntityUtils;
  
  public class EntityPlayerSP extends AbstractClientPlayer
  {
-@@ -205,6 +195,10 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -205,6 +196,10 @@ public class EntityPlayerSP extends AbstractClientPlayer
      {
          if (this.worldObj.isBlockLoaded(new BlockPos(this.posX, 0.0D, this.posZ)))
          {
@@ -780,7 +781,7 @@ index 61b85c2..8015573 100644
              super.onUpdate();
  
              if (this.isRiding())
-@@ -222,6 +216,18 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -222,6 +217,18 @@ public class EntityPlayerSP extends AbstractClientPlayer
              {
                  this.onUpdateWalkingPlayer();
              }
@@ -799,7 +800,7 @@ index 61b85c2..8015573 100644
          }
      }
  
-@@ -264,24 +270,92 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -264,24 +271,98 @@ public class EntityPlayerSP extends AbstractClientPlayer
  
          if (this.isCurrentViewEntity())
          {
@@ -839,29 +840,35 @@ index 61b85c2..8015573 100644
 +				|| WurstClient.INSTANCE.mods.freecamMod.isActive()
 +				|| (WurstClient.INSTANCE.mods.potionSaverMod.isActive()
 +					&& !getActivePotionEffects().isEmpty() && motionX == 0 && motionZ == 0))
-+            {
++			{	
 +				
 +			}else if(WurstClient.INSTANCE.mods.blinkMod.isActive())
-+            {//Redirects motion updates to the Blink queue
-+                if (flag2 && flag3)
-+                {
-+                    BlinkMod.addToBlinkQueue(new CPacketPlayer.C06PacketPlayerPosLook(this.posX, this.getEntityBoundingBox().minY, this.posZ, yaw, pitch, this.onGround));
-+                }
-+                else if (flag2)
-+                {
-+                	BlinkMod.addToBlinkQueue(new CPacketPlayer.C04PacketPlayerPosition(this.posX, this.getEntityBoundingBox().minY, this.posZ, this.onGround));
-+                }
-+                else if (flag3)
-             {
++			{// Redirects motion updates to the Blink queue
++				if(flag2 && flag3)
++				{
++					BlinkMod
++						.addToBlinkQueue(new CPacketPlayer.C06PacketPlayerPosLook(
++							this.posX, this.getEntityBoundingBox().minY,
++							this.posZ, yaw, pitch, this.onGround));
++				}else if(flag2)
++				{
++					BlinkMod
++						.addToBlinkQueue(new CPacketPlayer.C04PacketPlayerPosition(
++							this.posX, this.getEntityBoundingBox().minY,
++							this.posZ, this.onGround));
++				}else if(flag3)
++				{
++					BlinkMod
++						.addToBlinkQueue(new CPacketPlayer.C05PacketPlayerLook(
++							yaw, pitch, this.onGround));
++				}else
+ 				{
 -                this.sendQueue.addToSendQueue(new CPacketPlayer.C06PacketPlayerPosLook(this.motionX, -999.0D, this.motionZ, this.rotationYaw, this.rotationPitch, this.onGround));
-+                	BlinkMod.addToBlinkQueue(new CPacketPlayer.C05PacketPlayerLook(yaw, pitch, this.onGround));
-+                }
-+                else
-+                {
-+                	BlinkMod.addToBlinkQueue(new CPacketPlayer(this.onGround));
-+                }
++					BlinkMod.addToBlinkQueue(new CPacketPlayer(this.onGround));
++				}
 +			}else if(WurstClient.INSTANCE.mods.jesusMod.isActive()
-+				&& WurstClient.INSTANCE.mods.yesCheatMod.isActive()
++				&& WurstClient.INSTANCE.special.yesCheatSpf.getBypassLevel()
++					.ordinal() >= BypassLevel.ANTICHEAT.ordinal()
 +				&& !isInWater()
 +				&& Minecraft.getMinecraft().theWorld
 +					.getBlockState(new BlockPos(this).add(0, -1, 0)).getBlock()
@@ -897,7 +904,7 @@ index 61b85c2..8015573 100644
              }
              else if (flag2)
              {
-@@ -289,7 +363,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -289,7 +370,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
              }
              else if (flag3)
              {
@@ -906,7 +913,7 @@ index 61b85c2..8015573 100644
              }
              else if (this.field_184841_cd != this.onGround)
              {
-@@ -332,9 +406,31 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -332,9 +413,31 @@ public class EntityPlayerSP extends AbstractClientPlayer
      /**
       * Sends a chat message from the player. Args: chatMessage
       */
@@ -940,7 +947,7 @@ index 61b85c2..8015573 100644
      }
  
      public void swingArm(EnumHand hand)
-@@ -629,7 +725,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -629,7 +732,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
      {
          ItemStack itemstack = this.getHeldItem(p_184598_1_);
  
@@ -949,7 +956,7 @@ index 61b85c2..8015573 100644
          {
              super.func_184598_c(p_184598_1_);
              this.field_184842_cm = true;
-@@ -637,7 +733,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -637,7 +740,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
          }
      }
  
@@ -958,7 +965,7 @@ index 61b85c2..8015573 100644
      {
          return this.field_184842_cm;
      }
-@@ -847,7 +943,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -847,7 +950,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
  
              if (this.timeInPortal == 0.0F)
              {
@@ -967,7 +974,7 @@ index 61b85c2..8015573 100644
              }
  
              this.timeInPortal += 0.0125F;
-@@ -892,7 +988,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -892,7 +995,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
          boolean flag2 = this.movementInput.moveForward >= f;
          this.movementInput.updatePlayerMoveState();
  
@@ -976,7 +983,7 @@ index 61b85c2..8015573 100644
          {
              this.movementInput.moveStrafe *= 0.2F;
              this.movementInput.moveForward *= 0.2F;
-@@ -906,7 +1002,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -906,7 +1009,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
          this.pushOutOfBlocks(this.posX + (double)this.width * 0.35D, axisalignedbb.minY + 0.5D, this.posZ + (double)this.width * 0.35D);
          boolean flag3 = (float)this.getFoodStats().getFoodLevel() > 6.0F || this.capabilities.allowFlying;
  
@@ -985,7 +992,7 @@ index 61b85c2..8015573 100644
          {
              if (this.sprintToggleTimer <= 0 && !this.mc.gameSettings.keyBindSprint.isKeyDown())
              {
-@@ -918,7 +1014,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -918,7 +1021,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
              }
          }
  
@@ -994,7 +1001,7 @@ index 61b85c2..8015573 100644
          {
              this.setSprinting(true);
          }
-@@ -1052,7 +1148,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -1052,7 +1155,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
          return this.field_184844_co;
      }
  
@@ -1003,7 +1010,7 @@ index 61b85c2..8015573 100644
      {
          if (p_184596_1_ == MobEffects.confusion)
          {
-@@ -1060,6 +1156,6 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -1060,6 +1163,6 @@ public class EntityPlayerSP extends AbstractClientPlayer
              this.timeInPortal = 0.0F;
          }
  
@@ -1434,7 +1441,7 @@ index cf5b504..3f55b7c 100644
          if (this.field_186784_e.getSaveLoader().canLoadWorld(this.field_186786_g.getFileName()))
          {
 diff --git a/src/net/minecraft/client/gui/GuiMainMenu.java b/src/net/minecraft/client/gui/GuiMainMenu.java
-index b8f0b51..22c6ccb 100644
+index b8f0b51..baba45c 100644
 --- a/src/net/minecraft/client/gui/GuiMainMenu.java
 +++ b/src/net/minecraft/client/gui/GuiMainMenu.java
 @@ -1,6 +1,7 @@
@@ -1500,8 +1507,8 @@ index b8f0b51..22c6ccb 100644
 -        this.buttonList.add(this.realmsButton = new GuiButton(14, this.width / 2 - 100, p_73969_1_ + p_73969_2_ * 2, I18n.format("menu.online", new Object[0])));
 +        
 +        //TODO: Client
-+        this.buttonList.add(new GuiButton(3, this.width / 2 + 2, p_73969_1_ + p_73969_2_ * 2, 98, 20, "Alt Manager"));
-+        this.buttonList.add(this.realmsButton = new GuiButton(14, this.width / 2 - 100, p_73969_1_ + p_73969_2_ * 2, 98, 20, I18n.format("menu.online", new Object[0])));
++        this.buttonList.add(new GuiButton(3, this.width / 2 - 100, p_73969_1_ + p_73969_2_ * 2, 200, 20, "Alt Manager"));
++        //this.buttonList.add(this.realmsButton = new GuiButton(14, this.width / 2 - 100, p_73969_1_ + p_73969_2_ * 2, 98, 20, I18n.format("menu.online", new Object[0])));
      }
  
      /**
@@ -2128,13 +2135,14 @@ index f14be3e..d61a9af 100644
          }
  
 diff --git a/src/net/minecraft/client/gui/inventory/GuiChest.java b/src/net/minecraft/client/gui/inventory/GuiChest.java
-index b01af09..1e6a8bd 100644
+index b01af09..a385247 100644
 --- a/src/net/minecraft/client/gui/inventory/GuiChest.java
 +++ b/src/net/minecraft/client/gui/inventory/GuiChest.java
-@@ -1,9 +1,13 @@
+@@ -1,9 +1,14 @@
  package net.minecraft.client.gui.inventory;
  
 +import tk.wurst_client.WurstClient;
++import tk.wurst_client.special.YesCheatSpf.BypassLevel;
  import net.minecraft.client.Minecraft;
 +import net.minecraft.client.gui.GuiButton;
  import net.minecraft.client.renderer.GlStateManager;
@@ -2145,7 +2153,7 @@ index b01af09..1e6a8bd 100644
  import net.minecraft.util.ResourceLocation;
  
  public class GuiChest extends GuiContainer
-@@ -30,6 +34,75 @@ public class GuiChest extends GuiContainer
+@@ -30,6 +35,77 @@ public class GuiChest extends GuiContainer
          this.ySize = j + this.inventoryRows * 18;
      }
  
@@ -2180,10 +2188,12 @@ index b01af09..1e6a8bd 100644
 +								(Slot)inventorySlots.inventorySlots.get(i);
 +							if(slot.getStack() == null)
 +								continue;
-+							if(WurstClient.INSTANCE.mods.yesCheatMod
-+								.isActive())
++							if(WurstClient.INSTANCE.special.yesCheatSpf
++								.getBypassLevel().ordinal() >= BypassLevel.ANTICHEAT
++								.ordinal())
 +								Thread.sleep(250);
-+							handleMouseClick(slot, slot.slotNumber, 0, ClickType.QUICK_MOVE);
++							handleMouseClick(slot, slot.slotNumber, 0,
++								ClickType.QUICK_MOVE);
 +						}
 +					}catch(Exception e)
 +					{
@@ -2205,8 +2215,8 @@ index b01af09..1e6a8bd 100644
 +								(Slot)inventorySlots.inventorySlots.get(i);
 +							if(slot.getStack() == null)
 +								continue;
-+							if(WurstClient.INSTANCE.mods.yesCheatMod
-+								.isActive())
++							if(WurstClient.INSTANCE.special.yesCheatSpf.getBypassLevel()
++								.ordinal() >= BypassLevel.ANTICHEAT.ordinal())
 +								Thread.sleep(250);
 +							handleMouseClick(slot, slot.slotNumber, 0, ClickType.QUICK_MOVE);
 +						}

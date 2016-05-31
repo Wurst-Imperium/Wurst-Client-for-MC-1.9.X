@@ -7,6 +7,8 @@
  */
 package tk.wurst_client.mods;
 
+import tk.wurst_client.mods.Mod.Bypasses;
+
 @Mod.Info(category = Mod.Category.BLOCKS,
 	description = "Allows you to reach specific blocks through walls.\n"
 		+ "Use .ghosthand id <block id> or .ghosthand name <block name>\n"
@@ -14,6 +16,7 @@ package tk.wurst_client.mods;
 	name = "GhostHand",
 	tags = "ghost hand",
 	help = "Mods/GhostHand")
+@Bypasses(ghostMode = false)
 public class GhostHandMod extends Mod
 {
 	@Override

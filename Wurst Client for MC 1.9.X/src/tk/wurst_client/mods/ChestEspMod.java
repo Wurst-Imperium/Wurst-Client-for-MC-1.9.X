@@ -11,6 +11,7 @@ import net.minecraft.entity.item.EntityMinecartChest;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.tileentity.TileEntityEnderChest;
 import tk.wurst_client.events.listeners.RenderListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.NavigatorItem;
@@ -21,6 +22,7 @@ import tk.wurst_client.utils.RenderUtils;
 	name = "ChestESP",
 	tags = "ChestFinder, chest esp, chest finder",
 	help = "Mods/ChestESP")
+@Bypasses
 public class ChestEspMod extends Mod implements RenderListener
 {
 	private int maxChests = 1000;

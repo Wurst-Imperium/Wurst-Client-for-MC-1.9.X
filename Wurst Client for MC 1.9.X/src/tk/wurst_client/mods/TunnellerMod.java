@@ -16,7 +16,9 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import tk.wurst_client.events.listeners.RenderListener;
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.navigator.NavigatorItem;
+import tk.wurst_client.special.YesCheatSpf.BypassLevel;
 import tk.wurst_client.utils.BlockUtils;
 import tk.wurst_client.utils.RenderUtils;
 
@@ -24,6 +26,7 @@ import tk.wurst_client.utils.RenderUtils;
 	description = "Digs a 3x3 tunnel around you.",
 	name = "Tunneller",
 	help = "Mods/Tunneller")
+@Bypasses
 public class TunnellerMod extends Mod implements RenderListener, UpdateListener
 {
 	private static Block currentBlock;
@@ -105,7 +108,8 @@ public class TunnellerMod extends Mod implements RenderListener, UpdateListener
 			{
 				currentDamage = 0;
 				if(mc.thePlayer.capabilities.isCreativeMode
-					&& !wurst.mods.yesCheatMod.isActive())
+					&& wurst.special.yesCheatSpf.getBypassLevel().ordinal() <= BypassLevel.MINEPLEX_ANTICHEAT
+						.ordinal())
 					nukeAll();
 				else
 				{
@@ -179,7 +183,7 @@ public class TunnellerMod extends Mod implements RenderListener, UpdateListener
 					float currentDistance = xDiff + yDiff + zDiff;
 					if(Block.getIdFromBlock(block) != 0 && posY >= 0)
 					{
-						if(wurst.mods.nukerMod.getMode() == 3
+						if(wurst.mods.nukerMod.mode.getSelected() == 3
 							&& block.getPlayerRelativeBlockHardness(
 								mc.theWorld.getBlockState(blockPos),
 								mc.thePlayer, mc.theWorld, blockPos) < 1)
@@ -213,7 +217,7 @@ public class TunnellerMod extends Mod implements RenderListener, UpdateListener
 						mc.theWorld.getBlockState(blockPos).getBlock();
 					if(Block.getIdFromBlock(block) != 0 && posY >= 0)
 					{
-						if(wurst.mods.nukerMod.getMode() == 3
+						if(wurst.mods.nukerMod.mode.getSelected() == 3
 							&& block.getPlayerRelativeBlockHardness(
 								mc.theWorld.getBlockState(blockPos),
 								mc.thePlayer, mc.theWorld, blockPos) < 1)
