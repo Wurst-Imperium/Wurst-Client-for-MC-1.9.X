@@ -11,10 +11,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.Callable;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.crash.CrashReport;
+import net.minecraft.crash.CrashReportCategory;
+import net.minecraft.util.ReportedException;
 import tk.wurst_client.WurstClient;
-import tk.wurst_client.gui.error.GuiError;
 import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.navigator.PossibleKeybind;
 import tk.wurst_client.navigator.settings.NavigatorSetting;
@@ -158,7 +161,7 @@ public class Mod implements NavigatorItem
 	{
 		return bypasses;
 	}
-
+	
 	@Override
 	public NavigatorItem[] getSeeAlso()
 	{
@@ -187,33 +190,41 @@ public class Mod implements NavigatorItem
 		active = enabled && !blocked;
 		if(blocked && enabled)
 			return;
+		
 		try
 		{
 			onToggle();
-		}catch(Exception e)
-		{
-			Minecraft.getMinecraft().displayGuiScreen(
-				new GuiError(e, this, "toggling", "Mod was toggled "
-					+ (enabled ? "on" : "off") + "."));
-		}
-		if(enabled)
-			try
-			{
+			if(enabled)
 				onEnable();
-			}catch(Exception e)
-			{
-				Minecraft.getMinecraft().displayGuiScreen(
-					new GuiError(e, this, "enabling", ""));
-			}
-		else
-			try
-			{
+			else
 				onDisable();
-			}catch(Exception e)
-			{
-				Minecraft.getMinecraft().displayGuiScreen(
-					new GuiError(e, this, "disabling", ""));
-			}
+		}catch(Throwable e)
+		{
+			CrashReport crashReport =
+				CrashReport.makeCrashReport(e, "Toggling Wurst mod");
+			CrashReportCategory crashreportcategory =
+				crashReport.makeCategory("Affected mod");
+			crashreportcategory.addCrashSectionCallable("Mod name",
+				new Callable<String>()
+				{
+					@Override
+					public String call() throws Exception
+					{
+						return name;
+					}
+				});
+			crashreportcategory.addCrashSectionCallable("Attempted action",
+				new Callable<String>()
+				{
+					@Override
+					public String call() throws Exception
+					{
+						return enabled ? "Enable" : "Disable";
+					}
+				});
+			throw new ReportedException(crashReport);
+		}
+		
 		if(!WurstClient.INSTANCE.files.isModBlacklisted(this))
 			WurstClient.INSTANCE.files.saveMods();
 	}
@@ -222,22 +233,36 @@ public class Mod implements NavigatorItem
 	{
 		enabled = true;
 		active = enabled && !blocked;
+		
 		try
 		{
 			onToggle();
-		}catch(Exception e)
-		{
-			Minecraft.getMinecraft().displayGuiScreen(
-				new GuiError(e, this, "toggling", "Mod was toggled "
-					+ (enabled ? "on" : "off") + "."));
-		}
-		try
-		{
 			onEnable();
-		}catch(Exception e)
+		}catch(Throwable e)
 		{
-			Minecraft.getMinecraft().displayGuiScreen(
-				new GuiError(e, this, "enabling", ""));
+			CrashReport crashReport =
+				CrashReport.makeCrashReport(e, "Toggling Wurst mod");
+			CrashReportCategory crashreportcategory =
+				crashReport.makeCategory("Affected mod");
+			crashreportcategory.addCrashSectionCallable("Mod name",
+				new Callable<String>()
+				{
+					@Override
+					public String call() throws Exception
+					{
+						return name;
+					}
+				});
+			crashreportcategory.addCrashSectionCallable("Attempted action",
+				new Callable<String>()
+				{
+					@Override
+					public String call() throws Exception
+					{
+						return "Enable on startup";
+					}
+				});
+			throw new ReportedException(crashReport);
 		}
 	}
 	
@@ -261,23 +286,35 @@ public class Mod implements NavigatorItem
 			try
 			{
 				onToggle();
-			}catch(Exception e)
-			{
-				Minecraft.getMinecraft().displayGuiScreen(
-					new GuiError(e, this, "toggling", "Mod was toggled "
-						+ (blocked ? "off" : "on") + "."));
-			}
-			try
-			{
 				if(blocked)
 					onDisable();
 				else
 					onEnable();
-			}catch(Exception e)
+			}catch(Throwable e)
 			{
-				Minecraft.getMinecraft().displayGuiScreen(
-					new GuiError(e, this, blocked ? "disabling" : "enabling",
-						""));
+				CrashReport crashReport =
+					CrashReport.makeCrashReport(e, "Toggling Wurst mod");
+				CrashReportCategory crashreportcategory =
+					crashReport.makeCategory("Affected mod");
+				crashreportcategory.addCrashSectionCallable("Mod name",
+					new Callable<String>()
+					{
+						@Override
+						public String call() throws Exception
+						{
+							return name;
+						}
+					});
+				crashreportcategory.addCrashSectionCallable("Attempted action",
+					new Callable<String>()
+					{
+						@Override
+						public String call() throws Exception
+						{
+							return blocked ? "Block" : "Unblock";
+						}
+					});
+				throw new ReportedException(crashReport);
 			}
 		}
 	}
