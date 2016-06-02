@@ -6,8 +6,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
  /*
- * Made by dGRAMOP for WURST!!!
- * 
  * Use case: 
  * Regular chat is disabled/you are muted
  * You want to make it [message] seem less like a broadcast
