@@ -66,7 +66,7 @@ public class KaboomMod extends Mod implements UpdateListener
 	{
 		if(mc.thePlayer.capabilities.isCreativeMode)
 		{
-			wurst.chat.error("Surivival mode only.");
+			wurst.chat.error("Survival mode only.");
 			setEnabled(false);
 			return;
 		}
