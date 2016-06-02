@@ -19,7 +19,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 
-import org.darkstorm.minecraft.gui.component.BoundedRangeComponent.ValueDisplay;
 import org.darkstorm.minecraft.gui.component.Frame;
 import org.darkstorm.minecraft.gui.component.Label;
 import org.darkstorm.minecraft.gui.component.Label.TextAlignment;
@@ -34,9 +33,11 @@ import tk.wurst_client.events.listeners.ChatInputListener;
 import tk.wurst_client.events.listeners.DeathListener;
 import tk.wurst_client.events.listeners.RenderListener;
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.settings.SliderSetting;
+import tk.wurst_client.navigator.settings.SliderSetting.ValueDisplay;
 import tk.wurst_client.utils.BlockUtils;
 import tk.wurst_client.utils.EntityUtils;
 import tk.wurst_client.utils.MiscUtils;
@@ -49,6 +50,7 @@ import tk.wurst_client.utils.RenderUtils;
 		+ "has to offer.",
 	name = "ArenaBrawl",
 	help = "Mods/ArenaBrawl")
+@Bypasses(ghostMode = false)
 public class ArenaBrawlMod extends Mod implements ChatInputListener,
 	DeathListener, RenderListener, UpdateListener
 {

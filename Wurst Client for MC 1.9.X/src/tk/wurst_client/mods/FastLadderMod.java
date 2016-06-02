@@ -8,6 +8,7 @@
 package tk.wurst_client.mods;
 
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 
@@ -16,6 +17,7 @@ import tk.wurst_client.mods.Mod.Info;
 	name = "FastLadder",
 	tags = "FastClimb, fast ladder, fast climb",
 	help = "Mods/FastLadder")
+@Bypasses(ghostMode = false)
 public class FastLadderMod extends Mod implements UpdateListener
 {
 	@Override

@@ -10,6 +10,7 @@ package tk.wurst_client.mods;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumHand;
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.utils.EntityUtils;
@@ -20,9 +21,9 @@ import tk.wurst_client.utils.EntityUtils;
 	name = "FightBot",
 	tags = "fight bot",
 	help = "Mods/FightBot")
+@Bypasses(ghostMode = false)
 public class FightBotMod extends Mod implements UpdateListener
 {
-	private float speed;
 	private float range = 6F;
 	private double distance = 3D;
 	private EntityLivingBase entity;
@@ -36,7 +37,7 @@ public class FightBotMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		entity = EntityUtils.getClosestEntity(true, false, false);
+		entity = EntityUtils.getClosestEntity(true, 360, false);
 		if(entity == null)
 			return;
 		if(entity.getHealth() <= 0 || entity.isDead
@@ -57,12 +58,8 @@ public class FightBotMod extends Mod implements UpdateListener
 			mc.thePlayer.jump();
 		if(mc.thePlayer.isInWater() && mc.thePlayer.posY < entity.posY)
 			mc.thePlayer.motionY += 0.04;
-		if(wurst.mods.yesCheatMod.isActive())
-			speed = wurst.mods.killauraMod.yesCheatSpeed;
-		else
-			speed = wurst.mods.killauraMod.normalSpeed;
 		updateMS();
-		if(hasTimePassedS(speed))
+		if(hasTimePassedS(wurst.mods.killauraMod.speed.getValueF()))
 			if(mc.thePlayer.getDistanceToEntity(entity) <= range)
 			{
 				if(wurst.mods.autoSwordMod.isActive())

@@ -9,15 +9,15 @@ package tk.wurst_client.mods;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumHand;
-
-import org.darkstorm.minecraft.gui.component.BoundedRangeComponent.ValueDisplay;
-
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.navigator.settings.CheckboxSetting;
 import tk.wurst_client.navigator.settings.SliderSetting;
+import tk.wurst_client.navigator.settings.SliderSetting.ValueDisplay;
+import tk.wurst_client.special.YesCheatSpf.BypassLevel;
 import tk.wurst_client.utils.EntityUtils;
 
 @Info(category = Category.COMBAT,
@@ -25,55 +25,34 @@ import tk.wurst_client.utils.EntityUtils;
 	name = "Killaura",
 	tags = "kill aura",
 	help = "Mods/Killaura")
+@Bypasses
 public class KillauraMod extends Mod implements UpdateListener
 {
-	public float normalSpeed = 20F;
-	public float normalRange = 5F;
-	public float yesCheatSpeed = 12F;
-	public float yesCheatRange = 4.25F;
-	public int fov = 360;
-	public float realSpeed;
-	public float realRange;
 	public CheckboxSetting useCooldown = new CheckboxSetting(
-		"Use Attack Cooldown as Speed", true);
+		"Use Attack Cooldown as Speed", true)
+	{
+		@Override
+		public void update()
+		{
+			speed.setDisabled(isChecked());
+		};
+	};
+	public SliderSetting speed = new SliderSetting("Speed", 20, 2, 20, 0.1,
+		ValueDisplay.DECIMAL);
+	public SliderSetting range = new SliderSetting("Range", 6, 1, 6, 0.05,
+		ValueDisplay.DECIMAL);
+	public SliderSetting fov = new SliderSetting("FOV", 360, 30, 360, 10,
+		ValueDisplay.DEGREES);
 	public CheckboxSetting hitThroughWalls = new CheckboxSetting(
 		"Hit through walls", false);
 	
 	@Override
 	public void initSettings()
 	{
-		settings.add(new SliderSetting("Range", normalRange, 1, 6, 0.05,
-			ValueDisplay.DECIMAL)
-		{
-			@Override
-			public void update()
-			{
-				normalRange = (float)getValue();
-				yesCheatRange = Math.min(normalRange, 4.25F);
-				updateSpeedAndRange();
-			}
-		});
 		settings.add(useCooldown);
-		settings.add(new SliderSetting("Speed", normalSpeed, 2, 20, 0.1,
-			ValueDisplay.DECIMAL)
-		{
-			@Override
-			public void update()
-			{
-				normalSpeed = (float)getValue();
-				yesCheatSpeed = Math.min(normalSpeed, 12F);
-				updateSpeedAndRange();
-			}
-		});
-		settings.add(new SliderSetting("FOV", fov, 30, 360, 10,
-			ValueDisplay.DEGREES)
-		{
-			@Override
-			public void update()
-			{
-				fov = (int)getValue();
-			}
-		});
+		settings.add(speed);
+		settings.add(range);
+		settings.add(fov);
 		settings.add(hitThroughWalls);
 	}
 	
@@ -82,8 +61,8 @@ public class KillauraMod extends Mod implements UpdateListener
 	{
 		return new NavigatorItem[]{wurst.special.targetSpf,
 			wurst.mods.killauraLegitMod, wurst.mods.multiAuraMod,
-			wurst.mods.clickAuraMod, wurst.mods.triggerBotMod,
-			wurst.mods.criticalsMod};
+			wurst.mods.clickAuraMod, wurst.mods.tpAuraMod,
+			wurst.mods.triggerBotMod, wurst.mods.criticalsMod};
 	}
 	
 	@Override
@@ -106,19 +85,19 @@ public class KillauraMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		updateSpeedAndRange();
 		updateMS();
 		EntityLivingBase en =
-			EntityUtils.getClosestEntity(true, true,
+			EntityUtils.getClosestEntity(true, fov.getValueF(),
 				hitThroughWalls.isChecked());
-		if(en == null || mc.thePlayer.getDistanceToEntity(en) > realRange)
+		if(en == null
+			|| mc.thePlayer.getDistanceToEntity(en) > range.getValueF())
 		{
 			EntityUtils.lookChanged = false;
 			return;
 		}
 		EntityUtils.lookChanged = true;
 		if((useCooldown.isChecked() ? mc.thePlayer.getSwordCooldown(0F) >= 1F
-			: hasTimePassedS(realSpeed)))
+			: hasTimePassedS(speed.getValueF())))
 		{
 			if(wurst.mods.autoSwordMod.isActive())
 				AutoSwordMod.setSlot();
@@ -142,16 +121,30 @@ public class KillauraMod extends Mod implements UpdateListener
 		EntityUtils.lookChanged = false;
 	}
 	
-	private void updateSpeedAndRange()
+	@Override
+	public void onYesCheatUpdate(BypassLevel bypassLevel)
 	{
-		if(wurst.mods.yesCheatMod.isActive())
+		switch(bypassLevel)
 		{
-			realSpeed = yesCheatSpeed;
-			realRange = yesCheatRange;
-		}else
-		{
-			realSpeed = normalSpeed;
-			realRange = normalRange;
+			default:
+			case OFF:
+			case MINEPLEX_ANTICHEAT:
+				speed.unlock();
+				range.unlock();
+				hitThroughWalls.unlock();
+				break;
+			case ANTICHEAT:
+			case OLDER_NCP:
+			case LATEST_NCP:
+				speed.lockToMax(12);
+				range.lockToMax(4.25);
+				hitThroughWalls.unlock();
+				break;
+			case GHOST_MODE:
+				speed.lockToMax(12);
+				range.lockToMax(4.25);
+				hitThroughWalls.lock(false);
+				break;
 		}
 	}
 }

@@ -21,9 +21,12 @@ import tk.wurst_client.navigator.NavigatorItem;
 	description = "Automatically uses the best weapon in your hotbar to attack\n"
 		+ "entities. Tip: This works with Killaura.",
 	name = "AutoSword",
-	noCheatCompatible = false,
 	tags = "auto sword",
 	help = "Mods/AutoSword")
+@Mod.Bypasses(ghostMode = false,
+	latestNCP = false,
+	olderNCP = false,
+	antiCheat = false)
 public class AutoSwordMod extends Mod implements LeftClickListener,
 	UpdateListener
 {
@@ -64,12 +67,6 @@ public class AutoSwordMod extends Mod implements LeftClickListener,
 	@Override
 	public void onLeftClick()
 	{
-		if(wurst.mods.yesCheatMod.isActive())
-		{
-			noCheatMessage();
-			setEnabled(false);
-			return;
-		}
 		if(mc.objectMouseOver != null
 			&& mc.objectMouseOver.entityHit instanceof EntityLivingBase)
 			setSlot();

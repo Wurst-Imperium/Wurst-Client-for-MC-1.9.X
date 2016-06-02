@@ -8,6 +8,7 @@
 package tk.wurst_client.mods;
 
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 
@@ -16,6 +17,7 @@ import tk.wurst_client.mods.Mod.Info;
 	name = "Fullbright",
 	tags = "NightVision, full bright, brightness, night vision",
 	help = "Mods/Fullbright")
+@Bypasses
 public class FullbrightMod extends Mod implements UpdateListener
 {
 	public FullbrightMod()

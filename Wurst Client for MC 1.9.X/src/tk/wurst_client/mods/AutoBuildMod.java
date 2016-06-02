@@ -15,10 +15,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import tk.wurst_client.events.listeners.RenderListener;
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.navigator.settings.ModeSetting;
+import tk.wurst_client.special.YesCheatSpf.BypassLevel;
 import tk.wurst_client.utils.BuildUtils;
 import tk.wurst_client.utils.RenderUtils;
 
@@ -29,6 +31,7 @@ import tk.wurst_client.utils.RenderUtils;
 	name = "AutoBuild",
 	tags = "AutoBridge, AutoFloor, AutoNazi, AutoPenis, AutoPillar, AutoWall, AutoWurst, auto build",
 	help = "Mods/AutoBuild")
+@Bypasses(ghostMode = false)
 public class AutoBuildMod extends Mod implements UpdateListener, RenderListener
 {
 	public static ArrayList<String> names = new ArrayList<String>();
@@ -410,7 +413,8 @@ public class AutoBuildMod extends Mod implements UpdateListener, RenderListener
 				speed = 1000000000;
 			else
 				speed = 5;
-			if(wurst.mods.yesCheatMod.isActive())
+			if(wurst.special.yesCheatSpf.getBypassLevel().ordinal() >= BypassLevel.ANTICHEAT
+				.ordinal())
 			{
 				blockIndex = 0;
 				shouldBuild = true;
@@ -524,7 +528,8 @@ public class AutoBuildMod extends Mod implements UpdateListener, RenderListener
 				speed = 1000000000;
 			else
 				speed = 5;
-			if(wurst.mods.yesCheatMod.isActive())
+			if(wurst.special.yesCheatSpf.getBypassLevel().ordinal() >= BypassLevel.ANTICHEAT
+				.ordinal())
 			{
 				blockIndex = 0;
 				shouldBuild = true;

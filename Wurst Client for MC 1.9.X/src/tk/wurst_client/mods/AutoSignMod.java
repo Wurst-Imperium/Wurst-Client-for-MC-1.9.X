@@ -8,6 +8,7 @@
 package tk.wurst_client.mods;
 
 import net.minecraft.util.text.ITextComponent;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 
@@ -19,6 +20,7 @@ import tk.wurst_client.mods.Mod.Info;
 	noCheatCompatible = false,
 	tags = "auto sign",
 	help = "Mods/AutoSign")
+@Bypasses(ghostMode = false, latestNCP = false, olderNCP = false, antiCheat = false)
 public class AutoSignMod extends Mod
 {
 	public ITextComponent[] signText;

@@ -9,6 +9,7 @@ package tk.wurst_client.mods;
 
 import net.minecraft.entity.projectile.EntityFishHook;
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 
@@ -17,6 +18,7 @@ import tk.wurst_client.mods.Mod.Info;
 	name = "AutoFish",
 	tags = "FishBot, auto fish, fish bot, fishing",
 	help = "Mods/AutoFish")
+@Bypasses
 public class AutoFishMod extends Mod implements UpdateListener
 {
 	private boolean catching = false;

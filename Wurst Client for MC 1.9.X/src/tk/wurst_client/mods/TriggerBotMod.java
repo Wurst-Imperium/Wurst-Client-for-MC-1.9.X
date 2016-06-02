@@ -11,9 +11,14 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.RayTraceResult.Type;
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.NavigatorItem;
+import tk.wurst_client.navigator.settings.CheckboxSetting;
+import tk.wurst_client.navigator.settings.SliderSetting;
+import tk.wurst_client.navigator.settings.SliderSetting.ValueDisplay;
+import tk.wurst_client.special.YesCheatSpf.BypassLevel;
 import tk.wurst_client.utils.EntityUtils;
 
 @Info(category = Category.COMBAT,
@@ -21,8 +26,51 @@ import tk.wurst_client.utils.EntityUtils;
 	name = "TriggerBot",
 	tags = "trigger bot",
 	help = "Mods/TriggerBot")
+@Bypasses
 public class TriggerBotMod extends Mod implements UpdateListener
 {
+	public CheckboxSetting useKillaura = new CheckboxSetting(
+		"Use Killaura settings", true)
+	{
+		@Override
+		public void update()
+		{
+			if(isChecked())
+			{
+				KillauraMod killaura = wurst.mods.killauraMod;
+				useCooldown.lock(killaura.useCooldown.isChecked());
+				speed.lockToValue(killaura.speed.getValue());
+				range.lockToValue(killaura.range.getValue());
+			}else
+			{
+				useCooldown.unlock();
+				speed.unlock();
+				range.unlock();
+			}
+		};
+	};
+	public CheckboxSetting useCooldown = new CheckboxSetting(
+		"Use Attack Cooldown as Speed", true)
+	{
+		@Override
+		public void update()
+		{
+			speed.setDisabled(isChecked());
+		};
+	};
+	public SliderSetting speed = new SliderSetting("Speed", 20, 2, 20, 0.1,
+		ValueDisplay.DECIMAL);
+	public SliderSetting range = new SliderSetting("Range", 6, 1, 6, 0.05,
+		ValueDisplay.DECIMAL);
+	
+	@Override
+	public void initSettings()
+	{
+		settings.add(useKillaura);
+		settings.add(useCooldown);
+		settings.add(speed);
+		settings.add(range);
+	}
 	
 	@Override
 	public NavigatorItem[] getSeeAlso()
@@ -61,10 +109,9 @@ public class TriggerBotMod extends Mod implements UpdateListener
 			return;
 		EntityLivingBase en = (EntityLivingBase)mc.objectMouseOver.entityHit;
 		
-		if((wurst.mods.killauraMod.useCooldown.isChecked() ? mc.thePlayer
-			.getSwordCooldown(0F) >= 1F
-			: hasTimePassedS(wurst.mods.killauraMod.realSpeed))
-			&& mc.thePlayer.getDistanceToEntity(en) <= wurst.mods.killauraMod.realRange
+		if((useCooldown.isChecked() ? mc.thePlayer.getSwordCooldown(0F) >= 1F
+			: hasTimePassedS(speed.getValueF()))
+			&& mc.thePlayer.getDistanceToEntity(en) <= range.getValueF()
 			&& EntityUtils.isCorrectEntity(en, true))
 		{
 			if(wurst.mods.autoSwordMod.isActive())
@@ -83,5 +130,29 @@ public class TriggerBotMod extends Mod implements UpdateListener
 	public void onDisable()
 	{
 		wurst.events.remove(UpdateListener.class, this);
+	}
+	
+	@Override
+	public void onYesCheatUpdate(BypassLevel bypassLevel)
+	{
+		switch(bypassLevel)
+		{
+			default:
+			case OFF:
+			case MINEPLEX_ANTICHEAT:
+				speed.unlock();
+				range.unlock();
+				break;
+			case ANTICHEAT:
+			case OLDER_NCP:
+			case LATEST_NCP:
+				speed.lockToMax(12);
+				range.lockToMax(4.25);
+				break;
+			case GHOST_MODE:
+				speed.lockToMax(12);
+				range.lockToMax(4.25);
+				break;
+		}
 	}
 }

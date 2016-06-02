@@ -7,6 +7,7 @@
  */
 package tk.wurst_client.mods;
 
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 
@@ -16,6 +17,7 @@ import tk.wurst_client.mods.Mod.Info;
 	name = "NameTags",
 	tags = "name tags",
 	help = "Mods/NameTags")
+@Bypasses
 public class NameTagsMod extends Mod
 {	
 	

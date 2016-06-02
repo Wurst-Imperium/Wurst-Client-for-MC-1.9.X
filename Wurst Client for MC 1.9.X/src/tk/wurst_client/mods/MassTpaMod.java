@@ -17,6 +17,7 @@ import net.minecraft.util.StringUtils;
 import tk.wurst_client.events.ChatInputEvent;
 import tk.wurst_client.events.listeners.ChatInputListener;
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 
@@ -26,6 +27,7 @@ import tk.wurst_client.mods.Mod.Info;
 	name = "MassTPA",
 	tags = "mass tpa",
 	help = "Mods/MassTPA")
+@Bypasses
 public class MassTpaMod extends Mod implements UpdateListener,
 	ChatInputListener
 {

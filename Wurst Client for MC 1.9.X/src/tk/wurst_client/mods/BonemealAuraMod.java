@@ -21,14 +21,14 @@ import net.minecraft.network.play.client.CPacketPlayerTryUseItem;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-
-import org.darkstorm.minecraft.gui.component.BoundedRangeComponent.ValueDisplay;
-
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.settings.CheckboxSetting;
 import tk.wurst_client.navigator.settings.SliderSetting;
+import tk.wurst_client.navigator.settings.SliderSetting.ValueDisplay;
+import tk.wurst_client.special.YesCheatSpf.BypassLevel;
 import tk.wurst_client.utils.BlockUtils;
 
 @Info(category = Category.MISC,
@@ -37,6 +37,7 @@ import tk.wurst_client.utils.BlockUtils;
 	name = "BonemealAura",
 	tags = "bonemeal aura, bone meal aura, AutoBone, auto bone",
 	help = "Mods/BonemealAura")
+@Bypasses(ghostMode = false)
 public class BonemealAuraMod extends Mod implements UpdateListener
 {
 	public float normalRange = 5F;
@@ -88,7 +89,8 @@ public class BonemealAuraMod extends Mod implements UpdateListener
 			return;
 		
 		float range =
-			wurst.mods.yesCheatMod.isActive() ? yesCheatRange : normalRange;
+			wurst.special.yesCheatSpf.getBypassLevel().ordinal() >= BypassLevel.ANTICHEAT
+				.ordinal() ? yesCheatRange : normalRange;
 		BlockPos pos = mc.thePlayer.getPosition();
 		for(int y = (int)-range - 1; y < (int)range + 1; y++)
 			for(int x = (int)-range - 1; x < (int)range + 1; x++)
