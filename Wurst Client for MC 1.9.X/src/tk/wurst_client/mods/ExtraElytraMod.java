@@ -25,8 +25,10 @@ import tk.wurst_client.navigator.settings.CheckboxSetting;
 	help = "Mods/ExtraElytra")
 public class ExtraElytraMod extends Mod implements UpdateListener
 {
-	private CheckboxSetting stopInWater = new CheckboxSetting("Stop fly in water", true);
-	private CheckboxSetting instantFly = new CheckboxSetting("Instant fly", true);
+	private CheckboxSetting stopInWater = new CheckboxSetting(
+		"Stop fly in water", true);
+	private CheckboxSetting instantFly = new CheckboxSetting("Instant fly",
+		true);
 	private CheckboxSetting easyFly = new CheckboxSetting("Easy fly", true);
 	
 	@Override
@@ -48,55 +50,48 @@ public class ExtraElytraMod extends Mod implements UpdateListener
 	{
 		updateMS();
 		
-		ItemStack itemstack = mc.thePlayer.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-			
+		ItemStack itemstack =
+			mc.thePlayer.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
+		
 		if(itemstack == null || itemstack.getItem() != Items.elytra)
 			return;
-		
 		
 		if(mc.thePlayer.func_184613_cA())
 		{
 			if(stopInWater.isChecked() && mc.thePlayer.isInWater())
-			{
-				toggleElytra();				
-			}
+				toggleElytra();
 			
 			if(easyFly.isChecked())
-			{
 				if(mc.gameSettings.keyBindJump.pressed)
-				{
 					mc.thePlayer.motionY += 0.08;
-				}
 				else if(mc.gameSettings.keyBindSneak.pressed)
-				{
 					mc.thePlayer.motionY -= 0.04;
-				}
-				else if(mc.gameSettings.keyBindForward.pressed && mc.thePlayer.getPosition().getY() < 256)
+				else if(mc.gameSettings.keyBindForward.pressed
+					&& mc.thePlayer.getPosition().getY() < 256)
 				{
-					mc.thePlayer.motionX -= (double)(MathHelper.sin(mc.thePlayer.rotationYaw * 0.017453292F) * 0.05F);
-					mc.thePlayer.motionZ += (double)(MathHelper.cos(mc.thePlayer.rotationYaw * 0.017453292F) * 0.05F);
-				}
-				else if(mc.gameSettings.keyBindBack.pressed && mc.thePlayer.getPosition().getY() < 256)
+					mc.thePlayer.motionX -=
+						MathHelper.sin(mc.thePlayer.rotationYaw * 0.017453292F) * 0.05F;
+					mc.thePlayer.motionZ +=
+						MathHelper.cos(mc.thePlayer.rotationYaw * 0.017453292F) * 0.05F;
+				}else if(mc.gameSettings.keyBindBack.pressed
+					&& mc.thePlayer.getPosition().getY() < 256)
 				{
-					mc.thePlayer.motionX += (double)(MathHelper.sin(mc.thePlayer.rotationYaw * 0.017453292F) * 0.05F);
-					mc.thePlayer.motionZ -= (double)(MathHelper.cos(mc.thePlayer.rotationYaw * 0.017453292F) * 0.05F);
+					mc.thePlayer.motionX +=
+						MathHelper.sin(mc.thePlayer.rotationYaw * 0.017453292F) * 0.05F;
+					mc.thePlayer.motionZ -=
+						MathHelper.cos(mc.thePlayer.rotationYaw * 0.017453292F) * 0.05F;
 				}
-			}
-		}
-		else
+		}else if(instantFly.isChecked() && ItemElytra.isBroken(itemstack)
+			&& mc.gameSettings.keyBindJump.pressed)
 		{
-			if(instantFly.isChecked() && ItemElytra.isBroken(itemstack) && mc.gameSettings.keyBindJump.pressed)
-			{				
-				if(hasTimePassedM(1000))
-				{					
-					updateLastMS();					
-					mc.thePlayer.setJumping(false);
-					mc.thePlayer.setSprinting(true);
-					mc.thePlayer.jump();
-				}
-				toggleElytra();
+			if(hasTimePassedM(1000))
+			{
+				updateLastMS();
+				mc.thePlayer.setJumping(false);
+				mc.thePlayer.setSprinting(true);
+				mc.thePlayer.jump();
 			}
-			
+			toggleElytra();
 		}
 	}
 	
@@ -108,6 +103,7 @@ public class ExtraElytraMod extends Mod implements UpdateListener
 	
 	private void toggleElytra()
 	{
-		mc.thePlayer.sendQueue.addToSendQueue(new CPacketEntityAction(mc.thePlayer, CPacketEntityAction.Action.START_FALL_FLYING));
+		mc.thePlayer.sendQueue.addToSendQueue(new CPacketEntityAction(
+			mc.thePlayer, CPacketEntityAction.Action.START_FALL_FLYING));
 	}
 }
