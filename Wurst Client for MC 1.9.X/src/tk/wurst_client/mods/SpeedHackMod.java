@@ -8,6 +8,7 @@
 package tk.wurst_client.mods;
 
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 
 @Mod.Info(category = Mod.Category.MOVEMENT,
 	description = "Allows you to run roughly 2.5x faster than you would by\n"
@@ -18,6 +19,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 	name = "SpeedHack",
 	tags = "speed hack",
 	help = "Mods/SpeedHack")
+@Bypasses(ghostMode = false, latestNCP = false)
 public class SpeedHackMod extends Mod implements UpdateListener
 {
 	@Override

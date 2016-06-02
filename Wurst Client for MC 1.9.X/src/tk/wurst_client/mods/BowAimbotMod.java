@@ -34,6 +34,7 @@ import tk.wurst_client.utils.RenderUtils;
 	name = "BowAimbot",
 	tags = "bow aimbot",
 	help = "Mods/BowAimbot")
+@Mod.Bypasses
 public class BowAimbotMod extends Mod implements UpdateListener,
 	RenderListener, GUIRenderListener
 {
@@ -114,7 +115,7 @@ public class BowAimbotMod extends Mod implements UpdateListener,
 			&& mc.thePlayer.inventory.getCurrentItem().getItem() instanceof ItemBow
 			&& mc.gameSettings.keyBindUseItem.pressed)
 		{
-			target = EntityUtils.getClosestEntity(true, true, false);
+			target = EntityUtils.getClosestEntity(true, 360, false);
 			aimAtTarget();
 		}
 	}

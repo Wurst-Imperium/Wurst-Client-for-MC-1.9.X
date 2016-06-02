@@ -8,6 +8,7 @@
 package tk.wurst_client.mods;
 
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 
@@ -15,9 +16,13 @@ import tk.wurst_client.mods.Mod.Info;
 	description = "Allows you to jump in mid-air.\n"
 		+ "Looks as if you had a jetpack.",
 	name = "Jetpack",
-	noCheatCompatible = false,
 	tags = "jet pack",
 	help = "Mods/Jetpack")
+@Bypasses(ghostMode = false,
+	latestNCP = false,
+	olderNCP = false,
+	antiCheat = false,
+	mineplexAntiCheat = false)
 public class JetpackMod extends Mod implements UpdateListener
 {
 	@Override

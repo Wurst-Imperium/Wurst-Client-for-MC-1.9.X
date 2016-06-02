@@ -13,6 +13,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
 import tk.wurst_client.gui.mods.GuiCmdBlock;
+import tk.wurst_client.mods.Mod.Bypasses;
 
 @Mod.Info(category = Mod.Category.EXPLOITS,
 	description = "Allows you to make a Command Block without having OP.\n"
@@ -20,6 +21,7 @@ import tk.wurst_client.gui.mods.GuiCmdBlock;
 	name = "CMD-Block",
 	tags = "CmdBlock, CommandBlock, cmd block, command block",
 	help = "Mods/CMD-Block")
+@Bypasses
 public class CmdBlockMod extends Mod
 {
 	@Override

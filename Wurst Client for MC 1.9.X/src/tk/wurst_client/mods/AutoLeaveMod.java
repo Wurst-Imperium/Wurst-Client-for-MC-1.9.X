@@ -13,6 +13,7 @@ import net.minecraft.network.play.client.CPacketPlayer.C04PacketPlayerPosition;
 import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.util.EnumHand;
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.NavigatorItem;
@@ -24,6 +25,7 @@ import tk.wurst_client.navigator.settings.ModeSetting;
 	name = "AutoLeave",
 	tags = "AutoDisconnect, auto leave, auto disconnect",
 	help = "Mods/AutoLeave")
+@Bypasses
 public class AutoLeaveMod extends Mod implements UpdateListener
 {
 	private int mode = 0;

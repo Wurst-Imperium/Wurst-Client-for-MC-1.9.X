@@ -10,6 +10,7 @@ package tk.wurst_client.mods;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import tk.wurst_client.events.listeners.RenderListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.NavigatorItem;
@@ -20,6 +21,7 @@ import tk.wurst_client.utils.RenderUtils;
 	name = "MobESP",
 	tags = "mob esp",
 	help = "Mods/MobESP")
+@Bypasses
 public class MobEspMod extends Mod implements RenderListener
 {
 	@Override

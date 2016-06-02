@@ -9,74 +9,71 @@ package tk.wurst_client.navigator.settings;
 
 import java.util.ArrayList;
 
-import org.darkstorm.minecraft.gui.component.basic.BasicSlider;
-
 import tk.wurst_client.navigator.PossibleKeybind;
 import tk.wurst_client.navigator.gui.NavigatorFeatureScreen;
 
 import com.google.gson.JsonObject;
 
-public abstract class SliderSetting extends BasicSlider implements
-	NavigatorSetting
+public class SliderSetting implements NavigatorSetting
 {
-	public SliderSetting()
-	{
-		super();
-	}
+	private final String name;
+	private double value;
+	private String valueString;
+	private final double minimum;
+	private final double maximum;
+	private final double increment;
+	private int x;
+	private int y;
+	private float percentage;
+	private final ValueDisplay valueDisplay;
 	
-	public SliderSetting(String text, double value, double minimum,
+	private boolean locked;
+	private double lockMinimum;
+	private double lockMaximum;
+	
+	private boolean disabled;
+	
+	public SliderSetting(String name, double value, double minimum,
 		double maximum, double increment, ValueDisplay display)
 	{
-		super(text, value, minimum, maximum, increment, display);
-	}
-	
-	public SliderSetting(String text, double value, double minimum,
-		double maximum, int increment)
-	{
-		super(text, value, minimum, maximum, increment);
-	}
-	
-	public SliderSetting(String text, double value, double minimum,
-		double maximum)
-	{
-		super(text, value, minimum, maximum);
-	}
-	
-	public SliderSetting(String text, double value)
-	{
-		super(text, value);
-	}
-	
-	public SliderSetting(String text)
-	{
-		super(text);
-	}
-	
-	@Override
-	public String getName()
-	{
-		return getText();
-	}
-	
-	@Override
-	public void addToFeatureScreen(NavigatorFeatureScreen featureScreen)
-	{
-		// text
-		featureScreen.addText("\n" + getText() + ":\n");
+		this.name = name;
+		this.value = value;
 		
-		// slider
-		featureScreen.addSlider(featureScreen.new SliderData(this,
-			60 + featureScreen.getTextHeight()));
+		this.minimum = minimum;
+		this.maximum = maximum;
+		this.increment = increment;
+		this.valueDisplay = display;
+	}
+	
+	@Override
+	public final String getName()
+	{
+		return name;
+	}
+	
+	@Override
+	public final void addToFeatureScreen(NavigatorFeatureScreen featureScreen)
+	{
+		featureScreen.addText("\n" + name + ":\n");
+		y = 60 + featureScreen.getTextHeight();
+		
+		double newValue = getValue();
+		valueString = valueDisplay.getValueString(newValue);
+		percentage = (float)((newValue - minimum) / (maximum - minimum));
+		x = (int)(percentage * 298) + 1;
+		update();
+		
+		featureScreen.addSlider(this);
 	}
 	
 	@Override
 	public ArrayList<PossibleKeybind> getPossibleKeybinds(String featureName)
 	{
 		ArrayList<PossibleKeybind> possibleKeybinds = new ArrayList<>();
-		String fullName = featureName + " " + getText();
+		String fullName = featureName + " " + name;
 		String command =
 			".setslider " + featureName.toLowerCase() + " "
-				+ getText().toLowerCase().replace(" ", "_") + " ";
+				+ name.toLowerCase().replace(" ", "_") + " ";
 		
 		possibleKeybinds.add(new PossibleKeybind(command + "more", "Increase "
 			+ fullName));
@@ -86,41 +83,183 @@ public abstract class SliderSetting extends BasicSlider implements
 		return possibleKeybinds;
 	}
 	
-	@Override
-	public double getValue()
+	public final double getValue()
 	{
-		return super.getValue();
+		return locked ? Math.min(Math.max(lockMinimum, value), lockMaximum)
+			: value;
 	}
 	
-	@Override
-	public void setValue(double value)
+	public final float getValueF()
 	{
-		super.setValue(value);
+		return (float)getValue();
+	}
+	
+	public final void setValue(double value)
+	{
+		if(!disabled)
+			if(locked)
+				this.value =
+					Math.min(Math.max(lockMinimum, value), lockMaximum);
+			else
+				this.value = Math.min(Math.max(minimum, value), maximum);
+		
+		double newValue = getValue();
+		valueString = valueDisplay.getValueString(newValue);
+		percentage = (float)((newValue - minimum) / (maximum - minimum));
+		x = (int)(percentage * 298) + 1;
+		
 		update();
 	}
 	
-	@Override
-	public abstract void update();
-	
-	public void increaseValue()
+	public final void increaseValue()
 	{
-		setValue(getValue() + getIncrement());
+		setValue(getValue() + increment);
 	}
 	
-	public void decreaseValue()
+	public final void decreaseValue()
 	{
-		setValue(getValue() - getIncrement());
+		setValue(getValue() - increment);
+	}
+	
+	public final String getValueString()
+	{
+		return valueString;
+	}
+	
+	public final double getMinimum()
+	{
+		return minimum;
+	}
+	
+	public final double getMaximum()
+	{
+		return maximum;
+	}
+	
+	public final double getIncrement()
+	{
+		return increment;
+	}
+	
+	public final void lockToMinMax(double lockMinimum, double lockMaximum)
+	{
+		this.lockMinimum = Math.min(maximum, Math.max(lockMinimum, minimum));
+		this.lockMaximum = Math.min(maximum, Math.max(lockMaximum, minimum));
+		locked = true;
+		
+		double lockValue =
+			Math.min(Math.max(this.lockMinimum, value), this.lockMaximum);
+		valueString = valueDisplay.getValueString(lockValue);
+		percentage = (float)((lockValue - minimum) / (maximum - minimum));
+		x = (int)(percentage * 298) + 1;
+		
+		update();
+	}
+	
+	public final void lockToMin(double lockMinimum)
+	{
+		lockToMinMax(lockMinimum, maximum);
+	}
+	
+	public final void lockToMax(double lockMaximum)
+	{
+		lockToMinMax(minimum, lockMaximum);
+	}
+	
+	public final void lockToValue(double lockValue)
+	{
+		lockToMinMax(lockValue, lockValue);
+	}
+	
+	public final void unlock()
+	{
+		locked = false;
+		setValue(value);
+	}
+	
+	public boolean isLocked()
+	{
+		return locked;
+	}
+	
+	public int getLockMinX()
+	{
+		return (int)((lockMinimum - minimum) / (maximum - minimum) * 298);
+	}
+	
+	public int getLockMaxX()
+	{
+		return (int)((lockMaximum - minimum) / (maximum - minimum) * 298);
+	}
+	
+	public boolean isDisabled()
+	{
+		return disabled;
+	}
+	
+	public void setDisabled(boolean disabled)
+	{
+		this.disabled = disabled;
+	}
+	
+	public final int getX()
+	{
+		return x;
+	}
+	
+	public final int getY()
+	{
+		return y;
+	}
+	
+	public final float getPercentage()
+	{
+		return percentage;
 	}
 	
 	@Override
-	public void save(JsonObject json)
+	public final void save(JsonObject json)
 	{
-		json.addProperty(getText(), getValue());
+		json.addProperty(name, getValue());
 	}
 	
 	@Override
-	public void load(JsonObject json)
+	public final void load(JsonObject json)
 	{
-		setValue(json.get(getText()).getAsDouble());
+		value = json.get(name).getAsDouble();
+	}
+	
+	@Override
+	public void update()
+	{	
+		
+	}
+	
+	public static enum ValueDisplay
+	{
+		DECIMAL((v) -> Double.toString(v)),
+		INTEGER((v) -> Integer.toString((int)v)),
+		PERCENTAGE((v) -> v * 1e6 * 100D * 1e6 / 1e12 + "%"),
+		DEGREES((v) -> (int)v + "°"),
+		NONE((v) -> {
+			return "";
+		});
+		
+		private ValueProcessor processor;
+		
+		private ValueDisplay(ValueProcessor processor)
+		{
+			this.processor = processor;
+		}
+		
+		public String getValueString(double value)
+		{
+			return processor.getValueString(value);
+		}
+		
+		private interface ValueProcessor
+		{
+			public String getValueString(double value);
+		}
 	}
 }

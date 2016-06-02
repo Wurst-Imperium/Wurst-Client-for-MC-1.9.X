@@ -22,14 +22,15 @@ import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.init.SoundEvents;
 
-import org.darkstorm.minecraft.gui.component.basic.BasicSlider;
 import org.darkstorm.minecraft.gui.util.RenderUtil;
 
 import tk.wurst_client.WurstClient;
 import tk.wurst_client.font.Fonts;
 import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.navigator.PossibleKeybind;
+import tk.wurst_client.navigator.settings.CheckboxSetting;
 import tk.wurst_client.navigator.settings.NavigatorSetting;
+import tk.wurst_client.navigator.settings.SliderSetting;
 import tk.wurst_client.utils.MiscUtils;
 
 public class NavigatorFeatureScreen extends NavigatorScreen
@@ -41,8 +42,8 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 	private int sliding = -1;
 	private String text;
 	private ArrayList<ButtonData> buttonDatas = new ArrayList<>();
-	private ArrayList<SliderData> sliderDatas = new ArrayList<>();
-	private ArrayList<CheckboxData> checkboxDatas = new ArrayList<>();
+	private ArrayList<SliderSetting> sliders = new ArrayList<>();
+	private ArrayList<CheckboxSetting> checkboxes = new ArrayList<>();
 	
 	public NavigatorFeatureScreen(NavigatorItem item, NavigatorMainScreen parent)
 	{
@@ -87,8 +88,8 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 		if(hasPrimaryAction)
 		{
 			primaryButton =
-				new GuiButton(0, width / 2 - 151, height - 65, hasHelp
-					? 149 : 302, 18, primaryAction);
+				new GuiButton(0, width / 2 - 151, height - 65, hasHelp ? 149
+					: 302, 18, primaryAction);
 			buttonList.add(primaryButton);
 		}
 		
@@ -114,8 +115,8 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 		if(!settings.isEmpty())
 		{
 			text += "\n\nSettings:";
-			sliderDatas.clear();
-			checkboxDatas.clear();
+			sliders.clear();
+			checkboxes.clear();
 			for(NavigatorSetting setting : settings)
 				setting.addToFeatureScreen(this);
 		}
@@ -250,9 +251,9 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 		
 		// sliders
 		area.height = 12;
-		for(int i = 0; i < sliderDatas.size(); i++)
+		for(int i = 0; i < sliders.size(); i++)
 		{
-			area.y = sliderDatas.get(i).y + scroll;
+			area.y = sliders.get(i).getY() + scroll;
 			if(area.contains(x, y))
 			{
 				sliding = i;
@@ -261,14 +262,13 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 		}
 		
 		// checkboxes
-		for(int i = 0; i < checkboxDatas.size(); i++)
+		for(int i = 0; i < checkboxes.size(); i++)
 		{
-			CheckboxData checkboxData = checkboxDatas.get(i);
-			area.y = checkboxData.y + scroll;
+			CheckboxSetting checkbox = checkboxes.get(i);
+			area.y = checkbox.getY() + scroll;
 			if(area.contains(x, y))
 			{
-				checkboxData.checked = !checkboxData.checked;
-				checkboxData.toggle();
+				checkbox.toggle();
 				WurstClient wurst = WurstClient.INSTANCE;
 				wurst.navigator.addPreference(item.getName());
 				wurst.files.saveNavigatorData();
@@ -283,7 +283,20 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 		if(button != 0)
 			return;
 		if(sliding != -1)
-			sliderDatas.get(sliding).slideTo(x);
+		{
+			// percentage from mouse location (not the actual percentage!)
+			float mousePercentage = (x - (middleX - 150)) / 298F;
+			if(mousePercentage > 1F)
+				mousePercentage = 1F;
+			else if(mousePercentage < 0F)
+				mousePercentage = 0F;
+			
+			// update slider value
+			SliderSetting slider = sliders.get(sliding);
+			slider.setValue((long)((slider.getMaximum() - slider.getMinimum())
+				* mousePercentage / slider.getIncrement())
+				* 1e6 * slider.getIncrement() / 1e6 + slider.getMinimum());
+		}
 	}
 	
 	@Override
@@ -324,30 +337,48 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 		glEnable(GL_SCISSOR_TEST);
 		
 		// sliders
-		for(SliderData sliderData : sliderDatas)
+		for(SliderSetting slider : sliders)
 		{
 			// rail
 			int x1 = bgx1 + 2;
 			int x2 = bgx2 - 2;
-			int y1 = sliderData.y + scroll + 4;
+			int y1 = slider.getY() + scroll + 4;
 			int y2 = y1 + 4;
 			setColorToForeground();
 			drawEngravedBox(x1, y1, x2, y2);
 			
+			// lock
+			boolean renderAsDisabled =
+				slider.isDisabled()
+					|| (slider.isLocked() && slider.getLockMinX() == slider
+						.getLockMaxX());
+			if(!renderAsDisabled && slider.isLocked())
+			{
+				glColor4f(0.75F, 0.125F, 0.125F, 0.25F);
+				drawQuads(x1, y1, x1 + slider.getLockMinX(), y2);
+				drawQuads(x1 + slider.getLockMaxX(), y1, x2, y2);
+			}
+			
 			// knob
-			x1 = sliderData.x;
+			x1 = bgx1 + slider.getX();
 			x2 = x1 + 8;
 			y1 -= 2;
 			y2 += 2;
-			float percentage = sliderData.percentage;
-			glColor4f(percentage, 1F - percentage, 0F, 0.75F);
+			if(renderAsDisabled)
+				glColor4f(0.5F, 0.5F, 0.5F, 0.75F);
+			else
+			{
+				float percentage = slider.getPercentage();
+				glColor4f(percentage, 1F - percentage, 0F, 0.75F);
+			}
 			drawBox(x1, y1, x2, y2);
 			
 			// value
-			String value = sliderData.value;
+			String value = slider.getValueString();
 			x1 = bgx2 - Fonts.segoe15.getStringWidth(value) - 2;
 			y1 -= 12;
-			drawString(Fonts.segoe15, value, x1, y1, 0xffffff);
+			drawString(Fonts.segoe15, value, x1, y1, renderAsDisabled
+				? 0xaaaaaa : 0xffffff);
 			glDisable(GL_TEXTURE_2D);
 		}
 		
@@ -363,7 +394,10 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 			
 			// color
 			float alpha;
-			if(mouseX >= x1 && mouseX <= x2 && mouseY >= y1 && mouseY <= y2)
+			if(buttonData.isLocked())
+				alpha = 0.25F;
+			else if(mouseX >= x1 && mouseX <= x2 && mouseY >= y1
+				&& mouseY <= y2)
 			{
 				alpha = 0.75F;
 				activeButton = buttonData;
@@ -378,23 +412,23 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 			// text
 			drawCenteredString(Fonts.segoe18, buttonData.buttonText,
 				(x1 + x2) / 2 - 1, y1 + (buttonData.height - 12) / 2 - 1,
-				buttonData.textColor);
+				buttonData.isLocked() ? 0xaaaaaa : buttonData.textColor);
 			glDisable(GL_TEXTURE_2D);
 		}
 		
 		// checkboxes
-		for(CheckboxData checkboxData : checkboxDatas)
+		for(CheckboxSetting checkbox : checkboxes)
 		{
 			// positions
 			int x1 = bgx1 + 2;
 			int x2 = x1 + 10;
-			int y1 = checkboxData.y + scroll + 2;
+			int y1 = checkbox.getY() + scroll + 2;
 			int y2 = y1 + 10;
 			
 			// hovering
 			boolean hovering =
-				mouseX >= x1 && mouseX <= bgx2 - 2 && mouseY >= y1
-					&& mouseY <= y2;
+				!checkbox.isLocked() && mouseX >= x1 && mouseX <= bgx2 - 2
+					&& mouseY >= y1 && mouseY <= y2;
 			
 			// box
 			if(hovering)
@@ -404,7 +438,7 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 			drawBox(x1, y1, x2, y2);
 			
 			// check
-			if(checkboxData.checked)
+			if(checkbox.isChecked())
 			{
 				// check
 				glColor4f(0F, 1F, 0F, hovering ? 0.75F : 0.375F);
@@ -441,7 +475,8 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 			// name
 			x1 += 12;
 			y1 -= 1;
-			drawString(Fonts.segoe15, checkboxData.name, x1, y1, 0xffffff);
+			drawString(Fonts.segoe15, checkbox.getName(), x1, y1,
+				checkbox.isLocked() ? 0xaaaaaa : 0xffffff);
 			glDisable(GL_TEXTURE_2D);
 		}
 		
@@ -515,14 +550,14 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 		buttonDatas.add(button);
 	}
 	
-	public void addSlider(SliderData slider)
+	public void addSlider(SliderSetting slider)
 	{
-		sliderDatas.add(slider);
+		sliders.add(slider);
 	}
 	
-	public void addCheckbox(CheckboxData checkbox)
+	public void addCheckbox(CheckboxSetting checkbox)
 	{
-		checkboxDatas.add(checkbox);
+		checkboxes.add(checkbox);
 	}
 	
 	public abstract class ButtonData extends Rectangle
@@ -540,88 +575,10 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 		}
 		
 		public abstract void press();
-	}
-	
-	public class SliderData
-	{
-		public BasicSlider slider;
-		public int x;
-		public int y;
-		public float percentage;
-		public String value;
 		
-		public SliderData(BasicSlider slider, int y)
+		public boolean isLocked()
 		{
-			this.slider = slider;
-			this.y = y;
-			
-			update();
+			return false;
 		}
-		
-		private void update()
-		{
-			// display value
-			switch(slider.getValueDisplay())
-			{
-				case DECIMAL:
-					value = Double.toString(slider.getValue());
-					break;
-				case DEGREES:
-					value = (int)slider.getValue() + "°";
-					break;
-				case INTEGER:
-					value = Integer.toString((int)slider.getValue());
-					break;
-				case PERCENTAGE:
-					value = slider.getValue() * 1e6 * 100D * 1e6 / 1e12 + "%";
-					break;
-				case NONE:
-				default:
-					value = "";
-					break;
-			}
-			
-			// percentage
-			percentage =
-				(float)((slider.getValue() - slider.getMinimumValue()) / (slider
-					.getMaximumValue() - slider.getMinimumValue()));
-			
-			// x
-			x = middleX - 154 + (int)(percentage * 298) + 1;
-		}
-		
-		public void slideTo(int mouseX)
-		{
-			// percentage from mouse location (not the actual percentage!)
-			float mousePercentage = (mouseX - (middleX - 150)) / 298F;
-			if(mousePercentage > 1F)
-				mousePercentage = 1F;
-			else if(mousePercentage < 0F)
-				mousePercentage = 0F;
-			
-			// update slider value
-			slider.setValue((long)((slider.getMaximumValue() - slider
-				.getMinimumValue()) * mousePercentage / slider.getIncrement())
-				* 1e6 * slider.getIncrement() / 1e6 + slider.getMinimumValue());
-			
-			// update slider data
-			update();
-		}
-	}
-	
-	public abstract class CheckboxData
-	{
-		public String name;
-		public boolean checked;
-		public int y;
-		
-		public CheckboxData(String name, boolean checked, int y)
-		{
-			this.name = name;
-			this.checked = checked;
-			this.y = y;
-		}
-		
-		public abstract void toggle();
 	}
 }

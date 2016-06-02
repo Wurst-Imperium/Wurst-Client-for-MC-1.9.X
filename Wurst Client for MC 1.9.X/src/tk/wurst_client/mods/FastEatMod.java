@@ -10,6 +10,7 @@ package tk.wurst_client.mods;
 import net.minecraft.item.ItemFood;
 import net.minecraft.network.play.client.CPacketPlayer;
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 
@@ -19,6 +20,7 @@ import tk.wurst_client.mods.Mod.Info;
 	noCheatCompatible = false,
 	tags = "FastNom, fast eat, fast nom",
 	help = "Mods/FastEat")
+@Bypasses(ghostMode = false, latestNCP = false, olderNCP = false)
 public class FastEatMod extends Mod implements UpdateListener
 {
 	@Override
@@ -37,8 +39,7 @@ public class FastEatMod extends Mod implements UpdateListener
 			&& mc.thePlayer.getFoodStats().needFood()
 			&& mc.gameSettings.keyBindUseItem.pressed)
 			for(int i = 0; i < 100; i++)
-				mc.thePlayer.sendQueue
-					.addToSendQueue(new CPacketPlayer(false));
+				mc.thePlayer.sendQueue.addToSendQueue(new CPacketPlayer(false));
 	}
 	
 	@Override

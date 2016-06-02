@@ -146,7 +146,8 @@ public class GuiWurstMainMenu extends GuiMainMenu
 							news.get(i).getChildrenByName("title").get(0)
 								.getContent()
 								+ "§e+++§r";
-				}catch(ConcurrentModificationException e)
+				}catch(ConcurrentModificationException
+					| IndexOutOfBoundsException e)
 				{	
 					
 				}

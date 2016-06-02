@@ -8,12 +8,14 @@
 package tk.wurst_client.events;
 
 import java.util.EventListener;
+import java.util.concurrent.Callable;
 
 import javax.swing.event.EventListenerList;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.crash.CrashReport;
+import net.minecraft.crash.CrashReportCategory;
+import net.minecraft.util.ReportedException;
 import tk.wurst_client.events.listeners.*;
-import tk.wurst_client.gui.error.GuiError;
 
 public final class EventManager
 {
@@ -44,10 +46,22 @@ public final class EventManager
 			else
 				throw new IllegalArgumentException("Invalid event type: "
 					+ type.getName());
-		}catch(Exception e)
+		}catch(Throwable e)
 		{
-			handleException(e, this, "processing events", "Event type: "
-				+ event.getClass().getSimpleName());
+			CrashReport crashReport =
+				CrashReport.makeCrashReport(e, "Processing Wurst event");
+			CrashReportCategory crashreportcategory =
+				crashReport.makeCategory("Affected event");
+			crashreportcategory.addCrashSectionCallable("Event type",
+				new Callable<String>()
+				{
+					@Override
+					public String call() throws Exception
+					{
+						return type.getName();
+					}
+				});
+			throw new ReportedException(crashReport);
 		}
 	}
 	
@@ -121,25 +135,6 @@ public final class EventManager
 		for(int i = listeners.length - 2; i >= 0; i -= 2)
 			if(listeners[i] == UpdateListener.class)
 				((UpdateListener)listeners[i + 1]).onUpdate();
-	}
-	
-	public void handleException(final Exception e, final Object cause,
-		final String action, final String comment)
-	{
-		if(e.getMessage() != null
-			&& e.getMessage().equals(
-				"No OpenGL context found in the current thread."))
-			return;
-		add(UpdateListener.class, new UpdateListener()
-		{
-			@Override
-			public void onUpdate()
-			{
-				Minecraft.getMinecraft().displayGuiScreen(
-					new GuiError(e, cause, action, comment));
-				remove(UpdateListener.class, this);
-			}
-		});
 	}
 	
 	public <T extends EventListener> void add(Class<T> type, T listener)

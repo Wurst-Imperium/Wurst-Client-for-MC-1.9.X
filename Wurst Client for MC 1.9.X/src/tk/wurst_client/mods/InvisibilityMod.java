@@ -8,6 +8,7 @@
 package tk.wurst_client.mods;
 
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 
@@ -17,9 +18,13 @@ import tk.wurst_client.mods.Mod.Info;
 		+ "this mod is enabled, that player will be unable to see\n"
 		+ "you. Only works on vanilla servers!",
 	name = "Invisibility",
-	noCheatCompatible = false,
 	tags = "Invisible, GodMode, god mode",
 	help = "Mods/Invisibility")
+@Bypasses(ghostMode = false,
+	latestNCP = false,
+	olderNCP = false,
+	antiCheat = false,
+	mineplexAntiCheat = false)
 public class InvisibilityMod extends Mod implements UpdateListener
 {
 	@Override

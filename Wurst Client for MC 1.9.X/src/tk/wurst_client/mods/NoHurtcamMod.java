@@ -7,6 +7,7 @@
  */
 package tk.wurst_client.mods;
 
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 
@@ -15,6 +16,7 @@ import tk.wurst_client.mods.Mod.Info;
 	name = "NoHurtcam",
 	tags = "no hurtcam, no hurt cam",
 	help = "Mods/NoHurtcam")
+@Bypasses
 public class NoHurtcamMod extends Mod
 {	
 	

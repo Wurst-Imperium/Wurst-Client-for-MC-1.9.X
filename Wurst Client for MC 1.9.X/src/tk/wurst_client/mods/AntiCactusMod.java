@@ -12,6 +12,7 @@ package tk.wurst_client.mods;
 	name = "AntiCactus",
 	tags = "anti cactus",
 	help = "Mods/AntiCactus")
+@Mod.Bypasses(ghostMode = false, latestNCP = false)
 public class AntiCactusMod extends Mod
 {	
 	

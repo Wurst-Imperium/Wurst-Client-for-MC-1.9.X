@@ -14,6 +14,7 @@ import net.minecraft.inventory.ClickType;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 
@@ -22,6 +23,7 @@ import tk.wurst_client.mods.Mod.Info;
 	name = "AutoArmor",
 	tags = "auto armor",
 	help = "Mods/AutoArmor")
+@Bypasses(ghostMode = false, latestNCP = false)
 public class AutoArmorMod extends Mod implements UpdateListener
 {
 	private int[] bestArmor;

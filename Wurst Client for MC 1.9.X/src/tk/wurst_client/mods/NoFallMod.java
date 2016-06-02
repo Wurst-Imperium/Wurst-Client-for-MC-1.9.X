@@ -9,6 +9,7 @@ package tk.wurst_client.mods;
 
 import net.minecraft.network.play.client.CPacketPlayer;
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 
@@ -17,6 +18,7 @@ import tk.wurst_client.mods.Mod.Info;
 	name = "NoFall",
 	tags = "no fall",
 	help = "Mods/NoFall")
+@Bypasses(ghostMode = false, latestNCP = false, olderNCP = false)
 public class NoFallMod extends Mod implements UpdateListener
 {
 	@Override

@@ -12,6 +12,7 @@ import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.network.play.client.CPacketPlayer.C04PacketPlayerPosition;
 import tk.wurst_client.events.listeners.LeftClickListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.NavigatorItem;
@@ -22,6 +23,7 @@ import tk.wurst_client.navigator.settings.ModeSetting;
 	name = "Criticals",
 	tags = "Crits",
 	help = "Mods/Criticals")
+@Bypasses(ghostMode = false)
 public class CriticalsMod extends Mod implements LeftClickListener
 {
 	private int mode = 1;

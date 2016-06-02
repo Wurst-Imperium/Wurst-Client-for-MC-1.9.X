@@ -16,6 +16,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.NavigatorItem;
@@ -24,9 +25,9 @@ import tk.wurst_client.navigator.NavigatorItem;
 	description = "Turns your bow into a machine gun.\n"
 		+ "Tip: This works with BowAimbot.",
 	name = "FastBow",
-	noCheatCompatible = false,
 	tags = "RapidFire, BowSpam, fast bow, rapid fire, bow spam",
 	help = "Mods/FastBow")
+@Bypasses(ghostMode = false, latestNCP = false, olderNCP = false)
 public class FastBowMod extends Mod implements UpdateListener
 {
 	@Override

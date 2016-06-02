@@ -10,6 +10,7 @@ package tk.wurst_client.mods;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumHand;
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.utils.EntityUtils;
@@ -18,6 +19,7 @@ import tk.wurst_client.utils.EntityUtils;
 	description = "A bot that follows the closest entity and protects it.",
 	name = "Protect",
 	help = "Mods/Protect")
+@Bypasses(ghostMode = false)
 public class ProtectMod extends Mod implements UpdateListener
 {
 	private EntityLivingBase friend;
@@ -25,7 +27,6 @@ public class ProtectMod extends Mod implements UpdateListener
 	private float range = 6F;
 	private double distanceF = 2D;
 	private double distanceE = 3D;
-	private float speed;
 	
 	@Override
 	public String getRenderName()
@@ -40,7 +41,7 @@ public class ProtectMod extends Mod implements UpdateListener
 	public void onEnable()
 	{
 		friend = null;
-		EntityLivingBase en = EntityUtils.getClosestEntity(false, true, false);
+		EntityLivingBase en = EntityUtils.getClosestEntity(false, 360, false);
 		if(en != null && mc.thePlayer.getDistanceToEntity(en) <= range)
 			friend = en;
 		wurst.events.add(UpdateListener.class, this);
@@ -79,12 +80,9 @@ public class ProtectMod extends Mod implements UpdateListener
 			mc.thePlayer.jump();
 		if(mc.thePlayer.isInWater() && mc.thePlayer.posY < friend.posY)
 			mc.thePlayer.motionY += 0.04;
-		if(wurst.mods.yesCheatMod.isActive())
-			speed = wurst.mods.killauraMod.yesCheatSpeed;
-		else
-			speed = wurst.mods.killauraMod.normalSpeed;
 		updateMS();
-		if(hasTimePassedS(speed) && EntityUtils.getClosestEnemy(friend) != null)
+		if(hasTimePassedS(wurst.mods.killauraMod.speed.getValueF())
+			&& EntityUtils.getClosestEnemy(friend) != null)
 		{
 			enemy = EntityUtils.getClosestEnemy(friend);
 			if(mc.thePlayer.getDistanceToEntity(enemy) <= range)

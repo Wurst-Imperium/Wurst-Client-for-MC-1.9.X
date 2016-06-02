@@ -10,6 +10,7 @@ package tk.wurst_client.mods;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.network.play.client.CPacketPlayer;
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.utils.EntityUtils;
 
 @Mod.Info(category = Mod.Category.FUN,
@@ -18,6 +19,7 @@ import tk.wurst_client.utils.EntityUtils;
 	name = "ForcePush",
 	tags = "force push",
 	help = "Mods/ForcePush")
+@Bypasses
 public class ForcePushMod extends Mod implements UpdateListener
 {
 	@Override
@@ -29,7 +31,7 @@ public class ForcePushMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		EntityLivingBase en = EntityUtils.getClosestEntity(true, true, false);
+		EntityLivingBase en = EntityUtils.getClosestEntity(true, 360, false);
 		if(mc.thePlayer.onGround && en != null
 			&& en.getDistanceToEntity(mc.thePlayer) < 1)
 			for(int i = 0; i < 1000; i++)
