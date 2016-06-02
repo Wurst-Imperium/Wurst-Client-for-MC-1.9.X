@@ -5,11 +5,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
- /*
- * Use case: 
- * Regular chat is disabled/you are muted
- * You want to make it [message] seem less like a broadcast
- */
 package tk.wurst_client.mods;
 
 import java.util.ArrayList;
@@ -76,28 +71,5 @@ public class MassTell extends Mod implements UpdateListener,
 	{
 		wurst.events.remove(ChatInputListener.class, this);
 		wurst.events.remove(UpdateListener.class, this);
-	}
-	
-	@Override
-	public void onReceivedMessage(ChatInputEvent event)
-	{
-		String message = event.getComponent().getUnformattedText();
-		if(message.startsWith("§c[§6Wurst§c]§f "))
-			return;
-		if(message.toLowerCase().contains("/help")
-			|| message.toLowerCase().contains("permission"))
-		{
-			event.cancel();
-			wurst.chat.message("§4§lERROR:§f This server doesn't have TPA.");
-			setEnabled(false);
-		}else if(message.toLowerCase().contains("accepted")
-			&& message.toLowerCase().contains("request")
-			|| message.toLowerCase().contains("akzeptiert")
-			&& message.toLowerCase().contains("anfrage"))
-		{
-			event.cancel();
-			wurst.chat.message("Someone accepted your TPA request. Stopping.");
-			setEnabled(false);
-		}
 	}
 }
