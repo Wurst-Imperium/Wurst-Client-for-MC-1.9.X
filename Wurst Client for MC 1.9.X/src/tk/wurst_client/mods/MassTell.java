@@ -35,7 +35,7 @@ import tk.wurst_client.mods.Mod.Info;
 	tags = "mass tell",
 	help = "Mods/MassTell")
 @Bypasses
-public class MassTellMod extends Mod implements UpdateListener,
+public class MassTell extends Mod implements UpdateListener,
 	ChatInputListener
 {
 	private float speed = 1F;
