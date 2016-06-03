@@ -14,29 +14,32 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketEntityAction;
 import net.minecraft.util.math.MathHelper;
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.settings.CheckboxSetting;
+import tk.wurst_client.special.YesCheatSpf.BypassLevel;
 
 @Info(category = Category.MOVEMENT,
-	description = "Eases use of elytra.",
+	description = "Eases the use of the Elytra.",
 	name = "ExtraElytra",
-	tags = "extra elytra",
+	tags = "EasyElytra, extra elytra, easy elytra",
 	help = "Mods/ExtraElytra")
+@Bypasses
 public class ExtraElytraMod extends Mod implements UpdateListener
 {
-	private CheckboxSetting stopInWater = new CheckboxSetting(
-		"Stop fly in water", true);
 	private CheckboxSetting instantFly = new CheckboxSetting("Instant fly",
 		true);
-	private CheckboxSetting easyFly = new CheckboxSetting("Easy fly", true);
+	private CheckboxSetting easyFly = new CheckboxSetting("Easy fly", false);
+	private CheckboxSetting stopInWater = new CheckboxSetting(
+		"Stop flying in water", true);
 	
 	@Override
 	public void initSettings()
 	{
+		settings.add(instantFly);
 		settings.add(easyFly);
 		settings.add(stopInWater);
-		settings.add(instantFly);
 	}
 	
 	@Override
@@ -50,38 +53,43 @@ public class ExtraElytraMod extends Mod implements UpdateListener
 	{
 		updateMS();
 		
-		ItemStack itemstack =
+		ItemStack chest =
 			mc.thePlayer.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-		
-		if(itemstack == null || itemstack.getItem() != Items.elytra)
+		if(chest == null || chest.getItem() != Items.elytra)
 			return;
 		
-		if(mc.thePlayer.func_184613_cA())
+		if(mc.thePlayer.isFlyingWithElytra())
 		{
 			if(stopInWater.isChecked() && mc.thePlayer.isInWater())
-				toggleElytra();
+			{
+				mc.thePlayer.sendQueue
+					.addToSendQueue(new CPacketEntityAction(mc.thePlayer,
+						CPacketEntityAction.Action.START_FALL_FLYING));
+				return;
+			}
 			
 			if(easyFly.isChecked())
+			{
 				if(mc.gameSettings.keyBindJump.pressed)
 					mc.thePlayer.motionY += 0.08;
 				else if(mc.gameSettings.keyBindSneak.pressed)
 					mc.thePlayer.motionY -= 0.04;
-				else if(mc.gameSettings.keyBindForward.pressed
+				
+				if(mc.gameSettings.keyBindForward.pressed
 					&& mc.thePlayer.getPosition().getY() < 256)
 				{
-					mc.thePlayer.motionX -=
-						MathHelper.sin(mc.thePlayer.rotationYaw * 0.017453292F) * 0.05F;
-					mc.thePlayer.motionZ +=
-						MathHelper.cos(mc.thePlayer.rotationYaw * 0.017453292F) * 0.05F;
+					float yaw = (float)Math.toRadians(mc.thePlayer.rotationYaw);
+					mc.thePlayer.motionX -= MathHelper.sin(yaw) * 0.05F;
+					mc.thePlayer.motionZ += MathHelper.cos(yaw) * 0.05F;
 				}else if(mc.gameSettings.keyBindBack.pressed
 					&& mc.thePlayer.getPosition().getY() < 256)
 				{
-					mc.thePlayer.motionX +=
-						MathHelper.sin(mc.thePlayer.rotationYaw * 0.017453292F) * 0.05F;
-					mc.thePlayer.motionZ -=
-						MathHelper.cos(mc.thePlayer.rotationYaw * 0.017453292F) * 0.05F;
+					float yaw = (float)Math.toRadians(mc.thePlayer.rotationYaw);
+					mc.thePlayer.motionX += MathHelper.sin(yaw) * 0.05F;
+					mc.thePlayer.motionZ -= MathHelper.cos(yaw) * 0.05F;
 				}
-		}else if(instantFly.isChecked() && ItemElytra.isBroken(itemstack)
+			}
+		}else if(instantFly.isChecked() && ItemElytra.isBroken(chest)
 			&& mc.gameSettings.keyBindJump.pressed)
 		{
 			if(hasTimePassedM(1000))
@@ -91,7 +99,8 @@ public class ExtraElytraMod extends Mod implements UpdateListener
 				mc.thePlayer.setSprinting(true);
 				mc.thePlayer.jump();
 			}
-			toggleElytra();
+			mc.thePlayer.sendQueue.addToSendQueue(new CPacketEntityAction(
+				mc.thePlayer, CPacketEntityAction.Action.START_FALL_FLYING));
 		}
 	}
 	
@@ -101,9 +110,22 @@ public class ExtraElytraMod extends Mod implements UpdateListener
 		wurst.events.remove(UpdateListener.class, this);
 	}
 	
-	private void toggleElytra()
+	@Override
+	public void onYesCheatUpdate(BypassLevel bypassLevel)
 	{
-		mc.thePlayer.sendQueue.addToSendQueue(new CPacketEntityAction(
-			mc.thePlayer, CPacketEntityAction.Action.START_FALL_FLYING));
+		switch(bypassLevel)
+		{
+			default:
+			case OFF:
+			case MINEPLEX_ANTICHEAT:
+			case ANTICHEAT:
+			case OLDER_NCP:
+			case LATEST_NCP:
+				easyFly.unlock();
+				break;
+			case GHOST_MODE:
+				easyFly.lock(false);
+				break;
+		}
 	}
 }
