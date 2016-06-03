@@ -14,8 +14,6 @@ import java.util.Random;
 
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.util.StringUtils;
-import tk.wurst_client.events.ChatInputEvent;
-import tk.wurst_client.events.listeners.ChatInputListener;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
@@ -28,8 +26,7 @@ import tk.wurst_client.mods.Mod.Info;
 	tags = "mass tell",
 	help = "Mods/MassTell")
 @Bypasses
-public class MassTell extends Mod implements UpdateListener,
-	ChatInputListener
+public class MassTell extends Mod implements UpdateListener
 {
 	private float speed = 1F;
 	private int i;
