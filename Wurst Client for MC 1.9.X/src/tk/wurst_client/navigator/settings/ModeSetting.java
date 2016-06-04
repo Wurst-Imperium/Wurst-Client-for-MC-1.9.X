@@ -106,7 +106,7 @@ public class ModeSetting implements NavigatorSetting
 		
 		for(String mode : modes)
 			possibleKeybinds.add(new PossibleKeybind(command
-				+ mode.toLowerCase(), description + mode));
+				+ mode.toLowerCase().replace(" ", "_"), description + mode));
 		
 		return possibleKeybinds;
 	}

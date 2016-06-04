@@ -63,7 +63,7 @@ public class SetModeCmd extends Cmd
 		ModeSetting modeSetting = (ModeSetting)setting;
 		
 		// set mode
-		String modeName = args[2];
+		String modeName = args[2].replace("_", " ");
 		if(modeName.equalsIgnoreCase("next"))
 			modeSetting.nextMode();
 		else if(modeName.equalsIgnoreCase("prev"))
