@@ -1,6 +1,6 @@
-From b3cd85299e2968d7ec2a4db5e9b75ddb1d9390a5 Mon Sep 17 00:00:00 2001
+From 72f6bd31af56bbb9b0ed4e74c1e906ee5f1fd4b5 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Fri, 3 Jun 2016 07:52:50 +0200
+Date: Sat, 4 Jun 2016 12:07:48 +0200
 Subject: [PATCH] Wurst
 
 ---
@@ -48,7 +48,7 @@ Subject: [PATCH] Wurst
  .../minecraft/client/renderer/RenderGlobal.java    |   2 +-
  src/net/minecraft/client/renderer/RenderItem.java  |   2 +-
  .../minecraft/client/renderer/chunk/VisGraph.java  |   4 +-
- .../minecraft/client/renderer/entity/Render.java   |  46 ++++-
+ .../minecraft/client/renderer/entity/Render.java   |  47 ++++-
  .../client/renderer/entity/RenderManager.java      |   6 +-
  .../client/renderer/entity/RenderPlayer.java       |   2 +-
  .../minecraft/client/resources/SkinManager.java    |   6 +
@@ -84,7 +84,7 @@ Subject: [PATCH] Wurst
  .../management/PlayerInteractionManager.java       |   6 +-
  src/net/minecraft/tileentity/TileEntitySign.java   |   2 +-
  src/net/minecraft/util/Timer.java                  |   6 +
- 80 files changed, 1273 insertions(+), 397 deletions(-)
+ 80 files changed, 1274 insertions(+), 397 deletions(-)
 
 diff --git a/src/net/minecraft/block/Block.java b/src/net/minecraft/block/Block.java
 index b386ea0..0909994 100644
@@ -3079,7 +3079,7 @@ index 1fe434a..d585cf4 100644
      }
  
 diff --git a/src/net/minecraft/client/renderer/entity/Render.java b/src/net/minecraft/client/renderer/entity/Render.java
-index 884e95f..c9d09fd 100644
+index 884e95f..606df77 100644
 --- a/src/net/minecraft/client/renderer/entity/Render.java
 +++ b/src/net/minecraft/client/renderer/entity/Render.java
 @@ -1,5 +1,6 @@
@@ -3134,13 +3134,14 @@ index 884e95f..c9d09fd 100644
              GlStateManager.disableLighting();
              GlStateManager.depthMask(false);
  
-@@ -383,6 +405,26 @@ public abstract class Render<T extends Entity>
+@@ -383,6 +405,27 @@ public abstract class Render<T extends Entity>
              GlStateManager.enableBlend();
              GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
              int i = str.equals("deadmau5") ? -10 : 0;
 +            
 +			// TODO: Client
-+			if(WurstClient.INSTANCE.friends.contains(entityIn.getName()))
++			if(entityIn != null
++				&& WurstClient.INSTANCE.friends.contains(entityIn.getName()))
 +				str = "§2" + (str.startsWith("§") ? str.substring(2) : str);
 +			if(entityIn instanceof EntityLivingBase
 +				&& WurstClient.INSTANCE.mods.healthTagsMod.isActive())
