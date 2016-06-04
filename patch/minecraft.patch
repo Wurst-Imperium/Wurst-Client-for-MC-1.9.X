@@ -1,6 +1,6 @@
-From 5aa5d937f8cf92fea49f96f5355d505556d43957 Mon Sep 17 00:00:00 2001
+From b3cd85299e2968d7ec2a4db5e9b75ddb1d9390a5 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Wed, 1 Jun 2016 07:38:06 +0200
+Date: Fri, 3 Jun 2016 07:52:50 +0200
 Subject: [PATCH] Wurst
 
 ---
@@ -14,7 +14,7 @@ Subject: [PATCH] Wurst
  src/net/minecraft/client/Minecraft.java            | 198 ++++++++++-----------
  .../client/audio/PositionedSoundRecord.java        |   2 +-
  .../client/entity/AbstractClientPlayer.java        |   4 +-
- .../minecraft/client/entity/EntityPlayerSP.java    | 173 ++++++++++++++----
+ .../minecraft/client/entity/EntityPlayerSP.java    | 175 ++++++++++++++----
  src/net/minecraft/client/gui/GuiButton.java        |  16 +-
  src/net/minecraft/client/gui/GuiDisconnected.java  |  87 +++++++++
  src/net/minecraft/client/gui/GuiGameOver.java      |  13 +-
@@ -35,6 +35,7 @@ Subject: [PATCH] Wurst
  .../client/gui/inventory/GuiContainer.java         |  40 ++---
  .../client/gui/inventory/GuiContainerCreative.java |   2 +-
  .../client/gui/inventory/GuiEditSign.java          |  18 ++
+ src/net/minecraft/client/model/ModelElytra.java    |   2 +-
  .../client/multiplayer/GuiConnecting.java          |   9 +-
  .../client/multiplayer/PlayerControllerMP.java     |  65 ++++---
  .../minecraft/client/multiplayer/ServerList.java   |   6 +
@@ -49,6 +50,7 @@ Subject: [PATCH] Wurst
  .../minecraft/client/renderer/chunk/VisGraph.java  |   4 +-
  .../minecraft/client/renderer/entity/Render.java   |  46 ++++-
  .../client/renderer/entity/RenderManager.java      |   6 +-
+ .../client/renderer/entity/RenderPlayer.java       |   2 +-
  .../minecraft/client/resources/SkinManager.java    |   6 +
  .../minecraft/client/settings/GameSettings.java    |  14 +-
  src/net/minecraft/client/settings/KeyBinding.java  |   2 +-
@@ -56,12 +58,13 @@ Subject: [PATCH] Wurst
  src/net/minecraft/crash/CrashReport.java           |  56 +++++-
  src/net/minecraft/entity/Entity.java               |  48 ++++-
  .../minecraft/entity/EntityAreaEffectCloud.java    |   6 +-
- src/net/minecraft/entity/EntityLivingBase.java     |  90 ++++++----
+ src/net/minecraft/entity/EntityLivingBase.java     |  96 +++++-----
+ src/net/minecraft/entity/EntityTrackerEntry.java   |   4 +-
  .../entity/ai/EntityAIAttackRangedBow.java         |   4 +-
  src/net/minecraft/entity/monster/EntityMob.java    |   4 +-
  src/net/minecraft/entity/monster/EntitySpider.java |   2 +-
  src/net/minecraft/entity/monster/EntityZombie.java |   2 +-
- src/net/minecraft/entity/player/EntityPlayer.java  |  37 ++--
+ src/net/minecraft/entity/player/EntityPlayer.java  |  43 +++--
  .../minecraft/entity/player/EntityPlayerMP.java    |   6 +-
  .../minecraft/entity/projectile/EntityPotion.java  |   4 +-
  .../entity/projectile/EntityTippedArrow.java       |   2 +-
@@ -70,6 +73,7 @@ Subject: [PATCH] Wurst
  src/net/minecraft/item/ItemChorusFruit.java        |   2 +-
  src/net/minecraft/item/ItemEnderPearl.java         |   2 +-
  src/net/minecraft/item/ItemShield.java             |   2 +-
+ .../minecraft/network/NetHandlerPlayServer.java    |   8 +-
  src/net/minecraft/network/NetworkManager.java      |  26 +++
  .../network/play/server/SPacketEntityEffect.java   |   2 +-
  .../network/play/server/SPacketJoinGame.java       |   5 +
@@ -80,7 +84,7 @@ Subject: [PATCH] Wurst
  .../management/PlayerInteractionManager.java       |   6 +-
  src/net/minecraft/tileentity/TileEntitySign.java   |   2 +-
  src/net/minecraft/util/Timer.java                  |   6 +
- 76 files changed, 1258 insertions(+), 382 deletions(-)
+ 80 files changed, 1273 insertions(+), 397 deletions(-)
 
 diff --git a/src/net/minecraft/block/Block.java b/src/net/minecraft/block/Block.java
 index b386ea0..0909994 100644
@@ -740,7 +744,7 @@ index c30247b..f8b138e 100644
  
              if (f1 > 1.0F)
 diff --git a/src/net/minecraft/client/entity/EntityPlayerSP.java b/src/net/minecraft/client/entity/EntityPlayerSP.java
-index 61b85c2..8c712bd 100644
+index 61b85c2..4cfd951 100644
 --- a/src/net/minecraft/client/entity/EntityPlayerSP.java
 +++ b/src/net/minecraft/client/entity/EntityPlayerSP.java
 @@ -1,5 +1,6 @@
@@ -1030,6 +1034,15 @@ index 61b85c2..8c712bd 100644
          {
              this.setSprinting(true);
          }
+@@ -953,7 +1056,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+             }
+         }
+ 
+-        if (this.movementInput.jump && !flag && !this.onGround && this.motionY < 0.0D && !this.func_184613_cA() && !this.capabilities.isFlying)
++        if (this.movementInput.jump && !flag && !this.onGround && this.motionY < 0.0D && !this.isFlyingWithElytra() && !this.capabilities.isFlying)
+         {
+             ItemStack itemstack = this.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
+ 
 @@ -1052,7 +1155,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
          return this.field_184844_co;
      }
@@ -2467,6 +2480,19 @@ index b14a4e1..958795c 100644
                  this.tileSign.markDirty();
                  this.mc.displayGuiScreen((GuiScreen)null);
              }
+diff --git a/src/net/minecraft/client/model/ModelElytra.java b/src/net/minecraft/client/model/ModelElytra.java
+index 3aed01f..f8cc7e8 100644
+--- a/src/net/minecraft/client/model/ModelElytra.java
++++ b/src/net/minecraft/client/model/ModelElytra.java
+@@ -43,7 +43,7 @@ public class ModelElytra extends ModelBase
+         float f2 = 0.0F;
+         float f3 = 0.0F;
+ 
+-        if (entityIn instanceof EntityLivingBase && ((EntityLivingBase)entityIn).func_184613_cA())
++        if (entityIn instanceof EntityLivingBase && ((EntityLivingBase)entityIn).isFlyingWithElytra())
+         {
+             float f4 = 1.0F;
+ 
 diff --git a/src/net/minecraft/client/multiplayer/GuiConnecting.java b/src/net/minecraft/client/multiplayer/GuiConnecting.java
 index 74c8ca7..45d8a9e 100644
 --- a/src/net/minecraft/client/multiplayer/GuiConnecting.java
@@ -3152,6 +3178,19 @@ index 6701a94..49e0a97 100644
      public TextureManager renderEngine;
  
      /** Reference to the World object. */
+diff --git a/src/net/minecraft/client/renderer/entity/RenderPlayer.java b/src/net/minecraft/client/renderer/entity/RenderPlayer.java
+index 36fa6fd..07bb576 100644
+--- a/src/net/minecraft/client/renderer/entity/RenderPlayer.java
++++ b/src/net/minecraft/client/renderer/entity/RenderPlayer.java
+@@ -244,7 +244,7 @@ public class RenderPlayer extends RenderLivingBase<AbstractClientPlayer>
+             GlStateManager.rotate(this.getDeathMaxRotation(bat), 0.0F, 0.0F, 1.0F);
+             GlStateManager.rotate(270.0F, 0.0F, 1.0F, 0.0F);
+         }
+-        else if (bat.func_184613_cA())
++        else if (bat.isFlyingWithElytra())
+         {
+             super.rotateCorpse(bat, p_77043_2_, p_77043_3_, partialTicks);
+             float f = (float)bat.func_184599_cB() + partialTicks;
 diff --git a/src/net/minecraft/client/resources/SkinManager.java b/src/net/minecraft/client/resources/SkinManager.java
 index 65b26b7..19fe9dd 100644
 --- a/src/net/minecraft/client/resources/SkinManager.java
@@ -3514,7 +3553,7 @@ index 0e4a8e5..1497e07 100644
                                          else
                                          {
 diff --git a/src/net/minecraft/entity/EntityLivingBase.java b/src/net/minecraft/entity/EntityLivingBase.java
-index d1580a1..3feb6bc 100644
+index d1580a1..714a76c 100644
 --- a/src/net/minecraft/entity/EntityLivingBase.java
 +++ b/src/net/minecraft/entity/EntityLivingBase.java
 @@ -2,12 +2,16 @@ package net.minecraft.entity;
@@ -3634,7 +3673,7 @@ index d1580a1..3feb6bc 100644
  
          if (this.isPotionActive(MobEffects.jump))
          {
-@@ -1798,8 +1807,13 @@ public abstract class EntityLivingBase extends Entity
+@@ -1798,11 +1807,16 @@ public abstract class EntityLivingBase extends Entity
      {
          if (this.isServerWorld() || this.func_184186_bw())
          {
@@ -3648,7 +3687,20 @@ index d1580a1..3feb6bc 100644
 +            	
                  if (!this.isInLava() || this instanceof EntityPlayer && ((EntityPlayer)this).capabilities.isFlying)
                  {
-                     if (this.func_184613_cA())
+-                    if (this.func_184613_cA())
++                    if (this.isFlyingWithElytra())
+                     {
+                         if (this.motionY > -0.5D)
+                         {
+@@ -2212,7 +2226,7 @@ public abstract class EntityLivingBase extends Entity
+         this.worldObj.theProfiler.endSection();
+         this.movedDistance += f3;
+ 
+-        if (this.func_184613_cA())
++        if (this.isFlyingWithElytra())
+         {
+             ++this.field_184629_bo;
+         }
 @@ -2608,7 +2622,7 @@ public abstract class EntityLivingBase extends Entity
  
      public abstract EnumHandSide getPrimaryHand();
@@ -3788,6 +3840,37 @@ index d1580a1..3feb6bc 100644
          }
          else
          {
+@@ -2795,7 +2809,7 @@ public abstract class EntityLivingBase extends Entity
+         }
+     }
+ 
+-    public boolean func_184613_cA()
++    public boolean isFlyingWithElytra()
+     {
+         return this.getFlag(7);
+     }
+diff --git a/src/net/minecraft/entity/EntityTrackerEntry.java b/src/net/minecraft/entity/EntityTrackerEntry.java
+index 358aef8..4d25d3f 100644
+--- a/src/net/minecraft/entity/EntityTrackerEntry.java
++++ b/src/net/minecraft/entity/EntityTrackerEntry.java
+@@ -234,7 +234,7 @@ public class EntityTrackerEntry
+ 
+                 boolean flag2 = this.sendVelocityUpdates;
+ 
+-                if (this.trackedEntity instanceof EntityLivingBase && ((EntityLivingBase)this.trackedEntity).func_184613_cA())
++                if (this.trackedEntity instanceof EntityLivingBase && ((EntityLivingBase)this.trackedEntity).isFlyingWithElytra())
+                 {
+                     flag2 = true;
+                 }
+@@ -414,7 +414,7 @@ public class EntityTrackerEntry
+                             playerMP.playerNetServerHandler.sendPacket(new SPacketEntityProperties(this.trackedEntity.getEntityId(), collection));
+                         }
+ 
+-                        if (((EntityLivingBase)this.trackedEntity).func_184613_cA())
++                        if (((EntityLivingBase)this.trackedEntity).isFlyingWithElytra())
+                         {
+                             flag = true;
+                         }
 diff --git a/src/net/minecraft/entity/ai/EntityAIAttackRangedBow.java b/src/net/minecraft/entity/ai/EntityAIAttackRangedBow.java
 index b5de1b7..b449ea1 100644
 --- a/src/net/minecraft/entity/ai/EntityAIAttackRangedBow.java
@@ -3859,7 +3942,7 @@ index a65657e..65664ae 100644
          this.worldObj.setEntityState(this, (byte)16);
      }
 diff --git a/src/net/minecraft/entity/player/EntityPlayer.java b/src/net/minecraft/entity/player/EntityPlayer.java
-index 23d8999..93c6fb0 100644
+index 23d8999..08001c3 100644
 --- a/src/net/minecraft/entity/player/EntityPlayer.java
 +++ b/src/net/minecraft/entity/player/EntityPlayer.java
 @@ -3,15 +3,20 @@ package net.minecraft.entity.player;
@@ -3892,6 +3975,15 @@ index 23d8999..93c6fb0 100644
              }
  
              this.field_184831_bT = itemstack == null ? null : itemstack.copy();
+@@ -379,7 +384,7 @@ public abstract class EntityPlayer extends EntityLivingBase
+         float f = this.width;
+         float f1 = this.height;
+ 
+-        if (this.func_184613_cA())
++        if (this.isFlyingWithElytra())
+         {
+             f = 0.6F;
+             f1 = 0.6F;
 @@ -656,6 +661,10 @@ public abstract class EntityPlayer extends EntityLivingBase
       */
      public void onDeath(DamageSource cause)
@@ -3959,6 +4051,15 @@ index 23d8999..93c6fb0 100644
                                      this.worldObj.setEntityState(entityplayer, (byte)30);
                                  }
                              }
+@@ -1931,7 +1940,7 @@ public abstract class EntityPlayer extends EntityLivingBase
+                     }
+                 }
+             }
+-            else if (this.func_184613_cA())
++            else if (this.isFlyingWithElytra())
+             {
+                 int l = Math.round(MathHelper.sqrt_double(p_71000_1_ * p_71000_1_ + p_71000_3_ * p_71000_3_ + p_71000_5_ * p_71000_5_) * 100.0F);
+                 this.addStat(StatList.field_188110_v, l);
 @@ -2342,7 +2351,9 @@ public abstract class EntityPlayer extends EntityLivingBase
  
      public boolean isPushedByWater()
@@ -3970,6 +4071,15 @@ index 23d8999..93c6fb0 100644
      }
  
      public Scoreboard getWorldScoreboard()
+@@ -2377,7 +2388,7 @@ public abstract class EntityPlayer extends EntityLivingBase
+         }
+         else if (!this.isSneaking() && this.height != 1.65F)
+         {
+-            if (this.func_184613_cA() || this.height == 0.6F)
++            if (this.isFlyingWithElytra() || this.height == 0.6F)
+             {
+                 f = 0.4F;
+             }
 @@ -2561,17 +2572,17 @@ public abstract class EntityPlayer extends EntityLivingBase
          return (float)(1.0D / this.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).getAttributeValue() * 20.0D);
      }
@@ -4122,6 +4232,40 @@ index b98ca23..9d51e27 100644
              }
          });
      }
+diff --git a/src/net/minecraft/network/NetHandlerPlayServer.java b/src/net/minecraft/network/NetHandlerPlayServer.java
+index 4e7576e..36e9eb1 100644
+--- a/src/net/minecraft/network/NetHandlerPlayServer.java
++++ b/src/net/minecraft/network/NetHandlerPlayServer.java
+@@ -476,9 +476,9 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, ITickable
+                             i = 1;
+                         }
+ 
+-                        if (!this.playerEntity.func_184850_K() && (!this.playerEntity.getServerForPlayer().getGameRules().getBoolean("disableElytraMovementCheck") || !this.playerEntity.func_184613_cA()))
++                        if (!this.playerEntity.func_184850_K() && (!this.playerEntity.getServerForPlayer().getGameRules().getBoolean("disableElytraMovementCheck") || !this.playerEntity.isFlyingWithElytra()))
+                         {
+-                            float f2 = this.playerEntity.func_184613_cA() ? 300.0F : 100.0F;
++                            float f2 = this.playerEntity.isFlyingWithElytra() ? 300.0F : 100.0F;
+ 
+                             if (d11 - d10 > (double)(f2 * (float)i) && (!this.serverController.isSinglePlayer() || !this.serverController.getServerOwner().equals(this.playerEntity.getName())))
+                             {
+@@ -535,7 +535,7 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, ITickable
+ 
+                         this.field_184344_B = d12 >= -0.03125D;
+                         this.field_184344_B &= !this.serverController.isFlightAllowed() && !this.playerEntity.capabilities.allowFlying;
+-                        this.field_184344_B &= !this.playerEntity.isPotionActive(MobEffects.levitation) && !this.playerEntity.func_184613_cA() && !worldserver.checkBlockCollision(this.playerEntity.getEntityBoundingBox().func_186662_g(0.0625D).addCoord(0.0D, -0.55D, 0.0D));
++                        this.field_184344_B &= !this.playerEntity.isPotionActive(MobEffects.levitation) && !this.playerEntity.isFlyingWithElytra() && !worldserver.checkBlockCollision(this.playerEntity.getEntityBoundingBox().func_186662_g(0.0625D).addCoord(0.0D, -0.55D, 0.0D));
+                         this.playerEntity.onGround = packetIn.isOnGround();
+                         this.serverController.getPlayerList().serverUpdateMountedMovingPlayer(this.playerEntity);
+                         this.playerEntity.handleFalling(this.playerEntity.posY - d3, packetIn.isOnGround());
+@@ -1021,7 +1021,7 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, ITickable
+                 break;
+ 
+             case START_FALL_FLYING:
+-                if (!this.playerEntity.onGround && this.playerEntity.motionY < 0.0D && !this.playerEntity.func_184613_cA() && !this.playerEntity.isInWater())
++                if (!this.playerEntity.onGround && this.playerEntity.motionY < 0.0D && !this.playerEntity.isFlyingWithElytra() && !this.playerEntity.isInWater())
+                 {
+                     ItemStack itemstack = this.playerEntity.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
+ 
 diff --git a/src/net/minecraft/network/NetworkManager.java b/src/net/minecraft/network/NetworkManager.java
 index 0d831b0..bcf2e82 100644
 --- a/src/net/minecraft/network/NetworkManager.java
