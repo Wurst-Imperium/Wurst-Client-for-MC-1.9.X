@@ -16,9 +16,10 @@ import tk.wurst_client.commands.Cmd.Info;
 import tk.wurst_client.mods.XRayMod;
 import tk.wurst_client.utils.MiscUtils;
 
-@Info(description = "Manages or toggles X-Ray.", name = "xray", syntax = {
-	"add (id <block_id>|name <block_name>)",
-	"remove (id <block_id>|name <block_name>)", "list [<page>]"},
+@Info(description = "Manages or toggles X-Ray.",
+	name = "xray",
+	syntax = {"add (id <block_id>|name <block_name>)",
+		"remove (id <block_id>|name <block_name>)", "list [<page>]"},
 	help = "Commands/xray")
 public class XRayCmd extends Cmd
 {
@@ -49,8 +50,11 @@ public class XRayCmd extends Cmd
 				{
 					Block block = itr.next();
 					if(i >= (page - 1) * 8 && i < (page - 1) * 8 + 8)
-						wurst.chat.message(new ItemStack(Item
-							.getItemFromBlock(block)).getDisplayName());
+						if(Item.getItemFromBlock(block) != null)
+							wurst.chat.message(new ItemStack(block)
+								.getDisplayName());
+						else
+							wurst.chat.message(block.getLocalizedName());
 				}
 			}else
 				syntaxError();
