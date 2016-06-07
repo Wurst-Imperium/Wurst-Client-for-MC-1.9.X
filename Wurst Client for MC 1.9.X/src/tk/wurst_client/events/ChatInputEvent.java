@@ -7,12 +7,14 @@
  */
 package tk.wurst_client.events;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.client.gui.ChatLine;
 import net.minecraft.util.text.ITextComponent;
+import tk.wurst_client.events.listeners.ChatInputListener;
 
-public class ChatInputEvent extends CancellableEvent
+public class ChatInputEvent extends CancellableEvent<ChatInputListener>
 {
 	private ITextComponent component;
 	private List<ChatLine> chatLines;
@@ -39,14 +41,19 @@ public class ChatInputEvent extends CancellableEvent
 	}
 	
 	@Override
-	public String getAction()
+	public void fire(ArrayList<ChatInputListener> listeners)
 	{
-		return "receiving chat message";
+		for(int i = 0; i < listeners.size(); i++)
+		{
+			listeners.get(i).onReceivedMessage(this);
+			if(isCancelled())
+				break;
+		}
 	}
 	
 	@Override
-	public String getComment()
+	public Class<ChatInputListener> getListenerType()
 	{
-		return "Message: `" + component.getUnformattedText() + "`";
+		return ChatInputListener.class;
 	}
 }

@@ -7,11 +7,24 @@
  */
 package tk.wurst_client.events;
 
-public class UpdateEvent extends Event
+import java.util.ArrayList;
+
+import tk.wurst_client.events.listeners.UpdateListener;
+
+public class UpdateEvent extends Event<UpdateListener>
 {
+	public static final UpdateEvent INSTANCE = new UpdateEvent();
+	
 	@Override
-	public String getAction()
+	public void fire(ArrayList<UpdateListener> listeners)
 	{
-		return "updating";
+		for(int i = 0; i < listeners.size(); i++)
+			listeners.get(i).onUpdate();
+	}
+
+	@Override
+	public Class<UpdateListener> getListenerType()
+	{
+		return UpdateListener.class;
 	}
 }

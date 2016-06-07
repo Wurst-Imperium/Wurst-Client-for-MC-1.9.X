@@ -7,12 +7,24 @@
  */
 package tk.wurst_client.events;
 
-public class DeathEvent extends Event
+import java.util.ArrayList;
+
+import tk.wurst_client.events.listeners.DeathListener;
+
+public class DeathEvent extends Event<DeathListener>
 {
-	@Override
-	public String getAction()
-	{
-		return "dying";
-	}
+	public static final DeathEvent INSTANCE = new DeathEvent();
 	
+	@Override
+	public void fire(ArrayList<DeathListener> listeners)
+	{
+		for(int i = 0; i < listeners.size(); i++)
+			listeners.get(i).onDeath();
+	}
+
+	@Override
+	public Class<DeathListener> getListenerType()
+	{
+		return DeathListener.class;
+	}
 }

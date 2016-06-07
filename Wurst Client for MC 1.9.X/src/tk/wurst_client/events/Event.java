@@ -7,12 +7,12 @@
  */
 package tk.wurst_client.events;
 
-public abstract class Event
+import java.util.ArrayList;
+import java.util.EventListener;
+
+public abstract class Event<T extends EventListener>
 {
-	public abstract String getAction();
+	public abstract void fire(ArrayList<T> listeners);
 	
-	public String getComment()
-	{
-		return "";
-	}
+	public abstract Class<T> getListenerType();
 }

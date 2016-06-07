@@ -7,11 +7,24 @@
  */
 package tk.wurst_client.events;
 
-public class LeftClickEvent extends Event
+import java.util.ArrayList;
+
+import tk.wurst_client.events.listeners.LeftClickListener;
+
+public class LeftClickEvent extends Event<LeftClickListener>
 {
+	public static final LeftClickEvent INSTANCE = new LeftClickEvent();
+	
 	@Override
-	public String getAction()
+	public void fire(ArrayList<LeftClickListener> listeners)
 	{
-		return "left-clicking";
+		for(int i = 0; i < listeners.size(); i++)
+			listeners.get(i).onLeftClick();
+	}
+
+	@Override
+	public Class<LeftClickListener> getListenerType()
+	{
+		return LeftClickListener.class;
 	}
 }

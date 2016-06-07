@@ -1,6 +1,6 @@
-From 72f6bd31af56bbb9b0ed4e74c1e906ee5f1fd4b5 Mon Sep 17 00:00:00 2001
+From 1bdb1c78257ee2aa1ed60f4df03cbd89605ed1b0 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Sat, 4 Jun 2016 12:07:48 +0200
+Date: Tue, 7 Jun 2016 18:52:40 +0200
 Subject: [PATCH] Wurst
 
 ---
@@ -42,7 +42,7 @@ Subject: [PATCH] Wurst
  .../client/network/NetHandlerPlayClient.java       |  10 +-
  .../client/network/NetworkPlayerInfo.java          |  10 ++
  .../client/renderer/BlockModelRenderer.java        |   8 +-
- .../minecraft/client/renderer/EntityRenderer.java  |  51 +++++-
+ .../minecraft/client/renderer/EntityRenderer.java  |  50 +++++-
  .../client/renderer/InventoryEffectRenderer.java   |   2 +-
  .../minecraft/client/renderer/ItemRenderer.java    |   6 +-
  .../minecraft/client/renderer/RenderGlobal.java    |   2 +-
@@ -84,7 +84,7 @@ Subject: [PATCH] Wurst
  .../management/PlayerInteractionManager.java       |   6 +-
  src/net/minecraft/tileentity/TileEntitySign.java   |   2 +-
  src/net/minecraft/util/Timer.java                  |   6 +
- 80 files changed, 1274 insertions(+), 397 deletions(-)
+ 80 files changed, 1273 insertions(+), 397 deletions(-)
 
 diff --git a/src/net/minecraft/block/Block.java b/src/net/minecraft/block/Block.java
 index b386ea0..0909994 100644
@@ -285,7 +285,7 @@ index e590b46..9956642 100644
      <T extends Comparable<T>> IBlockState cycleProperty(IProperty<T> property);
  
 diff --git a/src/net/minecraft/client/Minecraft.java b/src/net/minecraft/client/Minecraft.java
-index 61b2545..9772d2a 100644
+index 61b2545..c6e29dd 100644
 --- a/src/net/minecraft/client/Minecraft.java
 +++ b/src/net/minecraft/client/Minecraft.java
 @@ -1,17 +1,5 @@
@@ -576,8 +576,8 @@ index 61b2545..9772d2a 100644
      {
          if (this.leftClickCounter <= 0)
          {
-+            //TODO: Client
-+        	WurstClient.INSTANCE.events.fireEvent(LeftClickEvent.class, new LeftClickEvent());
++			// TODO: Client
++			WurstClient.INSTANCE.events.fire(LeftClickEvent.INSTANCE);
 +        	
              if (this.objectMouseOver == null)
              {
@@ -744,7 +744,7 @@ index c30247b..f8b138e 100644
  
              if (f1 > 1.0F)
 diff --git a/src/net/minecraft/client/entity/EntityPlayerSP.java b/src/net/minecraft/client/entity/EntityPlayerSP.java
-index 61b85c2..4cfd951 100644
+index 61b85c2..cbbf5c5 100644
 --- a/src/net/minecraft/client/entity/EntityPlayerSP.java
 +++ b/src/net/minecraft/client/entity/EntityPlayerSP.java
 @@ -1,5 +1,6 @@
@@ -809,7 +809,7 @@ index 61b85c2..4cfd951 100644
          {
 +        	//TODO: Client
 +        	WurstClient wurst = WurstClient.INSTANCE;
-+			wurst.events.fireEvent(UpdateEvent.class, new UpdateEvent());
++			wurst.events.fire(UpdateEvent.INSTANCE);
 +			
              super.onUpdate();
  
@@ -957,7 +957,7 @@ index 61b85c2..4cfd951 100644
 +        //TODO: Client
 +      	ChatOutputEvent event = new ChatOutputEvent(p_71165_1_, false);
 +      	WurstClient.INSTANCE.commands.onSentMessage(event);
-+      	WurstClient.INSTANCE.events.fireEvent(ChatOutputEvent.class, event);
++      	WurstClient.INSTANCE.events.fire(event);
 +      	if(event.isCancelled())
 +      		return;
 +      	
@@ -972,7 +972,7 @@ index 61b85c2..4cfd951 100644
 +        //TODO: Client
 +      	ChatOutputEvent event = new ChatOutputEvent(message, true);
 +      	WurstClient.INSTANCE.commands.onSentMessage(event);
-+      	WurstClient.INSTANCE.events.fireEvent(ChatOutputEvent.class, event);
++      	WurstClient.INSTANCE.events.fire(event);
 +      	if(event.isCancelled())
 +      		return;
 +      	
@@ -1219,7 +1219,7 @@ index 4a7f37e..ccc3938 100644
      }
  
 diff --git a/src/net/minecraft/client/gui/GuiGameOver.java b/src/net/minecraft/client/gui/GuiGameOver.java
-index 08d7720..9cc2dfb 100644
+index 08d7720..8ab25e5 100644
 --- a/src/net/minecraft/client/gui/GuiGameOver.java
 +++ b/src/net/minecraft/client/gui/GuiGameOver.java
 @@ -1,6 +1,11 @@
@@ -1258,7 +1258,7 @@ index 08d7720..9cc2dfb 100644
              }
 +            
 +            //TODO: Client
-+            WurstClient.INSTANCE.events.fireEvent(DeathEvent.class, new DeathEvent());
++            WurstClient.INSTANCE.events.fire(DeathEvent.INSTANCE);
 +            SpamProcessor.runScript("death", "Runs whenever you die.");
          }
      }
@@ -1870,7 +1870,7 @@ index e4e5eb7..09c0049 100644
              this.selectServer(i);
          }
 diff --git a/src/net/minecraft/client/gui/GuiNewChat.java b/src/net/minecraft/client/gui/GuiNewChat.java
-index b43a7c5..a86b628 100644
+index b43a7c5..95dc886 100644
 --- a/src/net/minecraft/client/gui/GuiNewChat.java
 +++ b/src/net/minecraft/client/gui/GuiNewChat.java
 @@ -3,17 +3,23 @@ package net.minecraft.client.gui;
@@ -1903,7 +1903,7 @@ index b43a7c5..a86b628 100644
      {
 +    	//TODO: Client
 +    	ChatInputEvent event = new ChatInputEvent(chatComponent, drawnChatLines);
-+    	WurstClient.INSTANCE.events.fireEvent(ChatInputEvent.class, event);
++    	WurstClient.INSTANCE.events.fire(event);
 +    	if(event.isCancelled())
 +    		return;
 +    	chatComponent = event.getComponent();
@@ -2831,7 +2831,7 @@ index 628f4dd..ca96301 100644
              this.renderQuadsSmooth(worldIn, stateIn, posIn, buffer, list1, afloat, bitset, blockmodelrenderer$ambientocclusionface);
              flag = true;
 diff --git a/src/net/minecraft/client/renderer/EntityRenderer.java b/src/net/minecraft/client/renderer/EntityRenderer.java
-index e8fdae5..2c47df5 100644
+index e8fdae5..4837695 100644
 --- a/src/net/minecraft/client/renderer/EntityRenderer.java
 +++ b/src/net/minecraft/client/renderer/EntityRenderer.java
 @@ -3,6 +3,7 @@ package net.minecraft.client.renderer;
@@ -2956,18 +2956,17 @@ index e8fdae5..2c47df5 100644
          GlStateManager.enableAlpha();
          GlStateManager.alphaFunc(516, 0.5F);
          this.mc.mcProfiler.startSection("center");
-@@ -1463,6 +1487,10 @@ public class EntityRenderer implements IResourceManagerReloadListener
+@@ -1463,6 +1487,9 @@ public class EntityRenderer implements IResourceManagerReloadListener
  
          this.mc.mcProfiler.endStartSection("hand");
  
 +		// TODO: Client
-+		WurstClient.INSTANCE.events.fireEvent(RenderEvent.class,
-+			new RenderEvent());
++		WurstClient.INSTANCE.events.fire(RenderEvent.INSTANCE);
 +
          if (this.renderHand)
          {
              GlStateManager.clear(256);
-@@ -1847,8 +1875,12 @@ public class EntityRenderer implements IResourceManagerReloadListener
+@@ -1847,8 +1874,12 @@ public class EntityRenderer implements IResourceManagerReloadListener
          this.fogColorBlue *= f13;
          double d1 = (entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double)partialTicks) * world.provider.getVoidFogYFactor();
  
@@ -2981,7 +2980,7 @@ index e8fdae5..2c47df5 100644
              int i = ((EntityLivingBase)entity).getActivePotionEffect(MobEffects.blindness).getDuration();
  
              if (i < 20)
-@@ -1927,7 +1959,10 @@ public class EntityRenderer implements IResourceManagerReloadListener
+@@ -1927,7 +1958,10 @@ public class EntityRenderer implements IResourceManagerReloadListener
          GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
          IBlockState iblockstate = ActiveRenderInfo.func_186703_a(this.mc.theWorld, entity, partialTicks);
  
@@ -4268,7 +4267,7 @@ index 4e7576e..36e9eb1 100644
                      ItemStack itemstack = this.playerEntity.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
  
 diff --git a/src/net/minecraft/network/NetworkManager.java b/src/net/minecraft/network/NetworkManager.java
-index 0d831b0..bcf2e82 100644
+index 0d831b0..5956509 100644
 --- a/src/net/minecraft/network/NetworkManager.java
 +++ b/src/net/minecraft/network/NetworkManager.java
 @@ -2,6 +2,7 @@ package net.minecraft.network;
@@ -4339,7 +4338,7 @@ index 0d831b0..bcf2e82 100644
          {
 +			//TODO: Client
 +			PacketInputEvent event = new PacketInputEvent(p_channelRead0_2_);
-+			WurstClient.INSTANCE.events.fireEvent(PacketInputEvent.class, event);
++			WurstClient.INSTANCE.events.fire(event);
 +			if(event.isCancelled())
 +				return;
 +			

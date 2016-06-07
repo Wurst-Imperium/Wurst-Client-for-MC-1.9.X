@@ -7,7 +7,11 @@
  */
 package tk.wurst_client.events;
 
-public class ChatOutputEvent extends CancellableEvent
+import java.util.ArrayList;
+
+import tk.wurst_client.events.listeners.ChatOutputListener;
+
+public class ChatOutputEvent extends CancellableEvent<ChatOutputListener>
 {
 	private String message;
 	private boolean automatic;
@@ -28,20 +32,25 @@ public class ChatOutputEvent extends CancellableEvent
 		this.message = message;
 	}
 	
-	@Override
-	public String getAction()
-	{
-		return "sending chat message";
-	}
-	
-	@Override
-	public String getComment()
-	{
-		return "Message: `" + message + "`";
-	}
-	
 	public boolean isAutomatic()
 	{
 		return automatic;
+	}
+	
+	@Override
+	public void fire(ArrayList<ChatOutputListener> listeners)
+	{
+		for(int i = 0; i < listeners.size(); i++)
+		{
+			listeners.get(i).onSentMessage(this);
+			if(isCancelled())
+				break;
+		}
+	}
+
+	@Override
+	public Class<ChatOutputListener> getListenerType()
+	{
+		return ChatOutputListener.class;
 	}
 }

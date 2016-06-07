@@ -120,8 +120,7 @@ public class UIRenderer
 		Gui.drawModalRectWithCustomSizedTexture(x, y, u, v, w, h, fw, fh);
 		
 		// GUI render event
-		WurstClient.INSTANCE.events.fireEvent(GUIRenderEvent.class,
-			new GUIRenderEvent());
+		WurstClient.INSTANCE.events.fire(GUIRenderEvent.INSTANCE);
 		
 		// GL resets
 		GL11.glDepthMask(true);
