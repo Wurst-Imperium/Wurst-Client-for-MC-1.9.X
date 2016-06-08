@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.network.Packet;
+import net.minecraft.network.play.client.CPacketPlayer;
+import tk.wurst_client.events.PacketOutputEvent;
+import tk.wurst_client.events.listeners.PacketOutputListener;
 import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
@@ -22,7 +25,7 @@ import tk.wurst_client.mods.Mod.Info;
 	name = "Blink",
 	help = "Mods/Blink")
 @Bypasses
-public class BlinkMod extends Mod
+public class BlinkMod extends Mod implements PacketOutputListener
 {
 	private static ArrayList<Packet> packets = new ArrayList<Packet>();
 	private EntityOtherPlayerMP fakePlayer = null;
@@ -52,29 +55,39 @@ public class BlinkMod extends Mod
 		fakePlayer.copyLocationAndAnglesFrom(mc.thePlayer);
 		fakePlayer.rotationYawHead = mc.thePlayer.rotationYawHead;
 		mc.theWorld.addEntityToWorld(-69, fakePlayer);
+		
+		wurst.events.add(PacketOutputListener.class, this);
+	}
+	
+	@Override
+	public void onSentPacket(PacketOutputEvent event)
+	{
+		Packet packet = event.getPacket();
+		if(packet instanceof CPacketPlayer)
+		{
+			if(mc.thePlayer.posX != mc.thePlayer.prevPosX
+				|| mc.thePlayer.posZ != Minecraft.getMinecraft().thePlayer.prevPosZ
+				|| mc.thePlayer.posY != Minecraft.getMinecraft().thePlayer.prevPosY)
+			{
+				blinkTime += System.currentTimeMillis() - lastTime;
+				packets.add(packet);
+			}
+			lastTime = System.currentTimeMillis();
+			event.cancel();
+		}
 	}
 	
 	@Override
 	public void onDisable()
 	{
+		wurst.events.remove(PacketOutputListener.class, this);
+		
 		for(Packet packet : packets)
 			mc.thePlayer.sendQueue.addToSendQueue(packet);
 		packets.clear();
 		mc.theWorld.removeEntityFromWorld(-69);
 		fakePlayer = null;
 		blinkTime = 0;
-	}
-	
-	public static void addToBlinkQueue(Packet packet)
-	{
-		if(mc.thePlayer.posX != mc.thePlayer.prevPosX
-			|| mc.thePlayer.posZ != Minecraft.getMinecraft().thePlayer.prevPosZ
-			|| mc.thePlayer.posY != Minecraft.getMinecraft().thePlayer.prevPosY)
-		{
-			blinkTime += System.currentTimeMillis() - lastTime;
-			packets.add(packet);
-		}
-		lastTime = System.currentTimeMillis();
 	}
 	
 	public void cancel()

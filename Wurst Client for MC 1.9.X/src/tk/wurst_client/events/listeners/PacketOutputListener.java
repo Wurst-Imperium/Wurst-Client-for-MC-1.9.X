@@ -5,14 +5,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package tk.wurst_client.events;
+package tk.wurst_client.events.listeners;
 
-import java.util.ArrayList;
-import java.util.EventListener;
+import tk.wurst_client.events.PacketOutputEvent;
 
-public abstract class Event<T extends EventListener>
+public interface PacketOutputListener extends Listener
 {
-	public abstract void fire(ArrayList<T> listeners);
-	
-	public abstract Class<T> getListenerType();
+	public void onSentPacket(PacketOutputEvent event);
 }

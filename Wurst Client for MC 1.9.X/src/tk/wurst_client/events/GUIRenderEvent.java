@@ -7,11 +7,24 @@
  */
 package tk.wurst_client.events;
 
-public class GUIRenderEvent extends RenderEvent
+import java.util.ArrayList;
+
+import tk.wurst_client.events.listeners.GUIRenderListener;
+
+public class GUIRenderEvent extends Event<GUIRenderListener>
 {
+	public static final GUIRenderEvent INSTANCE = new GUIRenderEvent();
+	
 	@Override
-	public String getAction()
+	public void fire(ArrayList<GUIRenderListener> listeners)
 	{
-		return "rendering GUI";
+		for(int i = 0; i < listeners.size(); i++)
+			listeners.get(i).onRenderGUI();
+	}
+
+	@Override
+	public Class<GUIRenderListener> getListenerType()
+	{
+		return GUIRenderListener.class;
 	}
 }

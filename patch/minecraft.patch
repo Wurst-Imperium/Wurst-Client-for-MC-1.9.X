@@ -1,6 +1,6 @@
-From 72f6bd31af56bbb9b0ed4e74c1e906ee5f1fd4b5 Mon Sep 17 00:00:00 2001
+From 4fa1d92cd83e6965d578c48ef6464de844f34f82 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Sat, 4 Jun 2016 12:07:48 +0200
+Date: Wed, 8 Jun 2016 13:01:28 +0200
 Subject: [PATCH] Wurst
 
 ---
@@ -14,7 +14,7 @@ Subject: [PATCH] Wurst
  src/net/minecraft/client/Minecraft.java            | 198 ++++++++++-----------
  .../client/audio/PositionedSoundRecord.java        |   2 +-
  .../client/entity/AbstractClientPlayer.java        |   4 +-
- .../minecraft/client/entity/EntityPlayerSP.java    | 175 ++++++++++++++----
+ .../minecraft/client/entity/EntityPlayerSP.java    | 152 ++++++++++++----
  src/net/minecraft/client/gui/GuiButton.java        |  16 +-
  src/net/minecraft/client/gui/GuiDisconnected.java  |  87 +++++++++
  src/net/minecraft/client/gui/GuiGameOver.java      |  13 +-
@@ -42,7 +42,7 @@ Subject: [PATCH] Wurst
  .../client/network/NetHandlerPlayClient.java       |  10 +-
  .../client/network/NetworkPlayerInfo.java          |  10 ++
  .../client/renderer/BlockModelRenderer.java        |   8 +-
- .../minecraft/client/renderer/EntityRenderer.java  |  51 +++++-
+ .../minecraft/client/renderer/EntityRenderer.java  |  50 +++++-
  .../client/renderer/InventoryEffectRenderer.java   |   2 +-
  .../minecraft/client/renderer/ItemRenderer.java    |   6 +-
  .../minecraft/client/renderer/RenderGlobal.java    |   2 +-
@@ -74,7 +74,7 @@ Subject: [PATCH] Wurst
  src/net/minecraft/item/ItemEnderPearl.java         |   2 +-
  src/net/minecraft/item/ItemShield.java             |   2 +-
  .../minecraft/network/NetHandlerPlayServer.java    |   8 +-
- src/net/minecraft/network/NetworkManager.java      |  26 +++
+ src/net/minecraft/network/NetworkManager.java      |  33 ++++
  .../network/play/server/SPacketEntityEffect.java   |   2 +-
  .../network/play/server/SPacketJoinGame.java       |   5 +
  src/net/minecraft/potion/PotionEffect.java         |  26 +--
@@ -84,7 +84,7 @@ Subject: [PATCH] Wurst
  .../management/PlayerInteractionManager.java       |   6 +-
  src/net/minecraft/tileentity/TileEntitySign.java   |   2 +-
  src/net/minecraft/util/Timer.java                  |   6 +
- 80 files changed, 1274 insertions(+), 397 deletions(-)
+ 80 files changed, 1257 insertions(+), 397 deletions(-)
 
 diff --git a/src/net/minecraft/block/Block.java b/src/net/minecraft/block/Block.java
 index b386ea0..0909994 100644
@@ -285,7 +285,7 @@ index e590b46..9956642 100644
      <T extends Comparable<T>> IBlockState cycleProperty(IProperty<T> property);
  
 diff --git a/src/net/minecraft/client/Minecraft.java b/src/net/minecraft/client/Minecraft.java
-index 61b2545..9772d2a 100644
+index 61b2545..c6e29dd 100644
 --- a/src/net/minecraft/client/Minecraft.java
 +++ b/src/net/minecraft/client/Minecraft.java
 @@ -1,17 +1,5 @@
@@ -576,8 +576,8 @@ index 61b2545..9772d2a 100644
      {
          if (this.leftClickCounter <= 0)
          {
-+            //TODO: Client
-+        	WurstClient.INSTANCE.events.fireEvent(LeftClickEvent.class, new LeftClickEvent());
++			// TODO: Client
++			WurstClient.INSTANCE.events.fire(LeftClickEvent.INSTANCE);
 +        	
              if (this.objectMouseOver == null)
              {
@@ -744,7 +744,7 @@ index c30247b..f8b138e 100644
  
              if (f1 > 1.0F)
 diff --git a/src/net/minecraft/client/entity/EntityPlayerSP.java b/src/net/minecraft/client/entity/EntityPlayerSP.java
-index 61b85c2..4cfd951 100644
+index 61b85c2..9f52e03 100644
 --- a/src/net/minecraft/client/entity/EntityPlayerSP.java
 +++ b/src/net/minecraft/client/entity/EntityPlayerSP.java
 @@ -1,5 +1,6 @@
@@ -809,7 +809,7 @@ index 61b85c2..4cfd951 100644
          {
 +        	//TODO: Client
 +        	WurstClient wurst = WurstClient.INSTANCE;
-+			wurst.events.fireEvent(UpdateEvent.class, new UpdateEvent());
++			wurst.events.fire(UpdateEvent.INSTANCE);
 +			
              super.onUpdate();
  
@@ -833,7 +833,7 @@ index 61b85c2..4cfd951 100644
          }
      }
  
-@@ -264,24 +271,98 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -264,24 +271,75 @@ public class EntityPlayerSP extends AbstractClientPlayer
  
          if (this.isCurrentViewEntity())
          {
@@ -875,30 +875,6 @@ index 61b85c2..4cfd951 100644
 +					&& !getActivePotionEffects().isEmpty() && motionX == 0 && motionZ == 0))
 +			{	
 +				
-+			}else if(WurstClient.INSTANCE.mods.blinkMod.isActive())
-+			{// Redirects motion updates to the Blink queue
-+				if(flag2 && flag3)
-+				{
-+					BlinkMod
-+						.addToBlinkQueue(new CPacketPlayer.C06PacketPlayerPosLook(
-+							this.posX, this.getEntityBoundingBox().minY,
-+							this.posZ, yaw, pitch, this.onGround));
-+				}else if(flag2)
-+				{
-+					BlinkMod
-+						.addToBlinkQueue(new CPacketPlayer.C04PacketPlayerPosition(
-+							this.posX, this.getEntityBoundingBox().minY,
-+							this.posZ, this.onGround));
-+				}else if(flag3)
-+				{
-+					BlinkMod
-+						.addToBlinkQueue(new CPacketPlayer.C05PacketPlayerLook(
-+							yaw, pitch, this.onGround));
-+				}else
- 				{
--                this.sendQueue.addToSendQueue(new CPacketPlayer.C06PacketPlayerPosLook(this.motionX, -999.0D, this.motionZ, this.rotationYaw, this.rotationPitch, this.onGround));
-+					BlinkMod.addToBlinkQueue(new CPacketPlayer(this.onGround));
-+				}
 +			}else if(WurstClient.INSTANCE.mods.jesusMod.isActive()
 +				&& WurstClient.INSTANCE.special.yesCheatSpf.getBypassLevel()
 +					.ordinal() >= BypassLevel.ANTICHEAT.ordinal()
@@ -908,7 +884,8 @@ index 61b85c2..4cfd951 100644
 +					.getMaterial(null) == Material.water)
 +			{
 +				if(flag2)
-+				{
+ 				{
+-                this.sendQueue.addToSendQueue(new CPacketPlayer.C06PacketPlayerPosLook(this.motionX, -999.0D, this.motionZ, this.rotationYaw, this.rotationPitch, this.onGround));
 +					this.sendQueue
 +						.addToSendQueue(new CPacketPlayer.C06PacketPlayerPosLook(
 +							this.posX, this.getEntityBoundingBox().minY
@@ -937,7 +914,7 @@ index 61b85c2..4cfd951 100644
              }
              else if (flag2)
              {
-@@ -289,7 +370,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -289,7 +347,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
              }
              else if (flag3)
              {
@@ -946,7 +923,7 @@ index 61b85c2..4cfd951 100644
              }
              else if (this.field_184841_cd != this.onGround)
              {
-@@ -332,9 +413,31 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -332,9 +390,31 @@ public class EntityPlayerSP extends AbstractClientPlayer
      /**
       * Sends a chat message from the player. Args: chatMessage
       */
@@ -957,7 +934,7 @@ index 61b85c2..4cfd951 100644
 +        //TODO: Client
 +      	ChatOutputEvent event = new ChatOutputEvent(p_71165_1_, false);
 +      	WurstClient.INSTANCE.commands.onSentMessage(event);
-+      	WurstClient.INSTANCE.events.fireEvent(ChatOutputEvent.class, event);
++      	WurstClient.INSTANCE.events.fire(event);
 +      	if(event.isCancelled())
 +      		return;
 +      	
@@ -972,7 +949,7 @@ index 61b85c2..4cfd951 100644
 +        //TODO: Client
 +      	ChatOutputEvent event = new ChatOutputEvent(message, true);
 +      	WurstClient.INSTANCE.commands.onSentMessage(event);
-+      	WurstClient.INSTANCE.events.fireEvent(ChatOutputEvent.class, event);
++      	WurstClient.INSTANCE.events.fire(event);
 +      	if(event.isCancelled())
 +      		return;
 +      	
@@ -980,7 +957,7 @@ index 61b85c2..4cfd951 100644
      }
  
      public void swingArm(EnumHand hand)
-@@ -629,7 +732,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -629,7 +709,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
      {
          ItemStack itemstack = this.getHeldItem(p_184598_1_);
  
@@ -989,7 +966,7 @@ index 61b85c2..4cfd951 100644
          {
              super.func_184598_c(p_184598_1_);
              this.field_184842_cm = true;
-@@ -637,7 +740,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -637,7 +717,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
          }
      }
  
@@ -998,7 +975,7 @@ index 61b85c2..4cfd951 100644
      {
          return this.field_184842_cm;
      }
-@@ -847,7 +950,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -847,7 +927,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
  
              if (this.timeInPortal == 0.0F)
              {
@@ -1007,7 +984,7 @@ index 61b85c2..4cfd951 100644
              }
  
              this.timeInPortal += 0.0125F;
-@@ -892,7 +995,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -892,7 +972,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
          boolean flag2 = this.movementInput.moveForward >= f;
          this.movementInput.updatePlayerMoveState();
  
@@ -1016,7 +993,7 @@ index 61b85c2..4cfd951 100644
          {
              this.movementInput.moveStrafe *= 0.2F;
              this.movementInput.moveForward *= 0.2F;
-@@ -906,7 +1009,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -906,7 +986,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
          this.pushOutOfBlocks(this.posX + (double)this.width * 0.35D, axisalignedbb.minY + 0.5D, this.posZ + (double)this.width * 0.35D);
          boolean flag3 = (float)this.getFoodStats().getFoodLevel() > 6.0F || this.capabilities.allowFlying;
  
@@ -1025,7 +1002,7 @@ index 61b85c2..4cfd951 100644
          {
              if (this.sprintToggleTimer <= 0 && !this.mc.gameSettings.keyBindSprint.isKeyDown())
              {
-@@ -918,7 +1021,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -918,7 +998,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
              }
          }
  
@@ -1034,7 +1011,7 @@ index 61b85c2..4cfd951 100644
          {
              this.setSprinting(true);
          }
-@@ -953,7 +1056,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -953,7 +1033,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
              }
          }
  
@@ -1043,7 +1020,7 @@ index 61b85c2..4cfd951 100644
          {
              ItemStack itemstack = this.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
  
-@@ -1052,7 +1155,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -1052,7 +1132,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
          return this.field_184844_co;
      }
  
@@ -1052,7 +1029,7 @@ index 61b85c2..4cfd951 100644
      {
          if (p_184596_1_ == MobEffects.confusion)
          {
-@@ -1060,6 +1163,6 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -1060,6 +1140,6 @@ public class EntityPlayerSP extends AbstractClientPlayer
              this.timeInPortal = 0.0F;
          }
  
@@ -1219,7 +1196,7 @@ index 4a7f37e..ccc3938 100644
      }
  
 diff --git a/src/net/minecraft/client/gui/GuiGameOver.java b/src/net/minecraft/client/gui/GuiGameOver.java
-index 08d7720..9cc2dfb 100644
+index 08d7720..8ab25e5 100644
 --- a/src/net/minecraft/client/gui/GuiGameOver.java
 +++ b/src/net/minecraft/client/gui/GuiGameOver.java
 @@ -1,6 +1,11 @@
@@ -1258,7 +1235,7 @@ index 08d7720..9cc2dfb 100644
              }
 +            
 +            //TODO: Client
-+            WurstClient.INSTANCE.events.fireEvent(DeathEvent.class, new DeathEvent());
++            WurstClient.INSTANCE.events.fire(DeathEvent.INSTANCE);
 +            SpamProcessor.runScript("death", "Runs whenever you die.");
          }
      }
@@ -1870,7 +1847,7 @@ index e4e5eb7..09c0049 100644
              this.selectServer(i);
          }
 diff --git a/src/net/minecraft/client/gui/GuiNewChat.java b/src/net/minecraft/client/gui/GuiNewChat.java
-index b43a7c5..a86b628 100644
+index b43a7c5..95dc886 100644
 --- a/src/net/minecraft/client/gui/GuiNewChat.java
 +++ b/src/net/minecraft/client/gui/GuiNewChat.java
 @@ -3,17 +3,23 @@ package net.minecraft.client.gui;
@@ -1903,7 +1880,7 @@ index b43a7c5..a86b628 100644
      {
 +    	//TODO: Client
 +    	ChatInputEvent event = new ChatInputEvent(chatComponent, drawnChatLines);
-+    	WurstClient.INSTANCE.events.fireEvent(ChatInputEvent.class, event);
++    	WurstClient.INSTANCE.events.fire(event);
 +    	if(event.isCancelled())
 +    		return;
 +    	chatComponent = event.getComponent();
@@ -2831,7 +2808,7 @@ index 628f4dd..ca96301 100644
              this.renderQuadsSmooth(worldIn, stateIn, posIn, buffer, list1, afloat, bitset, blockmodelrenderer$ambientocclusionface);
              flag = true;
 diff --git a/src/net/minecraft/client/renderer/EntityRenderer.java b/src/net/minecraft/client/renderer/EntityRenderer.java
-index e8fdae5..2c47df5 100644
+index e8fdae5..4837695 100644
 --- a/src/net/minecraft/client/renderer/EntityRenderer.java
 +++ b/src/net/minecraft/client/renderer/EntityRenderer.java
 @@ -3,6 +3,7 @@ package net.minecraft.client.renderer;
@@ -2956,18 +2933,17 @@ index e8fdae5..2c47df5 100644
          GlStateManager.enableAlpha();
          GlStateManager.alphaFunc(516, 0.5F);
          this.mc.mcProfiler.startSection("center");
-@@ -1463,6 +1487,10 @@ public class EntityRenderer implements IResourceManagerReloadListener
+@@ -1463,6 +1487,9 @@ public class EntityRenderer implements IResourceManagerReloadListener
  
          this.mc.mcProfiler.endStartSection("hand");
  
 +		// TODO: Client
-+		WurstClient.INSTANCE.events.fireEvent(RenderEvent.class,
-+			new RenderEvent());
++		WurstClient.INSTANCE.events.fire(RenderEvent.INSTANCE);
 +
          if (this.renderHand)
          {
              GlStateManager.clear(256);
-@@ -1847,8 +1875,12 @@ public class EntityRenderer implements IResourceManagerReloadListener
+@@ -1847,8 +1874,12 @@ public class EntityRenderer implements IResourceManagerReloadListener
          this.fogColorBlue *= f13;
          double d1 = (entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double)partialTicks) * world.provider.getVoidFogYFactor();
  
@@ -2981,7 +2957,7 @@ index e8fdae5..2c47df5 100644
              int i = ((EntityLivingBase)entity).getActivePotionEffect(MobEffects.blindness).getDuration();
  
              if (i < 20)
-@@ -1927,7 +1959,10 @@ public class EntityRenderer implements IResourceManagerReloadListener
+@@ -1927,7 +1958,10 @@ public class EntityRenderer implements IResourceManagerReloadListener
          GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
          IBlockState iblockstate = ActiveRenderInfo.func_186703_a(this.mc.theWorld, entity, partialTicks);
  
@@ -4268,7 +4244,7 @@ index 4e7576e..36e9eb1 100644
                      ItemStack itemstack = this.playerEntity.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
  
 diff --git a/src/net/minecraft/network/NetworkManager.java b/src/net/minecraft/network/NetworkManager.java
-index 0d831b0..bcf2e82 100644
+index 0d831b0..114c2b4 100644
 --- a/src/net/minecraft/network/NetworkManager.java
 +++ b/src/net/minecraft/network/NetworkManager.java
 @@ -2,6 +2,7 @@ package net.minecraft.network;
@@ -4301,17 +4277,18 @@ index 0d831b0..bcf2e82 100644
  import org.apache.commons.lang3.ArrayUtils;
  import org.apache.commons.lang3.Validate;
  import org.apache.logging.log4j.LogManager;
-@@ -45,6 +50,9 @@ import org.apache.logging.log4j.Logger;
+@@ -45,6 +50,10 @@ import org.apache.logging.log4j.Logger;
  import org.apache.logging.log4j.Marker;
  import org.apache.logging.log4j.MarkerManager;
  
 +import tk.wurst_client.WurstClient;
 +import tk.wurst_client.events.PacketInputEvent;
++import tk.wurst_client.events.PacketOutputEvent;
 +
  public class NetworkManager extends SimpleChannelInboundHandler < Packet<? >>
  {
      private static final Logger logger = LogManager.getLogger();
-@@ -130,9 +138,21 @@ public class NetworkManager extends SimpleChannelInboundHandler < Packet<? >>
+@@ -130,9 +139,21 @@ public class NetworkManager extends SimpleChannelInboundHandler < Packet<? >>
      {
          TextComponentTranslation textcomponenttranslation;
  
@@ -4333,19 +4310,32 @@ index 0d831b0..bcf2e82 100644
          }
          else
          {
-@@ -147,6 +167,12 @@ public class NetworkManager extends SimpleChannelInboundHandler < Packet<? >>
+@@ -147,6 +168,12 @@ public class NetworkManager extends SimpleChannelInboundHandler < Packet<? >>
      {
          if (this.channel.isOpen())
          {
 +			//TODO: Client
 +			PacketInputEvent event = new PacketInputEvent(p_channelRead0_2_);
-+			WurstClient.INSTANCE.events.fireEvent(PacketInputEvent.class, event);
++			WurstClient.INSTANCE.events.fire(event);
 +			if(event.isCancelled())
 +				return;
 +			
              try
              {
                  ((Packet<INetHandler>)p_channelRead0_2_).processPacket(this.packetListener);
+@@ -171,6 +198,12 @@ public class NetworkManager extends SimpleChannelInboundHandler < Packet<? >>
+ 
+     public void sendPacket(Packet<?> packetIn)
+     {
++		// TODO: Client
++		PacketOutputEvent event = new PacketOutputEvent(packetIn);
++		WurstClient.INSTANCE.events.fire(event);
++		if(event.isCancelled())
++			return;
++    	
+         if (this.isChannelOpen())
+         {
+             this.flushOutboundQueue();
 diff --git a/src/net/minecraft/network/play/server/SPacketEntityEffect.java b/src/net/minecraft/network/play/server/SPacketEntityEffect.java
 index d15a596..2a90729 100644
 --- a/src/net/minecraft/network/play/server/SPacketEntityEffect.java

@@ -7,26 +7,24 @@
  */
 package tk.wurst_client.events;
 
-import net.minecraft.client.Minecraft;
+import java.util.ArrayList;
 
-public class RenderEvent extends Event
+import tk.wurst_client.events.listeners.RenderListener;
+
+public class RenderEvent extends Event<RenderListener>
 {
-	@Override
-	public String getAction()
-	{
-		return "rendering GUI";
-	}
+	public static final RenderEvent INSTANCE = new RenderEvent();
 	
 	@Override
-	public String getComment()
+	public void fire(ArrayList<RenderListener> listeners)
 	{
-		String comment = "GUI screen: ";
-		if(Minecraft.getMinecraft().currentScreen != null)
-			comment +=
-				Minecraft.getMinecraft().currentScreen.getClass()
-					.getSimpleName();
-		else
-			comment += "null";
-		return comment;
+		for(int i = 0; i < listeners.size(); i++)
+			listeners.get(i).onRender();
+	}
+
+	@Override
+	public Class<RenderListener> getListenerType()
+	{
+		return RenderListener.class;
 	}
 }
