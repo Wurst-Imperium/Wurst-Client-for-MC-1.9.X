@@ -33,6 +33,8 @@ public final class EventManager
 			new ArrayList<LeftClickListener>());
 		listenerMap.put(PacketInputListener.class,
 			new ArrayList<PacketInputListener>());
+		listenerMap.put(PacketOutputListener.class,
+			new ArrayList<PacketOutputListener>());
 		listenerMap.put(RenderListener.class, new ArrayList<RenderListener>());
 		listenerMap.put(UpdateListener.class, new ArrayList<UpdateListener>());
 	}
