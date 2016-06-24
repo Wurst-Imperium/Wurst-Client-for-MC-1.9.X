@@ -1,5 +1,5 @@
 /*
- * Copyright © 2016 | Alexander01998 | All rights reserved.
+ * Copyright Â© 2016 | Alexander01998 | All rights reserved.
  * 
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -31,8 +31,9 @@ public class BoatFlyMod extends Mod implements UpdateListener
 		if(!mc.thePlayer.isRiding())
 			return;
 		
+		// Might want to add a option for boats gliding down (motionY -0.035), but for now I will leave this as is.
 		mc.thePlayer.getRidingEntity().motionY =
-			mc.gameSettings.keyBindJump.pressed ? 0.3 : 0;
+			mc.gameSettings.keyBindJump.pressed ? 0.3 : -0.035;
 	}
 	
 	@Override
