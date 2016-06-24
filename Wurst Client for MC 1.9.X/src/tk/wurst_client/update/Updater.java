@@ -1,5 +1,5 @@
 /*
- * Copyright © 2014 - 2016 | Wurst-Imperium | All rights reserved.
+ * Copyright Â© 2014 - 2016 | Wurst-Imperium | All rights reserved.
  * 
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -221,6 +221,7 @@ public class Updater
 											"https://api.github.com/repos/Wurst-Imperium/Wurst-Client-for-MC-1.9.X/releases/latest")
 											.openStream())).getAsJsonObject()
 								.get("id").getAsString();
+					if(!Minecraft.isRunningOnMac){
 					ProcessBuilder pb =
 						new ProcessBuilder("cmd.exe", "/c", "java", "-jar",
 							updater.getAbsolutePath(), "update", id, updater
@@ -228,6 +229,10 @@ public class Updater
 								.replace(" ", "%20"));
 					pb.redirectErrorStream(true);
 					Process p = pb.start();
+					}else{
+						String[] args = new String[] {"/bin/bash", "-c", "java", "-jar", "~/Library/Application\ Support/minecraft/versions/1.9.X\ with\ Wurst\ Client/Wurst-updater.jar", "update", id, "~/Library/Application%20Support/minecraft/versions/1.9.X%20with%20Wurst%20Client/"};
+						Process p = new ProcessBuilder(args).start();
+					}
 					BufferedReader pInput =
 						new BufferedReader(new InputStreamReader(p
 							.getInputStream()));
