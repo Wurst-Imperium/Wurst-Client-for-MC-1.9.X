@@ -1,5 +1,5 @@
 /*
- * Copyright © 2014 - 2016 | Wurst-Imperium | All rights reserved.
+ * Copyright Â© 2014 - 2016 | Wurst-Imperium | All rights reserved.
  * 
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -11,7 +11,7 @@ import tk.wurst_client.commands.Cmd.Info;
 import tk.wurst_client.events.ChatInputEvent;
 import tk.wurst_client.events.listeners.ChatInputListener;
 
-@Info(description = "Annoys a player by repeating everything he says.",
+@Info(description = "Annoys a player by repeating everything they say.",
 	name = "annoy",
 	syntax = {"[<player>]"},
 	help = "Commands/annoy")
@@ -53,7 +53,7 @@ public class AnnoyCmd extends Cmd implements ChatInputListener
 	public void onReceivedMessage(ChatInputEvent event)
 	{
 		String message = new String(event.getComponent().getUnformattedText());
-		if(message.startsWith("§c[§6Wurst§c]§f "))
+		if(message.startsWith("Â§c[Â§6WurstÂ§c]Â§f "))
 			return;
 		if(message.startsWith("<" + name + ">") || message.contains(name + ">"))
 		{
