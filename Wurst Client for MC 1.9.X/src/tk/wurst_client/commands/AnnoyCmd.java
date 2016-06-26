@@ -1,5 +1,5 @@
 /*
- * Copyright Â© 2014 - 2016 | Wurst-Imperium | All rights reserved.
+ * Copyright © 2014 - 2016 | Wurst-Imperium | All rights reserved.
  * 
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -53,7 +53,7 @@ public class AnnoyCmd extends Cmd implements ChatInputListener
 	public void onReceivedMessage(ChatInputEvent event)
 	{
 		String message = new String(event.getComponent().getUnformattedText());
-		if(message.startsWith("Â§c[Â§6WurstÂ§c]Â§f "))
+		if(message.startsWith("§c[§6Wurst§c]§f "))
 			return;
 		if(message.startsWith("<" + name + ">") || message.contains(name + ">"))
 		{
