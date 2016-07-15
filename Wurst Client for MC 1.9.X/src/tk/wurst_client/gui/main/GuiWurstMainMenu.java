@@ -52,9 +52,8 @@ public class GuiWurstMainMenu extends GuiMainMenu
 	private String newsTicker;
 	private int newsWidth;
 	
-	private String noticeText = "";// =
-									// "Wurst for Minecraft 1.9 is now available.";
-	private String noticeLink = "https://www.wurst-client.tk/minecraft-1-9/";
+	private String noticeText = "Wurst for Minecraft 1.10 is now available.";
+	private String noticeLink = "https://www.wurst-client.tk/news/2016-07-15-Wurst-4.0-for-Minecraft-1.10";
 	
 	private int noticeWidth2;
 	private int noticeWidth1;
