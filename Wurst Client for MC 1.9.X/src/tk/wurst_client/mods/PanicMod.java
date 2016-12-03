@@ -1,5 +1,5 @@
 /*
- * Copyright © 2014 - 2016 | Wurst-Imperium | All rights reserved.
+ * Copyright Â© 2014 - 2016 | Wurst-Imperium | All rights reserved.
  * 
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -7,6 +7,7 @@
  */
 package tk.wurst_client.mods;
 
+import java.util.ArrayList;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.mods.Mod.Bypasses;
 import tk.wurst_client.mods.Mod.Category;
@@ -27,17 +28,27 @@ public class PanicMod extends Mod implements UpdateListener
 		wurst.events.add(UpdateListener.class, this);
 	}
 	
+	List<Mod> panicedMods = new ArrayList<>();
+	
 	@Override
 	public void onUpdate()
 	{
 		for(Mod mod : wurst.mods.getAllMods())
 			if(mod.getCategory() != Category.HIDDEN && mod.isEnabled())
+			{
 				mod.setEnabled(false);
+				panicedMods.add(mod);
+			}
 	}
 	
 	@Override
 	public void onDisable()
 	{
+		for(Mod mod : panicedMods)
+		{
+			mod.setEnabled(true);
+		}
+		panicedMods.clear();
 		wurst.events.remove(UpdateListener.class, this);
 	}
 }
