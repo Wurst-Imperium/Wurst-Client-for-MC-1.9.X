@@ -1,22 +1,35 @@
-# Wurst Client ![downloads counter](https://drive.google.com/uc?id=0B2YeSS9tm5zLMF9NWjNZYnNqSTA) ![Minecraft versions](https://img.shields.io/badge/Minecraft_versions-1.9-brightgreen.svg)
+# Wurst Client ![downloads counter](https://drive.google.com/uc?id=0B2YeSS9tm5zLMF9NWjNZYnNqSTA)
 
-[![download wurst](https://cloud.githubusercontent.com/assets/10100202/13494358/f8ba7db8-e143-11e5-8d0b-1d059cf4533a.png)](https://www.wurst-client.tk/download/)
+## About
 
-## :scroll: Changelog
-Wurst gets updated weekly with new features, improvements and bugfixes. Every time we release a new update, we also make a video and a blog post showcasing the latest changes.
+Wurst is a so-called "hacked client" for Minecraft - basically a mod that allows you to cheat. You can fly on servers, see ores through walls and much more.
 
-Be sure to check out the [Update Video & Changelog](https://www.wurst-client.tk/changelog/) of the latest Wurst update.
+## Installation
 
-## :mortar_board: How to Install
-New to Minecraft hacked clients? No problem! We made a step-by-step tutorial showing you exactly how install this client. You can even choose between a video tutorial and text tutorial with pictures. [Learn More<br><br>![How to Install the Wurst Client for Minecraft](https://cloud.githubusercontent.com/assets/10100202/13548089/f7c945d8-e2e7-11e5-8309-4cc48c206ed5.jpg)](https://www.wurst-client.tk/wiki/Installation/)
+### For Users
 
-## :book: Tutorials
-We are working on making Wurst the most user-friendly client ever by adding more and more tutorials to our [Wurst Wiki](https://www.wurst-client.tk/wiki/Main_Page/). Here are some of the most popular tutorials that we have made so far:
+If you just want to use Wurst, [download it](https://www.wurstclient.net/download/) from the official website and [install it](https://www.wurstclient.net/how-to-install/) on your computer.
 
-|Session Stealer|AuthMe Cracker|Server Finder|Book Hack|
-|:---:|:---:|:---:|:---:|
-|[![Session Stealer](https://cloud.githubusercontent.com/assets/10100202/13506070/89b410c6-e17c-11e5-914f-7b3ef1f72704.jpg)](https://www.wurst-client.tk/wiki/Special_Features/Force_OP_(Session_Stealer)/)|[![AuthMe Cracker](https://cloud.githubusercontent.com/assets/10100202/13506071/89b9ea50-e17c-11e5-9c92-bf47f6bbfbcb.jpg)](https://www.wurst-client.tk/wiki/Mods/Force_OP_(AuthMeCracker)/)|[![Server Finder](https://cloud.githubusercontent.com/assets/10100202/13506069/89a48368-e17c-11e5-9984-cb3d8512db87.jpg)](https://www.wurst-client.tk/wiki/Special_Features/Server_Finder/)|[![Book Hack](https://cloud.githubusercontent.com/assets/10100202/13506068/89864b6e-e17c-11e5-963b-02b3c355aa2a.jpg)](https://www.wurst-client.tk/wiki/Special_Features/Force_OP_(BookHack)/)|
-|[Read More](https://www.wurst-client.tk/wiki/Special_Features/Force_OP_(Session_Stealer)/)|[Read More](https://www.wurst-client.tk/wiki/Mods/Force_OP_(AuthMeCracker)/)|[Read More](https://www.wurst-client.tk/wiki/Special_Features/Server_Finder/)|[Read More](https://www.wurst-client.tk/wiki/Special_Features/Force_OP_(BookHack)/)|
+### For Developers (Windows only)
 
-## :octocat: Contributing
-You can help us to improve Wurst by submitting a Pull Request on our GitHub page. Read our [Contributing Tutorial](https://www.wurst-client.tk/wiki/Contributing/part1/) to learn how get it all set up.
+If you want to edit Wurst and submit Pull Requests, follow these steps:
+
+1. Fork and clone this repository.
+
+2. Import it to Eclipse (Import... > Existing Projects into Workspace).
+
+3. Decompile Minecraft using the [MCP](http://www.modcoderpack.com/website/releases), create a folder named `mc` next to `src` and put the source code in there.
+
+4. Go to the [`patch` folder](/patch) and run `initialize.bat` (requires git to be installed and added to the path so that the script can use it).
+
+5. Create a `lib` folder next to `src`, then add Minecraft's libraries to it.
+
+All errors should have disappeared by now and you should be able to launch Wurst from the Eclipse project. If not, something is wrong.
+
+## Contributing
+
+Pull Requests are welcome! Just make sure that you submit a separate one for each new feature or bugfix that you make. You know, things get a bit messy otherwise...
+
+## License
+
+The Wurst Client is licensed under the [Mozilla Public License 2.0](/LICENSE.txt).
