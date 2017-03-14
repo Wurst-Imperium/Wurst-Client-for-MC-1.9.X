@@ -17,6 +17,10 @@ import java.lang.reflect.Field;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.wurstclient.WurstClient;
+import net.wurstclient.mods.Mod;
+import net.wurstclient.mods.ModManager;
+import net.wurstclient.mods.Mod.Category;
 
 import org.darkstorm.minecraft.gui.component.Button;
 import org.darkstorm.minecraft.gui.component.Component;
@@ -25,11 +29,6 @@ import org.darkstorm.minecraft.gui.theme.AbstractComponentUI;
 import org.darkstorm.minecraft.gui.util.GuiManagerDisplayScreen;
 import org.darkstorm.minecraft.gui.util.RenderUtil;
 import org.lwjgl.input.Mouse;
-
-import tk.wurst_client.WurstClient;
-import tk.wurst_client.mods.Mod;
-import tk.wurst_client.mods.Mod.Category;
-import tk.wurst_client.mods.ModManager;
 
 public class WurstButtonUI extends AbstractComponentUI<Button>
 {

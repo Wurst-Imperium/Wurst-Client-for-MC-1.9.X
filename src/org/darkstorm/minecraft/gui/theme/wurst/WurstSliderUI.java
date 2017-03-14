@@ -15,14 +15,13 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 import net.minecraft.client.gui.FontRenderer;
+import net.wurstclient.WurstClient;
 
 import org.darkstorm.minecraft.gui.component.Container;
 import org.darkstorm.minecraft.gui.component.Slider;
 import org.darkstorm.minecraft.gui.theme.AbstractComponentUI;
 import org.darkstorm.minecraft.gui.util.RenderUtil;
 import org.lwjgl.input.Mouse;
-
-import tk.wurst_client.WurstClient;
 
 public class WurstSliderUI extends AbstractComponentUI<Slider>
 {

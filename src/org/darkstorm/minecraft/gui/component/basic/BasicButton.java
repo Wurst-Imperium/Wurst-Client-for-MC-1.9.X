@@ -6,7 +6,7 @@ import org.darkstorm.minecraft.gui.component.ButtonGroup;
 import org.darkstorm.minecraft.gui.listener.ButtonListener;
 import org.darkstorm.minecraft.gui.listener.ComponentListener;
 
-import tk.wurst_client.mods.Mod;
+import net.wurstclient.mods.Mod;
 
 public class BasicButton extends AbstractComponent implements Button
 {

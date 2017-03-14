@@ -8,10 +8,9 @@
 package org.darkstorm.minecraft.gui.theme.wurst;
 
 import net.minecraft.client.gui.FontRenderer;
+import net.wurstclient.font.Fonts;
 
 import org.darkstorm.minecraft.gui.theme.AbstractTheme;
-
-import tk.wurst_client.font.Fonts;
 
 public class WurstTheme extends AbstractTheme
 {

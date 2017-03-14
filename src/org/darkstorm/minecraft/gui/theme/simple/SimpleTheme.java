@@ -3,10 +3,9 @@ package org.darkstorm.minecraft.gui.theme.simple;
 import java.awt.Font;
 
 import net.minecraft.client.gui.FontRenderer;
+import net.wurstclient.font.UnicodeFontRenderer;
 
 import org.darkstorm.minecraft.gui.theme.AbstractTheme;
-
-import tk.wurst_client.font.UnicodeFontRenderer;
 
 public class SimpleTheme extends AbstractTheme
 {

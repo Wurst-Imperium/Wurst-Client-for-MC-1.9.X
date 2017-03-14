@@ -15,6 +15,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 import net.minecraft.client.Minecraft;
+import net.wurstclient.WurstClient;
 
 import org.darkstorm.minecraft.gui.component.ComboBox;
 import org.darkstorm.minecraft.gui.component.Component;
@@ -22,8 +23,6 @@ import org.darkstorm.minecraft.gui.theme.AbstractComponentUI;
 import org.darkstorm.minecraft.gui.util.GuiManagerDisplayScreen;
 import org.darkstorm.minecraft.gui.util.RenderUtil;
 import org.lwjgl.input.Mouse;
-
-import tk.wurst_client.WurstClient;
 
 public class WurstComboBoxUI extends AbstractComponentUI<ComboBox>
 {
