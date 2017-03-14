@@ -1,6 +1,6 @@
-From e5e3bb1820e4caa187114079800167636a1efd0c Mon Sep 17 00:00:00 2001
+From 9111f2322b585e89ee4f767c59efd05ca46ac39f Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Tue, 14 Mar 2017 15:02:16 +0100
+Date: Tue, 14 Mar 2017 15:29:29 +0100
 Subject: [PATCH] mod
 
 ---
@@ -52,7 +52,7 @@ Subject: [PATCH] mod
  net/minecraft/client/renderer/entity/Render.java   |  47 ++++-
  .../client/renderer/entity/RenderManager.java      |   6 +-
  .../client/renderer/entity/RenderPlayer.java       |   2 +-
- net/minecraft/client/resources/SkinManager.java    |   6 +
+ net/minecraft/client/resources/SkinManager.java    |  22 ++-
  net/minecraft/client/settings/GameSettings.java    |  14 +-
  net/minecraft/client/settings/KeyBinding.java      |   2 +-
  net/minecraft/command/CommandEffect.java           |   2 +-
@@ -85,7 +85,7 @@ Subject: [PATCH] mod
  .../management/PlayerInteractionManager.java       |   6 +-
  net/minecraft/tileentity/TileEntitySign.java       |   2 +-
  net/minecraft/util/Timer.java                      |   6 +
- 81 files changed, 1236 insertions(+), 400 deletions(-)
+ 81 files changed, 1244 insertions(+), 408 deletions(-)
 
 diff --git a/Start.java b/Start.java
 index ae0025f..078afa5 100644
@@ -3190,21 +3190,37 @@ index 36fa6fd..07bb576 100644
              super.rotateCorpse(bat, p_77043_2_, p_77043_3_, partialTicks);
              float f = (float)bat.func_184599_cB() + partialTicks;
 diff --git a/net/minecraft/client/resources/SkinManager.java b/net/minecraft/client/resources/SkinManager.java
-index 65b26b7..37ecf61 100644
+index 65b26b7..1340413 100644
 --- a/net/minecraft/client/resources/SkinManager.java
 +++ b/net/minecraft/client/resources/SkinManager.java
-@@ -9,6 +9,7 @@ import com.mojang.authlib.minecraft.InsecureTextureException;
- import com.mojang.authlib.minecraft.MinecraftProfileTexture;
- import com.mojang.authlib.minecraft.MinecraftSessionService;
- import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
+@@ -1,5 +1,13 @@
+ package net.minecraft.client.resources;
+ 
++import java.awt.image.BufferedImage;
++import java.io.File;
++import java.util.Map;
++import java.util.concurrent.ExecutorService;
++import java.util.concurrent.LinkedBlockingQueue;
++import java.util.concurrent.ThreadPoolExecutor;
++import java.util.concurrent.TimeUnit;
 +
- import java.awt.image.BufferedImage;
- import java.io.File;
- import java.util.Map;
-@@ -16,6 +17,7 @@ import java.util.concurrent.ExecutorService;
- import java.util.concurrent.LinkedBlockingQueue;
- import java.util.concurrent.ThreadPoolExecutor;
- import java.util.concurrent.TimeUnit;
+ import com.google.common.cache.CacheBuilder;
+ import com.google.common.cache.CacheLoader;
+ import com.google.common.cache.LoadingCache;
+@@ -7,15 +15,9 @@ import com.google.common.collect.Maps;
+ import com.mojang.authlib.GameProfile;
+ import com.mojang.authlib.minecraft.InsecureTextureException;
+ import com.mojang.authlib.minecraft.MinecraftProfileTexture;
+-import com.mojang.authlib.minecraft.MinecraftSessionService;
+ import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
+-import java.awt.image.BufferedImage;
+-import java.io.File;
+-import java.util.Map;
+-import java.util.concurrent.ExecutorService;
+-import java.util.concurrent.LinkedBlockingQueue;
+-import java.util.concurrent.ThreadPoolExecutor;
+-import java.util.concurrent.TimeUnit;
++import com.mojang.authlib.minecraft.MinecraftSessionService;
 +
  import net.minecraft.client.Minecraft;
  import net.minecraft.client.renderer.IImageBuffer;
@@ -3213,7 +3229,7 @@ index 65b26b7..37ecf61 100644
  import net.minecraft.client.renderer.texture.ITextureObject;
  import net.minecraft.client.renderer.texture.TextureManager;
  import net.minecraft.util.ResourceLocation;
-+import net.wurstclient.capes.WurstCapes;
++import net.wurstclient.hooks.CapesHook;
  
  public class SkinManager
  {
@@ -3222,7 +3238,7 @@ index 65b26b7..37ecf61 100644
                  }
  
 +				// TODO: Client
-+                WurstCapes.checkCape(profile, map, skinAvailableCallback);
++				CapesHook.checkCape(profile, map);
 +
                  Minecraft.getMinecraft().addScheduledTask(new Runnable()
                  {
