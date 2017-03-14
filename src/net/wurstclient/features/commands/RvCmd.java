@@ -17,7 +17,7 @@ import net.wurstclient.features.mods.RemoteViewMod;
 public class RvCmd extends Cmd
 {
 	@Override
-	public void execute(String[] args) throws Error
+	public void execute(String[] args) throws CmdError
 	{
 		if(args.length == 0)
 		{

@@ -16,7 +16,7 @@ import net.wurstclient.features.commands.Cmd.Info;
 public class GmCmd extends Cmd
 {
 	@Override
-	public void execute(String[] args) throws Error
+	public void execute(String[] args) throws CmdError
 	{
 		if(args.length != 1)
 			syntaxError();

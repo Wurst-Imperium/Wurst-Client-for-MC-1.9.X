@@ -24,7 +24,7 @@ import net.wurstclient.utils.MiscUtils;
 public class ModifyCmd extends Cmd
 {
 	@Override
-	public void execute(String[] args) throws Error
+	public void execute(String[] args) throws CmdError
 	{
 		EntityPlayerSP player = mc.thePlayer;
 		

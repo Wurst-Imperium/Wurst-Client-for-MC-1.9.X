@@ -22,7 +22,7 @@ public class InvseeCmd extends Cmd implements RenderListener
 	private String playerName;
 	
 	@Override
-	public void execute(String[] args) throws Error
+	public void execute(String[] args) throws CmdError
 	{
 		if(args.length != 1)
 			syntaxError();

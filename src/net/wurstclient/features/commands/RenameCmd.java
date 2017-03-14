@@ -18,7 +18,7 @@ import net.wurstclient.utils.ChatUtils;
 public class RenameCmd extends Cmd
 {
 	@Override
-	public void execute(String[] args) throws Error
+	public void execute(String[] args) throws CmdError
 	{
 		if(!mc.thePlayer.capabilities.isCreativeMode)
 			error("Creative mode only.");

@@ -40,7 +40,7 @@ public class TacoCmd extends Cmd implements GUIRenderListener, UpdateListener
 	private boolean toggled;
 	
 	@Override
-	public void execute(String[] args) throws Error
+	public void execute(String[] args) throws CmdError
 	{
 		if(args.length != 0)
 			syntaxError("Tacos don't need arguments!");

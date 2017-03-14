@@ -21,7 +21,7 @@ import net.wurstclient.settings.Setting;
 public class SetModeCmd extends Cmd
 {
 	@Override
-	public void execute(String[] args) throws Error
+	public void execute(String[] args) throws CmdError
 	{
 		if(args.length != 3)
 			syntaxError();

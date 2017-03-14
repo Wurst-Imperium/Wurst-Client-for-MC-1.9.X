@@ -25,7 +25,7 @@ import net.wurstclient.utils.MiscUtils;
 public class XRayCmd extends Cmd
 {
 	@Override
-	public void execute(String[] args) throws Error
+	public void execute(String[] args) throws CmdError
 	{
 		if(args.length == 0)
 			syntaxError();

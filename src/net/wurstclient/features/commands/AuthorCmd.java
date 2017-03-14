@@ -19,7 +19,7 @@ import net.wurstclient.features.commands.Cmd.Info;
 public class AuthorCmd extends Cmd
 {
 	@Override
-	public void execute(String[] args) throws Cmd.Error
+	public void execute(String[] args) throws Cmd.CmdError
 	{
 		if(args.length == 0)
 			syntaxError();

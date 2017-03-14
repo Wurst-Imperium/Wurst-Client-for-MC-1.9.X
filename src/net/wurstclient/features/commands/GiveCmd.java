@@ -85,7 +85,7 @@ public class GiveCmd extends Cmd
 					+ "{Id:3, Amplifier:127, Duration:2147483647}"
 					+ "], display:{Name:§6Griefer Potion}, HideFlags:63}")};
 	
-	private int parseAmount(Item item, String input) throws Error
+	private int parseAmount(Item item, String input) throws CmdError
 	{
 		if(!MiscUtils.isInteger(input))
 			syntaxError("Amount must be a number.");
@@ -98,7 +98,7 @@ public class GiveCmd extends Cmd
 	}
 	
 	@Override
-	public void execute(String[] args) throws Error
+	public void execute(String[] args) throws CmdError
 	{
 		// validate input
 		if(args.length < 1)

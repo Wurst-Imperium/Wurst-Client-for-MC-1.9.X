@@ -25,7 +25,8 @@ import net.wurstclient.utils.MiscUtils;
 public abstract class Cmd implements Feature
 {
 	private String name = getClass().getAnnotation(Info.class).name();
-	private String description = getClass().getAnnotation(Info.class).description();
+	private String description =
+		getClass().getAnnotation(Info.class).description();
 	private String[] syntax = getClass().getAnnotation(Info.class).syntax();
 	private String tags = getClass().getAnnotation(Info.class).tags();
 	private String help = getClass().getAnnotation(Info.class).help();
@@ -47,27 +48,27 @@ public abstract class Cmd implements Feature
 		String help() default "";
 	}
 	
-	public class SyntaxError extends Error
+	public class CmdSyntaxError extends CmdError
 	{
-		public SyntaxError()
+		public CmdSyntaxError()
 		{
 			super();
 		}
 		
-		public SyntaxError(String message)
+		public CmdSyntaxError(String message)
 		{
 			super(message);
 		}
 	}
 	
-	public class Error extends Throwable
+	public class CmdError extends Throwable
 	{
-		public Error()
+		public CmdError()
 		{
 			super();
 		}
 		
-		public Error(String message)
+		public CmdError(String message)
 		{
 			super(message);
 		}
@@ -144,7 +145,7 @@ public abstract class Cmd implements Feature
 	
 	@Override
 	public void doPrimaryAction()
-	{	
+	{
 		
 	}
 	
@@ -179,7 +180,7 @@ public abstract class Cmd implements Feature
 			ChatUtils.message(line);
 	}
 	
-	protected final int[] argsToPos(String... args) throws Cmd.Error
+	protected final int[] argsToPos(String... args) throws Cmd.CmdError
 	{
 		int[] pos = new int[3];
 		if(args.length == 3)
@@ -195,9 +196,8 @@ public abstract class Cmd implements Feature
 					if(args[i].equals("~"))
 						pos[i] = playerPos[i];
 					else if(MiscUtils.isInteger(args[i].substring(1)))
-						pos[i] =
-							playerPos[i]
-								+ Integer.parseInt(args[i].substring(1));
+						pos[i] = playerPos[i]
+							+ Integer.parseInt(args[i].substring(1));
 					else
 						syntaxError("Invalid coordinates.");
 				else
@@ -215,20 +215,20 @@ public abstract class Cmd implements Feature
 		return pos;
 	}
 	
-	protected final void syntaxError() throws SyntaxError
+	protected final void syntaxError() throws CmdSyntaxError
 	{
-		throw new SyntaxError();
+		throw new CmdSyntaxError();
 	}
 	
-	protected final void syntaxError(String message) throws SyntaxError
+	protected final void syntaxError(String message) throws CmdSyntaxError
 	{
-		throw new SyntaxError(message);
+		throw new CmdSyntaxError(message);
 	}
 	
-	protected final void error(String message) throws Error
+	protected final void error(String message) throws CmdError
 	{
-		throw new Error(message);
+		throw new CmdError(message);
 	}
 	
-	public abstract void execute(String[] args) throws Cmd.Error;
+	public abstract void execute(String[] args) throws CmdError;
 }

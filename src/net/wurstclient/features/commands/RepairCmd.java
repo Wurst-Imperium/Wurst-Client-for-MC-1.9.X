@@ -19,7 +19,7 @@ import net.wurstclient.events.ChatOutputEvent;
 public class RepairCmd extends Cmd
 {
 	@Override
-	public void execute(String[] args) throws Error
+	public void execute(String[] args) throws CmdError
 	{
 		if(args.length > 0)
 			syntaxError();

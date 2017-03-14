@@ -21,7 +21,7 @@ import net.wurstclient.utils.ChatUtils;
 public class LeaveCmd extends Cmd
 {
 	@Override
-	public void execute(String[] args) throws Error
+	public void execute(String[] args) throws CmdError
 	{
 		if(args.length > 2)
 			syntaxError();
@@ -87,7 +87,7 @@ public class LeaveCmd extends Cmd
 		}
 	}
 	
-	private int parseMode(String input) throws SyntaxError
+	private int parseMode(String input) throws CmdSyntaxError
 	{
 		// search mode by name
 		String[] modeNames = wurst.mods.autoLeaveMod.getModes();

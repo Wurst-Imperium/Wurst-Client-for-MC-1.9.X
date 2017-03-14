@@ -23,7 +23,7 @@ import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.util.text.event.ClickEvent.Action;
 import net.wurstclient.events.ChatOutputEvent;
 import net.wurstclient.events.listeners.ChatOutputListener;
-import net.wurstclient.features.commands.Cmd.SyntaxError;
+import net.wurstclient.features.commands.Cmd.CmdSyntaxError;
 import net.wurstclient.utils.ChatUtils;
 
 public class CmdManager implements ChatOutputListener
@@ -120,7 +120,7 @@ public class CmdManager implements ChatOutputListener
 				try
 				{
 					cmd.execute(args);
-				}catch(SyntaxError e)
+				}catch(CmdSyntaxError e)
 				{
 					if(e.getMessage() != null)
 						ChatUtils.message("§4Syntax error:§r "
@@ -128,7 +128,7 @@ public class CmdManager implements ChatOutputListener
 					else
 						ChatUtils.message("§4Syntax error!§r");
 					cmd.printSyntax();
-				}catch(Cmd.Error e)
+				}catch(Cmd.CmdError e)
 				{
 					ChatUtils.error(e.getMessage());
 				}catch(Throwable e)

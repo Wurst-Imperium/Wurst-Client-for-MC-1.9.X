@@ -19,7 +19,7 @@ import net.wurstclient.utils.ChatUtils;
 public class GoToCmd extends Cmd
 {
 	@Override
-	public void execute(String[] args) throws Error
+	public void execute(String[] args) throws CmdError
 	{
 		int[] pos = argsToPos(args);
 		if(Math.abs(pos[0] - mc.thePlayer.posX) > 256

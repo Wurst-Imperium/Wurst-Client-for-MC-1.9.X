@@ -17,7 +17,7 @@ import net.wurstclient.features.commands.Cmd.Info;
 public class NothingCmd extends Cmd
 {
 	@Override
-	public void execute(String[] args) throws Error
+	public void execute(String[] args) throws CmdError
 	{	
 		
 	}

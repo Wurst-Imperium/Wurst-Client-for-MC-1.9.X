@@ -25,7 +25,7 @@ public class PathCmd extends Cmd implements RenderListener
 	private boolean enabled;
 	
 	@Override
-	public void execute(String[] args) throws Error
+	public void execute(String[] args) throws CmdError
 	{
 		path = null;
 		if(enabled)

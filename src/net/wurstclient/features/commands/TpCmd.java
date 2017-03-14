@@ -16,7 +16,7 @@ import net.wurstclient.features.commands.Cmd.Info;
 public class TpCmd extends Cmd
 {
 	@Override
-	public void execute(String[] args) throws Error
+	public void execute(String[] args) throws CmdError
 	{
 		int[] pos = argsToPos(args);
 		mc.thePlayer.setPosition(pos[0], pos[1], pos[2]);
