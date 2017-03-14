@@ -14,7 +14,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.wurstclient.WurstClient;
-import net.wurstclient.navigator.settings.ColorsSetting;
+import net.wurstclient.settings.ColorsSetting;
 
 import org.lwjgl.input.Keyboard;
 

@@ -29,9 +29,9 @@ import net.wurstclient.features.mods.*;
 import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.gui.alts.GuiAltList;
 import net.wurstclient.navigator.Navigator;
-import net.wurstclient.navigator.settings.NavigatorSetting;
 import net.wurstclient.options.FriendsList;
 import net.wurstclient.options.OptionsManager;
+import net.wurstclient.settings.Setting;
 import net.wurstclient.utils.JsonUtils;
 import net.wurstclient.utils.XRayUtils;
 
@@ -277,7 +277,7 @@ public class FileManager
 					if(!item.getSettings().isEmpty())
 					{
 						JsonObject jsonSettings = new JsonObject();
-						for(NavigatorSetting setting : item.getSettings())
+						for(Setting setting : item.getSettings())
 							try
 							{
 								setting.save(jsonSettings);
@@ -331,7 +331,7 @@ public class FileManager
 					{
 						JsonObject jsonSettings =
 							jsonFeature.get("settings").getAsJsonObject();
-						for(NavigatorSetting setting : item.getSettings())
+						for(Setting setting : item.getSettings())
 							try
 							{
 								setting.load(jsonSettings);

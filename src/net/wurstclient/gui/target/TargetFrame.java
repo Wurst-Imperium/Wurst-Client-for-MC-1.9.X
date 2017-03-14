@@ -9,8 +9,8 @@ package net.wurstclient.gui.target;
 
 import net.minecraft.client.Minecraft;
 import net.wurstclient.WurstClient;
-import net.wurstclient.navigator.settings.CheckboxSetting;
-import net.wurstclient.navigator.settings.NavigatorSetting;
+import net.wurstclient.settings.CheckboxSetting;
+import net.wurstclient.settings.Setting;
 
 import org.darkstorm.minecraft.gui.component.Button;
 import org.darkstorm.minecraft.gui.component.basic.BasicButton;
@@ -34,7 +34,7 @@ public class TargetFrame extends BasicFrame
 		
 		WurstClient wurst = WurstClient.INSTANCE;
 		
-		for(NavigatorSetting setting : wurst.special.targetSpf.getSettings())
+		for(Setting setting : wurst.special.targetSpf.getSettings())
 		{
 			if(!(setting instanceof CheckboxSetting))
 				continue;

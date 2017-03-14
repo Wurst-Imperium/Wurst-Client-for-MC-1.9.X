@@ -25,9 +25,9 @@ import net.wurstclient.WurstClient;
 import net.wurstclient.features.Feature;
 import net.wurstclient.font.Fonts;
 import net.wurstclient.navigator.PossibleKeybind;
-import net.wurstclient.navigator.settings.CheckboxSetting;
-import net.wurstclient.navigator.settings.NavigatorSetting;
-import net.wurstclient.navigator.settings.SliderSetting;
+import net.wurstclient.settings.CheckboxSetting;
+import net.wurstclient.settings.Setting;
+import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.utils.MiscUtils;
 
 import org.darkstorm.minecraft.gui.util.RenderUtil;
@@ -110,13 +110,13 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 		Rectangle area = new Rectangle(middleX - 154, 60, 308, height - 103);
 		
 		// settings
-		ArrayList<NavigatorSetting> settings = item.getSettings();
+		ArrayList<Setting> settings = item.getSettings();
 		if(!settings.isEmpty())
 		{
 			text += "\n\nSettings:";
 			sliders.clear();
 			checkboxes.clear();
-			for(NavigatorSetting setting : settings)
+			for(Setting setting : settings)
 				setting.addToFeatureScreen(this);
 		}
 		

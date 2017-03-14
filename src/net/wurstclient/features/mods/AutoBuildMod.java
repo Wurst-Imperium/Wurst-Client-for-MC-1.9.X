@@ -20,7 +20,7 @@ import net.wurstclient.features.mods.Mod.Bypasses;
 import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.features.special_features.YesCheatSpf.BypassLevel;
-import net.wurstclient.navigator.settings.ModeSetting;
+import net.wurstclient.settings.ModeSetting;
 import net.wurstclient.utils.BuildUtils;
 import net.wurstclient.utils.RenderUtils;
 

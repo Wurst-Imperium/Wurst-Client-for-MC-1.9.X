@@ -10,8 +10,8 @@ package net.wurstclient.features.commands;
 import java.util.Iterator;
 
 import net.wurstclient.features.Feature;
-import net.wurstclient.navigator.settings.NavigatorSetting;
-import net.wurstclient.navigator.settings.SliderSetting;
+import net.wurstclient.settings.Setting;
+import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.utils.MiscUtils;
 
 @Cmd.Info(description = "Changes a slider setting of a feature. Allows you to\n"
@@ -43,9 +43,9 @@ public class SetSliderCmd extends Cmd
 			error("A feature named \"" + featureName + "\" could not be found.");
 		
 		// find setting
-		NavigatorSetting setting = null;
+		Setting setting = null;
 		String settingName = args[1].replace("_", " ");
-		for(NavigatorSetting featureSetting : feature.getSettings())
+		for(Setting featureSetting : feature.getSettings())
 		{
 			if(featureSetting.getName().equalsIgnoreCase(settingName))
 			{

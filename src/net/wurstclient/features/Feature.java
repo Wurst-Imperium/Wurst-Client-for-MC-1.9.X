@@ -10,7 +10,7 @@ package net.wurstclient.features;
 import java.util.ArrayList;
 
 import net.wurstclient.navigator.PossibleKeybind;
-import net.wurstclient.navigator.settings.NavigatorSetting;
+import net.wurstclient.settings.Setting;
 
 public interface Feature
 {
@@ -26,7 +26,7 @@ public interface Feature
 	
 	public String getTags();
 	
-	public ArrayList<NavigatorSetting> getSettings();
+	public ArrayList<Setting> getSettings();
 	
 	public ArrayList<PossibleKeybind> getPossibleKeybinds();
 	

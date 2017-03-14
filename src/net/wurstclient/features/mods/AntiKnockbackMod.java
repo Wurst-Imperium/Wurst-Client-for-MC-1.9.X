@@ -7,8 +7,8 @@
  */
 package net.wurstclient.features.mods;
 
-import net.wurstclient.navigator.settings.SliderSetting;
-import net.wurstclient.navigator.settings.SliderSetting.ValueDisplay;
+import net.wurstclient.settings.SliderSetting;
+import net.wurstclient.settings.SliderSetting.ValueDisplay;
 
 @Mod.Info(category = Mod.Category.COMBAT,
 	description = "Protects you from getting pushed by players, mobs and\n"

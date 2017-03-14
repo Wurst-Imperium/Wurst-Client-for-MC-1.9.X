@@ -17,7 +17,7 @@ import net.minecraft.util.math.BlockPos;
 import net.wurstclient.WurstClient;
 import net.wurstclient.features.Feature;
 import net.wurstclient.navigator.PossibleKeybind;
-import net.wurstclient.navigator.settings.NavigatorSetting;
+import net.wurstclient.settings.Setting;
 import net.wurstclient.utils.EntityUtils;
 import net.wurstclient.utils.MiscUtils;
 
@@ -124,9 +124,9 @@ public abstract class Cmd implements Feature
 	}
 	
 	@Override
-	public final ArrayList<NavigatorSetting> getSettings()
+	public final ArrayList<Setting> getSettings()
 	{
-		return new ArrayList<NavigatorSetting>();
+		return new ArrayList<Setting>();
 	}
 	
 	@Override

@@ -20,8 +20,8 @@ import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
 import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
-import net.wurstclient.navigator.settings.SliderSetting;
-import net.wurstclient.navigator.settings.SliderSetting.ValueDisplay;
+import net.wurstclient.settings.SliderSetting;
+import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.utils.BlockUtils;
 
 @Info(category = Category.BLOCKS,

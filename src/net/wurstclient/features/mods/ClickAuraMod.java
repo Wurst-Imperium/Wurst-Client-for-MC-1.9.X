@@ -13,9 +13,9 @@ import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
 import net.wurstclient.features.mods.Mod.Bypasses;
 import net.wurstclient.features.special_features.YesCheatSpf.BypassLevel;
-import net.wurstclient.navigator.settings.CheckboxSetting;
-import net.wurstclient.navigator.settings.SliderSetting;
-import net.wurstclient.navigator.settings.SliderSetting.ValueDisplay;
+import net.wurstclient.settings.CheckboxSetting;
+import net.wurstclient.settings.SliderSetting;
+import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.utils.EntityUtils;
 
 @Mod.Info(category = Mod.Category.COMBAT,

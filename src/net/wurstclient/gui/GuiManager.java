@@ -49,7 +49,7 @@ import net.wurstclient.features.mods.AutoBuildMod;
 import net.wurstclient.features.mods.Mod;
 import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.gui.target.TargetFrame;
-import net.wurstclient.navigator.settings.NavigatorSetting;
+import net.wurstclient.settings.Setting;
 
 import org.darkstorm.minecraft.gui.AbstractGuiManager;
 import org.darkstorm.minecraft.gui.component.Button;
@@ -160,7 +160,7 @@ public final class GuiManager extends AbstractGuiManager
 				}
 			});
 			frame.add(button);
-			for(NavigatorSetting setting : mod.getSettings())
+			for(Setting setting : mod.getSettings())
 				if(setting instanceof BasicSlider)
 				{
 					BasicSlider slider = (BasicSlider)setting;
