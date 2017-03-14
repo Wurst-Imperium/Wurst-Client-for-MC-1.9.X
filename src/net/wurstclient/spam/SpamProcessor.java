@@ -14,8 +14,8 @@ import javax.swing.JOptionPane;
 
 import net.minecraft.client.Minecraft;
 import net.wurstclient.WurstClient;
+import net.wurstclient.features.mods.SpammerMod;
 import net.wurstclient.hooks.FrameHook;
-import net.wurstclient.mods.SpammerMod;
 import net.wurstclient.spam.exceptions.InvalidVariableException;
 import net.wurstclient.spam.exceptions.SpamException;
 import net.wurstclient.spam.exceptions.UnreadableTagException;

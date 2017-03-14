@@ -19,8 +19,8 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.util.ResourceLocation;
 import net.wurstclient.WurstClient;
 import net.wurstclient.events.GUIRenderEvent;
+import net.wurstclient.features.mods.Mod;
 import net.wurstclient.font.Fonts;
-import net.wurstclient.mods.Mod;
 
 import org.darkstorm.minecraft.gui.component.Frame;
 import org.darkstorm.minecraft.gui.util.GuiManagerDisplayScreen;

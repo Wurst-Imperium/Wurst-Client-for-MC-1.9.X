@@ -16,13 +16,14 @@ import java.util.function.Consumer;
 
 import net.wurstclient.WurstClient;
 import net.wurstclient.analytics.AnalyticsManager;
-import net.wurstclient.commands.CmdManager;
-import net.wurstclient.mods.ModManager;
-import net.wurstclient.special.SpfManager;
+import net.wurstclient.features.Feature;
+import net.wurstclient.features.commands.CmdManager;
+import net.wurstclient.features.mods.ModManager;
+import net.wurstclient.features.special_features.SpfManager;
 
 public class Navigator
 {
-	private ArrayList<NavigatorItem> navigatorList = new ArrayList<>();
+	private ArrayList<Feature> navigatorList = new ArrayList<>();
 	private final HashMap<String, Long> preferences = new HashMap<>();
 	public AnalyticsManager analytics = new AnalyticsManager("UA-52838431-7",
 		"navigator.client.wurst-client.tk");
@@ -36,7 +37,7 @@ public class Navigator
 			for(Field field : modFields)
 			{
 				if(field.getName().endsWith("Mod"))
-					navigatorList.add((NavigatorItem)field
+					navigatorList.add((Feature)field
 						.get(WurstClient.INSTANCE.mods));
 			}
 		}catch(Exception e)
@@ -51,7 +52,7 @@ public class Navigator
 			for(Field field : cmdFields)
 			{
 				if(field.getName().endsWith("Cmd"))
-					navigatorList.add((NavigatorItem)field
+					navigatorList.add((Feature)field
 						.get(WurstClient.INSTANCE.commands));
 			}
 		}catch(Exception e)
@@ -66,7 +67,7 @@ public class Navigator
 			for(Field field : specialFields)
 			{
 				if(field.getName().endsWith("Spf"))
-					navigatorList.add((NavigatorItem)field
+					navigatorList.add((Feature)field
 						.get(WurstClient.INSTANCE.special));
 			}
 		}catch(Exception e)
@@ -75,7 +76,7 @@ public class Navigator
 		}
 	}
 	
-	public void copyNavigatorList(ArrayList<NavigatorItem> list)
+	public void copyNavigatorList(ArrayList<Feature> list)
 	{
 		if(!list.equals(navigatorList))
 		{
@@ -84,23 +85,23 @@ public class Navigator
 		}
 	}
 	
-	public void getSearchResults(ArrayList<NavigatorItem> list, String query)
+	public void getSearchResults(ArrayList<Feature> list, String query)
 	{
 		// clear display list
 		list.clear();
 		
 		// add search results
-		for(NavigatorItem mod : navigatorList)
+		for(Feature mod : navigatorList)
 			if(mod.getName().toLowerCase().contains(query)
 				|| mod.getTags().toLowerCase().contains(query)
 				|| mod.getDescription().toLowerCase().contains(query))
 				list.add(mod);
 		
 		// sort search results
-		list.sort(new Comparator<NavigatorItem>()
+		list.sort(new Comparator<Feature>()
 		{
 			@Override
-			public int compare(NavigatorItem o1, NavigatorItem o2)
+			public int compare(Feature o1, Feature o2)
 			{
 				// compare names
 				int result = compareNext(o1.getName(), o2.getName());
@@ -156,22 +157,22 @@ public class Navigator
 		preferences.put(feature, preference);
 	}
 	
-	public void forEach(Consumer<NavigatorItem> action)
+	public void forEach(Consumer<Feature> action)
 	{
 		navigatorList.forEach(action);
 	}
 	
-	public Iterator<NavigatorItem> iterator()
+	public Iterator<Feature> iterator()
 	{
 		return navigatorList.iterator();
 	}
 
 	public void sortFeatures()
 	{
-		navigatorList.sort(new Comparator<NavigatorItem>()
+		navigatorList.sort(new Comparator<Feature>()
 		{
 			@Override
-			public int compare(NavigatorItem o1, NavigatorItem o2)
+			public int compare(Feature o1, Feature o2)
 			{
 				long preference1 = getPreference(o1.getName());
 				long preference2 = getPreference(o2.getName());

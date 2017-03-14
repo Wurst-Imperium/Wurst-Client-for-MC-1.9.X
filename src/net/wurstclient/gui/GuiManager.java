@@ -45,10 +45,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.wurstclient.WurstClient;
+import net.wurstclient.features.mods.AutoBuildMod;
+import net.wurstclient.features.mods.Mod;
+import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.gui.target.TargetFrame;
-import net.wurstclient.mods.AutoBuildMod;
-import net.wurstclient.mods.Mod;
-import net.wurstclient.mods.Mod.Category;
 import net.wurstclient.navigator.settings.NavigatorSetting;
 
 import org.darkstorm.minecraft.gui.AbstractGuiManager;

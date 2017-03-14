@@ -19,7 +19,7 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.wurstclient.WurstClient;
-import net.wurstclient.mods.XRayMod;
+import net.wurstclient.features.mods.XRayMod;
 
 import org.lwjgl.input.Keyboard;
 

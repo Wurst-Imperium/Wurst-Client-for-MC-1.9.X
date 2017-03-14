@@ -25,7 +25,7 @@ import net.minecraft.entity.passive.EntityWaterMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.MathHelper;
 import net.wurstclient.WurstClient;
-import net.wurstclient.special.TargetSpf;
+import net.wurstclient.features.special_features.TargetSpf;
 
 public class EntityUtils
 {

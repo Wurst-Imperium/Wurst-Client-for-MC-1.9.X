@@ -18,9 +18,9 @@ import java.lang.reflect.Field;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.wurstclient.WurstClient;
-import net.wurstclient.mods.Mod;
-import net.wurstclient.mods.ModManager;
-import net.wurstclient.mods.Mod.Category;
+import net.wurstclient.features.mods.Mod;
+import net.wurstclient.features.mods.ModManager;
+import net.wurstclient.features.mods.Mod.Category;
 
 import org.darkstorm.minecraft.gui.component.Button;
 import org.darkstorm.minecraft.gui.component.Component;

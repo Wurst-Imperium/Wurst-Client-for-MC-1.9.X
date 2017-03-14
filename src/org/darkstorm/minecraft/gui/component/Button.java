@@ -2,7 +2,7 @@ package org.darkstorm.minecraft.gui.component;
 
 import org.darkstorm.minecraft.gui.listener.ButtonListener;
 
-import net.wurstclient.mods.Mod;
+import net.wurstclient.features.mods.Mod;
 
 public interface Button extends Component, TextComponent
 {

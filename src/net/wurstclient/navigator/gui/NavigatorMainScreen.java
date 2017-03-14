@@ -15,9 +15,9 @@ import java.util.ArrayList;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.wurstclient.WurstClient;
+import net.wurstclient.features.Feature;
 import net.wurstclient.font.Fonts;
 import net.wurstclient.navigator.Navigator;
-import net.wurstclient.navigator.NavigatorItem;
 import net.wurstclient.utils.MiscUtils;
 
 import org.darkstorm.minecraft.gui.util.RenderUtil;
@@ -25,7 +25,7 @@ import org.lwjgl.input.Keyboard;
 
 public class NavigatorMainScreen extends NavigatorScreen
 {
-	private static ArrayList<NavigatorItem> navigatorDisplayList =
+	private static ArrayList<Feature> navigatorDisplayList =
 		new ArrayList<>();
 	private GuiTextField searchBar;
 	private int hoveredItem = -1;
@@ -92,7 +92,7 @@ public class NavigatorMainScreen extends NavigatorScreen
 			}else if(button == 0)
 			{
 				// left click
-				NavigatorItem item = navigatorDisplayList.get(hoveredItem);
+				Feature item = navigatorDisplayList.get(hoveredItem);
 				if(item.getPrimaryAction().isEmpty())
 					expanding = true;
 				else
@@ -105,7 +105,7 @@ public class NavigatorMainScreen extends NavigatorScreen
 			}else if(button == 1)
 			{
 				// right click
-				NavigatorItem item = navigatorDisplayList.get(hoveredItem);
+				Feature item = navigatorDisplayList.get(hoveredItem);
 				if(item.getHelpPage().isEmpty())
 					return;
 				MiscUtils.openLink("https://www.wurst-client.tk/wiki/"
@@ -140,7 +140,7 @@ public class NavigatorMainScreen extends NavigatorScreen
 				clickTimer++;
 			else
 			{
-				NavigatorItem item = navigatorDisplayList.get(hoveredItem);
+				Feature item = navigatorDisplayList.get(hoveredItem);
 				mc.displayGuiScreen(new NavigatorFeatureScreen(item, this));
 				
 				String query = searchBar.getText();
@@ -203,7 +203,7 @@ public class NavigatorMainScreen extends NavigatorScreen
 			}
 			
 			// item & area
-			NavigatorItem item = navigatorDisplayList.get(i);
+			Feature item = navigatorDisplayList.get(i);
 			Rectangle area = new Rectangle(xi, y, 100, 16);
 			
 			// click animation

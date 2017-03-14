@@ -14,7 +14,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.wurstclient.WurstClient;
-import net.wurstclient.mods.CmdBlockMod;
+import net.wurstclient.features.mods.CmdBlockMod;
 
 import org.lwjgl.input.Keyboard;
 
