@@ -8,6 +8,7 @@
 package net.wurstclient.features.commands;
 
 import net.minecraft.block.Block;
+import net.wurstclient.utils.ChatUtils;
 import net.wurstclient.utils.MiscUtils;
 
 @Cmd.Info(description = "Changes the settings of GhostHand or toggles it.",
@@ -22,7 +23,7 @@ public class GhostHandCmd extends Cmd
 		if(args.length == 0)
 		{
 			wurst.mods.ghostHandMod.toggle();
-			wurst.chat.message("GhostHand turned "
+			ChatUtils.message("GhostHand turned "
 				+ (wurst.mods.ghostHandMod.isEnabled() ? "on" : "off") + ".");
 		}else if(args.length == 2)
 		{
@@ -30,20 +31,20 @@ public class GhostHandCmd extends Cmd
 			{
 				wurst.options.ghostHandID = Integer.valueOf(args[1]);
 				wurst.files.saveOptions();
-				wurst.chat.message("GhostHand ID set to " + args[1] + ".");
+				ChatUtils.message("GhostHand ID set to " + args[1] + ".");
 			}else if(args[0].equalsIgnoreCase("name"))
 			{
 				int newID =
 					Block.getIdFromBlock(Block.getBlockFromName(args[1]));
 				if(newID == -1)
 				{
-					wurst.chat.message("The block \"" + args[1]
+					ChatUtils.message("The block \"" + args[1]
 						+ "\" could not be found.");
 					return;
 				}
 				wurst.options.ghostHandID = newID;
 				wurst.files.saveOptions();
-				wurst.chat.message("GhostHand ID set to " + newID + " ("
+				ChatUtils.message("GhostHand ID set to " + newID + " ("
 					+ args[1] + ").");
 			}else
 				syntaxError();

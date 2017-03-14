@@ -10,6 +10,7 @@ package net.wurstclient.features.commands;
 import net.minecraft.util.math.BlockPos;
 import net.wurstclient.ai.PathFinder;
 import net.wurstclient.features.commands.Cmd.Info;
+import net.wurstclient.utils.ChatUtils;
 
 @Info(description = "Walks or flies you to a specific location.",
 	name = "goto",
@@ -24,8 +25,8 @@ public class GoToCmd extends Cmd
 		if(Math.abs(pos[0] - mc.thePlayer.posX) > 256
 			|| Math.abs(pos[2] - mc.thePlayer.posZ) > 256)
 		{
-			wurst.chat.error("Goal is out of range!");
-			wurst.chat.message("Maximum range is 256 blocks.");
+			ChatUtils.error("Goal is out of range!");
+			ChatUtils.message("Maximum range is 256 blocks.");
 			return;
 		}
 		net.wurstclient.features.mods.GoToCmdMod.setGoal(new BlockPos(pos[0], pos[1],
@@ -45,7 +46,7 @@ public class GoToCmd extends Cmd
 						.formatPath());
 					wurst.mods.goToCmdMod.setEnabled(true);
 				}else
-					wurst.chat.error("Could not find a path.");
+					ChatUtils.error("Could not find a path.");
 				System.out.println("Done after "
 					+ (System.nanoTime() - startTime) / 1e6 + "ms");
 			}

@@ -34,6 +34,7 @@ import net.wurstclient.features.Feature;
 import net.wurstclient.features.mods.Mod.Bypasses;
 import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
+import net.wurstclient.utils.ChatUtils;
 
 @Info(category = Category.CHAT,
 	description = "Cracks AuthMe passwords. Can be used to get OP.\n"
@@ -399,7 +400,7 @@ public class ForceOpMod extends Mod implements ChatInputListener
 									lastPW = i + 1;
 									update();
 								}
-								wurst.chat.failure("Tried " + (lastPW + 1)
+								ChatUtils.failure("Tried " + (lastPW + 1)
 									+ " passwords. Giving up.");
 							}
 						}, "AuthMeCracker").start();
@@ -498,16 +499,16 @@ public class ForceOpMod extends Mod implements ChatInputListener
 				password = mc.session.getUsername();
 			else
 				password = passwords[lastPW - 1];
-			wurst.chat.success("The password \"" + password + "\" worked.");
+			ChatUtils.success("The password \"" + password + "\" worked.");
 			setEnabled(false);
 		}else if(message.toLowerCase().contains("/help")
 			|| message.toLowerCase().contains("permission"))
-			wurst.chat
+			ChatUtils
 				.warning("It looks like this server doesn't have AuthMe.");
 		else if(message.toLowerCase().contains("logged in")
 			|| message.toLowerCase().contains("eingeloggt")
 			|| message.toLowerCase().contains("eingelogt"))
-			wurst.chat.warning("It looks like you are already logged in.");
+			ChatUtils.warning("It looks like you are already logged in.");
 	}
 	
 	private boolean hasGotWrongPWMSG()

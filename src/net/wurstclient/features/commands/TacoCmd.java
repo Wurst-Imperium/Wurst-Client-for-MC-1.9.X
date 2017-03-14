@@ -8,6 +8,9 @@
 package net.wurstclient.features.commands;
 
 import static org.lwjgl.opengl.GL11.*;
+
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.ResourceLocation;
@@ -15,8 +18,6 @@ import net.wurstclient.events.ChatOutputEvent;
 import net.wurstclient.events.listeners.GUIRenderListener;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.commands.Cmd.Info;
-
-import org.lwjgl.opengl.GL11;
 
 @Info(description = "Spawns a dancing taco on your hotbar.\n"
 	+ "\"I love that little guy. So cute!\" -WiZARD",

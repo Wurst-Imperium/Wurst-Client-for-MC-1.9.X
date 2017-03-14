@@ -13,6 +13,7 @@ import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
 import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
+import net.wurstclient.utils.ChatUtils;
 
 @Info(category = Category.CHAT,
 	description = "Types \"/home\" instantly.",
@@ -58,7 +59,7 @@ public class HomeMod extends Mod implements UpdateListener, ChatInputListener
 			|| message.toLowerCase().contains("permission"))
 		{
 			event.cancel();
-			wurst.chat.error("This server doesn't have /home.");
+			ChatUtils.error("This server doesn't have /home.");
 		}
 	}
 }

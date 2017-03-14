@@ -18,6 +18,7 @@ import net.wurstclient.WurstClient;
 import net.wurstclient.features.Feature;
 import net.wurstclient.navigator.PossibleKeybind;
 import net.wurstclient.settings.Setting;
+import net.wurstclient.utils.ChatUtils;
 import net.wurstclient.utils.EntityUtils;
 import net.wurstclient.utils.MiscUtils;
 
@@ -162,7 +163,7 @@ public abstract class Cmd implements Feature
 	public final void printHelp()
 	{
 		for(String line : description.split("\n"))
-			WurstClient.INSTANCE.chat.message(line);
+			ChatUtils.message(line);
 	}
 	
 	public final void printSyntax()
@@ -175,7 +176,7 @@ public abstract class Cmd implements Feature
 				output += "\n    " + syntax[i];
 		}
 		for(String line : output.split("\n"))
-			WurstClient.INSTANCE.chat.message(line);
+			ChatUtils.message(line);
 	}
 	
 	protected final int[] argsToPos(String... args) throws Cmd.Error

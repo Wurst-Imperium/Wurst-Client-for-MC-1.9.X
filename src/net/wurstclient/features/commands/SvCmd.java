@@ -10,6 +10,7 @@ package net.wurstclient.features.commands;
 import net.wurstclient.events.ChatOutputEvent;
 import net.wurstclient.features.commands.Cmd.Info;
 import net.wurstclient.hooks.ServerHook;
+import net.wurstclient.utils.ChatUtils;
 
 @Info(description = "Shows the version of the server you are currently playing on.",
 	name = "sv",
@@ -24,7 +25,7 @@ public class SvCmd extends Cmd
 			syntaxError();
 		if(mc.isSingleplayer())
 			error("Can't check server version in singleplayer.");
-		wurst.chat.message("Server version: "
+		ChatUtils.message("Server version: "
 			+ ServerHook.getLastServerData().gameVersion);
 	}
 	

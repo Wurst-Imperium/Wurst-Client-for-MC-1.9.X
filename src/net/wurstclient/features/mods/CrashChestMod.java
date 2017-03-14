@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.wurstclient.features.mods.Mod.Bypasses;
+import net.wurstclient.utils.ChatUtils;
 
 @Mod.Info(category = Mod.Category.EXPLOITS,
 	description = "Generates a CrashChest. Give a lot of these to another\n"
@@ -30,14 +31,14 @@ public class CrashChestMod extends Mod
 		{
 			if(mc.thePlayer.inventory.getStackInSlot(36).getDisplayName()
 				.equals("§6§lCOPY ME"))
-				wurst.chat.error("You already have a CrashChest.");
+				ChatUtils.error("You already have a CrashChest.");
 			else
-				wurst.chat.error("Please take off your shoes.");
+				ChatUtils.error("Please take off your shoes.");
 			setEnabled(false);
 			return;
 		}else if(!mc.thePlayer.capabilities.isCreativeMode)
 		{
-			wurst.chat.error("Creative mode only.");
+			ChatUtils.error("Creative mode only.");
 			setEnabled(false);
 			return;
 		}
@@ -50,7 +51,7 @@ public class CrashChestMod extends Mod
 		stack.setTagInfo("www.wurst-client.tk", nbtTagCompound);
 		mc.thePlayer.inventory.armorInventory[0] = stack;
 		stack.setStackDisplayName("§6§lCOPY ME");
-		wurst.chat.message("A CrashChest was placed in your shoes slot.");
+		ChatUtils.message("A CrashChest was placed in your shoes slot.");
 		setEnabled(false);
 	}
 }

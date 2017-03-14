@@ -16,6 +16,7 @@ import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
 import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
+import net.wurstclient.utils.ChatUtils;
 import net.wurstclient.utils.EntityUtils;
 
 @Info(category = Category.RENDER,
@@ -42,7 +43,7 @@ public class RemoteViewMod extends Mod implements UpdateListener
 	{
 		if(EntityUtils.getClosestEntityRaw(false) == null)
 		{
-			wurst.chat.message("There is no nearby entity.");
+			ChatUtils.message("There is no nearby entity.");
 			setEnabled(false);
 			return;
 		}
@@ -62,7 +63,7 @@ public class RemoteViewMod extends Mod implements UpdateListener
 		fakePlayer.copyLocationAndAnglesFrom(mc.thePlayer);
 		fakePlayer.rotationYawHead = mc.thePlayer.rotationYawHead;
 		mc.theWorld.addEntityToWorld(-69, fakePlayer);
-		wurst.chat.message("Now viewing " + otherView.getName() + ".");
+		ChatUtils.message("Now viewing " + otherView.getName() + ".");
 		wurst.events.add(UpdateListener.class, this);
 	}
 	
@@ -76,7 +77,7 @@ public class RemoteViewMod extends Mod implements UpdateListener
 			wurst.mods.remoteViewMod.toggle();
 		}catch(NullPointerException e)
 		{
-			wurst.chat.error("Entity not found.");
+			ChatUtils.error("Entity not found.");
 		}
 	}
 	
@@ -104,7 +105,7 @@ public class RemoteViewMod extends Mod implements UpdateListener
 		wurst.events.remove(UpdateListener.class, this);
 		if(otherView != null)
 		{
-			wurst.chat
+			ChatUtils
 				.message("No longer viewing " + otherView.getName() + ".");
 			otherView.setInvisible(wasInvisible);
 			mc.thePlayer.noClip = false;

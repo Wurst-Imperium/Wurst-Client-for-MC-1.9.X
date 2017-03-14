@@ -8,6 +8,7 @@
 package net.wurstclient.features.commands;
 
 import net.wurstclient.features.commands.Cmd.Info;
+import net.wurstclient.utils.ChatUtils;
 import net.wurstclient.utils.MiscUtils;
 
 @Info(description = "Changes the amount of Throw or toggles it.",
@@ -22,7 +23,7 @@ public class ThrowCmd extends Cmd
 		if(args.length == 0)
 		{
 			wurst.mods.throwMod.toggle();
-			wurst.chat.message("Throw turned "
+			ChatUtils.message("Throw turned "
 				+ (wurst.mods.throwMod.isEnabled() == true ? "on" : "off")
 				+ ".");
 		}else if(args.length == 2 && args[0].equalsIgnoreCase("amount")
@@ -30,12 +31,12 @@ public class ThrowCmd extends Cmd
 		{
 			if(Integer.valueOf(args[1]) < 1)
 			{
-				wurst.chat.error("Throw amount must be at least 1.");
+				ChatUtils.error("Throw amount must be at least 1.");
 				return;
 			}
 			wurst.options.throwAmount = Integer.valueOf(args[1]);
 			wurst.files.saveOptions();
-			wurst.chat.message("Throw amount set to " + args[1] + ".");
+			ChatUtils.message("Throw amount set to " + args[1] + ".");
 		}else
 			syntaxError();
 	}

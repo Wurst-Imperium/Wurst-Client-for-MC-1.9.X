@@ -12,6 +12,7 @@ import net.wurstclient.ai.PathFinder;
 import net.wurstclient.ai.PathPoint;
 import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.features.commands.Cmd.Info;
+import net.wurstclient.utils.ChatUtils;
 import net.wurstclient.utils.RenderUtils;
 
 @Info(description = "Shows the shortest path to a specific point. Useful for labyrinths and caves.",
@@ -50,7 +51,7 @@ public class PathCmd extends Cmd implements RenderListener
 					enabled = true;
 					wurst.events.add(RenderListener.class, PathCmd.this);
 				}else
-					wurst.chat.error("Could not find a path.");
+					ChatUtils.error("Could not find a path.");
 				System.out.println("Done after "
 					+ (System.nanoTime() - startTime) / 1e6 + "ms");
 			}

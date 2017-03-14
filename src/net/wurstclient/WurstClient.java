@@ -10,7 +10,6 @@ package net.wurstclient;
 import org.darkstorm.minecraft.gui.theme.wurst.WurstTheme;
 
 import net.wurstclient.analytics.AnalyticsManager;
-import net.wurstclient.chat.ChatManager;
 import net.wurstclient.events.EventManager;
 import net.wurstclient.features.commands.CmdManager;
 import net.wurstclient.features.mods.ModManager;
@@ -33,7 +32,6 @@ public enum WurstClient
 	public boolean startupMessageDisabled = false;
 	
 	public AnalyticsManager analytics;
-	public ChatManager chat;
 	public CmdManager commands;
 	public EventManager events;
 	public FileManager files;
@@ -55,7 +53,6 @@ public enum WurstClient
 		special = new SpfManager();
 		files = new FileManager();
 		updater = new Updater();
-		chat = new ChatManager();
 		keybinds = new KeybindManager();
 		options = new OptionsManager();
 		friends = new FriendsList();

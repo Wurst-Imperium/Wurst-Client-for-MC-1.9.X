@@ -11,6 +11,9 @@ import static org.lwjgl.opengl.GL11.*;
 
 import java.awt.Color;
 
+import org.darkstorm.minecraft.gui.theme.wurst.WurstTheme;
+import org.darkstorm.minecraft.gui.util.RenderUtil;
+
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -23,9 +26,6 @@ import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.utils.EntityUtils;
 import net.wurstclient.utils.RenderUtils;
-
-import org.darkstorm.minecraft.gui.theme.wurst.WurstTheme;
-import org.darkstorm.minecraft.gui.util.RenderUtil;
 
 @Info(category = Category.COMBAT,
 	description = "Automatically aims your bow at the closest entity.\n"

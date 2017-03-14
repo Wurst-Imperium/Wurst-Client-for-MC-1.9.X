@@ -23,6 +23,7 @@ import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.utils.BlockUtils;
+import net.wurstclient.utils.ChatUtils;
 
 @Info(category = Category.BLOCKS,
 	description = "Breaks blocks around you like an explosion.\n"
@@ -66,7 +67,7 @@ public class KaboomMod extends Mod implements UpdateListener
 	{
 		if(mc.thePlayer.capabilities.isCreativeMode)
 		{
-			wurst.chat.error("Survival mode only.");
+			ChatUtils.error("Survival mode only.");
 			setEnabled(false);
 			return;
 		}

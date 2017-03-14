@@ -7,10 +7,9 @@
  */
 package net.wurstclient.features.mods;
 
-import io.netty.buffer.Unpooled;
-
 import java.util.Random;
 
+import io.netty.buffer.Unpooled;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.client.CPacketCustomPayload;
 import net.wurstclient.events.listeners.UpdateListener;

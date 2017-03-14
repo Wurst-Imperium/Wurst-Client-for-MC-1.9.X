@@ -15,6 +15,7 @@ import net.wurstclient.features.Feature;
 import net.wurstclient.features.mods.Mod.Bypasses;
 import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
+import net.wurstclient.utils.ChatUtils;
 import net.wurstclient.utils.RenderUtils;
 
 @Info(category = Category.RENDER,
@@ -72,8 +73,8 @@ public class ChestEspMod extends Mod implements RenderListener
 		}
 		if(i >= maxChests && shouldInform)
 		{
-			wurst.chat.warning(getName() + " found §lA LOT§r of chests.");
-			wurst.chat.message("To prevent lag, it will only show the first "
+			ChatUtils.warning(getName() + " found §lA LOT§r of chests.");
+			ChatUtils.message("To prevent lag, it will only show the first "
 				+ maxChests + " chests.");
 			shouldInform = false;
 		}else if(i < maxChests)

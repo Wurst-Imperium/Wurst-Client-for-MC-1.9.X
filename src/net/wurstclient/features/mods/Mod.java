@@ -22,6 +22,7 @@ import net.wurstclient.features.Feature;
 import net.wurstclient.features.special_features.YesCheatSpf.BypassLevel;
 import net.wurstclient.navigator.PossibleKeybind;
 import net.wurstclient.settings.Setting;
+import net.wurstclient.utils.ChatUtils;
 
 public class Mod implements Feature
 {
@@ -321,7 +322,7 @@ public class Mod implements Feature
 	
 	public final void noCheatMessage()
 	{
-		WurstClient.INSTANCE.chat.warning(name + " cannot bypass NoCheat+.");
+		ChatUtils.warning(name + " cannot bypass NoCheat+.");
 	}
 	
 	public final void updateMS()

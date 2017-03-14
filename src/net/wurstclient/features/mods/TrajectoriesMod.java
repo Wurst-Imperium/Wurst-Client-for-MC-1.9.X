@@ -7,6 +7,9 @@
  */
 package net.wurstclient.features.mods;
 
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.RenderGlobal;
@@ -19,9 +22,6 @@ import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.features.Feature;
 import net.wurstclient.features.mods.Mod.Bypasses;
 import net.wurstclient.utils.RenderUtils;
-
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL13;
 
 @Mod.Info(name = "Trajectories",
 	description = "Predicts the flight path of arrows and throwable items.",

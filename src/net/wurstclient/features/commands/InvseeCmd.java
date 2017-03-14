@@ -11,6 +11,7 @@ import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.features.commands.Cmd.Info;
+import net.wurstclient.utils.ChatUtils;
 
 @Info(description = "Allows you to see parts of another player's inventory.",
 	name = "invsee",
@@ -27,7 +28,7 @@ public class InvseeCmd extends Cmd implements RenderListener
 			syntaxError();
 		if(mc.thePlayer.capabilities.isCreativeMode)
 		{
-			wurst.chat.error("Survival mode only.");
+			ChatUtils.error("Survival mode only.");
 			return;
 		}
 		playerName = args[0];
@@ -44,14 +45,14 @@ public class InvseeCmd extends Cmd implements RenderListener
 				EntityOtherPlayerMP player = (EntityOtherPlayerMP)entity;
 				if(player.getName().equals(playerName))
 				{
-					wurst.chat.message("Showing inventory of "
+					ChatUtils.message("Showing inventory of "
 						+ player.getName() + ".");
 					mc.displayGuiScreen(new GuiInventory(player));
 					found = true;
 				}
 			}
 		if(!found)
-			wurst.chat.error("Player not found.");
+			ChatUtils.error("Player not found.");
 		playerName = null;
 		wurst.events.remove(RenderListener.class, this);
 	}

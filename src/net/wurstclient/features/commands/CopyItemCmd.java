@@ -11,6 +11,7 @@ import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
 import net.wurstclient.features.commands.Cmd.Info;
+import net.wurstclient.utils.ChatUtils;
 
 @Info(description = "Allows you to copy items that other people are holding\n"
 	+ "or wearing. Requires creative mode.",
@@ -69,7 +70,7 @@ public class CopyItemCmd extends Cmd
 				mc.thePlayer.sendQueue
 					.addToSendQueue(new CPacketCreativeInventoryAction(
 						36 + i, item));
-				wurst.chat.message("Item copied.");
+				ChatUtils.message("Item copied.");
 				return;
 			}
 		error("Please clear a slot in your hotbar.");

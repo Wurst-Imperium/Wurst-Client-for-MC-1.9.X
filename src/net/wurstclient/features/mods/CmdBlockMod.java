@@ -14,6 +14,7 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
 import net.wurstclient.features.mods.Mod.Bypasses;
 import net.wurstclient.gui.mods.GuiCmdBlock;
+import net.wurstclient.utils.ChatUtils;
 
 @Mod.Info(category = Mod.Category.EXPLOITS,
 	description = "Allows you to make a Command Block without having OP.\n"
@@ -29,12 +30,12 @@ public class CmdBlockMod extends Mod
 	{
 		if(mc.thePlayer.inventory.getStackInSlot(0) != null)
 		{
-			wurst.chat.error("Please clear the first slot in your hotbar.");
+			ChatUtils.error("Please clear the first slot in your hotbar.");
 			setEnabled(false);
 			return;
 		}else if(!mc.thePlayer.capabilities.isCreativeMode)
 		{
-			wurst.chat.error("Creative mode only.");
+			ChatUtils.error("Creative mode only.");
 			setEnabled(false);
 			return;
 		}
@@ -51,6 +52,6 @@ public class CmdBlockMod extends Mod
 		stack.setTagInfo("BlockEntityTag", nbtTagCompound);
 		mc.thePlayer.sendQueue
 			.addToSendQueue(new CPacketCreativeInventoryAction(36, stack));
-		wurst.chat.message("Command Block created.");
+		ChatUtils.message("Command Block created.");
 	}
 }
