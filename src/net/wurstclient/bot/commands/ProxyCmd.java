@@ -15,7 +15,7 @@ import net.wurstclient.utils.MiscUtils;
 public class ProxyCmd extends Command
 {
 	@Override
-	public void execute(String[] args) throws Error
+	public void execute(String[] args) throws CmdError
 	{
 		if(args.length < 1 || args.length > 2)
 			syntaxError();

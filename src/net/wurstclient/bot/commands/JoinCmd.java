@@ -16,7 +16,7 @@ import net.wurstclient.gui.main.GuiWurstMainMenu;
 public class JoinCmd extends Command
 {
 	@Override
-	public void execute(final String[] args) throws Error
+	public void execute(final String[] args) throws CmdError
 	{
 		if(args.length != 1)
 			syntaxError();

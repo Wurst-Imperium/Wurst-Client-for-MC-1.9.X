@@ -15,7 +15,7 @@ import net.minecraft.client.Minecraft;
 public class FixmeCmd extends Command
 {
 	@Override
-	public void execute(String[] args) throws Error
+	public void execute(String[] args) throws CmdError
 	{
 		if(args.length != 0)
 			syntaxError();

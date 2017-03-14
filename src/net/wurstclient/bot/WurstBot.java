@@ -83,14 +83,14 @@ public class WurstBot
 				try
 				{
 					command.execute(args);
-				}catch(Command.SyntaxError e)
+				}catch(Command.CmdSyntaxError e)
 				{
 					if(e.getMessage() != null)
 						System.err.println("Syntax error: " + e.getMessage());
 					else
 						System.err.println("Syntax error!");
 					command.printSyntax();
-				}catch(Command.Error e)
+				}catch(Command.CmdError e)
 				{
 					System.err.println(e.getMessage());
 				}catch(Exception e)
