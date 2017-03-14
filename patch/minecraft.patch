@@ -1,6 +1,6 @@
-From a586f2e7d067972c4165361caf53caf105040df9 Mon Sep 17 00:00:00 2001
+From e5e3bb1820e4caa187114079800167636a1efd0c Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Tue, 14 Mar 2017 14:55:06 +0100
+Date: Tue, 14 Mar 2017 15:02:16 +0100
 Subject: [PATCH] mod
 
 ---
@@ -19,7 +19,7 @@ Subject: [PATCH] mod
  net/minecraft/client/gui/GuiButton.java            |  16 +-
  net/minecraft/client/gui/GuiDisconnected.java      |  87 +++++++++
  net/minecraft/client/gui/GuiGameOver.java          |  13 +-
- net/minecraft/client/gui/GuiIngame.java            |  33 +++-
+ net/minecraft/client/gui/GuiIngame.java            |  24 ++-
  net/minecraft/client/gui/GuiIngameMenu.java        |  52 +++++-
  .../client/gui/GuiListWorldSelectionEntry.java     |   2 +-
  net/minecraft/client/gui/GuiMainMenu.java          |  19 +-
@@ -85,7 +85,7 @@ Subject: [PATCH] mod
  .../management/PlayerInteractionManager.java       |   6 +-
  net/minecraft/tileentity/TileEntitySign.java       |   2 +-
  net/minecraft/util/Timer.java                      |   6 +
- 81 files changed, 1247 insertions(+), 398 deletions(-)
+ 81 files changed, 1236 insertions(+), 400 deletions(-)
 
 diff --git a/Start.java b/Start.java
 index ae0025f..078afa5 100644
@@ -1290,49 +1290,50 @@ index 08d7720..cf1ee7b 100644
      }
  }
 diff --git a/net/minecraft/client/gui/GuiIngame.java b/net/minecraft/client/gui/GuiIngame.java
-index 8c38552..678f64a 100644
+index 8c38552..e5dc66d 100644
 --- a/net/minecraft/client/gui/GuiIngame.java
 +++ b/net/minecraft/client/gui/GuiIngame.java
-@@ -4,9 +4,12 @@ import com.google.common.base.Predicate;
+@@ -1,12 +1,14 @@
+ package net.minecraft.client.gui;
+ 
++import java.util.Collection;
++import java.util.List;
++import java.util.Random;
++
+ import com.google.common.base.Predicate;
  import com.google.common.collect.Iterables;
  import com.google.common.collect.Lists;
  import com.google.common.collect.Ordering;
-+
-+import java.util.ArrayList;
- import java.util.Collection;
- import java.util.List;
- import java.util.Random;
+-import java.util.Collection;
+-import java.util.List;
+-import java.util.Random;
 +
  import net.minecraft.block.material.Material;
  import net.minecraft.client.Minecraft;
  import net.minecraft.client.gui.inventory.GuiContainer;
-@@ -47,6 +50,8 @@ import net.minecraft.util.math.RayTraceResult;
+@@ -47,6 +49,7 @@ import net.minecraft.util.math.RayTraceResult;
  import net.minecraft.util.text.ITextComponent;
  import net.minecraft.util.text.TextFormatting;
  import net.minecraft.world.border.WorldBorder;
-+import net.wurstclient.features.mods.ArenaBrawlMod;
 +import net.wurstclient.gui.UIRenderer;
  
  public class GuiIngame extends Gui
  {
-@@ -341,10 +346,14 @@ public class GuiIngame extends Gui
+@@ -341,10 +344,12 @@ public class GuiIngame extends Gui
  
          ScoreObjective scoreobjective1 = scoreobjective != null ? scoreobjective : scoreboard.getObjectiveInDisplaySlot(1);
  
 -        if (scoreobjective1 != null)
-+		// TODO: Client
 +		if(scoreobjective1 != null)
          {
              this.renderScoreboard(scoreobjective1, scaledresolution);
--        }
-+		}else
-+			ArenaBrawlMod.scoreboard = null;
+ 		}
 +		if(!this.mc.gameSettings.showDebugInfo)
 +			UIRenderer.renderUI(zLevel);
  
          GlStateManager.enableBlend();
          GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-@@ -416,9 +425,9 @@ public class GuiIngame extends Gui
+@@ -416,9 +421,9 @@ public class GuiIngame extends Gui
                  GlStateManager.enableAlpha();
                  this.drawTexturedModalRect(l / 2 - 7, i1 / 2 - 7, 0, 0, 16, 16);
  
@@ -1344,7 +1345,7 @@ index 8c38552..678f64a 100644
  
                      if (f < 1.0F)
                      {
-@@ -446,7 +455,7 @@ public class GuiIngame extends Gui
+@@ -446,7 +451,7 @@ public class GuiIngame extends Gui
  
              for (PotionEffect potioneffect : Ordering.natural().reverse().sortedCopy(collection))
              {
@@ -1353,7 +1354,7 @@ index 8c38552..678f64a 100644
  
                  if (potion.hasStatusIcon() && potioneffect.func_188418_e())
                  {
-@@ -547,9 +556,9 @@ public class GuiIngame extends Gui
+@@ -547,9 +552,9 @@ public class GuiIngame extends Gui
                  }
              }
  
@@ -1365,35 +1366,14 @@ index 8c38552..678f64a 100644
  
                  if (f1 < 1.0F)
                  {
-@@ -728,11 +737,18 @@ public class GuiIngame extends Gui
-         int l1 = scaledRes.getScaledWidth() - i - k1;
-         int j = 0;
- 
-+        //TODO: Client
-+        ArrayList<String> wurst1 = new ArrayList<String>();
-+
-         for (Score score1 : collection)
-         {
+@@ -733,6 +738,7 @@ public class GuiIngame extends Gui
              ++j;
              ScorePlayerTeam scoreplayerteam1 = scoreboard.getPlayersTeam(score1.getPlayerName());
              String s1 = ScorePlayerTeam.formatPlayerName(scoreplayerteam1, score1.getPlayerName());
 +            
-+            //TODO: Client
-+            wurst1.add(s1);
-+            
              String s2 = TextFormatting.RED + "" + score1.getScorePoints();
              int k = j1 - j * this.getFontRenderer().FONT_HEIGHT;
              int l = scaledRes.getScaledWidth() - k1 + 2;
-@@ -748,6 +764,9 @@ public class GuiIngame extends Gui
-                 this.getFontRenderer().drawString(s3, l1 + i / 2 - this.getFontRenderer().getStringWidth(s3) / 2, k - this.getFontRenderer().FONT_HEIGHT, 553648127);
-             }
-         }
-+        
-+        //TODO: Client
-+        ArenaBrawlMod.scoreboard = wurst1;
-     }
- 
-     private void renderPlayerStats(ScaledResolution scaledRes)
 diff --git a/net/minecraft/client/gui/GuiIngameMenu.java b/net/minecraft/client/gui/GuiIngameMenu.java
 index b93bf8a..fb83a9f 100644
 --- a/net/minecraft/client/gui/GuiIngameMenu.java

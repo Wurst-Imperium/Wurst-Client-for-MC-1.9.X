@@ -39,8 +39,6 @@ public class TracersMod extends Mod implements RenderListener
 	@Override
 	public void onRender()
 	{
-		if(wurst.mods.arenaBrawlMod.isActive())
-			return;
 		for(Object entity : mc.theWorld.loadedEntityList)
 			if(entity instanceof EntityPlayer
 				&& !((Entity)entity).getName().equals(

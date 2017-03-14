@@ -43,8 +43,8 @@ import com.google.gson.JsonPrimitive;
 
 public class FileManager
 {
-	public final File wurstDir = new File(Minecraft.getMinecraft().mcDataDir,
-		"wurst");
+	public final File wurstDir =
+		new File(Minecraft.getMinecraft().mcDataDir, "wurst");
 	public final File autobuildDir = new File(wurstDir, "autobuild");
 	public final File skinDir = new File(wurstDir, "skins");
 	public final File serverlistsDir = new File(wurstDir, "serverlists");
@@ -138,15 +138,14 @@ public class FileManager
 		}
 	}
 	
-	private HashSet<String> modBlacklist = Sets.newHashSet(
-		AntiAfkMod.class.getName(), BlinkMod.class.getName(),
-		ArenaBrawlMod.class.getName(), AutoBuildMod.class.getName(),
-		AutoSignMod.class.getName(), FightBotMod.class.getName(),
-		FollowMod.class.getName(), ForceOpMod.class.getName(),
-		FreecamMod.class.getName(), InvisibilityMod.class.getName(),
-		LsdMod.class.getName(), MassTpaMod.class.getName(),
-		ProtectMod.class.getName(), RemoteViewMod.class.getName(),
-		SpammerMod.class.getName());
+	private HashSet<String> modBlacklist =
+		Sets.newHashSet(AntiAfkMod.class.getName(), BlinkMod.class.getName(),
+			AutoBuildMod.class.getName(), AutoSignMod.class.getName(),
+			FightBotMod.class.getName(), FollowMod.class.getName(),
+			ForceOpMod.class.getName(), FreecamMod.class.getName(),
+			InvisibilityMod.class.getName(), LsdMod.class.getName(),
+			MassTpaMod.class.getName(), ProtectMod.class.getName(),
+			RemoteViewMod.class.getName(), SpammerMod.class.getName());
 	
 	public boolean isModBlacklisted(Mod mod)
 	{
@@ -193,8 +192,8 @@ public class FileManager
 			{
 				Entry<String, TreeSet<String>> entry = itr.next();
 				JsonArray jsonCmds = new JsonArray();
-				entry.getValue().forEach(
-					(cmd) -> jsonCmds.add(new JsonPrimitive(cmd)));
+				entry.getValue()
+					.forEach((cmd) -> jsonCmds.add(new JsonPrimitive(cmd)));
 				json.add(entry.getKey(), jsonCmds);
 			}
 			PrintWriter save = new PrintWriter(new FileWriter(keybinds));
@@ -231,8 +230,8 @@ public class FileManager
 					TreeSet<String> commmands = new TreeSet<>();
 					entry.getValue().getAsJsonArray()
 						.forEach((cmd) -> commmands.add(cmd.getAsString()));
-					WurstClient.INSTANCE.keybinds
-						.put(entry.getKey(), commmands);
+					WurstClient.INSTANCE.keybinds.put(entry.getKey(),
+						commmands);
 					
 				}else
 				{
@@ -353,8 +352,8 @@ public class FileManager
 		try
 		{
 			PrintWriter save = new PrintWriter(new FileWriter(options));
-			save.println(JsonUtils.prettyGson
-				.toJson(WurstClient.INSTANCE.options));
+			save.println(
+				JsonUtils.prettyGson.toJson(WurstClient.INSTANCE.options));
 			save.close();
 		}catch(Exception e)
 		{
@@ -385,9 +384,8 @@ public class FileManager
 		{
 			BufferedReader load =
 				new BufferedReader(new FileReader(autoMaximize));
-			autoMaximizeEnabled =
-				JsonUtils.gson.fromJson(load, Boolean.class)
-					&& !Minecraft.isRunningOnMac;
+			autoMaximizeEnabled = JsonUtils.gson.fromJson(load, Boolean.class)
+				&& !Minecraft.isRunningOnMac;
 			load.close();
 		}catch(Exception e)
 		{
@@ -424,10 +422,9 @@ public class FileManager
 				jsonAlt.addProperty("starred", alt.isStarred());
 				json.add(alt.getEmail(), jsonAlt);
 			}
-			Files.write(
-				alts.toPath(),
-				Encryption.encrypt(JsonUtils.prettyGson.toJson(json)).getBytes(
-					Encryption.CHARSET));
+			Files.write(alts.toPath(),
+				Encryption.encrypt(JsonUtils.prettyGson.toJson(json))
+					.getBytes(Encryption.CHARSET));
 		}catch(Exception e)
 		{
 			e.printStackTrace();
@@ -438,10 +435,9 @@ public class FileManager
 	{
 		try
 		{
-			JsonObject json =
-				(JsonObject)JsonUtils.jsonParser.parse(Encryption
-					.decrypt(new String(Files.readAllBytes(alts.toPath()),
-						Encryption.CHARSET)));
+			JsonObject json = (JsonObject)JsonUtils.jsonParser.parse(
+				Encryption.decrypt(new String(Files.readAllBytes(alts.toPath()),
+					Encryption.CHARSET)));
 			GuiAltList.alts.clear();
 			Iterator<Entry<String, JsonElement>> itr =
 				json.entrySet().iterator();
@@ -451,15 +447,12 @@ public class FileManager
 				JsonObject jsonAlt = entry.getValue().getAsJsonObject();
 				
 				String email = entry.getKey();
-				String password =
-					jsonAlt.get("password") == null ? "" : jsonAlt.get(
-						"password").getAsString();
-				String name =
-					jsonAlt.get("name") == null ? "" : jsonAlt.get("name")
-						.getAsString();
-				boolean starred =
-					jsonAlt.get("starred") == null ? false : jsonAlt.get(
-						"starred").getAsBoolean();
+				String password = jsonAlt.get("password") == null ? ""
+					: jsonAlt.get("password").getAsString();
+				String name = jsonAlt.get("name") == null ? ""
+					: jsonAlt.get("name").getAsString();
+				boolean starred = jsonAlt.get("starred") == null ? false
+					: jsonAlt.get("starred").getAsBoolean();
 				
 				GuiAltList.alts.add(new Alt(email, password, name, starred));
 			}
@@ -475,8 +468,8 @@ public class FileManager
 		try
 		{
 			PrintWriter save = new PrintWriter(new FileWriter(friends));
-			save.println(JsonUtils.prettyGson
-				.toJson(WurstClient.INSTANCE.friends));
+			save.println(
+				JsonUtils.prettyGson.toJson(WurstClient.INSTANCE.friends));
 			save.close();
 		}catch(Exception e)
 		{
@@ -505,8 +498,8 @@ public class FileManager
 			XRayUtils.sortBlocks();
 			JsonArray json = new JsonArray();
 			for(int i = 0; i < XRayMod.xrayBlocks.size(); i++)
-				json.add(JsonUtils.prettyGson.toJsonTree(Block
-					.getIdFromBlock(XRayMod.xrayBlocks.get(i))));
+				json.add(JsonUtils.prettyGson.toJsonTree(
+					Block.getIdFromBlock(XRayMod.xrayBlocks.get(i))));
 			PrintWriter save = new PrintWriter(new FileWriter(xray));
 			save.println(JsonUtils.prettyGson.toJson(json));
 			save.close();
@@ -545,8 +538,7 @@ public class FileManager
 		try
 		{
 			String[] comment =
-				{
-					"Copyright © 2014 - 2016 | Wurst-Imperium | All rights reserved.",
+				{"Copyright © 2014 - 2016 | Wurst-Imperium | All rights reserved.",
 					"This Source Code Form is subject to the terms of the Mozilla Public",
 					"License, v. 2.0. If a copy of the MPL was not distributed with this",
 					"file, You can obtain one at http://mozilla.org/MPL/2.0/."};
@@ -558,11 +550,10 @@ public class FileManager
 				JsonObject json = new JsonObject();
 				json.add("__comment",
 					JsonUtils.prettyGson.toJsonTree(comment, String[].class));
-				json.add("blocks", JsonUtils.prettyGson.toJsonTree(
-					entry.getValue(), int[][].class));
-				PrintWriter save =
-					new PrintWriter(new FileWriter(new File(autobuildDir,
-						entry.getKey() + ".json")));
+				json.add("blocks", JsonUtils.prettyGson
+					.toJsonTree(entry.getValue(), int[][].class));
+				PrintWriter save = new PrintWriter(new FileWriter(
+					new File(autobuildDir, entry.getKey() + ".json")));
 				save.println(JsonUtils.prettyGson.toJson(json));
 				save.close();
 			}
@@ -584,8 +575,8 @@ public class FileManager
 				BufferedReader load = new BufferedReader(new FileReader(file));
 				JsonObject json = (JsonObject)JsonUtils.jsonParser.parse(load);
 				load.close();
-				AutoBuildMod.templates.add(JsonUtils.gson.fromJson(
-					json.get("blocks"), int[][].class));
+				AutoBuildMod.templates.add(
+					JsonUtils.gson.fromJson(json.get("blocks"), int[][].class));
 				AutoBuildMod.names.add(file.getName().substring(0,
 					file.getName().indexOf(".json")));
 			}
