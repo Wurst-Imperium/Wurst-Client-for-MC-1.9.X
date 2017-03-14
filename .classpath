@@ -41,7 +41,6 @@
 	<classpathentry kind="lib" path="lib/oshi-core-1.1.jar"/>
 	<classpathentry kind="lib" path="lib/platform-3.4.0.jar"/>
 	<classpathentry kind="lib" path="lib/realms-1.8.6.jar"/>
-	<classpathentry kind="lib" path="lib/slick.jar" sourcepath="lib/slick-src"/>
 	<classpathentry kind="lib" path="lib/soundsystem-20120107.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

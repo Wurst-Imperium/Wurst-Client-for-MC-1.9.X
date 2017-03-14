@@ -1,6 +1,6 @@
-From 9111f2322b585e89ee4f767c59efd05ca46ac39f Mon Sep 17 00:00:00 2001
+From 1d68c402c9734f7190b3dd209e345e2df633866a Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Tue, 14 Mar 2017 15:29:29 +0100
+Date: Tue, 14 Mar 2017 15:49:21 +0100
 Subject: [PATCH] mod
 
 ---
@@ -16,6 +16,7 @@ Subject: [PATCH] mod
  .../client/audio/PositionedSoundRecord.java        |   2 +-
  .../client/entity/AbstractClientPlayer.java        |   4 +-
  net/minecraft/client/entity/EntityPlayerSP.java    | 152 ++++++++++++----
+ net/minecraft/client/gui/FontRenderer.java         |   2 +-
  net/minecraft/client/gui/GuiButton.java            |  16 +-
  net/minecraft/client/gui/GuiDisconnected.java      |  87 +++++++++
  net/minecraft/client/gui/GuiGameOver.java          |  13 +-
@@ -52,6 +53,7 @@ Subject: [PATCH] mod
  net/minecraft/client/renderer/entity/Render.java   |  47 ++++-
  .../client/renderer/entity/RenderManager.java      |   6 +-
  .../client/renderer/entity/RenderPlayer.java       |   2 +-
+ .../client/renderer/texture/TextureUtil.java       |   2 +-
  net/minecraft/client/resources/SkinManager.java    |  22 ++-
  net/minecraft/client/settings/GameSettings.java    |  14 +-
  net/minecraft/client/settings/KeyBinding.java      |   2 +-
@@ -85,7 +87,7 @@ Subject: [PATCH] mod
  .../management/PlayerInteractionManager.java       |   6 +-
  net/minecraft/tileentity/TileEntitySign.java       |   2 +-
  net/minecraft/util/Timer.java                      |   6 +
- 81 files changed, 1244 insertions(+), 408 deletions(-)
+ 83 files changed, 1246 insertions(+), 410 deletions(-)
 
 diff --git a/Start.java b/Start.java
 index ae0025f..078afa5 100644
@@ -1079,6 +1081,19 @@ index 61b85c2..4f89ed6 100644
 +        return super.removePotionEffectClient(p_184596_1_);
      }
  }
+diff --git a/net/minecraft/client/gui/FontRenderer.java b/net/minecraft/client/gui/FontRenderer.java
+index d6deb1c..3e40574 100644
+--- a/net/minecraft/client/gui/FontRenderer.java
++++ b/net/minecraft/client/gui/FontRenderer.java
+@@ -848,7 +848,7 @@ public class FontRenderer implements IResourceManagerReloadListener
+     /**
+      * Inserts newline and formatting into a string to wrap it within the specified width.
+      */
+-    String wrapFormattedStringToWidth(String str, int wrapWidth)
++    protected String wrapFormattedStringToWidth(String str, int wrapWidth)
+     {
+         int i = this.sizeStringToWidth(str, wrapWidth);
+ 
 diff --git a/net/minecraft/client/gui/GuiButton.java b/net/minecraft/client/gui/GuiButton.java
 index cdb4e57..82cb9ea 100644
 --- a/net/minecraft/client/gui/GuiButton.java
@@ -3189,6 +3204,19 @@ index 36fa6fd..07bb576 100644
          {
              super.rotateCorpse(bat, p_77043_2_, p_77043_3_, partialTicks);
              float f = (float)bat.func_184599_cB() + partialTicks;
+diff --git a/net/minecraft/client/renderer/texture/TextureUtil.java b/net/minecraft/client/renderer/texture/TextureUtil.java
+index 7bebe78..7e95efd 100644
+--- a/net/minecraft/client/renderer/texture/TextureUtil.java
++++ b/net/minecraft/client/renderer/texture/TextureUtil.java
+@@ -295,7 +295,7 @@ public class TextureUtil
+         dataBuffer.position(0).limit(p_110994_2_);
+     }
+ 
+-    static void bindTexture(int p_94277_0_)
++    public static void bindTexture(int p_94277_0_)
+     {
+         GlStateManager.bindTexture(p_94277_0_);
+     }
 diff --git a/net/minecraft/client/resources/SkinManager.java b/net/minecraft/client/resources/SkinManager.java
 index 65b26b7..1340413 100644
 --- a/net/minecraft/client/resources/SkinManager.java
