@@ -9,8 +9,8 @@ import org.darkstorm.minecraft.gui.layout.Constraint;
 import org.darkstorm.minecraft.gui.layout.LayoutManager;
 import org.darkstorm.minecraft.gui.theme.Theme;
 
-public abstract class AbstractContainer extends AbstractComponent implements
-	Container
+public abstract class AbstractContainer extends AbstractComponent
+	implements Container
 {
 	private final Map<Component, Constraint[]> children =
 		new LinkedHashMap<Component, Constraint[]>();

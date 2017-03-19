@@ -105,8 +105,7 @@ public class RemoteViewMod extends Mod implements UpdateListener
 		wurst.events.remove(UpdateListener.class, this);
 		if(otherView != null)
 		{
-			ChatUtils
-				.message("No longer viewing " + otherView.getName() + ".");
+			ChatUtils.message("No longer viewing " + otherView.getName() + ".");
 			otherView.setInvisible(wasInvisible);
 			mc.thePlayer.noClip = false;
 			mc.thePlayer.setPositionAndRotation(oldX, oldY, oldZ, oldYaw,

@@ -85,8 +85,8 @@ public class WurstButtonUI extends AbstractComponentUI<Button>
 		RenderUtil.boxShadow(0, 1, area.width, area.height - 1);
 		
 		// hover overlay
-		if(area.contains(mouse)
-			&& Minecraft.getMinecraft().currentScreen instanceof GuiManagerDisplayScreen)
+		if(area.contains(mouse) && Minecraft
+			.getMinecraft().currentScreen instanceof GuiManagerDisplayScreen)
 		{
 			glColor4f(0.0f, 0.0f, 0.0f, Mouse.isButtonDown(0) ? 0.3f : 0.2f);
 			glBegin(GL_QUADS);
@@ -126,9 +126,8 @@ public class WurstButtonUI extends AbstractComponentUI<Button>
 		}
 		if(System.currentTimeMillis() < lastMS + 500)
 			return;
-		if(describedButton != null
-			&& rightButton == button
-			&& Minecraft.getMinecraft().currentScreen instanceof GuiManagerDisplayScreen)
+		if(describedButton != null && rightButton == button && Minecraft
+			.getMinecraft().currentScreen instanceof GuiManagerDisplayScreen)
 		{
 			// TODO: clean up
 			String[] lines = describedButton.getDescription().split("\n");
@@ -144,22 +143,26 @@ public class WurstButtonUI extends AbstractComponentUI<Button>
 			Rectangle dArea = describedButton.getArea();
 			dArea.width = describedButton.getParent().getWidth() - 4;
 			for(Frame frame : WurstClient.INSTANCE.gui.getFrames())
-				if(frame.getTitle().equalsIgnoreCase(
-					button.getMod().getCategory().name()))
+				if(frame.getTitle()
+					.equalsIgnoreCase(button.getMod().getCategory().name()))
 					WurstClient.INSTANCE.gui.bringForward(frame);
 			int scale = Minecraft.getMinecraft().gameSettings.guiScale;
 			if(scale == 0)
 				scale = 1000;
 			int scaleFactor = 0;
 			while(scaleFactor < scale
-				&& Minecraft.getMinecraft().displayWidth / (scaleFactor + 1) >= 320
-				&& Minecraft.getMinecraft().displayHeight / (scaleFactor + 1) >= 240)
+				&& Minecraft.getMinecraft().displayWidth
+					/ (scaleFactor + 1) >= 320
+				&& Minecraft.getMinecraft().displayHeight
+					/ (scaleFactor + 1) >= 240)
 				scaleFactor++;
-			if(rawMouse.x + 8 + textWidth > Minecraft.getMinecraft().displayWidth
-				/ scaleFactor)
+			if(rawMouse.x + 8
+				+ textWidth > Minecraft.getMinecraft().displayWidth
+					/ scaleFactor)
 				rawMouse.x -= textWidth + 16;
-			if(rawMouse.y - 5 + textHeight > Minecraft.getMinecraft().displayHeight
-				/ scaleFactor)
+			if(rawMouse.y - 5
+				+ textHeight > Minecraft.getMinecraft().displayHeight
+					/ scaleFactor)
 				rawMouse.y -= textHeight - 8;
 			glEnable(GL_BLEND);
 			glDisable(GL_CULL_FACE);
@@ -169,19 +172,18 @@ public class WurstButtonUI extends AbstractComponentUI<Button>
 			{
 				glVertex2d(rawMouse.x + 6, rawMouse.y - 5);
 				glVertex2d(rawMouse.x + textWidth + 11, rawMouse.y - 5);
-				glVertex2d(rawMouse.x + textWidth + 11, rawMouse.y - 5
-					+ textHeight);
+				glVertex2d(rawMouse.x + textWidth + 11,
+					rawMouse.y - 5 + textHeight);
 				glVertex2d(rawMouse.x + 6, rawMouse.y - 5 + textHeight);
 			}
 			glEnd();
-			RenderUtil.boxShadow(rawMouse.x + 6, rawMouse.y - 5, rawMouse.x
-				+ textWidth + 11, rawMouse.y - 5 + textHeight);
+			RenderUtil.boxShadow(rawMouse.x + 6, rawMouse.y - 5,
+				rawMouse.x + textWidth + 11, rawMouse.y - 5 + textHeight);
 			for(int i = 0; i < lines.length; i++)
-				theme.getFontRenderer().drawString(
-					lines[i],
-					rawMouse.x + 8,
-					rawMouse.y - 5 + (theme.getFontRenderer().FONT_HEIGHT + 2)
-						* i, RenderUtil.toRGBA(Color.WHITE));
+				theme.getFontRenderer().drawString(lines[i], rawMouse.x + 8,
+					rawMouse.y - 5
+						+ (theme.getFontRenderer().FONT_HEIGHT + 2) * i,
+					RenderUtil.toRGBA(Color.WHITE));
 		}
 		if(!area.contains(mouse) && describedButton == button)
 		{
@@ -227,15 +229,16 @@ public class WurstButtonUI extends AbstractComponentUI<Button>
 	@Override
 	protected Dimension getDefaultComponentSize(Button component)
 	{
-		return new Dimension(theme.getFontRenderer().getStringWidth(
-			component.getText()) + 4, theme.getFontRenderer().FONT_HEIGHT + 4);
+		return new Dimension(
+			theme.getFontRenderer().getStringWidth(component.getText()) + 4,
+			theme.getFontRenderer().FONT_HEIGHT + 4);
 	}
 	
 	@Override
 	protected Rectangle[] getInteractableComponentRegions(Button component)
 	{
-		return new Rectangle[]{new Rectangle(0, 0, component.getWidth(),
-			component.getHeight())};
+		return new Rectangle[]{
+			new Rectangle(0, 0, component.getWidth(), component.getHeight())};
 	}
 	
 	@Override

@@ -33,8 +33,8 @@ public class LoginManager
 		{
 			auth.logIn();
 			Minecraft.getMinecraft().session =
-				new Session(auth.getSelectedProfile().getName(), auth
-					.getSelectedProfile().getId().toString(),
+				new Session(auth.getSelectedProfile().getName(),
+					auth.getSelectedProfile().getId().toString(),
 					auth.getAuthenticatedToken(), "mojang");
 			return "";
 			

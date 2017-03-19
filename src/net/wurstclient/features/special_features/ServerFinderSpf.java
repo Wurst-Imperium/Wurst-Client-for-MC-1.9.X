@@ -7,12 +7,13 @@
  */
 package net.wurstclient.features.special_features;
 
-@Spf.Info(description = "ServerFinder is a tool for finding easy-to-grief Minecraft servers quickly and with little effort.\n"
-	+ "It usually finds around 75 - 200 servers.",
+@Spf.Info(
+	description = "ServerFinder is a tool for finding easy-to-grief Minecraft servers quickly and with little effort.\n"
+		+ "It usually finds around 75 - 200 servers.",
 	name = "ServerFinder",
 	tags = "Server Finder",
 	help = "Special_Features/Server_Finder")
 public class ServerFinderSpf extends Spf
-{	
+{
 	
 }

@@ -48,8 +48,8 @@ public class TargetFrame extends BasicFrame
 				@Override
 				public void onButtonPress(Button button)
 				{
-					checkboxSetting.setChecked(((BasicCheckButton)button)
-						.isSelected());
+					checkboxSetting
+						.setChecked(((BasicCheckButton)button).isSelected());
 					wurst.files.saveNavigatorData();
 				}
 			});
@@ -62,10 +62,8 @@ public class TargetFrame extends BasicFrame
 			@Override
 			public void onButtonPress(Button button)
 			{
-				Minecraft.getMinecraft()
-					.displayGuiScreen(
-						new GuiTeamSettings(
-							Minecraft.getMinecraft().currentScreen));
+				Minecraft.getMinecraft().displayGuiScreen(new GuiTeamSettings(
+					Minecraft.getMinecraft().currentScreen));
 			}
 		});
 		add(advancedBtn);

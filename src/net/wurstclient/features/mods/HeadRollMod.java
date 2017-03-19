@@ -32,11 +32,11 @@ public class HeadRollMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		mc.thePlayer.sendQueue
-			.addToSendQueue(new C05PacketPlayerLook(Minecraft
-				.getMinecraft().thePlayer.rotationYaw, (float)Math
-				.sin(mc.thePlayer.ticksExisted % 20 / 10d * Math.PI) * 90,
-				mc.thePlayer.onGround));
+		mc.thePlayer.sendQueue.addToSendQueue(new C05PacketPlayerLook(
+			Minecraft.getMinecraft().thePlayer.rotationYaw,
+			(float)Math.sin(mc.thePlayer.ticksExisted % 20 / 10d * Math.PI)
+				* 90,
+			mc.thePlayer.onGround));
 	}
 	
 	@Override

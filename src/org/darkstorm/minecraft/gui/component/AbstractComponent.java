@@ -86,17 +86,15 @@ public abstract class AbstractComponent implements Component
 		{
 			Dimension defaultSize =
 				oldTheme.getUIForComponent(this).getDefaultSize(this);
-			changeArea =
-				area.width == defaultSize.width
-					&& area.height == defaultSize.height;
+			changeArea = area.width == defaultSize.width
+				&& area.height == defaultSize.height;
 		}else
 			changeArea = area.equals(new Rectangle(0, 0, 0, 0));
 		if(changeArea)
 		{
 			Dimension defaultSize = ui.getDefaultSize(this);
-			area =
-				new Rectangle(area.x, area.y, defaultSize.width,
-					defaultSize.height);
+			area = new Rectangle(area.x, area.y, defaultSize.width,
+				defaultSize.height);
 		}
 		foreground = ui.getDefaultForegroundColor(this);
 		background = ui.getDefaultBackgroundColor(this);
@@ -201,8 +199,8 @@ public abstract class AbstractComponent implements Component
 	@Override
 	public void setParent(Container parent)
 	{
-		if(!parent.hasChild(this) || this.parent != null
-			&& this.parent.hasChild(this))
+		if(!parent.hasChild(this)
+			|| this.parent != null && this.parent.hasChild(this))
 			throw new IllegalArgumentException();
 		this.parent = parent;
 	}

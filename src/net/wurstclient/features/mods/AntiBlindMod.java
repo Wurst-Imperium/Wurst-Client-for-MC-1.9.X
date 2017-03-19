@@ -16,6 +16,6 @@ import net.wurstclient.features.mods.Mod.Category;
 	help = "Mods/AntiBlind")
 @Mod.Bypasses
 public class AntiBlindMod extends Mod
-{	
+{
 	
 }

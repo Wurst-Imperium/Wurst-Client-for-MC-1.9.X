@@ -9,7 +9,8 @@ package net.wurstclient.features.commands;
 
 import net.wurstclient.features.commands.Cmd.Info;
 
-@Info(description = "Types \"/gamemode <args>\".\nUseful for servers that don't support /gm.",
+@Info(
+	description = "Types \"/gamemode <args>\".\nUseful for servers that don't support /gm.",
 	name = "gm",
 	syntax = {"<gamemode>"},
 	help = "Commands/gm")

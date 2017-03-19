@@ -27,8 +27,8 @@ import net.wurstclient.features.mods.Mod.Info;
 	latestNCP = false,
 	olderNCP = false,
 	antiCheat = false)
-public class AutoSwordMod extends Mod implements LeftClickListener,
-	UpdateListener
+public class AutoSwordMod extends Mod
+	implements LeftClickListener, UpdateListener
 {
 	private int oldSlot;
 	private int timer;
@@ -87,9 +87,8 @@ public class AutoSwordMod extends Mod implements LeftClickListener,
 			if(item.getItem() instanceof ItemSword)
 				speed = ((ItemSword)item.getItem()).getDamageVsEntity();
 			else if(item.getItem() instanceof ItemTool)
-				speed =
-					((ItemTool)item.getItem()).getToolMaterial()
-						.getDamageVsEntity();
+				speed = ((ItemTool)item.getItem()).getToolMaterial()
+					.getDamageVsEntity();
 			if(speed > bestSpeed)
 			{
 				bestSpeed = speed;

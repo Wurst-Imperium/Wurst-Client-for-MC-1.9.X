@@ -25,7 +25,8 @@ public class CrashItemMod extends Mod
 	public void onEnable()
 	{
 		if(mc.thePlayer.inventory.getCurrentItem() == null
-			|| !(mc.thePlayer.inventory.getCurrentItem().getItem() instanceof ItemNameTag))
+			|| !(mc.thePlayer.inventory.getCurrentItem()
+				.getItem() instanceof ItemNameTag))
 		{
 			ChatUtils.error("You are not holding a nametag in your hand.");
 			setEnabled(false);

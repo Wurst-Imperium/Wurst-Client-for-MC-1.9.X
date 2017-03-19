@@ -9,7 +9,8 @@ package net.wurstclient.bot.commands;
 
 import net.wurstclient.utils.MiscUtils;
 
-@Command.Info(help = "Changes the proxy used for server connections. Must be a SOCKS proxy.",
+@Command.Info(
+	help = "Changes the proxy used for server connections. Must be a SOCKS proxy.",
 	name = "proxy",
 	syntax = {"<ip>:<port>", "none"})
 public class ProxyCmd extends Command

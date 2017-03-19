@@ -13,8 +13,9 @@ import net.wurstclient.features.commands.Cmd.Info;
 import net.wurstclient.utils.ChatUtils;
 import net.wurstclient.utils.MiscUtils;
 
-@Info(description = "Manages your friends list.", name = "friends", syntax = {
-	"(add | remove) <player>", "list [<page>]"},
+@Info(description = "Manages your friends list.",
+	name = "friends",
+	syntax = {"(add | remove) <player>", "list [<page>]"},
 	help = "Commands/friends")
 public class FriendsCmd extends Cmd
 {
@@ -37,8 +38,8 @@ public class FriendsCmd extends Cmd
 				if(page > pages || page < 1)
 					syntaxError();
 				ChatUtils.message("Current friends: " + wurst.friends.size());
-				ChatUtils.message("Friends list (page " + page + "/" + pages
-					+ "):");
+				ChatUtils
+					.message("Friends list (page " + page + "/" + pages + "):");
 				Iterator<String> itr = wurst.friends.iterator();
 				for(int i = 0; itr.hasNext(); i++)
 				{
@@ -54,8 +55,8 @@ public class FriendsCmd extends Cmd
 		{
 			if(wurst.friends.contains(args[1]))
 			{
-				ChatUtils.error("\"" + args[1]
-					+ "\" is already in your friends list.");
+				ChatUtils.error(
+					"\"" + args[1] + "\" is already in your friends list.");
 				return;
 			}
 			wurst.friends.add(args[1]);
@@ -68,8 +69,8 @@ public class FriendsCmd extends Cmd
 				wurst.files.saveFriends();
 				ChatUtils.message("Removed friend \"" + args[1] + "\".");
 			}else
-				ChatUtils.error("\"" + args[1]
-					+ "\" is not in your friends list.");
+				ChatUtils
+					.error("\"" + args[1] + "\" is not in your friends list.");
 		}else
 			syntaxError();
 	}

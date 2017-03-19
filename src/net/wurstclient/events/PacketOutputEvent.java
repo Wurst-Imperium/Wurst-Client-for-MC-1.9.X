@@ -41,7 +41,7 @@ public class PacketOutputEvent extends CancellableEvent<PacketOutputListener>
 				break;
 		}
 	}
-
+	
 	@Override
 	public Class<PacketOutputListener> getListenerType()
 	{

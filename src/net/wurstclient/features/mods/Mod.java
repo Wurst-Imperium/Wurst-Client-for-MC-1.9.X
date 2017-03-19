@@ -27,10 +27,10 @@ import net.wurstclient.utils.ChatUtils;
 public class Mod implements Feature
 {
 	private final String name = getClass().getAnnotation(Info.class).name();
-	private final String description = getClass().getAnnotation(Info.class)
-		.description();
-	private final Category category = getClass().getAnnotation(Info.class)
-		.category();
+	private final String description =
+		getClass().getAnnotation(Info.class).description();
+	private final Category category =
+		getClass().getAnnotation(Info.class).category();
 	private final String tags = getClass().getAnnotation(Info.class).tags();
 	private final String help = getClass().getAnnotation(Info.class).help();
 	private final Bypasses bypasses = getClass().getAnnotation(Bypasses.class);
@@ -128,9 +128,9 @@ public class Mod implements Feature
 	{
 		// mod keybinds
 		String dotT = ".t " + name.toLowerCase();
-		ArrayList<PossibleKeybind> possibleKeybinds =
-			new ArrayList<>(Arrays.asList(new PossibleKeybind(dotT, "Toggle "
-				+ name), new PossibleKeybind(dotT + " on", "Enable " + name),
+		ArrayList<PossibleKeybind> possibleKeybinds = new ArrayList<>(
+			Arrays.asList(new PossibleKeybind(dotT, "Toggle " + name),
+				new PossibleKeybind(dotT + " on", "Enable " + name),
 				new PossibleKeybind(dotT + " off", "Disable " + name)));
 		
 		// settings keybinds

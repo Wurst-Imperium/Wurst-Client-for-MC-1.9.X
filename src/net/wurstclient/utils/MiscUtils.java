@@ -101,9 +101,8 @@ public class MiscUtils
 		
 		if(Util.getOSType() == Util.EnumOS.WINDOWS)
 		{
-			String command =
-				String.format("cmd.exe /C start \"Open file\" \"%s\"",
-					new Object[]{apath});
+			String command = String.format(
+				"cmd.exe /C start \"Open file\" \"%s\"", new Object[]{apath});
 			
 			try
 			{
@@ -155,9 +154,8 @@ public class MiscUtils
 	{
 		HttpURLConnection connection = (HttpURLConnection)url.openConnection();
 		connection.setRequestMethod("GET");
-		BufferedReader input =
-			new BufferedReader(new InputStreamReader(
-				connection.getInputStream()));
+		BufferedReader input = new BufferedReader(
+			new InputStreamReader(connection.getInputStream()));
 		StringBuilder buffer = new StringBuilder();
 		for(String line; (line = input.readLine()) != null;)
 		{
@@ -181,8 +179,8 @@ public class MiscUtils
 			(HttpURLConnection)url.openConnection(Proxy.NO_PROXY);
 		connection.setRequestMethod("POST");
 		connection.setRequestProperty("Content-Type", contentType);
-		connection.setRequestProperty("Content-Length", ""
-			+ content.getBytes().length);
+		connection.setRequestProperty("Content-Length",
+			"" + content.getBytes().length);
 		connection.setRequestProperty("Content-Language", "en-US");
 		connection.setUseCaches(false);
 		connection.setDoInput(true);
@@ -193,9 +191,8 @@ public class MiscUtils
 		output.flush();
 		output.close();
 		
-		BufferedReader input =
-			new BufferedReader(new InputStreamReader(
-				connection.getInputStream()));
+		BufferedReader input = new BufferedReader(
+			new InputStreamReader(connection.getInputStream()));
 		StringBuffer buffer = new StringBuffer();
 		for(String line; (line = input.readLine()) != null;)
 		{

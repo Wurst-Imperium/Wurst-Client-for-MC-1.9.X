@@ -26,7 +26,8 @@ public class GuiAltList extends GuiSlot
 {
 	public GuiAltList(Minecraft mc, GuiAlts prevMenu)
 	{
-		super(mc, prevMenu.width, prevMenu.height, 36, prevMenu.height - 56, 30);
+		super(mc, prevMenu.width, prevMenu.height, 36, prevMenu.height - 56,
+			30);
 		
 		this.mc = mc;
 		this.prevMenu = prevMenu;
@@ -48,8 +49,8 @@ public class GuiAltList extends GuiSlot
 			{
 				if(o1 == null || o2 == null)
 					return 0;
-				return o1.getNameOrEmail().compareToIgnoreCase(
-					o2.getNameOrEmail());
+				return o1.getNameOrEmail()
+					.compareToIgnoreCase(o2.getNameOrEmail());
 			}
 		});
 		ArrayList<Alt> newAlts = new ArrayList<Alt>();

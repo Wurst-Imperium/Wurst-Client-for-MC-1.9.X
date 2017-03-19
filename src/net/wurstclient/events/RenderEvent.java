@@ -21,7 +21,7 @@ public class RenderEvent extends Event<RenderListener>
 		for(int i = 0; i < listeners.size(); i++)
 			listeners.get(i).onRender();
 	}
-
+	
 	@Override
 	public Class<RenderListener> getListenerType()
 	{

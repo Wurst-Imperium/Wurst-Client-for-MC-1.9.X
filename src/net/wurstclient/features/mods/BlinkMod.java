@@ -66,8 +66,10 @@ public class BlinkMod extends Mod implements PacketOutputListener
 		if(packet instanceof CPacketPlayer)
 		{
 			if(mc.thePlayer.posX != mc.thePlayer.prevPosX
-				|| mc.thePlayer.posZ != Minecraft.getMinecraft().thePlayer.prevPosZ
-				|| mc.thePlayer.posY != Minecraft.getMinecraft().thePlayer.prevPosY)
+				|| mc.thePlayer.posZ != Minecraft
+					.getMinecraft().thePlayer.prevPosZ
+				|| mc.thePlayer.posY != Minecraft
+					.getMinecraft().thePlayer.prevPosY)
 			{
 				blinkTime += System.currentTimeMillis() - lastTime;
 				packets.add(packet);

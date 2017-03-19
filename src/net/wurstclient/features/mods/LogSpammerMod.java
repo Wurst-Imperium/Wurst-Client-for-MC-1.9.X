@@ -26,8 +26,8 @@ public class LogSpammerMod extends Mod implements UpdateListener
 {
 	private PacketBuffer payload;
 	private Random random;
-	private final String[] vulnerableChannels = new String[]{"MC|BEdit",
-		"MC|BSign", "MC|TrSel", "MC|PickItem"};
+	private final String[] vulnerableChannels =
+		new String[]{"MC|BEdit", "MC|BSign", "MC|TrSel", "MC|PickItem"};
 	
 	@Override
 	public void onEnable()

@@ -86,9 +86,8 @@ public class SearchMod extends Mod implements UpdateListener, RenderListener
 			if(matchingBlocks.size() >= maxBlocks && notify)
 			{
 				ChatUtils.warning(getName() + " found §lA LOT§r of blocks.");
-				ChatUtils
-					.message("To prevent lag, it will only show the first "
-						+ maxBlocks + " blocks.");
+				ChatUtils.message("To prevent lag, it will only show the first "
+					+ maxBlocks + " blocks.");
 				notify = false;
 			}else if(matchingBlocks.size() < maxBlocks)
 				notify = true;

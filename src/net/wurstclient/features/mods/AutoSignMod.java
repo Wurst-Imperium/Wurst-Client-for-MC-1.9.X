@@ -20,7 +20,10 @@ import net.wurstclient.features.mods.Mod.Info;
 	noCheatCompatible = false,
 	tags = "auto sign",
 	help = "Mods/AutoSign")
-@Bypasses(ghostMode = false, latestNCP = false, olderNCP = false, antiCheat = false)
+@Bypasses(ghostMode = false,
+	latestNCP = false,
+	olderNCP = false,
+	antiCheat = false)
 public class AutoSignMod extends Mod
 {
 	public ITextComponent[] signText;

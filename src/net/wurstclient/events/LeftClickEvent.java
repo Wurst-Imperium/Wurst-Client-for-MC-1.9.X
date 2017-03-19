@@ -21,7 +21,7 @@ public class LeftClickEvent extends Event<LeftClickListener>
 		for(int i = 0; i < listeners.size(); i++)
 			listeners.get(i).onLeftClick();
 	}
-
+	
 	@Override
 	public Class<LeftClickListener> getListenerType()
 	{

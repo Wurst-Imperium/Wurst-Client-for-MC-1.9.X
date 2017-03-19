@@ -25,9 +25,8 @@ public class HelpCmd extends Command
 			execute(new String[]{"1"});
 			return;
 		}
-		int pages =
-			(int)Math.ceil(WurstBot.getBot().getCommandManager()
-				.countCommands() / 8D);
+		int pages = (int)Math
+			.ceil(WurstBot.getBot().getCommandManager().countCommands() / 8D);
 		if(MiscUtils.isInteger(args[0]))
 		{
 			int page = Integer.valueOf(args[0]);
@@ -35,11 +34,10 @@ public class HelpCmd extends Command
 				syntaxError("Invalid page: " + page);
 			System.out.println("Available commands: "
 				+ WurstBot.getBot().getCommandManager().countCommands());
-			System.out.println("Command list (page " + page + "/" + pages
-				+ "):");
-			Iterator<Command> itr =
-				WurstBot.getBot().getCommandManager().getAllCommands()
-					.iterator();
+			System.out
+				.println("Command list (page " + page + "/" + pages + "):");
+			Iterator<Command> itr = WurstBot.getBot().getCommandManager()
+				.getAllCommands().iterator();
 			for(int i = 0; itr.hasNext(); i++)
 			{
 				Command cmd = itr.next();

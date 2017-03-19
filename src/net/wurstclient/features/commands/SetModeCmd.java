@@ -13,8 +13,9 @@ import net.wurstclient.features.Feature;
 import net.wurstclient.settings.ModeSetting;
 import net.wurstclient.settings.Setting;
 
-@Cmd.Info(description = "Changes a mode setting of a feature. Allows you to\n"
-	+ "switch modes through keybinds.",
+@Cmd.Info(
+	description = "Changes a mode setting of a feature. Allows you to\n"
+		+ "switch modes through keybinds.",
 	name = "setmode",
 	syntax = {"<feature> <mode_setting> (<mode>|next|prev)"},
 	help = "Commands/setmode")
@@ -39,7 +40,8 @@ public class SetModeCmd extends Cmd
 			}
 		}
 		if(feature == null)
-			error("A feature named \"" + featureName + "\" could not be found.");
+			error(
+				"A feature named \"" + featureName + "\" could not be found.");
 		
 		// find setting
 		Setting setting = null;

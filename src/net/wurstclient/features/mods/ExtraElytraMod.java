@@ -28,11 +28,11 @@ import net.wurstclient.settings.CheckboxSetting;
 @Bypasses
 public class ExtraElytraMod extends Mod implements UpdateListener
 {
-	private CheckboxSetting instantFly = new CheckboxSetting("Instant fly",
-		true);
+	private CheckboxSetting instantFly =
+		new CheckboxSetting("Instant fly", true);
 	private CheckboxSetting easyFly = new CheckboxSetting("Easy fly", false);
-	private CheckboxSetting stopInWater = new CheckboxSetting(
-		"Stop flying in water", true);
+	private CheckboxSetting stopInWater =
+		new CheckboxSetting("Stop flying in water", true);
 	
 	@Override
 	public void initSettings()
@@ -121,11 +121,11 @@ public class ExtraElytraMod extends Mod implements UpdateListener
 			case ANTICHEAT:
 			case OLDER_NCP:
 			case LATEST_NCP:
-				easyFly.unlock();
-				break;
+			easyFly.unlock();
+			break;
 			case GHOST_MODE:
-				easyFly.lock(false);
-				break;
+			easyFly.lock(false);
+			break;
 		}
 	}
 }

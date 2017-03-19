@@ -40,11 +40,13 @@ public class Random extends Tag
 			&& !tagData.getTagArgs()[0].equals("junk"))
 			throw new InvalidArgumentException(
 				"Invalid type in <random> tag: \"" + tagData.getTagArgs()[0]
-					+ "\"", tagData.getTagLine(), this);
+					+ "\"",
+				tagData.getTagLine(), this);
 		if(!MiscUtils.isInteger(tagData.getTagArgs()[1]))
 			throw new InvalidArgumentException(
 				"Invalid number in <random> tag: \"" + tagData.getTagArgs()[1]
-					+ "\"", tagData.getTagLine(), this);
+					+ "\"",
+				tagData.getTagLine(), this);
 		String result = "";
 		if(tagData.getTagArgs()[0].equals("number"))
 			for(int i = 0; i < Integer.valueOf(tagData.getTagArgs()[1]); i++)
@@ -66,9 +68,8 @@ public class Random extends Tag
 				random.nextBytes(nextChar);
 				if(ChatAllowedCharacters.isAllowedCharacter((char)nextChar[0]))
 				{
-					String nextString =
-						new String(nextChar).replace("<", "§_lt;").replace("§",
-							"");
+					String nextString = new String(nextChar)
+						.replace("<", "§_lt;").replace("§", "");
 					result += nextString;
 					i++;
 				}

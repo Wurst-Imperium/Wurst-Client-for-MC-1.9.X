@@ -14,7 +14,8 @@ import net.minecraft.util.math.BlockPos;
 import net.wurstclient.events.ChatOutputEvent;
 import net.wurstclient.utils.ChatUtils;
 
-@Cmd.Info(description = "Shows your current position or copies it to the clipboard.",
+@Cmd.Info(
+	description = "Shows your current position or copies it to the clipboard.",
 	name = "getpos",
 	syntax = {"[copy]"},
 	help = "Commands/getpos")

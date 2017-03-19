@@ -318,27 +318,27 @@ public class WurstFontRenderer extends FontRenderer
 			switch(var8)
 			{
 				case 10:
-					--var5;
-					break;
+				--var5;
+				break;
 				case 167:
-					if(var5 < var3 - 1)
+				if(var5 < var3 - 1)
+				{
+					++var5;
+					final char var9 = str.charAt(var5);
+					if(var9 != 108 && var9 != 76)
 					{
-						++var5;
-						final char var9 = str.charAt(var5);
-						if(var9 != 108 && var9 != 76)
-						{
-							if(var9 == 114 || var9 == 82 || isFormatColor(var9))
-								var7 = false;
-						}else
-							var7 = true;
-					}
-					break;
+						if(var9 == 114 || var9 == 82 || isFormatColor(var9))
+							var7 = false;
+					}else
+						var7 = true;
+				}
+				break;
 				case 32:
-					var6 = var5;
+				var6 = var5;
 				default:
-					var4 += getStringWidth(Character.toString(var8));
-					if(var7)
-						++var4;
+				var4 += getStringWidth(Character.toString(var8));
+				if(var7)
+					++var4;
 			}
 			
 			if(var8 == 10)

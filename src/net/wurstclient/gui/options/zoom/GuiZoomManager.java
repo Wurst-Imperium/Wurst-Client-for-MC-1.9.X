@@ -32,9 +32,8 @@ public class GuiZoomManager extends GuiScreen implements GuiPressAKeyCallback
 		buttonList.add(new GuiButton(0, width / 2 - 100, height / 4 + 144 - 16,
 			200, 20, "Back"));
 		buttonList.add(new GuiButton(1, width / 2 - 79, height / 4 + 24 - 16,
-			158, 20, "Zoom Key: "
-				+ Keyboard
-					.getKeyName(WurstClient.INSTANCE.options.zoom.keybind)));
+			158, 20, "Zoom Key: " + Keyboard
+				.getKeyName(WurstClient.INSTANCE.options.zoom.keybind)));
 		buttonList.add(new GuiButton(2, width / 2 - 79, height / 4 + 72 - 16,
 			50, 20, "More"));
 		buttonList.add(new GuiButton(3, width / 2 - 25, height / 4 + 72 - 16,
@@ -44,8 +43,8 @@ public class GuiZoomManager extends GuiScreen implements GuiPressAKeyCallback
 		buttonList.add(new GuiButton(5, width / 2 - 79, height / 4 + 96 - 16,
 			158, 20, "Use Mouse Wheel: "
 				+ (WurstClient.INSTANCE.options.zoom.scroll ? "ON" : "OFF")));
-		WurstClient.INSTANCE.analytics.trackPageView(
-			"/options/keybind-manager", "Keybind Manager");
+		WurstClient.INSTANCE.analytics.trackPageView("/options/keybind-manager",
+			"Keybind Manager");
 	}
 	
 	/**
@@ -53,7 +52,7 @@ public class GuiZoomManager extends GuiScreen implements GuiPressAKeyCallback
 	 */
 	@Override
 	public void updateScreen()
-	{	
+	{
 		
 	}
 	
@@ -64,45 +63,43 @@ public class GuiZoomManager extends GuiScreen implements GuiPressAKeyCallback
 			switch(button.id)
 			{
 				case 0:
-					// Back
-					mc.displayGuiScreen(prevMenu);
-					break;
+				// Back
+				mc.displayGuiScreen(prevMenu);
+				break;
 				case 1:
-					// Zoom Key
-					mc.displayGuiScreen(new GuiPressAKey(this));
-					break;
+				// Zoom Key
+				mc.displayGuiScreen(new GuiPressAKey(this));
+				break;
 				case 2:
-					// Zoom Level More
-					WurstClient.INSTANCE.options.zoom.level =
-						Math.min(
-							Math.round(WurstClient.INSTANCE.options.zoom.level * 10F + 1F) / 10F,
-							10F);
-					WurstClient.INSTANCE.files.saveOptions();
-					break;
+				// Zoom Level More
+				WurstClient.INSTANCE.options.zoom.level = Math.min(Math.round(
+					WurstClient.INSTANCE.options.zoom.level * 10F + 1F) / 10F,
+					10F);
+				WurstClient.INSTANCE.files.saveOptions();
+				break;
 				case 3:
-					// Zoom Level Less
-					WurstClient.INSTANCE.options.zoom.level =
-						Math.max(
-							Math.round(WurstClient.INSTANCE.options.zoom.level * 10F - 1F) / 10F,
-							1F);
-					WurstClient.INSTANCE.files.saveOptions();
-					break;
+				// Zoom Level Less
+				WurstClient.INSTANCE.options.zoom.level = Math.max(Math.round(
+					WurstClient.INSTANCE.options.zoom.level * 10F - 1F) / 10F,
+					1F);
+				WurstClient.INSTANCE.files.saveOptions();
+				break;
 				case 4:
-					// Zoom Level Default
-					WurstClient.INSTANCE.options.zoom.level =
-						new OptionsManager().zoom.level;
-					WurstClient.INSTANCE.files.saveOptions();
-					break;
+				// Zoom Level Default
+				WurstClient.INSTANCE.options.zoom.level =
+					new OptionsManager().zoom.level;
+				WurstClient.INSTANCE.files.saveOptions();
+				break;
 				case 5:
-					// Use Mouse Wheel
-					WurstClient.INSTANCE.options.zoom.scroll =
-						!WurstClient.INSTANCE.options.zoom.scroll;
-					WurstClient.INSTANCE.files.saveOptions();
-					((GuiButton)buttonList.get(5)).displayString =
-						"Use Mouse Wheel: "
-							+ (WurstClient.INSTANCE.options.zoom.scroll ? "ON"
-								: "OFF");
-					break;
+				// Use Mouse Wheel
+				WurstClient.INSTANCE.options.zoom.scroll =
+					!WurstClient.INSTANCE.options.zoom.scroll;
+				WurstClient.INSTANCE.files.saveOptions();
+				((GuiButton)buttonList.get(5)).displayString =
+					"Use Mouse Wheel: "
+						+ (WurstClient.INSTANCE.options.zoom.scroll ? "ON"
+							: "OFF");
+				break;
 			}
 	}
 	
@@ -112,7 +109,7 @@ public class GuiZoomManager extends GuiScreen implements GuiPressAKeyCallback
 	 */
 	@Override
 	protected void keyTyped(char par1, int par2)
-	{	
+	{
 		
 	}
 	
@@ -125,8 +122,9 @@ public class GuiZoomManager extends GuiScreen implements GuiPressAKeyCallback
 		drawBackground(0);
 		drawCenteredString(fontRendererObj, "Zoom Manager", width / 2, 40,
 			0xffffff);
-		drawString(fontRendererObj, "Zoom Level: "
-			+ WurstClient.INSTANCE.options.zoom.level + " x normal",
+		drawString(
+			fontRendererObj, "Zoom Level: "
+				+ WurstClient.INSTANCE.options.zoom.level + " x normal",
 			width / 2 - 75, height / 4 + 44, 0xcccccc);
 		super.drawScreen(par1, par2, par3);
 	}

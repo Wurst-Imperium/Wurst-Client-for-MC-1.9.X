@@ -25,9 +25,10 @@ public class JoinCmd extends Command
 			@Override
 			public void run()
 			{
-				Minecraft.getMinecraft().displayGuiScreen(
-					new GuiConnecting(new GuiWurstMainMenu(), Minecraft
-						.getMinecraft(), new ServerData("", args[0], false)));
+				Minecraft.getMinecraft()
+					.displayGuiScreen(new GuiConnecting(new GuiWurstMainMenu(),
+						Minecraft.getMinecraft(),
+						new ServerData("", args[0], false)));
 				System.out.println("Joined " + args[0] + " as "
 					+ Minecraft.getMinecraft().session.getUsername());
 			}

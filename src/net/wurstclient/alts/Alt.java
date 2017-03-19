@@ -83,12 +83,12 @@ public class Alt
 	{
 		this.starred = starred;
 	}
-
+	
 	public boolean isUnchecked()
 	{
 		return unchecked;
 	}
-
+	
 	public void setChecked(String name)
 	{
 		this.name = name;

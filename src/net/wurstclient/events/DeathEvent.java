@@ -21,7 +21,7 @@ public class DeathEvent extends Event<DeathListener>
 		for(int i = 0; i < listeners.size(); i++)
 			listeners.get(i).onDeath();
 	}
-
+	
 	@Override
 	public Class<DeathListener> getListenerType()
 	{

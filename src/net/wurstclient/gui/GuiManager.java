@@ -140,8 +140,8 @@ public final class GuiManager extends AbstractGuiManager
 				@Override
 				public void update()
 				{
-					setForegroundColor(mod.isEnabled() ? Color.BLACK
-						: Color.WHITE);
+					setForegroundColor(
+						mod.isEnabled() ? Color.BLACK : Color.WHITE);
 					if(mod.isEnabled())
 						if(mod.isBlocked())
 							setBackgroundColor(new Color(255, 0, 0, 96));
@@ -171,20 +171,19 @@ public final class GuiManager extends AbstractGuiManager
 		
 		// AutoBuild
 		ModuleFrame autobuild = categoryFrames.get(Category.AUTOBUILD);
-		ComboBox autoBuildBox =
-			new BasicComboBox(
-				AutoBuildMod.names.toArray(new String[AutoBuildMod.names.size()]));
+		ComboBox autoBuildBox = new BasicComboBox(
+			AutoBuildMod.names.toArray(new String[AutoBuildMod.names.size()]));
 		autoBuildBox.addComboBoxListener(new ComboBoxListener()
 		{
 			@Override
 			public void onComboBoxSelectionChanged(ComboBox comboBox)
 			{
-				WurstClient.INSTANCE.mods.autoBuildMod.setTemplate(comboBox
-					.getSelectedIndex());
+				WurstClient.INSTANCE.mods.autoBuildMod
+					.setTemplate(comboBox.getSelectedIndex());
 			}
 		});
-		autoBuildBox.setSelectedIndex(WurstClient.INSTANCE.mods.autoBuildMod
-			.getTemplate());
+		autoBuildBox.setSelectedIndex(
+			WurstClient.INSTANCE.mods.autoBuildMod.getTemplate());
 		autobuild.add(autoBuildBox, HorizontalGridConstraint.CENTER);
 		categoryFrames.remove(Category.AUTOBUILD);
 		

@@ -38,10 +38,10 @@ public class BindsCmd extends Cmd
 				syntaxError("Invalid page: " + page);
 				return;
 			}
-			ChatUtils.message("Current keybinds: "
-				+ Integer.toString(wurst.keybinds.size()));
-			ChatUtils.message("Keybind list (page " + page + "/" + pages
-				+ "):");
+			ChatUtils.message(
+				"Current keybinds: " + Integer.toString(wurst.keybinds.size()));
+			ChatUtils
+				.message("Keybind list (page " + page + "/" + pages + "):");
 			Iterator<Entry<String, TreeSet<String>>> itr =
 				wurst.keybinds.entrySet().iterator();
 			for(int i = 0; itr.hasNext(); i++)
@@ -49,10 +49,8 @@ public class BindsCmd extends Cmd
 				Entry<String, TreeSet<String>> entry = itr.next();
 				
 				if(i >= (page - 1) * 8 && i < (page - 1) * 8 + 8)
-					entry.getValue()
-						.forEach(
-							(cmd) -> ChatUtils.message(entry.getKey() + ": "
-								+ cmd));
+					entry.getValue().forEach((cmd) -> ChatUtils
+						.message(entry.getKey() + ": " + cmd));
 			}
 		}else
 			syntaxError("Not a number: \"" + args[0] + "\"");

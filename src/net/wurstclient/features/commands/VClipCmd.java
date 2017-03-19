@@ -10,9 +10,12 @@ package net.wurstclient.features.commands;
 import net.wurstclient.features.commands.Cmd.Info;
 import net.wurstclient.utils.MiscUtils;
 
-@Info(description = "Teleports you up/down. Can glitch you through floors & "
-	+ "ceilings.\nThe maximum distance is 100 blocks on vanilla servers and "
-	+ "10 blocks on Bukkit servers.", name = "vclip", syntax = {"<height>"},
+@Info(
+	description = "Teleports you up/down. Can glitch you through floors & "
+		+ "ceilings.\nThe maximum distance is 100 blocks on vanilla servers and "
+		+ "10 blocks on Bukkit servers.",
+	name = "vclip",
+	syntax = {"<height>"},
 	help = "Commands/vclip")
 public class VClipCmd extends Cmd
 {
@@ -22,8 +25,9 @@ public class VClipCmd extends Cmd
 		if(args.length != 1)
 			syntaxError();
 		if(MiscUtils.isInteger(args[0]))
-			mc.thePlayer.setPosition(mc.thePlayer.posX, mc.thePlayer.posY
-				+ Integer.valueOf(args[0]), mc.thePlayer.posZ);
+			mc.thePlayer.setPosition(mc.thePlayer.posX,
+				mc.thePlayer.posY + Integer.valueOf(args[0]),
+				mc.thePlayer.posZ);
 		else
 			syntaxError();
 	}

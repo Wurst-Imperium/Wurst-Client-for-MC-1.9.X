@@ -15,7 +15,8 @@ import net.wurstclient.features.commands.Cmd.Info;
 import net.wurstclient.hooks.ServerHook;
 import net.wurstclient.utils.ChatUtils;
 
-@Info(description = "Shows the IP of the server you are currently playing on or copies it to the clipboard.",
+@Info(
+	description = "Shows the IP of the server you are currently playing on or copies it to the clipboard.",
 	name = "ip",
 	syntax = {"[copy]"},
 	help = "Commands/ip")
@@ -28,11 +29,8 @@ public class IpCmd extends Cmd
 			ChatUtils.message("IP: " + ServerHook.getCurrentServerIP());
 		else if(args[0].toLowerCase().equals("copy"))
 		{
-			Toolkit
-				.getDefaultToolkit()
-				.getSystemClipboard()
-				.setContents(
-					new StringSelection(ServerHook.getCurrentServerIP()), null);
+			Toolkit.getDefaultToolkit().getSystemClipboard().setContents(
+				new StringSelection(ServerHook.getCurrentServerIP()), null);
 			ChatUtils.message("IP copied to clipboard.");
 		}else
 			syntaxError();

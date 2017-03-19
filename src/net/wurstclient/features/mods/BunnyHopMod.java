@@ -31,7 +31,8 @@ public class BunnyHopMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		if((mc.thePlayer.moveForward != 0 || Minecraft.getMinecraft().thePlayer.moveStrafing != 0)
+		if((mc.thePlayer.moveForward != 0
+			|| Minecraft.getMinecraft().thePlayer.moveStrafing != 0)
 			&& !mc.thePlayer.isSneaking() && mc.thePlayer.onGround)
 			mc.thePlayer.jump();
 	}

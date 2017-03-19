@@ -19,23 +19,24 @@ import net.wurstclient.events.listeners.GUIRenderListener;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.commands.Cmd.Info;
 
-@Info(description = "Spawns a dancing taco on your hotbar.\n"
-	+ "\"I love that little guy. So cute!\" -WiZARD",
+@Info(
+	description = "Spawns a dancing taco on your hotbar.\n"
+		+ "\"I love that little guy. So cute!\" -WiZARD",
 	name = "taco",
 	syntax = {},
 	help = "Commands/taco")
 public class TacoCmd extends Cmd implements GUIRenderListener, UpdateListener
 {
-	private static final ResourceLocation tacoTexture1 = new ResourceLocation(
-		"wurst/dancingtaco1.png");
-	private static final ResourceLocation tacoTexture2 = new ResourceLocation(
-		"wurst/dancingtaco2.png");
-	private static final ResourceLocation tacoTexture3 = new ResourceLocation(
-		"wurst/dancingtaco3.png");
-	private static final ResourceLocation tacoTexture4 = new ResourceLocation(
-		"wurst/dancingtaco4.png");
-	private static final ResourceLocation[] tacoTextures = {tacoTexture1,
-		tacoTexture2, tacoTexture3, tacoTexture4};
+	private static final ResourceLocation tacoTexture1 =
+		new ResourceLocation("wurst/dancingtaco1.png");
+	private static final ResourceLocation tacoTexture2 =
+		new ResourceLocation("wurst/dancingtaco2.png");
+	private static final ResourceLocation tacoTexture3 =
+		new ResourceLocation("wurst/dancingtaco3.png");
+	private static final ResourceLocation tacoTexture4 =
+		new ResourceLocation("wurst/dancingtaco4.png");
+	private static final ResourceLocation[] tacoTextures =
+		{tacoTexture1, tacoTexture2, tacoTexture3, tacoTexture4};
 	private int ticks = 0;
 	private boolean toggled;
 	

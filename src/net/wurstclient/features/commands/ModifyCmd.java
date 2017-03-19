@@ -19,7 +19,8 @@ import net.wurstclient.utils.MiscUtils;
 
 @Info(description = "Modifies items in creative mode.",
 	name = "modify",
-	syntax = {"add <nbt>", "remove <nbt_path>", "set <nbt>", "metadata <value>"},
+	syntax = {"add <nbt>", "remove <nbt_path>", "set <nbt>",
+		"metadata <value>"},
 	help = "Commands/modify")
 public class ModifyCmd extends Cmd
 {

@@ -57,8 +57,8 @@ public class DropCmd extends Cmd implements UpdateListener
 					new ItemStack(item, 64)));
 			return;
 		}
-		if(wurst.special.yesCheatSpf.getBypassLevel().ordinal() >= BypassLevel.OLDER_NCP
-			.ordinal())
+		if(wurst.special.yesCheatSpf.getBypassLevel()
+			.ordinal() >= BypassLevel.OLDER_NCP.ordinal())
 		{
 			timer++;
 			if(timer >= 5)

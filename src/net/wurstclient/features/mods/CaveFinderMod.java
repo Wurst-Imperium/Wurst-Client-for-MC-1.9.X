@@ -16,6 +16,6 @@ import net.wurstclient.features.mods.Mod.Bypasses;
 	help = "Mods/CaveFinder")
 @Bypasses
 public class CaveFinderMod extends Mod
-{	
+{
 	
 }

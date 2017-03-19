@@ -38,14 +38,14 @@ public class GhostHandCmd extends Cmd
 					Block.getIdFromBlock(Block.getBlockFromName(args[1]));
 				if(newID == -1)
 				{
-					ChatUtils.message("The block \"" + args[1]
-						+ "\" could not be found.");
+					ChatUtils.message(
+						"The block \"" + args[1] + "\" could not be found.");
 					return;
 				}
 				wurst.options.ghostHandID = newID;
 				wurst.files.saveOptions();
-				ChatUtils.message("GhostHand ID set to " + newID + " ("
-					+ args[1] + ").");
+				ChatUtils.message(
+					"GhostHand ID set to " + newID + " (" + args[1] + ").");
 			}else
 				syntaxError();
 		}else

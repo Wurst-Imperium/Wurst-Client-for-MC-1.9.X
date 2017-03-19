@@ -25,8 +25,8 @@ public class FastPlaceMod extends Mod implements UpdateListener
 	@Override
 	public Feature[] getSeeAlso()
 	{
-		return new Feature[]{wurst.mods.fastBreakMod,
-			wurst.mods.buildRandomMod, wurst.mods.autoBuildMod};
+		return new Feature[]{wurst.mods.fastBreakMod, wurst.mods.buildRandomMod,
+			wurst.mods.autoBuildMod};
 	}
 	
 	@Override

@@ -13,8 +13,9 @@ import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
 import net.wurstclient.features.commands.Cmd.Info;
 import net.wurstclient.utils.ChatUtils;
 
-@Info(description = "Allows you to copy items that other people are holding\n"
-	+ "or wearing. Requires creative mode.",
+@Info(
+	description = "Allows you to copy items that other people are holding\n"
+		+ "or wearing. Requires creative mode.",
 	name = "copyitem",
 	syntax = {"<player> (hand|head|chest|legs|feet)"},
 	help = "Commands/copyitem")
@@ -39,23 +40,23 @@ public class CopyItemCmd extends Cmd
 					switch(args[1].toLowerCase())
 					{
 						case "hand":
-							item = player.inventory.getCurrentItem();
-							break;
+						item = player.inventory.getCurrentItem();
+						break;
 						case "head":
-							item = player.inventory.armorItemInSlot(3);
-							break;
+						item = player.inventory.armorItemInSlot(3);
+						break;
 						case "chest":
-							item = player.inventory.armorItemInSlot(2);
-							break;
+						item = player.inventory.armorItemInSlot(2);
+						break;
 						case "legs":
-							item = player.inventory.armorItemInSlot(1);
-							break;
+						item = player.inventory.armorItemInSlot(1);
+						break;
 						case "feet":
-							item = player.inventory.armorItemInSlot(0);
-							break;
+						item = player.inventory.armorItemInSlot(0);
+						break;
 						default:
-							syntaxError();
-							break;
+						syntaxError();
+						break;
 					}
 					break;
 				}
@@ -67,9 +68,8 @@ public class CopyItemCmd extends Cmd
 		for(int i = 0; i < 9; i++)
 			if(mc.thePlayer.inventory.getStackInSlot(i) == null)
 			{
-				mc.thePlayer.sendQueue
-					.addToSendQueue(new CPacketCreativeInventoryAction(
-						36 + i, item));
+				mc.thePlayer.sendQueue.addToSendQueue(
+					new CPacketCreativeInventoryAction(36 + i, item));
 				ChatUtils.message("Item copied.");
 				return;
 			}

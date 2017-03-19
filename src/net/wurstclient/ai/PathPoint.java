@@ -52,7 +52,7 @@ public class PathPoint
 						neighbors.remove(i);
 					else if(previous == null
 						|| PathUtils.isSolid(previous.getPos().add(0, -1, 0))
-						&& previous.getPos().getY() >= pos.getY())
+							&& previous.getPos().getY() >= pos.getY())
 						neighbors.remove(i);
 		}
 		neighbors.add(pos.add(0, -1, 0));// down

@@ -71,7 +71,8 @@ public class ProtectMod extends Mod implements UpdateListener
 		}else
 			EntityUtils.faceEntityClient(friend);
 		if((xDistF > distanceF || zDistF > distanceF)
-			&& (enemy == null || mc.thePlayer.getDistanceToEntity(enemy) > range)
+			&& (enemy == null
+				|| mc.thePlayer.getDistanceToEntity(enemy) > range)
 			|| xDistE > distanceE || zDistE > distanceE)
 			mc.gameSettings.keyBindForward.pressed = true;
 		else

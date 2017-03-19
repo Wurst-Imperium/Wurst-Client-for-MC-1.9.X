@@ -19,6 +19,6 @@ import net.wurstclient.features.mods.Mod.Info;
 	help = "Mods/NameProtect")
 @Bypasses
 public class NameProtectMod extends Mod
-{	
+{
 	
 }

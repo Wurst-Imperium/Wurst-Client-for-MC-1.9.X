@@ -18,6 +18,6 @@ import net.wurstclient.features.mods.Mod.Info;
 	help = "Mods/HealthTags")
 @Bypasses
 public class HealthTagsMod extends Mod
-{	
+{
 	
 }

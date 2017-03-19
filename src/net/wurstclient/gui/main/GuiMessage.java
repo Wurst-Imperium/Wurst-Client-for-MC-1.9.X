@@ -40,17 +40,17 @@ public class GuiMessage extends GuiScreen
 		int i = 0;
 		for(Entry<String, JsonElement> entry : buttons.entrySet())
 		{
-			buttonList.add(new GuiButton(i, width / 2 - 100, height / 3 * 2 + i
-				* 24, 200, 20, entry.getKey()));
+			buttonList.add(new GuiButton(i, width / 2 - 100,
+				height / 3 * 2 + i * 24, 200, 20, entry.getKey()));
 			i++;
 		}
 		
 		if(cancel.equals("allowed") || cancel.equals("prompt"))
-			buttonList.add(new GuiButton(i, width / 2 - 50, height / 3 * 2 + i
-				* 24, 100, 20, "Cancel"));
+			buttonList.add(new GuiButton(i, width / 2 - 50,
+				height / 3 * 2 + i * 24, 100, 20, "Cancel"));
 		
-		WurstClient.INSTANCE.analytics.trackPageView("/message/v"
-			+ WurstClient.VERSION, title);
+		WurstClient.INSTANCE.analytics
+			.trackPageView("/message/v" + WurstClient.VERSION, title);
 	}
 	
 	@Override
@@ -66,8 +66,8 @@ public class GuiMessage extends GuiScreen
 		}else
 		{
 			MiscUtils.openLink(buttons.get(button.displayString).getAsString());
-			WurstClient.INSTANCE.analytics.trackEvent("message", "click", "v"
-				+ WurstClient.VERSION, button.id);
+			WurstClient.INSTANCE.analytics.trackEvent("message", "click",
+				"v" + WurstClient.VERSION, button.id);
 		}
 	}
 	
@@ -79,8 +79,8 @@ public class GuiMessage extends GuiScreen
 		if(result)
 		{
 			mc.displayGuiScreen(new GuiWurstMainMenu());
-			WurstClient.INSTANCE.analytics.trackEvent("message", "cancel", "v"
-				+ WurstClient.VERSION);
+			WurstClient.INSTANCE.analytics.trackEvent("message", "cancel",
+				"v" + WurstClient.VERSION);
 		}else
 			mc.displayGuiScreen(this);
 		
@@ -97,8 +97,8 @@ public class GuiMessage extends GuiScreen
 		int i = 0;
 		for(String line : body.split("\n"))
 		{
-			drawCenteredString(fontRendererObj, line, width / 2, height / 4
-				+ 16 + i * 12, 0xffffffff);
+			drawCenteredString(fontRendererObj, line, width / 2,
+				height / 4 + 16 + i * 12, 0xffffffff);
 			i++;
 		}
 		

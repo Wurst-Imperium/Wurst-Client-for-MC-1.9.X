@@ -52,8 +52,8 @@ public class AutoBuildMod extends Mod implements UpdateListener, RenderListener
 	
 	public void initTemplateSetting()
 	{
-		settings.add(new ModeSetting("Template", names.toArray(new String[names
-			.size()]), template)
+		settings.add(new ModeSetting("Template",
+			names.toArray(new String[names.size()]), template)
 		{
 			@Override
 			public void update()
@@ -111,66 +111,54 @@ public class AutoBuildMod extends Mod implements UpdateListener, RenderListener
 			&& blockIndex >= 0)
 			if(playerYaw > -45 && playerYaw <= 45)
 			{// F: 0 South
-				double renderX =
-					BuildUtils.convertPosNext(1, mouseOver)
-						+ BuildUtils.convertPosInAdvancedBuiling(1, blockIndex,
-							templates.get(template));
-				double renderY =
-					BuildUtils.convertPosNext(2, mouseOver)
-						+ BuildUtils.convertPosInAdvancedBuiling(2, blockIndex,
-							templates.get(template));
-				double renderZ =
-					BuildUtils.convertPosNext(3, mouseOver)
-						+ BuildUtils.convertPosInAdvancedBuiling(3, blockIndex,
-							templates.get(template));
+				double renderX = BuildUtils.convertPosNext(1, mouseOver)
+					+ BuildUtils.convertPosInAdvancedBuiling(1, blockIndex,
+						templates.get(template));
+				double renderY = BuildUtils.convertPosNext(2, mouseOver)
+					+ BuildUtils.convertPosInAdvancedBuiling(2, blockIndex,
+						templates.get(template));
+				double renderZ = BuildUtils.convertPosNext(3, mouseOver)
+					+ BuildUtils.convertPosInAdvancedBuiling(3, blockIndex,
+						templates.get(template));
 				RenderUtils
 					.blockESPBox(new BlockPos(renderX, renderY, renderZ));
 			}else if(playerYaw > 45 && playerYaw <= 135)
 			{// F: 1 West
-				double renderX =
-					BuildUtils.convertPosNext(1, mouseOver)
-						- BuildUtils.convertPosInAdvancedBuiling(3, blockIndex,
-							templates.get(template));
-				double renderY =
-					BuildUtils.convertPosNext(2, mouseOver)
-						+ BuildUtils.convertPosInAdvancedBuiling(2, blockIndex,
-							templates.get(template));
-				double renderZ =
-					BuildUtils.convertPosNext(3, mouseOver)
-						+ BuildUtils.convertPosInAdvancedBuiling(1, blockIndex,
-							templates.get(template));
+				double renderX = BuildUtils.convertPosNext(1, mouseOver)
+					- BuildUtils.convertPosInAdvancedBuiling(3, blockIndex,
+						templates.get(template));
+				double renderY = BuildUtils.convertPosNext(2, mouseOver)
+					+ BuildUtils.convertPosInAdvancedBuiling(2, blockIndex,
+						templates.get(template));
+				double renderZ = BuildUtils.convertPosNext(3, mouseOver)
+					+ BuildUtils.convertPosInAdvancedBuiling(1, blockIndex,
+						templates.get(template));
 				RenderUtils
 					.blockESPBox(new BlockPos(renderX, renderY, renderZ));
 			}else if(playerYaw > 135 || playerYaw <= -135)
 			{// F: 2 North
-				double renderX =
-					BuildUtils.convertPosNext(1, mouseOver)
-						- BuildUtils.convertPosInAdvancedBuiling(1, blockIndex,
-							templates.get(template));
-				double renderY =
-					BuildUtils.convertPosNext(2, mouseOver)
-						+ BuildUtils.convertPosInAdvancedBuiling(2, blockIndex,
-							templates.get(template));
-				double renderZ =
-					BuildUtils.convertPosNext(3, mouseOver)
-						- BuildUtils.convertPosInAdvancedBuiling(3, blockIndex,
-							templates.get(template));
+				double renderX = BuildUtils.convertPosNext(1, mouseOver)
+					- BuildUtils.convertPosInAdvancedBuiling(1, blockIndex,
+						templates.get(template));
+				double renderY = BuildUtils.convertPosNext(2, mouseOver)
+					+ BuildUtils.convertPosInAdvancedBuiling(2, blockIndex,
+						templates.get(template));
+				double renderZ = BuildUtils.convertPosNext(3, mouseOver)
+					- BuildUtils.convertPosInAdvancedBuiling(3, blockIndex,
+						templates.get(template));
 				RenderUtils
 					.blockESPBox(new BlockPos(renderX, renderY, renderZ));
 			}else if(playerYaw > -135 && playerYaw <= -45)
 			{// F: 3 East
-				double renderX =
-					BuildUtils.convertPosNext(1, mouseOver)
-						+ BuildUtils.convertPosInAdvancedBuiling(3, blockIndex,
-							templates.get(template));
-				double renderY =
-					BuildUtils.convertPosNext(2, mouseOver)
-						+ BuildUtils.convertPosInAdvancedBuiling(2, blockIndex,
-							templates.get(template));
-				double renderZ =
-					BuildUtils.convertPosNext(3, mouseOver)
-						- BuildUtils.convertPosInAdvancedBuiling(1, blockIndex,
-							templates.get(template));
+				double renderX = BuildUtils.convertPosNext(1, mouseOver)
+					+ BuildUtils.convertPosInAdvancedBuiling(3, blockIndex,
+						templates.get(template));
+				double renderY = BuildUtils.convertPosNext(2, mouseOver)
+					+ BuildUtils.convertPosInAdvancedBuiling(2, blockIndex,
+						templates.get(template));
+				double renderZ = BuildUtils.convertPosNext(3, mouseOver)
+					- BuildUtils.convertPosInAdvancedBuiling(1, blockIndex,
+						templates.get(template));
 				RenderUtils
 					.blockESPBox(new BlockPos(renderX, renderY, renderZ));
 			}
@@ -186,68 +174,56 @@ public class AutoBuildMod extends Mod implements UpdateListener, RenderListener
 			if(shouldBuild && mouseOver != null)
 				if(playerYaw > -45 && playerYaw <= 45)
 				{// F: 0 South
-					double renderX =
-						BuildUtils.convertPosNext(1, mouseOver)
-							+ BuildUtils.convertPosInAdvancedBuiling(1, i,
-								templates.get(template));
-					double renderY =
-						BuildUtils.convertPosNext(2, mouseOver)
-							+ BuildUtils.convertPosInAdvancedBuiling(2, i,
-								templates.get(template));
-					double renderZ =
-						BuildUtils.convertPosNext(3, mouseOver)
-							+ BuildUtils.convertPosInAdvancedBuiling(3, i,
-								templates.get(template));
-					RenderUtils.emptyBlockESPBox(new BlockPos(renderX, renderY,
-						renderZ));
+					double renderX = BuildUtils.convertPosNext(1, mouseOver)
+						+ BuildUtils.convertPosInAdvancedBuiling(1, i,
+							templates.get(template));
+					double renderY = BuildUtils.convertPosNext(2, mouseOver)
+						+ BuildUtils.convertPosInAdvancedBuiling(2, i,
+							templates.get(template));
+					double renderZ = BuildUtils.convertPosNext(3, mouseOver)
+						+ BuildUtils.convertPosInAdvancedBuiling(3, i,
+							templates.get(template));
+					RenderUtils.emptyBlockESPBox(
+						new BlockPos(renderX, renderY, renderZ));
 				}else if(playerYaw > 45 && playerYaw <= 135)
 				{// F: 1 West
-					double renderX =
-						BuildUtils.convertPosNext(1, mouseOver)
-							- BuildUtils.convertPosInAdvancedBuiling(3, i,
-								templates.get(template));
-					double renderY =
-						BuildUtils.convertPosNext(2, mouseOver)
-							+ BuildUtils.convertPosInAdvancedBuiling(2, i,
-								templates.get(template));
-					double renderZ =
-						BuildUtils.convertPosNext(3, mouseOver)
-							+ BuildUtils.convertPosInAdvancedBuiling(1, i,
-								templates.get(template));
-					RenderUtils.emptyBlockESPBox(new BlockPos(renderX, renderY,
-						renderZ));
+					double renderX = BuildUtils.convertPosNext(1, mouseOver)
+						- BuildUtils.convertPosInAdvancedBuiling(3, i,
+							templates.get(template));
+					double renderY = BuildUtils.convertPosNext(2, mouseOver)
+						+ BuildUtils.convertPosInAdvancedBuiling(2, i,
+							templates.get(template));
+					double renderZ = BuildUtils.convertPosNext(3, mouseOver)
+						+ BuildUtils.convertPosInAdvancedBuiling(1, i,
+							templates.get(template));
+					RenderUtils.emptyBlockESPBox(
+						new BlockPos(renderX, renderY, renderZ));
 				}else if(playerYaw > 135 || playerYaw <= -135)
 				{// F: 2 North
-					double renderX =
-						BuildUtils.convertPosNext(1, mouseOver)
-							- BuildUtils.convertPosInAdvancedBuiling(1, i,
-								templates.get(template));
-					double renderY =
-						BuildUtils.convertPosNext(2, mouseOver)
-							+ BuildUtils.convertPosInAdvancedBuiling(2, i,
-								templates.get(template));
-					double renderZ =
-						BuildUtils.convertPosNext(3, mouseOver)
-							- BuildUtils.convertPosInAdvancedBuiling(3, i,
-								templates.get(template));
-					RenderUtils.emptyBlockESPBox(new BlockPos(renderX, renderY,
-						renderZ));
+					double renderX = BuildUtils.convertPosNext(1, mouseOver)
+						- BuildUtils.convertPosInAdvancedBuiling(1, i,
+							templates.get(template));
+					double renderY = BuildUtils.convertPosNext(2, mouseOver)
+						+ BuildUtils.convertPosInAdvancedBuiling(2, i,
+							templates.get(template));
+					double renderZ = BuildUtils.convertPosNext(3, mouseOver)
+						- BuildUtils.convertPosInAdvancedBuiling(3, i,
+							templates.get(template));
+					RenderUtils.emptyBlockESPBox(
+						new BlockPos(renderX, renderY, renderZ));
 				}else if(playerYaw > -135 && playerYaw <= -45)
 				{// F: 3 East
-					double renderX =
-						BuildUtils.convertPosNext(1, mouseOver)
-							+ BuildUtils.convertPosInAdvancedBuiling(3, i,
-								templates.get(template));
-					double renderY =
-						BuildUtils.convertPosNext(2, mouseOver)
-							+ BuildUtils.convertPosInAdvancedBuiling(2, i,
-								templates.get(template));
-					double renderZ =
-						BuildUtils.convertPosNext(3, mouseOver)
-							- BuildUtils.convertPosInAdvancedBuiling(1, i,
-								templates.get(template));
-					RenderUtils.emptyBlockESPBox(new BlockPos(renderX, renderY,
-						renderZ));
+					double renderX = BuildUtils.convertPosNext(1, mouseOver)
+						+ BuildUtils.convertPosInAdvancedBuiling(3, i,
+							templates.get(template));
+					double renderY = BuildUtils.convertPosNext(2, mouseOver)
+						+ BuildUtils.convertPosInAdvancedBuiling(2, i,
+							templates.get(template));
+					double renderZ = BuildUtils.convertPosNext(3, mouseOver)
+						- BuildUtils.convertPosInAdvancedBuiling(1, i,
+							templates.get(template));
+					RenderUtils.emptyBlockESPBox(
+						new BlockPos(renderX, renderY, renderZ));
 				}
 	}
 	
@@ -257,66 +233,54 @@ public class AutoBuildMod extends Mod implements UpdateListener, RenderListener
 			&& blockIndex >= 0)
 			if(playerYaw > -45 && playerYaw <= 45)
 			{// F: 0 South
-				double renderX =
-					mouseOver.getBlockPos().getX()
-						+ BuildUtils.convertPosInBuiling(1, blockIndex,
-							templates.get(template), mouseOver);
-				double renderY =
-					mouseOver.getBlockPos().getY()
-						+ BuildUtils.convertPosInBuiling(2, blockIndex,
-							templates.get(template), mouseOver);
-				double renderZ =
-					mouseOver.getBlockPos().getZ()
-						+ BuildUtils.convertPosInBuiling(3, blockIndex,
-							templates.get(template), mouseOver);
+				double renderX = mouseOver.getBlockPos().getX()
+					+ BuildUtils.convertPosInBuiling(1, blockIndex,
+						templates.get(template), mouseOver);
+				double renderY = mouseOver.getBlockPos().getY()
+					+ BuildUtils.convertPosInBuiling(2, blockIndex,
+						templates.get(template), mouseOver);
+				double renderZ = mouseOver.getBlockPos().getZ()
+					+ BuildUtils.convertPosInBuiling(3, blockIndex,
+						templates.get(template), mouseOver);
 				RenderUtils
 					.blockESPBox(new BlockPos(renderX, renderY, renderZ));
 			}else if(playerYaw > 45 && playerYaw <= 135)
 			{// F: 1 West
-				double renderX =
-					mouseOver.getBlockPos().getX()
-						- BuildUtils.convertPosInBuiling(3, blockIndex,
-							templates.get(template), mouseOver);
-				double renderY =
-					mouseOver.getBlockPos().getY()
-						+ BuildUtils.convertPosInBuiling(2, blockIndex,
-							templates.get(template), mouseOver);
-				double renderZ =
-					mouseOver.getBlockPos().getZ()
-						+ BuildUtils.convertPosInBuiling(1, blockIndex,
-							templates.get(template), mouseOver);
+				double renderX = mouseOver.getBlockPos().getX()
+					- BuildUtils.convertPosInBuiling(3, blockIndex,
+						templates.get(template), mouseOver);
+				double renderY = mouseOver.getBlockPos().getY()
+					+ BuildUtils.convertPosInBuiling(2, blockIndex,
+						templates.get(template), mouseOver);
+				double renderZ = mouseOver.getBlockPos().getZ()
+					+ BuildUtils.convertPosInBuiling(1, blockIndex,
+						templates.get(template), mouseOver);
 				RenderUtils
 					.blockESPBox(new BlockPos(renderX, renderY, renderZ));
 			}else if(playerYaw > 135 || playerYaw <= -135)
 			{// F: 2 North
-				double renderX =
-					mouseOver.getBlockPos().getX()
-						- BuildUtils.convertPosInBuiling(1, blockIndex,
-							templates.get(template), mouseOver);
-				double renderY =
-					mouseOver.getBlockPos().getY()
-						+ BuildUtils.convertPosInBuiling(2, blockIndex,
-							templates.get(template), mouseOver);
-				double renderZ =
-					mouseOver.getBlockPos().getZ()
-						- BuildUtils.convertPosInBuiling(3, blockIndex,
-							templates.get(template), mouseOver);
+				double renderX = mouseOver.getBlockPos().getX()
+					- BuildUtils.convertPosInBuiling(1, blockIndex,
+						templates.get(template), mouseOver);
+				double renderY = mouseOver.getBlockPos().getY()
+					+ BuildUtils.convertPosInBuiling(2, blockIndex,
+						templates.get(template), mouseOver);
+				double renderZ = mouseOver.getBlockPos().getZ()
+					- BuildUtils.convertPosInBuiling(3, blockIndex,
+						templates.get(template), mouseOver);
 				RenderUtils
 					.blockESPBox(new BlockPos(renderX, renderY, renderZ));
 			}else if(playerYaw > -135 && playerYaw <= -45)
 			{// F: 3 East
-				double renderX =
-					mouseOver.getBlockPos().getX()
-						+ BuildUtils.convertPosInBuiling(3, blockIndex,
-							templates.get(template), mouseOver);
-				double renderY =
-					mouseOver.getBlockPos().getY()
-						+ BuildUtils.convertPosInBuiling(2, blockIndex,
-							templates.get(template), mouseOver);
-				double renderZ =
-					mouseOver.getBlockPos().getZ()
-						- BuildUtils.convertPosInBuiling(1, blockIndex,
-							templates.get(template), mouseOver);
+				double renderX = mouseOver.getBlockPos().getX()
+					+ BuildUtils.convertPosInBuiling(3, blockIndex,
+						templates.get(template), mouseOver);
+				double renderY = mouseOver.getBlockPos().getY()
+					+ BuildUtils.convertPosInBuiling(2, blockIndex,
+						templates.get(template), mouseOver);
+				double renderZ = mouseOver.getBlockPos().getZ()
+					- BuildUtils.convertPosInBuiling(1, blockIndex,
+						templates.get(template), mouseOver);
 				RenderUtils
 					.blockESPBox(new BlockPos(renderX, renderY, renderZ));
 			}
@@ -332,68 +296,56 @@ public class AutoBuildMod extends Mod implements UpdateListener, RenderListener
 			if(shouldBuild && mouseOver != null)
 				if(playerYaw > -45 && playerYaw <= 45)
 				{// F: 0 South
-					double renderX =
-						mouseOver.getBlockPos().getX()
-							+ BuildUtils.convertPosInBuiling(1, i,
-								templates.get(template), mouseOver);
-					double renderY =
-						mouseOver.getBlockPos().getY()
-							+ BuildUtils.convertPosInBuiling(2, i,
-								templates.get(template), mouseOver);
-					double renderZ =
-						mouseOver.getBlockPos().getZ()
-							+ BuildUtils.convertPosInBuiling(3, i,
-								templates.get(template), mouseOver);
-					RenderUtils.emptyBlockESPBox(new BlockPos(renderX, renderY,
-						renderZ));
+					double renderX = mouseOver.getBlockPos().getX()
+						+ BuildUtils.convertPosInBuiling(1, i,
+							templates.get(template), mouseOver);
+					double renderY = mouseOver.getBlockPos().getY()
+						+ BuildUtils.convertPosInBuiling(2, i,
+							templates.get(template), mouseOver);
+					double renderZ = mouseOver.getBlockPos().getZ()
+						+ BuildUtils.convertPosInBuiling(3, i,
+							templates.get(template), mouseOver);
+					RenderUtils.emptyBlockESPBox(
+						new BlockPos(renderX, renderY, renderZ));
 				}else if(playerYaw > 45 && playerYaw <= 135)
 				{// F: 1 West
-					double renderX =
-						mouseOver.getBlockPos().getX()
-							- BuildUtils.convertPosInBuiling(3, i,
-								templates.get(template), mouseOver);
-					double renderY =
-						mouseOver.getBlockPos().getY()
-							+ BuildUtils.convertPosInBuiling(2, i,
-								templates.get(template), mouseOver);
-					double renderZ =
-						mouseOver.getBlockPos().getZ()
-							+ BuildUtils.convertPosInBuiling(1, i,
-								templates.get(template), mouseOver);
-					RenderUtils.emptyBlockESPBox(new BlockPos(renderX, renderY,
-						renderZ));
+					double renderX = mouseOver.getBlockPos().getX()
+						- BuildUtils.convertPosInBuiling(3, i,
+							templates.get(template), mouseOver);
+					double renderY = mouseOver.getBlockPos().getY()
+						+ BuildUtils.convertPosInBuiling(2, i,
+							templates.get(template), mouseOver);
+					double renderZ = mouseOver.getBlockPos().getZ()
+						+ BuildUtils.convertPosInBuiling(1, i,
+							templates.get(template), mouseOver);
+					RenderUtils.emptyBlockESPBox(
+						new BlockPos(renderX, renderY, renderZ));
 				}else if(playerYaw > 135 || playerYaw <= -135)
 				{// F: 2 North
-					double renderX =
-						mouseOver.getBlockPos().getX()
-							- BuildUtils.convertPosInBuiling(1, i,
-								templates.get(template), mouseOver);
-					double renderY =
-						mouseOver.getBlockPos().getY()
-							+ BuildUtils.convertPosInBuiling(2, i,
-								templates.get(template), mouseOver);
-					double renderZ =
-						mouseOver.getBlockPos().getZ()
-							- BuildUtils.convertPosInBuiling(3, i,
-								templates.get(template), mouseOver);
-					RenderUtils.emptyBlockESPBox(new BlockPos(renderX, renderY,
-						renderZ));
+					double renderX = mouseOver.getBlockPos().getX()
+						- BuildUtils.convertPosInBuiling(1, i,
+							templates.get(template), mouseOver);
+					double renderY = mouseOver.getBlockPos().getY()
+						+ BuildUtils.convertPosInBuiling(2, i,
+							templates.get(template), mouseOver);
+					double renderZ = mouseOver.getBlockPos().getZ()
+						- BuildUtils.convertPosInBuiling(3, i,
+							templates.get(template), mouseOver);
+					RenderUtils.emptyBlockESPBox(
+						new BlockPos(renderX, renderY, renderZ));
 				}else if(playerYaw > -135 && playerYaw <= -45)
 				{// F: 3 East
-					double renderX =
-						mouseOver.getBlockPos().getX()
-							+ BuildUtils.convertPosInBuiling(3, i,
-								templates.get(template), mouseOver);
-					double renderY =
-						mouseOver.getBlockPos().getY()
-							+ BuildUtils.convertPosInBuiling(2, i,
-								templates.get(template), mouseOver);
-					double renderZ =
-						mouseOver.getBlockPos().getZ()
-							- BuildUtils.convertPosInBuiling(1, i,
-								templates.get(template), mouseOver);
-					RenderUtils.emptyBlockESPBox(new BlockPos(renderX, renderY,
-						renderZ));
+					double renderX = mouseOver.getBlockPos().getX()
+						+ BuildUtils.convertPosInBuiling(3, i,
+							templates.get(template), mouseOver);
+					double renderY = mouseOver.getBlockPos().getY()
+						+ BuildUtils.convertPosInBuiling(2, i,
+							templates.get(template), mouseOver);
+					double renderZ = mouseOver.getBlockPos().getZ()
+						- BuildUtils.convertPosInBuiling(1, i,
+							templates.get(template), mouseOver);
+					RenderUtils.emptyBlockESPBox(
+						new BlockPos(renderX, renderY, renderZ));
 				}
 	}
 	
@@ -401,8 +353,8 @@ public class AutoBuildMod extends Mod implements UpdateListener, RenderListener
 	{
 		updateMS();
 		if(!shouldBuild
-			&& (mc.rightClickDelayTimer == 4 || wurst.mods.fastPlaceMod
-				.isActive())
+			&& (mc.rightClickDelayTimer == 4
+				|| wurst.mods.fastPlaceMod.isActive())
 			&& mc.gameSettings.keyBindUseItem.pressed
 			&& mc.objectMouseOver != null
 			&& mc.objectMouseOver.getBlockPos() != null
@@ -413,8 +365,8 @@ public class AutoBuildMod extends Mod implements UpdateListener, RenderListener
 				speed = 1000000000;
 			else
 				speed = 5;
-			if(wurst.special.yesCheatSpf.getBypassLevel().ordinal() >= BypassLevel.ANTICHEAT
-				.ordinal())
+			if(wurst.special.yesCheatSpf.getBypassLevel()
+				.ordinal() >= BypassLevel.ANTICHEAT.ordinal())
 			{
 				blockIndex = 0;
 				shouldBuild = true;
@@ -433,16 +385,16 @@ public class AutoBuildMod extends Mod implements UpdateListener, RenderListener
 			if((hasTimePassedS(speed) || wurst.mods.fastPlaceMod.isActive())
 				&& blockIndex < templates.get(template).length)
 			{
-				BuildUtils.advancedBuildNext(templates.get(template),
-					mouseOver, playerYaw, blockIndex);
+				BuildUtils.advancedBuildNext(templates.get(template), mouseOver,
+					playerYaw, blockIndex);
 				if(playerYaw > -45 && playerYaw <= 45)
 					try
 					{
-						if(Block.getIdFromBlock(mc.theWorld.getBlockState(
-							new BlockPos(BuildUtils
-								.convertPosNext(1, mouseOver)
-								+ BuildUtils.convertPosInAdvancedBuiling(1,
-									blockIndex, templates.get(template)),
+						if(Block.getIdFromBlock(mc.theWorld
+							.getBlockState(new BlockPos(
+								BuildUtils.convertPosNext(1, mouseOver)
+									+ BuildUtils.convertPosInAdvancedBuiling(1,
+										blockIndex, templates.get(template)),
 								BuildUtils.convertPosNext(2, mouseOver)
 									+ BuildUtils.convertPosInAdvancedBuiling(2,
 										blockIndex, templates.get(template)),
@@ -456,11 +408,11 @@ public class AutoBuildMod extends Mod implements UpdateListener, RenderListener
 				else if(playerYaw > 45 && playerYaw <= 135)
 					try
 					{
-						if(Block.getIdFromBlock(mc.theWorld.getBlockState(
-							new BlockPos(BuildUtils
-								.convertPosNext(1, mouseOver)
-								- BuildUtils.convertPosInAdvancedBuiling(3,
-									blockIndex, templates.get(template)),
+						if(Block.getIdFromBlock(mc.theWorld
+							.getBlockState(new BlockPos(
+								BuildUtils.convertPosNext(1, mouseOver)
+									- BuildUtils.convertPosInAdvancedBuiling(3,
+										blockIndex, templates.get(template)),
 								BuildUtils.convertPosNext(2, mouseOver)
 									+ BuildUtils.convertPosInAdvancedBuiling(2,
 										blockIndex, templates.get(template)),
@@ -474,11 +426,13 @@ public class AutoBuildMod extends Mod implements UpdateListener, RenderListener
 				else if(playerYaw > 135 || playerYaw <= -135)
 					try
 					{
-						if(Block.getIdFromBlock(mc.theWorld.getBlockState(
-							new BlockPos(BuildUtils
-								.convertPosNext(1, mouseOver)
-								- BuildUtils.convertPosInAdvancedBuiling(1,
-									blockIndex, templates.get(template)),
+						if(Block.getIdFromBlock(mc.theWorld
+							.getBlockState(new BlockPos(
+								BuildUtils.convertPosNext(1, mouseOver)
+									- BuildUtils
+										.convertPosInAdvancedBuiling(1,
+											blockIndex,
+											templates.get(template)),
 								BuildUtils.convertPosNext(2, mouseOver)
 									+ BuildUtils.convertPosInAdvancedBuiling(2,
 										blockIndex, templates.get(template)),
@@ -492,11 +446,11 @@ public class AutoBuildMod extends Mod implements UpdateListener, RenderListener
 				else if(playerYaw > -135 && playerYaw <= -45)
 					try
 					{
-						if(Block.getIdFromBlock(mc.theWorld.getBlockState(
-							new BlockPos(BuildUtils
-								.convertPosNext(1, mouseOver)
-								+ BuildUtils.convertPosInAdvancedBuiling(3,
-									blockIndex, templates.get(template)),
+						if(Block.getIdFromBlock(mc.theWorld
+							.getBlockState(new BlockPos(
+								BuildUtils.convertPosNext(1, mouseOver)
+									+ BuildUtils.convertPosInAdvancedBuiling(3,
+										blockIndex, templates.get(template)),
 								BuildUtils.convertPosNext(2, mouseOver)
 									+ BuildUtils.convertPosInAdvancedBuiling(2,
 										blockIndex, templates.get(template)),
@@ -516,8 +470,8 @@ public class AutoBuildMod extends Mod implements UpdateListener, RenderListener
 	{
 		updateMS();
 		if(!shouldBuild
-			&& (mc.rightClickDelayTimer == 4 || wurst.mods.fastPlaceMod
-				.isActive())
+			&& (mc.rightClickDelayTimer == 4
+				|| wurst.mods.fastPlaceMod.isActive())
 			&& mc.gameSettings.keyBindUseItem.pressed
 			&& mc.objectMouseOver != null
 			&& mc.objectMouseOver.getBlockPos() != null
@@ -528,8 +482,8 @@ public class AutoBuildMod extends Mod implements UpdateListener, RenderListener
 				speed = 1000000000;
 			else
 				speed = 5;
-			if(wurst.special.yesCheatSpf.getBypassLevel().ordinal() >= BypassLevel.ANTICHEAT
-				.ordinal())
+			if(wurst.special.yesCheatSpf.getBypassLevel()
+				.ordinal() >= BypassLevel.ANTICHEAT.ordinal())
 			{
 				blockIndex = 0;
 				shouldBuild = true;
@@ -553,72 +507,84 @@ public class AutoBuildMod extends Mod implements UpdateListener, RenderListener
 				if(playerYaw > -45 && playerYaw <= 45)
 					try
 					{
-						if(Block.getIdFromBlock(mc.theWorld.getBlockState(
-							new BlockPos(mouseOver.getBlockPos().getX()
-								+ BuildUtils.convertPosInBuiling(1, blockIndex,
-									templates.get(template), mouseOver),
-								mouseOver.getBlockPos().getY()
-									+ BuildUtils.convertPosInBuiling(2,
-										blockIndex, templates.get(template),
-										mouseOver), mouseOver.getBlockPos()
-									.getZ()
-									+ BuildUtils.convertPosInBuiling(3,
-										blockIndex, templates.get(template),
-										mouseOver))).getBlock()) != 0)
+						if(Block
+							.getIdFromBlock(mc.theWorld
+								.getBlockState(new BlockPos(
+									mouseOver.getBlockPos().getX()
+										+ BuildUtils.convertPosInBuiling(
+											1, blockIndex,
+											templates.get(template), mouseOver),
+									mouseOver.getBlockPos().getY() + BuildUtils
+										.convertPosInBuiling(2, blockIndex,
+											templates.get(template), mouseOver),
+									mouseOver.getBlockPos().getZ()
+										+ BuildUtils.convertPosInBuiling(3,
+											blockIndex, templates.get(template),
+											mouseOver)))
+								.getBlock()) != 0)
 							blockIndex += 1;
 					}catch(NullPointerException e)
 					{}// If the current item is null.
 				else if(playerYaw > 45 && playerYaw <= 135)
 					try
 					{
-						if(Block.getIdFromBlock(mc.theWorld.getBlockState(
-							new BlockPos(mouseOver.getBlockPos().getX()
-								- BuildUtils.convertPosInBuiling(3, blockIndex,
-									templates.get(template), mouseOver),
-								mouseOver.getBlockPos().getY()
-									+ BuildUtils.convertPosInBuiling(2,
-										blockIndex, templates.get(template),
-										mouseOver), mouseOver.getBlockPos()
-									.getZ()
-									+ BuildUtils.convertPosInBuiling(1,
-										blockIndex, templates.get(template),
-										mouseOver))).getBlock()) != 0)
+						if(Block
+							.getIdFromBlock(mc.theWorld
+								.getBlockState(new BlockPos(
+									mouseOver.getBlockPos().getX()
+										- BuildUtils.convertPosInBuiling(
+											3, blockIndex,
+											templates.get(template), mouseOver),
+									mouseOver.getBlockPos().getY() + BuildUtils
+										.convertPosInBuiling(2, blockIndex,
+											templates.get(template), mouseOver),
+									mouseOver.getBlockPos().getZ()
+										+ BuildUtils.convertPosInBuiling(1,
+											blockIndex, templates.get(template),
+											mouseOver)))
+								.getBlock()) != 0)
 							blockIndex += 1;
 					}catch(NullPointerException e)
 					{}// If the current item is null.
 				else if(playerYaw > 135 || playerYaw <= -135)
 					try
 					{
-						if(Block.getIdFromBlock(mc.theWorld.getBlockState(
-							new BlockPos(mouseOver.getBlockPos().getX()
-								- BuildUtils.convertPosInBuiling(1, blockIndex,
-									templates.get(template), mouseOver),
-								mouseOver.getBlockPos().getY()
-									+ BuildUtils.convertPosInBuiling(2,
-										blockIndex, templates.get(template),
-										mouseOver), mouseOver.getBlockPos()
-									.getZ()
-									- BuildUtils.convertPosInBuiling(3,
-										blockIndex, templates.get(template),
-										mouseOver))).getBlock()) != 0)
+						if(Block
+							.getIdFromBlock(mc.theWorld
+								.getBlockState(new BlockPos(
+									mouseOver.getBlockPos().getX()
+										- BuildUtils.convertPosInBuiling(
+											1, blockIndex,
+											templates.get(template), mouseOver),
+									mouseOver.getBlockPos().getY() + BuildUtils
+										.convertPosInBuiling(2, blockIndex,
+											templates.get(template), mouseOver),
+									mouseOver.getBlockPos().getZ()
+										- BuildUtils.convertPosInBuiling(3,
+											blockIndex, templates.get(template),
+											mouseOver)))
+								.getBlock()) != 0)
 							blockIndex += 1;
 					}catch(NullPointerException e)
 					{}// If the current item is null.
 				else if(playerYaw > -135 && playerYaw <= -45)
 					try
 					{
-						if(Block.getIdFromBlock(mc.theWorld.getBlockState(
-							new BlockPos(mouseOver.getBlockPos().getX()
-								+ BuildUtils.convertPosInBuiling(3, blockIndex,
-									templates.get(template), mouseOver),
-								mouseOver.getBlockPos().getY()
-									+ BuildUtils.convertPosInBuiling(2,
-										blockIndex, templates.get(template),
-										mouseOver), mouseOver.getBlockPos()
-									.getZ()
-									- BuildUtils.convertPosInBuiling(1,
-										blockIndex, templates.get(template),
-										mouseOver))).getBlock()) != 0)
+						if(Block
+							.getIdFromBlock(mc.theWorld
+								.getBlockState(new BlockPos(
+									mouseOver.getBlockPos().getX()
+										+ BuildUtils.convertPosInBuiling(
+											3, blockIndex,
+											templates.get(template), mouseOver),
+									mouseOver.getBlockPos().getY() + BuildUtils
+										.convertPosInBuiling(2, blockIndex,
+											templates.get(template), mouseOver),
+									mouseOver.getBlockPos().getZ()
+										- BuildUtils.convertPosInBuiling(1,
+											blockIndex, templates.get(template),
+											mouseOver)))
+								.getBlock()) != 0)
 							blockIndex += 1;
 					}catch(NullPointerException e)
 					{}// If the current item is null.

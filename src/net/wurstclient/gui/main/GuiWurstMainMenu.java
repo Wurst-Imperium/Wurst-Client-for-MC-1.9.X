@@ -162,8 +162,8 @@ public class GuiWurstMainMenu extends GuiMainMenu
 		switch(button.id)
 		{
 			case 3:
-				mc.displayGuiScreen(new GuiAlts(this));
-				break;
+			mc.displayGuiScreen(new GuiAlts(this));
+			break;
 		}
 	}
 	

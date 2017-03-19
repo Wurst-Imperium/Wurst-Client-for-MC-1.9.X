@@ -29,8 +29,7 @@ import net.wurstclient.utils.ChatUtils;
 	tags = "mass tpa",
 	help = "Mods/MassTPA")
 @Bypasses
-public class MassTpaMod extends Mod implements UpdateListener,
-	ChatInputListener
+public class MassTpaMod extends Mod implements UpdateListener, ChatInputListener
 {
 	private float speed = 1F;
 	private int i;
@@ -44,8 +43,8 @@ public class MassTpaMod extends Mod implements UpdateListener,
 		Iterator itr = mc.getNetHandler().getPlayerInfoMap().iterator();
 		players = new ArrayList<String>();
 		while(itr.hasNext())
-			players.add(StringUtils.stripControlCodes(((NetworkPlayerInfo)itr
-				.next()).getPlayerNameForReal()));
+			players.add(StringUtils.stripControlCodes(
+				((NetworkPlayerInfo)itr.next()).getPlayerNameForReal()));
 		Collections.shuffle(players, random);
 		wurst.events.add(ChatInputListener.class, this);
 		wurst.events.add(UpdateListener.class, this);
@@ -89,7 +88,7 @@ public class MassTpaMod extends Mod implements UpdateListener,
 		}else if(message.toLowerCase().contains("accepted")
 			&& message.toLowerCase().contains("request")
 			|| message.toLowerCase().contains("akzeptiert")
-			&& message.toLowerCase().contains("anfrage"))
+				&& message.toLowerCase().contains("anfrage"))
 		{
 			event.cancel();
 			ChatUtils.message("Someone accepted your TPA request. Stopping.");

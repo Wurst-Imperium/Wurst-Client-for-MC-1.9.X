@@ -61,9 +61,8 @@ public class GuiKeybindList extends GuiSlot
 	@Override
 	protected void drawSlot(int id, int x, int y, int var4, int var5, int var6)
 	{
-		Entry entry =
-			WurstClient.INSTANCE.keybinds.entrySet().toArray(
-				new Map.Entry[WurstClient.INSTANCE.keybinds.size()])[id];
+		Entry entry = WurstClient.INSTANCE.keybinds.entrySet()
+			.toArray(new Map.Entry[WurstClient.INSTANCE.keybinds.size()])[id];
 		mc.fontRendererObj.drawString("Key: " + entry.getKey(), x + 3, y + 3,
 			10526880);
 		mc.fontRendererObj.drawString("Command: " + entry.getValue(), x + 3,

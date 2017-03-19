@@ -59,29 +59,26 @@ public class WurstSliderUI extends AbstractComponentUI<Slider>
 		switch(component.getValueDisplay())
 		{
 			case DECIMAL:
-				content =
-					Double
-						.toString((double)(Math.round(component.getValue()
-							/ component.getIncrement()) * 1000000 * (long)(component
-							.getIncrement() * 1000000)) / 1000000 / 1000000);
-				break;
+			content = Double.toString((double)(Math
+				.round(component.getValue() / component.getIncrement())
+				* 1000000 * (long)(component.getIncrement() * 1000000))
+				/ 1000000 / 1000000);
+			break;
 			case INTEGER:
-				content =
-					String.format("%,d",
-						Long.valueOf(Math.round(component.getValue())));
-				break;
+			content = String.format("%,d",
+				Long.valueOf(Math.round(component.getValue())));
+			break;
 			case DEGREES:
-				content =
-					String.format("%,d°",
-						Long.valueOf(Math.round(component.getValue())));
-				break;
+			content = String.format("%,d°",
+				Long.valueOf(Math.round(component.getValue())));
+			break;
 			case PERCENTAGE:
-				int percent =
-					(int)Math.round((component.getValue() - component
-						.getMinimumValue())
-						/ (component.getMaximumValue() - component
-							.getMinimumValue()) * 100D);
-				content = String.format("%d%%", percent);
+			int percent = (int)Math
+				.round((component.getValue() - component.getMinimumValue())
+					/ (component.getMaximumValue()
+						- component.getMinimumValue())
+					* 100D);
+			content = String.format("%d%%", percent);
 			default:
 		}
 		if(content != null)
@@ -89,8 +86,8 @@ public class WurstSliderUI extends AbstractComponentUI<Slider>
 			String suffix = component.getContentSuffix();
 			if(suffix != null && !suffix.trim().isEmpty())
 				content = content.concat(" ").concat(suffix);
-			fontRenderer.drawString(content, component.getWidth()
-				- fontRenderer.getStringWidth(content), 0,
+			fontRenderer.drawString(content,
+				component.getWidth() - fontRenderer.getStringWidth(content), 0,
 				RenderUtil.toRGBA(component.getForegroundColor()));
 		}
 		glDisable(GL_TEXTURE_2D);
@@ -129,8 +126,10 @@ public class WurstSliderUI extends AbstractComponentUI<Slider>
 		{
 			glVertex2d((area.width - 6) * sliderPercentage - 1, fontSize + 1);
 			glVertex2d((area.width - 6) * sliderPercentage + 7, fontSize + 1);
-			glVertex2d((area.width - 6) * sliderPercentage + 7, area.height + 1);
-			glVertex2d((area.width - 6) * sliderPercentage - 1, area.height + 1);
+			glVertex2d((area.width - 6) * sliderPercentage + 7,
+				area.height + 1);
+			glVertex2d((area.width - 6) * sliderPercentage - 1,
+				area.height + 1);
 		}
 		glEnd();
 		
@@ -190,11 +189,8 @@ public class WurstSliderUI extends AbstractComponentUI<Slider>
 				mouse.translate(-parent.getX(), -parent.getY());
 			double percent =
 				(double)(mouse.x - 4) / (double)(component.getWidth() - 6);
-			double value =
-				component.getMinimumValue()
-					+ percent
-					* (component.getMaximumValue() - component
-						.getMinimumValue());
+			double value = component.getMinimumValue() + percent
+				* (component.getMaximumValue() - component.getMinimumValue());
 			component.setValue(value);
 		}
 	}

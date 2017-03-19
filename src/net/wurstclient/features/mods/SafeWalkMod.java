@@ -16,6 +16,6 @@ import net.wurstclient.features.mods.Mod.Bypasses;
 	help = "Mods/SafeWalk")
 @Bypasses
 public class SafeWalkMod extends Mod
-{	
+{
 	
 }

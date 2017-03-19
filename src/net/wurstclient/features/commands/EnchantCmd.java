@@ -37,7 +37,7 @@ public class EnchantCmd extends Cmd
 						continue;
 					currentItem.addEnchantment(enchantment, 127);
 				}catch(Exception e)
-				{	
+				{
 					
 				}
 		}else if(args[0].equals("all"))
@@ -57,7 +57,7 @@ public class EnchantCmd extends Cmd
 							continue;
 						currentItem.addEnchantment(enchantment, 127);
 					}catch(Exception e)
-					{	
+					{
 						
 					}
 			}

@@ -42,12 +42,12 @@ public class BonemealAuraMod extends Mod implements UpdateListener
 {
 	public float normalRange = 5F;
 	public float yesCheatRange = 4.25F;
-	private final CheckboxSetting saplings = new CheckboxSetting("Saplings",
-		true);
-	private final CheckboxSetting crops = new CheckboxSetting(
-		"Carrots, Potatoes & Wheat", true);
-	private final CheckboxSetting stems = new CheckboxSetting(
-		"Melons & Pumpkins", true);
+	private final CheckboxSetting saplings =
+		new CheckboxSetting("Saplings", true);
+	private final CheckboxSetting crops =
+		new CheckboxSetting("Carrots, Potatoes & Wheat", true);
+	private final CheckboxSetting stems =
+		new CheckboxSetting("Melons & Pumpkins", true);
 	private final CheckboxSetting cocoa = new CheckboxSetting("Cocoa", true);
 	private final CheckboxSetting other = new CheckboxSetting("Other", false);
 	
@@ -81,16 +81,15 @@ public class BonemealAuraMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		ItemStack item =
-			mc.thePlayer.inventory
-				.getStackInSlot(mc.thePlayer.inventory.currentItem);
+		ItemStack item = mc.thePlayer.inventory
+			.getStackInSlot(mc.thePlayer.inventory.currentItem);
 		if(item == null || !(item.getItem() instanceof ItemDye)
 			|| item.getMetadata() != 15)
 			return;
 		
-		float range =
-			wurst.special.yesCheatSpf.getBypassLevel().ordinal() >= BypassLevel.ANTICHEAT
-				.ordinal() ? yesCheatRange : normalRange;
+		float range = wurst.special.yesCheatSpf.getBypassLevel()
+			.ordinal() >= BypassLevel.ANTICHEAT.ordinal() ? yesCheatRange
+				: normalRange;
 		BlockPos pos = mc.thePlayer.getPosition();
 		for(int y = (int)-range - 1; y < (int)range + 1; y++)
 			for(int x = (int)-range - 1; x < (int)range + 1; x++)

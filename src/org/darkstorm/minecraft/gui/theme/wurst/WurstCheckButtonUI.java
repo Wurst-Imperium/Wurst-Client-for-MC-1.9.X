@@ -73,9 +73,8 @@ public class WurstCheckButtonUI extends AbstractComponentUI<CheckButton>
 			mouse.y -= parent.getY();
 			parent = parent.getParent();
 		}
-		boolean hovering =
-			area.contains(mouse)
-				&& Minecraft.getMinecraft().currentScreen instanceof GuiManagerDisplayScreen;
+		boolean hovering = area.contains(mouse) && Minecraft
+			.getMinecraft().currentScreen instanceof GuiManagerDisplayScreen;
 		
 		// check
 		if(button.isSelected())
@@ -138,17 +137,17 @@ public class WurstCheckButtonUI extends AbstractComponentUI<CheckButton>
 	@Override
 	protected Dimension getDefaultComponentSize(CheckButton component)
 	{
-		return new Dimension(theme.getFontRenderer().getStringWidth(
-			component.getText())
-			+ theme.getFontRenderer().FONT_HEIGHT + 6,
+		return new Dimension(
+			theme.getFontRenderer().getStringWidth(component.getText())
+				+ theme.getFontRenderer().FONT_HEIGHT + 6,
 			theme.getFontRenderer().FONT_HEIGHT + 4);
 	}
 	
 	@Override
 	protected Rectangle[] getInteractableComponentRegions(CheckButton component)
 	{
-		return new Rectangle[]{new Rectangle(0, 0, component.getWidth(),
-			component.getHeight())};
+		return new Rectangle[]{
+			new Rectangle(0, 0, component.getWidth(), component.getHeight())};
 	}
 	
 	@Override

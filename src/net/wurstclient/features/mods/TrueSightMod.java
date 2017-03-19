@@ -18,6 +18,6 @@ import net.wurstclient.features.mods.Mod.Info;
 	help = "Mods/TrueSight")
 @Bypasses
 public class TrueSightMod extends Mod
-{	
+{
 	
 }

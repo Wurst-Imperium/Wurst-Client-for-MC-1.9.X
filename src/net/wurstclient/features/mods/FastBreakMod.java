@@ -31,15 +31,15 @@ public class FastBreakMod extends Mod
 	@Override
 	public void initSettings()
 	{
-		settings.add(new SliderSetting("Speed", speed, 1, 5, 0.05,
-			ValueDisplay.DECIMAL)
-		{
-			@Override
-			public void update()
+		settings.add(
+			new SliderSetting("Speed", speed, 1, 5, 0.05, ValueDisplay.DECIMAL)
 			{
-				speed = (float)getValue();
-			}
-		});
+				@Override
+				public void update()
+				{
+					speed = (float)getValue();
+				}
+			});
 		settings.add(new ModeSetting("Mode", modes, mode)
 		{
 			@Override
@@ -53,8 +53,8 @@ public class FastBreakMod extends Mod
 	@Override
 	public Feature[] getSeeAlso()
 	{
-		return new Feature[]{wurst.mods.fastPlaceMod,
-			wurst.mods.autoMineMod, wurst.mods.nukerMod};
+		return new Feature[]{wurst.mods.fastPlaceMod, wurst.mods.autoMineMod,
+			wurst.mods.nukerMod};
 	}
 	
 	public int getMode()

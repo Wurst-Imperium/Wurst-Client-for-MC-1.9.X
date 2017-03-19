@@ -14,6 +14,6 @@ package net.wurstclient.features.mods;
 	help = "Mods/AntiCactus")
 @Mod.Bypasses(ghostMode = false, latestNCP = false)
 public class AntiCactusMod extends Mod
-{	
+{
 	
 }

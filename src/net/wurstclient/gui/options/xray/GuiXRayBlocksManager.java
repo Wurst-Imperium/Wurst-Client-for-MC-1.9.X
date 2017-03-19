@@ -33,12 +33,12 @@ public class GuiXRayBlocksManager extends GuiScreen
 		GuiXRayBlocksList.sortBlocks();
 		blockList.elementClicked(-1, false, 0, 0);
 		buttonList.clear();
-		buttonList.add(new GuiButton(0, width / 2 - 100, height - 52, 98, 20,
-			"Add"));
-		buttonList.add(new GuiButton(1, width / 2 + 2, height - 52, 98, 20,
-			"Remove"));
-		buttonList.add(new GuiButton(2, width / 2 - 100, height - 28, 200, 20,
-			"Back"));
+		buttonList
+			.add(new GuiButton(0, width / 2 - 100, height - 52, 98, 20, "Add"));
+		buttonList.add(
+			new GuiButton(1, width / 2 + 2, height - 52, 98, 20, "Remove"));
+		buttonList.add(
+			new GuiButton(2, width / 2 - 100, height - 28, 200, 20, "Back"));
 		WurstClient.INSTANCE.analytics.trackPageView("/options/xray-manager",
 			"X-Ray Block Manager");
 	}
@@ -62,9 +62,8 @@ public class GuiXRayBlocksManager extends GuiScreen
 			else if(clickedButton.id == 1)
 			{// Remove
 				WurstClient.INSTANCE.analytics.trackEvent("x-ray blocks",
-					"remove", Integer.toString(Block
-						.getIdFromBlock(XRayMod.xrayBlocks.get(blockList
-							.getSelectedSlot()))));
+					"remove", Integer.toString(Block.getIdFromBlock(
+						XRayMod.xrayBlocks.get(blockList.getSelectedSlot()))));
 				XRayMod.xrayBlocks.remove(blockList.getSelectedSlot());
 				GuiXRayBlocksList.sortBlocks();
 				WurstClient.INSTANCE.files.saveXRayBlocks();
@@ -89,8 +88,7 @@ public class GuiXRayBlocksManager extends GuiScreen
 	 * @throws IOException
 	 */
 	@Override
-	protected void mouseClicked(int par1, int par2, int par3)
-		throws IOException
+	protected void mouseClicked(int par1, int par2, int par3) throws IOException
 	{
 		if(par2 >= 36 && par2 <= height - 57)
 			if(par1 >= width / 2 + 140 || par1 <= width / 2 - 126)
@@ -113,14 +111,14 @@ public class GuiXRayBlocksManager extends GuiScreen
 	{
 		drawDefaultBackground();
 		blockList.drawScreen(par1, par2, par3);
-		drawCenteredString(fontRendererObj, "X-Ray Block Manager", width / 2,
-			8, 16777215);
+		drawCenteredString(fontRendererObj, "X-Ray Block Manager", width / 2, 8,
+			16777215);
 		int totalBlocks = 0;
 		for(int i = 0; i < GuiXRayBlocksList.blocks.size(); i++)
 			if(XRayMod.xrayBlocks.contains(GuiXRayBlocksList.blocks.get(i)))
 				totalBlocks++;
-		drawCenteredString(fontRendererObj, "Blocks: " + totalBlocks,
-			width / 2, 20, 16777215);
+		drawCenteredString(fontRendererObj, "Blocks: " + totalBlocks, width / 2,
+			20, 16777215);
 		super.drawScreen(par1, par2, par3);
 	}
 }

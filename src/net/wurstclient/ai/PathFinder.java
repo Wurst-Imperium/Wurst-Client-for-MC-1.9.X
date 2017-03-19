@@ -41,11 +41,13 @@ public class PathFinder
 					return -1;
 				else if(o1.getPriority() > o2.getPriority())
 					return 1;
-				else if(getDistance(o1.getPos(), PathFinder.this.goal) < getDistance(
-					o2.getPos(), PathFinder.this.goal))
+				else if(getDistance(o1.getPos(),
+					PathFinder.this.goal) < getDistance(o2.getPos(),
+						PathFinder.this.goal))
 					return -1;
-				else if(getDistance(o1.getPos(), PathFinder.this.goal) > getDistance(
-					o2.getPos(), PathFinder.this.goal))
+				else if(getDistance(o1.getPos(),
+					PathFinder.this.goal) > getDistance(o2.getPos(),
+						PathFinder.this.goal))
 					return 1;
 				else
 					return 0;
@@ -120,9 +122,9 @@ public class PathFinder
 			if(path.get(i).getX() == path.get(i - 2).getX()
 				&& path.get(i).getY() == path.get(i - 2).getY()
 				|| path.get(i).getX() == path.get(i - 2).getX()
-				&& path.get(i).getZ() == path.get(i - 2).getZ()
+					&& path.get(i).getZ() == path.get(i - 2).getZ()
 				|| path.get(i).getY() == path.get(i - 2).getY()
-				&& path.get(i).getZ() == path.get(i - 2).getZ())
+					&& path.get(i).getZ() == path.get(i - 2).getZ())
 				path.remove(i - 1);
 		return path;
 	}

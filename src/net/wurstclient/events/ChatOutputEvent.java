@@ -47,7 +47,7 @@ public class ChatOutputEvent extends CancellableEvent<ChatOutputListener>
 				break;
 		}
 	}
-
+	
 	@Override
 	public Class<ChatOutputListener> getListenerType()
 	{

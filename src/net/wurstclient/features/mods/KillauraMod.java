@@ -28,23 +28,23 @@ import net.wurstclient.utils.EntityUtils;
 @Bypasses
 public class KillauraMod extends Mod implements UpdateListener
 {
-	public CheckboxSetting useCooldown = new CheckboxSetting(
-		"Use Attack Cooldown as Speed", true)
-	{
-		@Override
-		public void update()
+	public CheckboxSetting useCooldown =
+		new CheckboxSetting("Use Attack Cooldown as Speed", true)
 		{
-			speed.setDisabled(isChecked());
+			@Override
+			public void update()
+			{
+				speed.setDisabled(isChecked());
+			};
 		};
-	};
-	public SliderSetting speed = new SliderSetting("Speed", 20, 2, 20, 0.1,
-		ValueDisplay.DECIMAL);
-	public SliderSetting range = new SliderSetting("Range", 6, 1, 6, 0.05,
-		ValueDisplay.DECIMAL);
-	public SliderSetting fov = new SliderSetting("FOV", 360, 30, 360, 10,
-		ValueDisplay.DEGREES);
-	public CheckboxSetting hitThroughWalls = new CheckboxSetting(
-		"Hit through walls", false);
+	public SliderSetting speed =
+		new SliderSetting("Speed", 20, 2, 20, 0.1, ValueDisplay.DECIMAL);
+	public SliderSetting range =
+		new SliderSetting("Range", 6, 1, 6, 0.05, ValueDisplay.DECIMAL);
+	public SliderSetting fov =
+		new SliderSetting("FOV", 360, 30, 360, 10, ValueDisplay.DEGREES);
+	public CheckboxSetting hitThroughWalls =
+		new CheckboxSetting("Hit through walls", false);
 	
 	@Override
 	public void initSettings()
@@ -86,9 +86,8 @@ public class KillauraMod extends Mod implements UpdateListener
 	public void onUpdate()
 	{
 		updateMS();
-		EntityLivingBase en =
-			EntityUtils.getClosestEntity(true, fov.getValueF(),
-				hitThroughWalls.isChecked());
+		EntityLivingBase en = EntityUtils.getClosestEntity(true,
+			fov.getValueF(), hitThroughWalls.isChecked());
 		if(en == null
 			|| mc.thePlayer.getDistanceToEntity(en) > range.getValueF())
 		{
@@ -129,22 +128,22 @@ public class KillauraMod extends Mod implements UpdateListener
 			default:
 			case OFF:
 			case MINEPLEX_ANTICHEAT:
-				speed.unlock();
-				range.unlock();
-				hitThroughWalls.unlock();
-				break;
+			speed.unlock();
+			range.unlock();
+			hitThroughWalls.unlock();
+			break;
 			case ANTICHEAT:
 			case OLDER_NCP:
 			case LATEST_NCP:
-				speed.lockToMax(12);
-				range.lockToMax(4.25);
-				hitThroughWalls.unlock();
-				break;
+			speed.lockToMax(12);
+			range.lockToMax(4.25);
+			hitThroughWalls.unlock();
+			break;
 			case GHOST_MODE:
-				speed.lockToMax(12);
-				range.lockToMax(4.25);
-				hitThroughWalls.lock(false);
-				break;
+			speed.lockToMax(12);
+			range.lockToMax(4.25);
+			hitThroughWalls.lock(false);
+			break;
 		}
 	}
 }

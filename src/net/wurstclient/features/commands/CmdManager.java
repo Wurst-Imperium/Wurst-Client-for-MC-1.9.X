@@ -28,8 +28,8 @@ import net.wurstclient.utils.ChatUtils;
 
 public class CmdManager implements ChatOutputListener
 {
-	private final TreeMap<String, Cmd> cmds = new TreeMap<String, Cmd>(
-		new Comparator<String>()
+	private final TreeMap<String, Cmd> cmds =
+		new TreeMap<String, Cmd>(new Comparator<String>()
 		{
 			@Override
 			public int compare(String o1, String o2)
@@ -123,8 +123,8 @@ public class CmdManager implements ChatOutputListener
 				}catch(CmdSyntaxError e)
 				{
 					if(e.getMessage() != null)
-						ChatUtils.message("§4Syntax error:§r "
-							+ e.getMessage());
+						ChatUtils
+							.message("§4Syntax error:§r " + e.getMessage());
 					else
 						ChatUtils.message("§4Syntax error!§r");
 					cmd.printSyntax();
@@ -137,8 +137,8 @@ public class CmdManager implements ChatOutputListener
 						CrashReport.makeCrashReport(e, "Running Wurst command");
 					CrashReportCategory crashReportCategory =
 						crashReport.makeCategory("Affected command");
-					crashReportCategory.addCrashSectionCallable(
-						"Command input", new Callable<String>()
+					crashReportCategory.addCrashSectionCallable("Command input",
+						new Callable<String>()
 						{
 							@Override
 							public String call() throws Exception
@@ -153,23 +153,19 @@ public class CmdManager implements ChatOutputListener
 				{
 					case "...":
 					case ".legit":
-						ITextComponent link =
-							new TextComponentString("more info");
-						link.getChatStyle()
-							.setColor(TextFormatting.AQUA)
-							.setChatClickEvent(
-								new ClickEvent(Action.OPEN_URL,
-									"https://www.wurst-client.tk/wiki/Commands/say/"));
-						
-						ChatUtils
-							.component(new TextComponentString(
-								"Try using .say (").appendSibling(link)
-								.appendText(")"));
-						break;
+					ITextComponent link = new TextComponentString("more info");
+					link.getChatStyle().setColor(TextFormatting.AQUA)
+						.setChatClickEvent(new ClickEvent(Action.OPEN_URL,
+							"https://www.wurst-client.tk/wiki/Commands/say/"));
+					
+					ChatUtils
+						.component(new TextComponentString("Try using .say (")
+							.appendSibling(link).appendText(")"));
+					break;
 					default:
-						ChatUtils.error("\"." + commandName
-							+ "\" is not a valid command.");
-						break;
+					ChatUtils.error(
+						"\"." + commandName + "\" is not a valid command.");
+					break;
 				}
 		}
 	}

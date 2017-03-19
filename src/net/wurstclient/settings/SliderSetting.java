@@ -71,14 +71,13 @@ public class SliderSetting implements Setting
 	{
 		ArrayList<PossibleKeybind> possibleKeybinds = new ArrayList<>();
 		String fullName = featureName + " " + name;
-		String command =
-			".setslider " + featureName.toLowerCase() + " "
-				+ name.toLowerCase().replace(" ", "_") + " ";
+		String command = ".setslider " + featureName.toLowerCase() + " "
+			+ name.toLowerCase().replace(" ", "_") + " ";
 		
-		possibleKeybinds.add(new PossibleKeybind(command + "more", "Increase "
-			+ fullName));
-		possibleKeybinds.add(new PossibleKeybind(command + "less", "Decrease "
-			+ fullName));
+		possibleKeybinds
+			.add(new PossibleKeybind(command + "more", "Increase " + fullName));
+		possibleKeybinds
+			.add(new PossibleKeybind(command + "less", "Decrease " + fullName));
 		
 		return possibleKeybinds;
 	}
@@ -102,7 +101,7 @@ public class SliderSetting implements Setting
 					Math.min(Math.max(lockMinimum, value), lockMaximum);
 			else
 				this.value = Math.min(Math.max(minimum, value), maximum);
-		
+			
 		double newValue = getValue();
 		valueString = valueDisplay.getValueString(newValue);
 		percentage = (float)((newValue - minimum) / (maximum - minimum));
@@ -231,7 +230,7 @@ public class SliderSetting implements Setting
 	
 	@Override
 	public void update()
-	{	
+	{
 		
 	}
 	

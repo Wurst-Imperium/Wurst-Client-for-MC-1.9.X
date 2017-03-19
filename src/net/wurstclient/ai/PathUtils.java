@@ -36,7 +36,7 @@ public class PathUtils
 			.getMaterial(Minecraft.getMinecraft().theWorld.getBlockState(pos))
 			.blocksMovement()
 			|| getMaterial(pos) == Material.water
-			&& WurstClient.INSTANCE.mods.jesusMod.isEnabled();
+				&& WurstClient.INSTANCE.mods.jesusMod.isEnabled();
 	}
 	
 	public static boolean isFallable(BlockPos pos)
@@ -77,7 +77,7 @@ public class PathUtils
 		return WurstClient.INSTANCE.mods.flightMod.isEnabled()
 			|| playerCaps.isFlying
 			|| !WurstClient.INSTANCE.mods.noSlowdownMod.isEnabled()
-			&& getMaterial(pos) == Material.water;
+				&& getMaterial(pos) == Material.water;
 	}
 	
 	public static int getCost(BlockPos current, BlockPos next)
@@ -103,7 +103,7 @@ public class PathUtils
 	
 	private static int getID(BlockPos pos)
 	{
-		return Block.getIdFromBlock(Minecraft.getMinecraft().theWorld
-			.getBlockState(pos).getBlock());
+		return Block.getIdFromBlock(
+			Minecraft.getMinecraft().theWorld.getBlockState(pos).getBlock());
 	}
 }

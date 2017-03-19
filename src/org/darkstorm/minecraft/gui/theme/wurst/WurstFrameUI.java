@@ -89,22 +89,18 @@ public class WurstFrameUI extends AbstractComponentUI<Frame>
 		
 		// title bar icons
 		int offset = component.getWidth() - 2;
-		boolean[] checks =
-			new boolean[]{component.isClosable(), component.isPinnable(),
-				component.isMinimizable()};
-		boolean[] overlays =
-			new boolean[]{component.isClosable(), !component.isPinned(),
-				component.isMinimized()};
+		boolean[] checks = new boolean[]{component.isClosable(),
+			component.isPinnable(), component.isMinimizable()};
+		boolean[] overlays = new boolean[]{component.isClosable(),
+			!component.isPinned(), component.isMinimized()};
 		for(int i = 0; i < checks.length; i++)
 		{
 			if(!checks[i])
 				continue;
-			boolean hovering =
-				mouse.x >= offset - fontHeight
-					&& mouse.x <= offset
-					&& mouse.y >= 2
-					&& mouse.y <= fontHeight + 2
-					&& Minecraft.getMinecraft().currentScreen instanceof GuiManagerDisplayScreen;
+			boolean hovering = mouse.x >= offset - fontHeight
+				&& mouse.x <= offset && mouse.y >= 2
+				&& mouse.y <= fontHeight + 2 && Minecraft
+					.getMinecraft().currentScreen instanceof GuiManagerDisplayScreen;
 			
 			// colors
 			Color green = new Color(0f, 1f, 0f, hovering ? 0.5f : 0.375f);
@@ -123,8 +119,8 @@ public class WurstFrameUI extends AbstractComponentUI<Frame>
 				glVertex2d(offset - fontHeight, fontHeight + 2);
 			}
 			glEnd();
-			RenderUtil
-				.boxShadow(offset - fontHeight, 2, offset, fontHeight + 2);
+			RenderUtil.boxShadow(offset - fontHeight, 2, offset,
+				fontHeight + 2);
 			
 			// pin button
 			if(i == 1 && overlays[i])
@@ -386,11 +382,11 @@ public class WurstFrameUI extends AbstractComponentUI<Frame>
 		
 		// title bar
 		if(!component.isMinimized())
-			RenderUtil
-				.downShadow(0, fontHeight + 4, area.width, fontHeight + 5);
+			RenderUtil.downShadow(0, fontHeight + 4, area.width,
+				fontHeight + 5);
 		glEnable(GL_TEXTURE_2D);
-		theme.getFontRenderer().drawStringWithShadow(component.getTitle(), 2,
-			1, RenderUtil.toRGBA(component.getForegroundColor()));
+		theme.getFontRenderer().drawStringWithShadow(component.getTitle(), 2, 1,
+			RenderUtil.toRGBA(component.getForegroundColor()));
 		
 		glEnable(GL_CULL_FACE);
 		glDisable(GL_BLEND);
@@ -422,9 +418,8 @@ public class WurstFrameUI extends AbstractComponentUI<Frame>
 			areas[i] = new Rectangle(0, 0, size.width, size.height);
 			constraints[i] = component.getConstraints(child);
 		}
-		Dimension size =
-			component.getLayoutManager().getOptimalPositionedSize(areas,
-				constraints);
+		Dimension size = component.getLayoutManager()
+			.getOptimalPositionedSize(areas, constraints);
 		size.width += 4;
 		size.height += theme.getFontRenderer().FONT_HEIGHT + 8;
 		return size;

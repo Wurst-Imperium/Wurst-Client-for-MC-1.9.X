@@ -47,11 +47,10 @@ public abstract class AltEditorScreen extends GuiScreen
 	{
 		emailBox.updateCursorCounter();
 		passwordBox.updateCursorCounter();
-		((GuiButton)buttonList.get(0)).enabled =
-			emailBox.getText().trim().length() > 0
-				&& (!emailBox.getText().trim()
-					.equalsIgnoreCase("Alexander01998") || passwordBox
-					.getText().length() != 0);
+		((GuiButton)buttonList.get(0)).enabled = emailBox.getText().trim()
+			.length() > 0
+			&& (!emailBox.getText().trim().equalsIgnoreCase("Alexander01998")
+				|| passwordBox.getText().length() != 0);
 		((GuiButton)buttonList.get(3)).enabled =
 			!emailBox.getText().trim().equalsIgnoreCase("Alexander01998");
 	}
@@ -79,26 +78,27 @@ public abstract class AltEditorScreen extends GuiScreen
 			getDoneButtonText()));
 		buttonList.add(new GuiButton(3, width / 2 - 100, height / 4 + 96 + 12,
 			"Random Name"));
-		buttonList.add(new GuiButton(1, width / 2 - 100, height / 4 + 120 + 12,
-			"Cancel"));
+		buttonList.add(
+			new GuiButton(1, width / 2 - 100, height / 4 + 120 + 12, "Cancel"));
 		buttonList.add(new GuiButton(4, width - (width / 2 - 100) / 2 - 64,
 			height - 32, 128, 20, "Steal Skin"));
-		buttonList.add(new GuiButton(5, (width / 2 - 100) / 2 - 64,
-			height - 32, 128, 20, "Open Skin Folder"));
+		buttonList.add(new GuiButton(5, (width / 2 - 100) / 2 - 64, height - 32,
+			128, 20, "Open Skin Folder"));
 		emailBox =
 			new GuiTextField(0, fontRendererObj, width / 2 - 100, 60, 200, 20);
 		emailBox.setMaxStringLength(48);
 		emailBox.setFocused(true);
 		emailBox.setText(getEmailBoxText());
-		passwordBox =
-			new GuiPasswordField(fontRendererObj, width / 2 - 100, 100, 200, 20);
+		passwordBox = new GuiPasswordField(fontRendererObj, width / 2 - 100,
+			100, 200, 20);
 		passwordBox.setFocused(false);
 		passwordBox.setText(getPasswordBoxText());
 		WurstClient.INSTANCE.analytics.trackPageView(getUrl(), getTitle());
 	}
 	
 	/**
-	 * "Called when the screen is unloaded. Used to disable keyboard repeat events."
+	 * "Called when the screen is unloaded. Used to disable keyboard repeat
+	 * events."
 	 */
 	@Override
 	public void onGuiClosed()
@@ -144,8 +144,7 @@ public abstract class AltEditorScreen extends GuiScreen
 	 * @throws IOException
 	 */
 	@Override
-	protected void mouseClicked(int par1, int par2, int par3)
-		throws IOException
+	protected void mouseClicked(int par1, int par2, int par3) throws IOException
 	{
 		super.mouseClicked(par1, par2, par3);
 		emailBox.mouseClicked(par1, par2, par3);
@@ -167,9 +166,10 @@ public abstract class AltEditorScreen extends GuiScreen
 		drawDefaultBackground();
 		AltRenderer.drawAltBack(emailBox.getText(), (width / 2 - 100) / 2 - 64,
 			height / 2 - 128, 128, 256);
-		AltRenderer.drawAltBody(emailBox.getText(), width - (width / 2 - 100)
-			/ 2 - 64, height / 2 - 128, 128, 256);
-		drawCenteredString(fontRendererObj, getTitle(), width / 2, 20, 16777215);
+		AltRenderer.drawAltBody(emailBox.getText(),
+			width - (width / 2 - 100) / 2 - 64, height / 2 - 128, 128, 256);
+		drawCenteredString(fontRendererObj, getTitle(), width / 2, 20,
+			16777215);
 		drawString(fontRendererObj, "Name or E-Mail", width / 2 - 100, 47,
 			10526880);
 		drawString(fontRendererObj, "Password", width / 2 - 100, 87, 10526880);

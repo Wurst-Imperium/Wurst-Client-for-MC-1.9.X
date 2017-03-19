@@ -56,10 +56,9 @@ public class NameGenerator
 		else if(capitalMode == 2)
 			for(int i = 0; i < nameLength; i++)
 				if((int)Math.round(Math.random() * 3) == 1)
-					name =
-						name.substring(0, i)
-							+ name.substring(i, i + 1).toUpperCase()
-							+ (i == nameLength ? "" : name.substring(i + 1));
+					name = name.substring(0, i)
+						+ name.substring(i, i + 1).toUpperCase()
+						+ (i == nameLength ? "" : name.substring(i + 1));
 		int numberLength = (int)Math.round(Math.random() * 3) + 1;
 		int numberMode = (int)Math.round(Math.random() * 3);
 		boolean number = random.nextBoolean();

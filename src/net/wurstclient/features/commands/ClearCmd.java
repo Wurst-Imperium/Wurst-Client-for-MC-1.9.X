@@ -9,8 +9,10 @@ package net.wurstclient.features.commands;
 
 import net.wurstclient.features.commands.Cmd.Info;
 
-@Info(description = "Clears the chat completely.", name = "clear", syntax = {},
-help = "Commands/clear")
+@Info(description = "Clears the chat completely.",
+	name = "clear",
+	syntax = {},
+	help = "Commands/clear")
 public class ClearCmd extends Cmd
 {
 	@Override

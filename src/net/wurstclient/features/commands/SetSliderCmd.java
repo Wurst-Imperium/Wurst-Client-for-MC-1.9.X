@@ -14,8 +14,9 @@ import net.wurstclient.settings.Setting;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.utils.MiscUtils;
 
-@Cmd.Info(description = "Changes a slider setting of a feature. Allows you to\n"
-	+ "move sliders through keybinds.",
+@Cmd.Info(
+	description = "Changes a slider setting of a feature. Allows you to\n"
+		+ "move sliders through keybinds.",
 	name = "setslider",
 	syntax = {"<feature> <slider_setting> (<value>|more|less)"},
 	help = "Commands/setslider")
@@ -40,7 +41,8 @@ public class SetSliderCmd extends Cmd
 			}
 		}
 		if(feature == null)
-			error("A feature named \"" + featureName + "\" could not be found.");
+			error(
+				"A feature named \"" + featureName + "\" could not be found.");
 		
 		// find setting
 		Setting setting = null;

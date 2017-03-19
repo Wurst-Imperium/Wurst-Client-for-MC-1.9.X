@@ -166,7 +166,8 @@ public class GoogleAnalyticsV4_7_2 implements IGoogleAnalyticsURLBuilder
 	 * &utmr=0
 	 * &utmp=%2Ftest%2Ftest.php
 	 * &utmac=UA-17109202-5
-	 * &utmcc=__utma%3D143101472.2118079581.1279863622.1279863622.1279863622.1%3B
+	 * &utmcc=__utma%3D143101472.2118079581.1279863622.1279863622.1279863622.1%
+	 * 3B
 	 * %
 	 * 2B__utmz%3D143101472.1279863622.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)
 	 * %7Cutmcmd%3D(none)%3B&gaq=1
@@ -191,7 +192,8 @@ public class GoogleAnalyticsV4_7_2 implements IGoogleAnalyticsURLBuilder
 	 * &utmr=0
 	 * &utmp=%2Ftest%2Ftest.php
 	 * &utmac=UA-17109202-5
-	 * &utmcc=__utma%3D143101472.2118079581.1279863622.1279863622.1279863622.1%3B
+	 * &utmcc=__utma%3D143101472.2118079581.1279863622.1279863622.1279863622.1%
+	 * 3B
 	 * %
 	 * 2B__utmz%3D143101472.1279863622.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)
 	 * %7Cutmcmd%3D(none)%3B&gaq=1

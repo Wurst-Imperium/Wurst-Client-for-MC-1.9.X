@@ -48,8 +48,8 @@ public abstract class Tag
 	public String getHelp()
 	{
 		return "<html>" + "<table width=\"512px\"><tr><td>" + "<h1>&lt;" + name
-			+ "&gt;</h1>" + "<h2>Description</h2>" + "<p>"
-			+ format(description) + "</p>" + "<h2>Syntax</h2>"
+			+ "&gt;</h1>" + "<h2>Description</h2>" + "<p>" + format(description)
+			+ "</p>" + "<h2>Syntax</h2>"
 			+ "<div bgcolor=\"#000000\" color=\"#00ff00\">" + "<code>"
 			+ format(syntax) + "</code>" + "</div>" + "<h2>Example</h2>"
 			+ "<div bgcolor=\"#000000\" color=\"#00ff00\">" + "<code>"

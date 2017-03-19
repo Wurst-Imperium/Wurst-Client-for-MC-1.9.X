@@ -34,8 +34,8 @@ import net.wurstclient.utils.RenderUtils;
 	tags = "bow aimbot",
 	help = "Mods/BowAimbot")
 @Mod.Bypasses
-public class BowAimbotMod extends Mod implements UpdateListener,
-	RenderListener, GUIRenderListener
+public class BowAimbotMod extends Mod
+	implements UpdateListener, RenderListener, GUIRenderListener
 {
 	private Entity target;
 	private float velocity;
@@ -79,23 +79,17 @@ public class BowAimbotMod extends Mod implements UpdateListener,
 		glBegin(GL_QUADS);
 		{
 			glVertex2d(width / 2 + 1, height / 2 + 1);
-			glVertex2d(width
-				/ 2
-				+ ((WurstTheme)wurst.gui.getTheme()).getFontRenderer()
-					.getStringWidth(targetLocked) + 4, height / 2 + 1);
+			glVertex2d(width / 2 + ((WurstTheme)wurst.gui.getTheme())
+				.getFontRenderer().getStringWidth(targetLocked) + 4,
+				height / 2 + 1);
 			glVertex2d(
-				width
-					/ 2
-					+ ((WurstTheme)wurst.gui.getTheme()).getFontRenderer()
-						.getStringWidth(targetLocked) + 4,
-				height
-					/ 2
-					+ ((WurstTheme)wurst.gui.getTheme()).getFontRenderer().FONT_HEIGHT);
-			glVertex2d(
-				width / 2 + 1,
-				height
-					/ 2
-					+ ((WurstTheme)wurst.gui.getTheme()).getFontRenderer().FONT_HEIGHT);
+				width / 2 + ((WurstTheme)wurst.gui.getTheme()).getFontRenderer()
+					.getStringWidth(targetLocked) + 4,
+				height / 2 + ((WurstTheme)wurst.gui.getTheme())
+					.getFontRenderer().FONT_HEIGHT);
+			glVertex2d(width / 2 + 1,
+				height / 2 + ((WurstTheme)wurst.gui.getTheme())
+					.getFontRenderer().FONT_HEIGHT);
 		}
 		glEnd();
 		glEnable(GL_TEXTURE_2D);
@@ -111,7 +105,8 @@ public class BowAimbotMod extends Mod implements UpdateListener,
 	{
 		target = null;
 		if(mc.thePlayer.inventory.getCurrentItem() != null
-			&& mc.thePlayer.inventory.getCurrentItem().getItem() instanceof ItemBow
+			&& mc.thePlayer.inventory.getCurrentItem()
+				.getItem() instanceof ItemBow
 			&& mc.gameSettings.keyBindUseItem.pressed)
 		{
 			target = EntityUtils.getClosestEntity(true, 360, false);
@@ -144,25 +139,20 @@ public class BowAimbotMod extends Mod implements UpdateListener,
 		}
 		if(velocity > 1)
 			velocity = 1;
-		double posX =
-			target.posX + (target.posX - target.prevPosX) * 5
-				- mc.thePlayer.posX;
-		double posY =
-			target.posY + (target.posY - target.prevPosY) * 5
-				+ target.getEyeHeight() - 0.15 - mc.thePlayer.posY
-				- mc.thePlayer.getEyeHeight();
-		double posZ =
-			target.posZ + (target.posZ - target.prevPosZ) * 5
-				- mc.thePlayer.posZ;
+		double posX = target.posX + (target.posX - target.prevPosX) * 5
+			- mc.thePlayer.posX;
+		double posY = target.posY + (target.posY - target.prevPosY) * 5
+			+ target.getEyeHeight() - 0.15 - mc.thePlayer.posY
+			- mc.thePlayer.getEyeHeight();
+		double posZ = target.posZ + (target.posZ - target.prevPosZ) * 5
+			- mc.thePlayer.posZ;
 		float yaw = (float)(Math.atan2(posZ, posX) * 180 / Math.PI) - 90;
 		double y2 = Math.sqrt(posX * posX + posZ * posZ);
 		float g = 0.006F;
-		float tmp =
-			(float)(velocity * velocity * velocity * velocity - g
-				* (g * (y2 * y2) + 2 * posY * (velocity * velocity)));
-		float pitch =
-			(float)-Math.toDegrees(Math.atan((velocity * velocity - Math
-				.sqrt(tmp)) / (g * y2)));
+		float tmp = (float)(velocity * velocity * velocity * velocity
+			- g * (g * (y2 * y2) + 2 * posY * (velocity * velocity)));
+		float pitch = (float)-Math.toDegrees(
+			Math.atan((velocity * velocity - Math.sqrt(tmp)) / (g * y2)));
 		mc.thePlayer.rotationYaw = yaw;
 		mc.thePlayer.rotationPitch = pitch;
 	}

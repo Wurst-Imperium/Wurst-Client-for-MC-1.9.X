@@ -15,7 +15,8 @@ import net.wurstclient.features.commands.Cmd.Info;
 import net.wurstclient.utils.ChatUtils;
 import net.wurstclient.utils.RenderUtils;
 
-@Info(description = "Shows the shortest path to a specific point. Useful for labyrinths and caves.",
+@Info(
+	description = "Shows the shortest path to a specific point. Useful for labyrinths and caves.",
 	name = "path",
 	syntax = {"<x> <y> <z>", "<entity>"},
 	help = "Commands/path")

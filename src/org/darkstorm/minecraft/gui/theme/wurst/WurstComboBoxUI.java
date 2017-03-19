@@ -48,9 +48,8 @@ public class WurstComboBoxUI extends AbstractComponentUI<ComboBox>
 		// max width
 		int maxWidth = 0;
 		for(String element : component.getElements())
-			maxWidth =
-				Math.max(maxWidth,
-					theme.getFontRenderer().getStringWidth(element));
+			maxWidth = Math.max(maxWidth,
+				theme.getFontRenderer().getStringWidth(element));
 		
 		// extended height
 		int extendedHeight = 0;
@@ -73,12 +72,10 @@ public class WurstComboBoxUI extends AbstractComponentUI<ComboBox>
 		}
 		
 		// hovering
-		boolean hovering =
-			mouse.x >= area.x
-				&& mouse.x <= area.x + area.width
-				&& mouse.y >= area.y + 1
-				&& mouse.y <= area.y + area.height - 1
-				&& Minecraft.getMinecraft().currentScreen instanceof GuiManagerDisplayScreen;
+		boolean hovering = mouse.x >= area.x && mouse.x <= area.x + area.width
+			&& mouse.y >= area.y + 1 && mouse.y <= area.y + area.height - 1
+			&& Minecraft
+				.getMinecraft().currentScreen instanceof GuiManagerDisplayScreen;
 		
 		// GL settings
 		glEnable(GL_BLEND);
@@ -101,8 +98,8 @@ public class WurstComboBoxUI extends AbstractComponentUI<ComboBox>
 		
 		// extension shadow
 		if(extendedHeight > 0)
-			RenderUtil.boxShadow(0, area.height, area.width, area.height
-				+ extendedHeight);
+			RenderUtil.boxShadow(0, area.height, area.width,
+				area.height + extendedHeight);
 		
 		glColor4f(0.0f, 0.0f, 0.0f, Mouse.isButtonDown(0) ? 0.5f : 0.3f);
 		if(area.contains(mouse))
@@ -242,11 +239,11 @@ public class WurstComboBoxUI extends AbstractComponentUI<ComboBox>
 			{
 				if(i == component.getSelectedIndex())
 					continue;
-				theme.getFontRenderer().drawString(
-					elements[i],
-					(area.width - theme.getFontRenderer().getStringWidth(
-						elements[i])) / 2, offset,
-					RenderUtil.toRGBA(component.getForegroundColor()));
+				theme.getFontRenderer().drawString(elements[i],
+					(area.width
+						- theme.getFontRenderer().getStringWidth(elements[i]))
+						/ 2,
+					offset, RenderUtil.toRGBA(component.getForegroundColor()));
 				offset += theme.getFontRenderer().FONT_HEIGHT + 2;
 			}
 		}
@@ -264,11 +261,9 @@ public class WurstComboBoxUI extends AbstractComponentUI<ComboBox>
 	{
 		int maxWidth = 0;
 		for(String element : component.getElements())
-			maxWidth =
-				Math.max(maxWidth,
-					theme.getFontRenderer().getStringWidth(element));
-		return new Dimension(
-			maxWidth + 8 + theme.getFontRenderer().FONT_HEIGHT,
+			maxWidth = Math.max(maxWidth,
+				theme.getFontRenderer().getStringWidth(element));
+		return new Dimension(maxWidth + 8 + theme.getFontRenderer().FONT_HEIGHT,
 			theme.getFontRenderer().FONT_HEIGHT + 4);
 	}
 	
@@ -282,7 +277,8 @@ public class WurstComboBoxUI extends AbstractComponentUI<ComboBox>
 				height += theme.getFontRenderer().FONT_HEIGHT + 2;
 			height += 2;
 		}
-		return new Rectangle[]{new Rectangle(0, 0, component.getWidth(), height)};
+		return new Rectangle[]{
+			new Rectangle(0, 0, component.getWidth(), height)};
 	}
 	
 	@Override
@@ -302,9 +298,8 @@ public class WurstComboBoxUI extends AbstractComponentUI<ComboBox>
 			{
 				if(i == component.getSelectedIndex())
 					continue;
-				if(location.y >= offset
-					&& location.y <= offset
-						+ theme.getFontRenderer().FONT_HEIGHT)
+				if(location.y >= offset && location.y <= offset
+					+ theme.getFontRenderer().FONT_HEIGHT)
 				{
 					component.setSelectedIndex(i);
 					component.setSelected(false);

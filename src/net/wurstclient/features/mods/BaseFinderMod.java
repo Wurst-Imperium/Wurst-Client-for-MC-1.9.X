@@ -26,8 +26,7 @@ import net.wurstclient.utils.RenderUtils;
 	tags = "base finder, factions",
 	help = "Mods/BaseFinder")
 @Bypasses
-public class BaseFinderMod extends Mod implements UpdateListener,
-	RenderListener
+public class BaseFinderMod extends Mod implements UpdateListener, RenderListener
 {
 	public BaseFinderMod()
 	{
@@ -72,8 +71,8 @@ public class BaseFinderMod extends Mod implements UpdateListener,
 						int posY = (int)(mc.thePlayer.posY + y);
 						int posZ = (int)(mc.thePlayer.posZ + z);
 						BlockPos pos = new BlockPos(posX, posY, posZ);
-						if(!naturalBlocks.contains(mc.theWorld.getBlockState(
-							pos).getBlock()))
+						if(!naturalBlocks.contains(
+							mc.theWorld.getBlockState(pos).getBlock()))
 							matchingBlocks.add(pos);
 						if(matchingBlocks.size() >= maxBlocks)
 							break;
@@ -87,9 +86,8 @@ public class BaseFinderMod extends Mod implements UpdateListener,
 			if(matchingBlocks.size() >= maxBlocks && shouldInform)
 			{
 				ChatUtils.warning(getName() + " found §lA LOT§r of blocks.");
-				ChatUtils
-					.message("To prevent lag, it will only show the first "
-						+ maxBlocks + " blocks.");
+				ChatUtils.message("To prevent lag, it will only show the first "
+					+ maxBlocks + " blocks.");
 				shouldInform = false;
 			}else if(matchingBlocks.size() < maxBlocks)
 				shouldInform = true;

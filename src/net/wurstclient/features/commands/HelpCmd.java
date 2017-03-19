@@ -33,10 +33,10 @@ public class HelpCmd extends Cmd
 			int page = Integer.valueOf(args[0]);
 			if(page > pages || page < 1)
 				syntaxError("Invalid page: " + page);
-			ChatUtils.message("Available commands: "
-				+ wurst.commands.countCommands());
-			ChatUtils.message("Command list (page " + page + "/" + pages
-				+ "):");
+			ChatUtils.message(
+				"Available commands: " + wurst.commands.countCommands());
+			ChatUtils
+				.message("Command list (page " + page + "/" + pages + "):");
 			Iterator<Cmd> itr = wurst.commands.getAllCommands().iterator();
 			for(int i = 0; itr.hasNext(); i++)
 			{

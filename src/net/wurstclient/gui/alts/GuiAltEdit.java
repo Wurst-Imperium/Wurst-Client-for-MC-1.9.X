@@ -48,8 +48,8 @@ public class GuiAltEdit extends AltEditorScreen
 		{
 			// Cracked
 			displayText = "";
-			GuiAltList.alts.set(GuiAltList.alts.indexOf(editedAlt), new Alt(
-				emailBox.getText(), null, null, editedAlt.isStarred()));
+			GuiAltList.alts.set(GuiAltList.alts.indexOf(editedAlt),
+				new Alt(emailBox.getText(), null, null, editedAlt.isStarred()));
 			
 		}else
 		{

@@ -32,8 +32,8 @@ public class SpeedHackMod extends Mod implements UpdateListener
 	public void onUpdate()
 	{
 		// return if sneaking or not walking
-		if(mc.thePlayer.isSneaking() || mc.thePlayer.moveForward == 0
-			&& mc.thePlayer.moveStrafing == 0)
+		if(mc.thePlayer.isSneaking()
+			|| mc.thePlayer.moveForward == 0 && mc.thePlayer.moveStrafing == 0)
 			return;
 		
 		// activate sprint if walking forward
@@ -46,9 +46,8 @@ public class SpeedHackMod extends Mod implements UpdateListener
 			mc.thePlayer.motionY += 0.1;
 			mc.thePlayer.motionX *= 1.8;
 			mc.thePlayer.motionZ *= 1.8;
-			double currentSpeed =
-				Math.sqrt(Math.pow(mc.thePlayer.motionX, 2)
-					+ Math.pow(mc.thePlayer.motionZ, 2));
+			double currentSpeed = Math.sqrt(Math.pow(mc.thePlayer.motionX, 2)
+				+ Math.pow(mc.thePlayer.motionZ, 2));
 			
 			// limit speed to highest value that works on NoCheat+ version
 			// 3.13.0-BETA-sMD5NET-b878

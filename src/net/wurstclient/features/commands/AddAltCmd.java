@@ -16,7 +16,8 @@ import net.wurstclient.features.commands.Cmd.Info;
 import net.wurstclient.gui.alts.GuiAltList;
 import net.wurstclient.utils.ChatUtils;
 
-@Info(description = "Adds a player or all players on a server to your alt list.",
+@Info(
+	description = "Adds a player or all players on a server to your alt list.",
 	name = "addalt",
 	syntax = {"<player>", "all"},
 	help = "Commands/addalt")
@@ -37,8 +38,8 @@ public class AddAltCmd extends Cmd
 				String crackedName =
 					StringUtils.stripControlCodes(info.getPlayerNameForReal());
 				if(crackedName.equals(mc.thePlayer.getName())
-					|| crackedName.equals("Alexander01998")
-					|| GuiAltList.alts.contains(new Alt(crackedName, null, null)))
+					|| crackedName.equals("Alexander01998") || GuiAltList.alts
+						.contains(new Alt(crackedName, null, null)))
 					continue;
 				GuiAltList.alts.add(new Alt(crackedName, null, null));
 				alts++;

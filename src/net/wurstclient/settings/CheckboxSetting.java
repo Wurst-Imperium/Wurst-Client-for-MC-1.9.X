@@ -50,16 +50,15 @@ public class CheckboxSetting implements Setting
 	{
 		ArrayList<PossibleKeybind> possibleKeybinds = new ArrayList<>();
 		String fullName = featureName + " " + name;
-		String command =
-			".setcheckbox " + featureName.toLowerCase() + " "
-				+ name.toLowerCase().replace(" ", "_") + " ";
+		String command = ".setcheckbox " + featureName.toLowerCase() + " "
+			+ name.toLowerCase().replace(" ", "_") + " ";
 		
-		possibleKeybinds.add(new PossibleKeybind(command + "toggle", "Toggle "
-			+ fullName));
-		possibleKeybinds.add(new PossibleKeybind(command + "on", "Enable "
-			+ fullName));
-		possibleKeybinds.add(new PossibleKeybind(command + "off", "Disable "
-			+ fullName));
+		possibleKeybinds
+			.add(new PossibleKeybind(command + "toggle", "Toggle " + fullName));
+		possibleKeybinds
+			.add(new PossibleKeybind(command + "on", "Enable " + fullName));
+		possibleKeybinds
+			.add(new PossibleKeybind(command + "off", "Disable " + fullName));
 		
 		return possibleKeybinds;
 	}
@@ -121,7 +120,7 @@ public class CheckboxSetting implements Setting
 	
 	@Override
 	public void update()
-	{	
+	{
 		
 	}
 }

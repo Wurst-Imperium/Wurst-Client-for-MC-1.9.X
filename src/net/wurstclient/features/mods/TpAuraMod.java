@@ -32,47 +32,47 @@ public class TpAuraMod extends Mod implements UpdateListener
 {
 	private Random random = new Random();
 	
-	public CheckboxSetting useKillaura = new CheckboxSetting(
-		"Use Killaura settings", true)
-	{
-		@Override
-		public void update()
+	public CheckboxSetting useKillaura =
+		new CheckboxSetting("Use Killaura settings", true)
 		{
-			if(isChecked())
+			@Override
+			public void update()
 			{
-				KillauraMod killaura = wurst.mods.killauraMod;
-				useCooldown.lock(killaura.useCooldown.isChecked());
-				speed.lockToValue(killaura.speed.getValue());
-				range.lockToValue(killaura.range.getValue());
-				fov.lockToValue(killaura.fov.getValue());
-				hitThroughWalls.lock(killaura.hitThroughWalls.isChecked());
-			}else
-			{
-				useCooldown.unlock();
-				speed.unlock();
-				range.unlock();
-				fov.unlock();
-				hitThroughWalls.unlock();
-			}
+				if(isChecked())
+				{
+					KillauraMod killaura = wurst.mods.killauraMod;
+					useCooldown.lock(killaura.useCooldown.isChecked());
+					speed.lockToValue(killaura.speed.getValue());
+					range.lockToValue(killaura.range.getValue());
+					fov.lockToValue(killaura.fov.getValue());
+					hitThroughWalls.lock(killaura.hitThroughWalls.isChecked());
+				}else
+				{
+					useCooldown.unlock();
+					speed.unlock();
+					range.unlock();
+					fov.unlock();
+					hitThroughWalls.unlock();
+				}
+			};
 		};
-	};
-	public CheckboxSetting useCooldown = new CheckboxSetting(
-		"Use Attack Cooldown as Speed", true)
-	{
-		@Override
-		public void update()
+	public CheckboxSetting useCooldown =
+		new CheckboxSetting("Use Attack Cooldown as Speed", true)
 		{
-			speed.setDisabled(isChecked());
+			@Override
+			public void update()
+			{
+				speed.setDisabled(isChecked());
+			};
 		};
-	};
-	public SliderSetting speed = new SliderSetting("Speed", 20, 2, 20, 0.1,
-		ValueDisplay.DECIMAL);
-	public SliderSetting range = new SliderSetting("Range", 6, 1, 6, 0.05,
-		ValueDisplay.DECIMAL);
-	public SliderSetting fov = new SliderSetting("FOV", 360, 30, 360, 10,
-		ValueDisplay.DEGREES);
-	public CheckboxSetting hitThroughWalls = new CheckboxSetting(
-		"Hit through walls", false);
+	public SliderSetting speed =
+		new SliderSetting("Speed", 20, 2, 20, 0.1, ValueDisplay.DECIMAL);
+	public SliderSetting range =
+		new SliderSetting("Range", 6, 1, 6, 0.05, ValueDisplay.DECIMAL);
+	public SliderSetting fov =
+		new SliderSetting("FOV", 360, 30, 360, 10, ValueDisplay.DEGREES);
+	public CheckboxSetting hitThroughWalls =
+		new CheckboxSetting("Hit through walls", false);
 	
 	@Override
 	public void initSettings()
@@ -88,10 +88,9 @@ public class TpAuraMod extends Mod implements UpdateListener
 	@Override
 	public Feature[] getSeeAlso()
 	{
-		return new Feature[]{wurst.special.targetSpf,
-			wurst.mods.killauraMod, wurst.mods.killauraLegitMod,
-			wurst.mods.multiAuraMod, wurst.mods.clickAuraMod,
-			wurst.mods.triggerBotMod};
+		return new Feature[]{wurst.special.targetSpf, wurst.mods.killauraMod,
+			wurst.mods.killauraLegitMod, wurst.mods.multiAuraMod,
+			wurst.mods.clickAuraMod, wurst.mods.triggerBotMod};
 	}
 	
 	@Override
@@ -115,9 +114,8 @@ public class TpAuraMod extends Mod implements UpdateListener
 	public void onUpdate()
 	{
 		updateMS();
-		EntityLivingBase en =
-			EntityUtils.getClosestEntity(true, fov.getValueF(),
-				hitThroughWalls.isChecked());
+		EntityLivingBase en = EntityUtils.getClosestEntity(true,
+			fov.getValueF(), hitThroughWalls.isChecked());
 		if(en == null
 			|| mc.thePlayer.getDistanceToEntity(en) > range.getValueF())
 		{

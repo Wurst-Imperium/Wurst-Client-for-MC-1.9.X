@@ -13,8 +13,9 @@ import net.wurstclient.features.Feature;
 import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.Setting;
 
-@Cmd.Info(description = "Changes a checkbox setting of a feature. Allows you\n"
-	+ "to toggle checkboxes through keybinds.",
+@Cmd.Info(
+	description = "Changes a checkbox setting of a feature. Allows you\n"
+		+ "to toggle checkboxes through keybinds.",
 	name = "setcheckbox",
 	syntax = {"<feature> <checkbox_setting> (on|off|toggle)"},
 	help = "Commands/setcheckbox")
@@ -39,7 +40,8 @@ public class SetCheckboxCmd extends Cmd
 			}
 		}
 		if(feature == null)
-			error("A feature named \"" + featureName + "\" could not be found.");
+			error(
+				"A feature named \"" + featureName + "\" could not be found.");
 		
 		// find setting
 		Setting setting = null;

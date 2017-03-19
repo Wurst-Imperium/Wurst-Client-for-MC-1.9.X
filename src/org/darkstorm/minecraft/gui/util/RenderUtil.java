@@ -28,7 +28,8 @@ public class RenderUtil
 		ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
 		int factor = sr.getScaleFactor();
 		int bottomY = Minecraft.getMinecraft().currentScreen.height - yend;
-		glScissor(x * factor, bottomY * factor, width * factor, height * factor);
+		glScissor(x * factor, bottomY * factor, width * factor,
+			height * factor);
 	}
 	
 	public static void setupLineSmooth()
@@ -73,22 +74,22 @@ public class RenderUtil
 		Tessellator tessellator = Tessellator.getInstance();
 		VertexBuffer vertexbuffer = tessellator.getBuffer();
 		vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX);
-		vertexbuffer
-			.pos((double)(x + 0), (double)(y + height), (double)0)
+		vertexbuffer.pos((double)(x + 0), (double)(y + height), (double)0)
 			.tex((double)((float)(textureX + 0) * f),
-				(double)((float)(textureY + height) * f1)).endVertex();
-		vertexbuffer
-			.pos((double)(x + width), (double)(y + height), (double)0)
+				(double)((float)(textureY + height) * f1))
+			.endVertex();
+		vertexbuffer.pos((double)(x + width), (double)(y + height), (double)0)
 			.tex((double)((float)(textureX + width) * f),
-				(double)((float)(textureY + height) * f1)).endVertex();
-		vertexbuffer
-			.pos((double)(x + width), (double)(y + 0), (double)0)
+				(double)((float)(textureY + height) * f1))
+			.endVertex();
+		vertexbuffer.pos((double)(x + width), (double)(y + 0), (double)0)
 			.tex((double)((float)(textureX + width) * f),
-				(double)((float)(textureY + 0) * f1)).endVertex();
-		vertexbuffer
-			.pos((double)(x + 0), (double)(y + 0), (double)0)
+				(double)((float)(textureY + 0) * f1))
+			.endVertex();
+		vertexbuffer.pos((double)(x + 0), (double)(y + 0), (double)0)
 			.tex((double)((float)(textureX + 0) * f),
-				(double)((float)(textureY + 0) * f1)).endVertex();
+				(double)((float)(textureY + 0) * f1))
+			.endVertex();
 		tessellator.draw();
 	}
 	
@@ -129,19 +130,19 @@ public class RenderUtil
 	
 	public static int interpolateColor(int rgba1, int rgba2, float percent)
 	{
-		int r1 = rgba1 & 0xFF, g1 = rgba1 >> 8 & 0xFF, b1 = rgba1 >> 16 & 0xFF, a1 =
-			rgba1 >> 24 & 0xFF;
-		int r2 = rgba2 & 0xFF, g2 = rgba2 >> 8 & 0xFF, b2 = rgba2 >> 16 & 0xFF, a2 =
-			rgba2 >> 24 & 0xFF;
+		int r1 = rgba1 & 0xFF, g1 = rgba1 >> 8 & 0xFF, b1 = rgba1 >> 16 & 0xFF,
+			a1 = rgba1 >> 24 & 0xFF;
+		int r2 = rgba2 & 0xFF, g2 = rgba2 >> 8 & 0xFF, b2 = rgba2 >> 16 & 0xFF,
+			a2 = rgba2 >> 24 & 0xFF;
 		
-		int r =
-			(int)(r1 < r2 ? r1 + (r2 - r1) * percent : r2 + (r1 - r2) * percent);
-		int g =
-			(int)(g1 < g2 ? g1 + (g2 - g1) * percent : g2 + (g1 - g2) * percent);
-		int b =
-			(int)(b1 < b2 ? b1 + (b2 - b1) * percent : b2 + (b1 - b2) * percent);
-		int a =
-			(int)(a1 < a2 ? a1 + (a2 - a1) * percent : a2 + (a1 - a2) * percent);
+		int r = (int)(r1 < r2 ? r1 + (r2 - r1) * percent
+			: r2 + (r1 - r2) * percent);
+		int g = (int)(g1 < g2 ? g1 + (g2 - g1) * percent
+			: g2 + (g1 - g2) * percent);
+		int b = (int)(b1 < b2 ? b1 + (b2 - b1) * percent
+			: b2 + (b1 - b2) * percent);
+		int a = (int)(a1 < a2 ? a1 + (a2 - a1) * percent
+			: a2 + (a1 - a2) * percent);
 		
 		return r | g << 8 | b << 16 | a << 24;
 	}
@@ -154,8 +155,8 @@ public class RenderUtil
 	
 	public static Color toColor(int rgba)
 	{
-		int r = rgba & 0xFF, g = rgba >> 8 & 0xFF, b = rgba >> 16 & 0xFF, a =
-			rgba >> 24 & 0xFF;
+		int r = rgba & 0xFF, g = rgba >> 8 & 0xFF, b = rgba >> 16 & 0xFF,
+			a = rgba >> 24 & 0xFF;
 		return new Color(r, g, b, a);
 	}
 	
@@ -167,8 +168,8 @@ public class RenderUtil
 	
 	public static void setColor(int rgba)
 	{
-		int r = rgba & 0xFF, g = rgba >> 8 & 0xFF, b = rgba >> 16 & 0xFF, a =
-			rgba >> 24 & 0xFF;
+		int r = rgba & 0xFF, g = rgba >> 8 & 0xFF, b = rgba >> 16 & 0xFF,
+			a = rgba >> 24 & 0xFF;
 		glColor4b((byte)r, (byte)g, (byte)b, (byte)a);
 	}
 	
@@ -183,8 +184,9 @@ public class RenderUtil
 			&& minecraft.displayWidth / (scaleFactor + 1) >= 320
 			&& minecraft.displayHeight / (scaleFactor + 1) >= 240)
 			scaleFactor++;
-		return new Point(Mouse.getX() / scaleFactor, minecraft.displayHeight
-			/ scaleFactor - Mouse.getY() / scaleFactor - 1);
+		return new Point(Mouse.getX() / scaleFactor,
+			minecraft.displayHeight / scaleFactor - Mouse.getY() / scaleFactor
+				- 1);
 	}
 	
 	public static void boxShadow(double x1, double y1, double x2, double y2)

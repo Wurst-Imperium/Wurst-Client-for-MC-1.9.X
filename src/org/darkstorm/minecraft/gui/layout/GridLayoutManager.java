@@ -70,37 +70,34 @@ public class GridLayoutManager implements LayoutManager
 				switch(horizontalAlign)
 				{
 					case FILL:
-						componentArea.width = (int)elementWidth;
+					componentArea.width = (int)elementWidth;
 					case LEFT:
-						componentArea.x =
-							(int)(area.x + element * elementWidth);
-						break;
+					componentArea.x = (int)(area.x + element * elementWidth);
+					break;
 					case RIGHT:
-						componentArea.x =
-							(int)(area.x + (element + 1) * elementWidth - componentArea.width);
-						break;
+					componentArea.x = (int)(area.x
+						+ (element + 1) * elementWidth - componentArea.width);
+					break;
 					case CENTER:
-						componentArea.x =
-							(int)(area.x + element * elementWidth
-								+ elementWidth / 2 - componentArea.width / 2);
-						break;
+					componentArea.x = (int)(area.x + element * elementWidth
+						+ elementWidth / 2 - componentArea.width / 2);
+					break;
 				}
 				switch(verticalAlign)
 				{
 					case FILL:
-						componentArea.height = (int)elementHeight;
+					componentArea.height = (int)elementHeight;
 					case TOP:
-						componentArea.y = (int)(area.y + row * elementHeight);
-						break;
+					componentArea.y = (int)(area.y + row * elementHeight);
+					break;
 					case BOTTOM:
-						componentArea.y =
-							(int)(area.y + (row + 1) * elementHeight - componentArea.height);
-						break;
+					componentArea.y = (int)(area.y + (row + 1) * elementHeight
+						- componentArea.height);
+					break;
 					case CENTER:
-						componentArea.y =
-							(int)(area.y + row * elementHeight + elementHeight
-								/ 2 - componentArea.height / 2);
-						break;
+					componentArea.y = (int)(area.y + row * elementHeight
+						+ elementHeight / 2 - componentArea.height / 2);
+					break;
 				}
 			}
 	}

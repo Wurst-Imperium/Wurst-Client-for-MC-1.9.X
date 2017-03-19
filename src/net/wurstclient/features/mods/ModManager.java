@@ -14,8 +14,8 @@ import java.util.TreeMap;
 
 public class ModManager
 {
-	private final TreeMap<String, Mod> mods = new TreeMap<String, Mod>(
-		new Comparator<String>()
+	private final TreeMap<String, Mod> mods =
+		new TreeMap<String, Mod>(new Comparator<String>()
 		{
 			@Override
 			public int compare(String o1, String o2)

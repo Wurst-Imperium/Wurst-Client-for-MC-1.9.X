@@ -20,11 +20,10 @@ import net.wurstclient.settings.Setting;
 public class Spf implements Feature
 {
 	private final String name = getClass().getAnnotation(Info.class).name();
-	private final String description = getClass().getAnnotation(Info.class)
-		.description();
+	private final String description =
+		getClass().getAnnotation(Info.class).description();
 	private final String tags = getClass().getAnnotation(Info.class).tags();
-	private final String help = getClass().getAnnotation(Info.class)
-		.help();
+	private final String help = getClass().getAnnotation(Info.class).help();
 	protected ArrayList<Setting> settings = new ArrayList<>();
 	
 	protected static final WurstClient wurst = WurstClient.INSTANCE;
@@ -104,7 +103,7 @@ public class Spf implements Feature
 	
 	@Override
 	public void doPrimaryAction()
-	{	
+	{
 		
 	}
 	

@@ -44,12 +44,12 @@ public class DamageCmd extends Cmd
 		// apply damage
 		for(int i = 0; (double)i < 80 + 20 * (dmg - 1D); ++i)
 		{
-			sendQueue.addToSendQueue(new C04PacketPlayerPosition(posX,
-				posY + 0.049D, posZ, false));
-			sendQueue.addToSendQueue(new C04PacketPlayerPosition(posX, posY,
-				posZ, false));
+			sendQueue.addToSendQueue(
+				new C04PacketPlayerPosition(posX, posY + 0.049D, posZ, false));
+			sendQueue.addToSendQueue(
+				new C04PacketPlayerPosition(posX, posY, posZ, false));
 		}
-		sendQueue.addToSendQueue(new C04PacketPlayerPosition(posX, posY, posZ,
-			true));
+		sendQueue.addToSendQueue(
+			new C04PacketPlayerPosition(posX, posY, posZ, true));
 	}
 }

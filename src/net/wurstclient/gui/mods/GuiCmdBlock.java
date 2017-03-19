@@ -34,8 +34,8 @@ public class GuiCmdBlock extends GuiScreen
 	public void initGui()
 	{
 		Keyboard.enableRepeatEvents(true);
-		buttonList.add(new GuiButton(0, width / 2 - 100, height / 3 * 2, 200,
-			20, "Done"));
+		buttonList.add(
+			new GuiButton(0, width / 2 - 100, height / 3 * 2, 200, 20, "Done"));
 		buttonList.add(new GuiButton(1, width / 2 - 100, height / 3 * 2 + 24,
 			200, 20, "Cancel"));
 		commandBox =
@@ -54,16 +54,16 @@ public class GuiCmdBlock extends GuiScreen
 		switch(button.id)
 		{
 			case 0:
-				Minecraft.getMinecraft().displayGuiScreen(prevMenu);
-				mod.createCmdBlock(commandBox.getText());
-				WurstClient.INSTANCE.analytics.trackEvent("cmdblock", "create");
-				break;
+			Minecraft.getMinecraft().displayGuiScreen(prevMenu);
+			mod.createCmdBlock(commandBox.getText());
+			WurstClient.INSTANCE.analytics.trackEvent("cmdblock", "create");
+			break;
 			case 1:
-				Minecraft.getMinecraft().displayGuiScreen(prevMenu);
-				WurstClient.INSTANCE.analytics.trackEvent("cmdblock", "cancel");
-				break;
+			Minecraft.getMinecraft().displayGuiScreen(prevMenu);
+			WurstClient.INSTANCE.analytics.trackEvent("cmdblock", "cancel");
+			break;
 			default:
-				break;
+			break;
 		}
 	}
 	
@@ -87,7 +87,8 @@ public class GuiCmdBlock extends GuiScreen
 	}
 	
 	/**
-	 * "Called when the screen is unloaded. Used to disable keyboard repeat events."
+	 * "Called when the screen is unloaded. Used to disable keyboard repeat
+	 * events."
 	 */
 	@Override
 	public void onGuiClosed()
@@ -101,8 +102,7 @@ public class GuiCmdBlock extends GuiScreen
 	 * @throws IOException
 	 */
 	@Override
-	protected void mouseClicked(int par1, int par2, int par3)
-		throws IOException
+	protected void mouseClicked(int par1, int par2, int par3) throws IOException
 	{
 		super.mouseClicked(par1, par2, par3);
 		commandBox.mouseClicked(par1, par2, par3);

@@ -18,7 +18,7 @@ public class NothingCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws CmdError
-	{	
+	{
 		
 	}
 	

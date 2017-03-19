@@ -35,39 +35,38 @@ public class GuiTeamSettings extends GuiScreen
 		Keyboard.enableRepeatEvents(true);
 		
 		// color buttons
-		String[] colors =
-			{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c",
-				"d", "e", "f"};
+		String[] colors = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
+			"a", "b", "c", "d", "e", "f"};
 		for(int i = 0; i < 16; i++)
 		{
 			int offsetX = -22;
 			switch(i % 4)
 			{
 				case 3:
-					offsetX = 26;
-					break;
+				offsetX = 26;
+				break;
 				case 2:
-					offsetX = 2;
-					break;
+				offsetX = 2;
+				break;
 				case 0:
-					offsetX = -46;
-					break;
+				offsetX = -46;
+				break;
 			}
 			int offsetY = 72;
 			switch(i % 16 / 4)
 			{
 				case 2:
-					offsetY = 48;
-					break;
+				offsetY = 48;
+				break;
 				case 1:
-					offsetY = 24;
-					break;
+				offsetY = 24;
+				break;
 				case 0:
-					offsetY = 0;
-					break;
+				offsetY = 0;
+				break;
 			}
-			buttonList.add(new TeamColorButton(i, width / 2 + offsetX, height
-				/ 3 + offsetY, "§" + colors[i] + colors[i]));
+			buttonList.add(new TeamColorButton(i, width / 2 + offsetX,
+				height / 3 + offsetY, "§" + colors[i] + colors[i]));
 		}
 		boolean[] team_colors =
 			WurstClient.INSTANCE.special.targetSpf.teamColors.getSelected();
@@ -77,10 +76,10 @@ public class GuiTeamSettings extends GuiScreen
 		// other buttons
 		buttonList.add(new GuiButton(16, width / 2 - 46, height / 3 + 96, 44,
 			20, "All On"));
-		buttonList.add(new GuiButton(17, width / 2 + 2, height / 3 + 96, 44,
-			20, "All Off"));
-		buttonList.add(new GuiButton(18, width / 2 - 100, height / 3 + 120,
-			200, 20, "Done"));
+		buttonList.add(new GuiButton(17, width / 2 + 2, height / 3 + 96, 44, 20,
+			"All Off"));
+		buttonList.add(new GuiButton(18, width / 2 - 100, height / 3 + 120, 200,
+			20, "Done"));
 	}
 	
 	@Override
@@ -99,32 +98,31 @@ public class GuiTeamSettings extends GuiScreen
 			switch(button.id)
 			{
 				case 16:
-					for(int i = 0; i < 16; i++)
-					{
-						teamColors.setSelected(i, true);
-						((TeamColorButton)buttonList.get(i)).setFakeHover(true);
-					}
-					WurstClient.INSTANCE.analytics.trackEvent("team settings",
-						"all on");
-					break;
+				for(int i = 0; i < 16; i++)
+				{
+					teamColors.setSelected(i, true);
+					((TeamColorButton)buttonList.get(i)).setFakeHover(true);
+				}
+				WurstClient.INSTANCE.analytics.trackEvent("team settings",
+					"all on");
+				break;
 				case 17:
-					for(int i = 0; i < 16; i++)
-					{
-						teamColors.setSelected(i, false);
-						((TeamColorButton)buttonList.get(i))
-							.setFakeHover(false);
-					}
-					WurstClient.INSTANCE.analytics.trackEvent("team settings",
-						"all off");
-					break;
+				for(int i = 0; i < 16; i++)
+				{
+					teamColors.setSelected(i, false);
+					((TeamColorButton)buttonList.get(i)).setFakeHover(false);
+				}
+				WurstClient.INSTANCE.analytics.trackEvent("team settings",
+					"all off");
+				break;
 				default:
-					boolean onOff = !teamColors.getSelected()[button.id];
-					teamColors.setSelected(button.id, onOff);
-					((TeamColorButton)buttonList.get(button.id))
-						.setFakeHover(onOff);
-					WurstClient.INSTANCE.analytics.trackEvent("team settings",
-						"toggle", onOff ? "on" : "off", button.id);
-					break;
+				boolean onOff = !teamColors.getSelected()[button.id];
+				teamColors.setSelected(button.id, onOff);
+				((TeamColorButton)buttonList.get(button.id))
+					.setFakeHover(onOff);
+				WurstClient.INSTANCE.analytics.trackEvent("team settings",
+					"toggle", onOff ? "on" : "off", button.id);
+				break;
 			}
 			WurstClient.INSTANCE.files.saveOptions();
 		}
@@ -153,53 +151,53 @@ public class GuiTeamSettings extends GuiScreen
 			switch(button.id)
 			{
 				case 0:
-					tooltip.add("black");
-					break;
+				tooltip.add("black");
+				break;
 				case 1:
-					tooltip.add("dark blue");
-					break;
+				tooltip.add("dark blue");
+				break;
 				case 2:
-					tooltip.add("dark green");
-					break;
+				tooltip.add("dark green");
+				break;
 				case 3:
-					tooltip.add("dark aqua");
-					break;
+				tooltip.add("dark aqua");
+				break;
 				case 4:
-					tooltip.add("dark red");
-					break;
+				tooltip.add("dark red");
+				break;
 				case 5:
-					tooltip.add("dark purple");
-					break;
+				tooltip.add("dark purple");
+				break;
 				case 6:
-					tooltip.add("gold");
-					break;
+				tooltip.add("gold");
+				break;
 				case 7:
-					tooltip.add("gray");
-					break;
+				tooltip.add("gray");
+				break;
 				case 8:
-					tooltip.add("dark gray");
-					break;
+				tooltip.add("dark gray");
+				break;
 				case 9:
-					tooltip.add("blue");
-					break;
+				tooltip.add("blue");
+				break;
 				case 10:
-					tooltip.add("green");
-					break;
+				tooltip.add("green");
+				break;
 				case 11:
-					tooltip.add("aqua");
-					break;
+				tooltip.add("aqua");
+				break;
 				case 12:
-					tooltip.add("red");
-					break;
+				tooltip.add("red");
+				break;
 				case 13:
-					tooltip.add("light purple");
-					break;
+				tooltip.add("light purple");
+				break;
 				case 14:
-					tooltip.add("yellow");
-					break;
+				tooltip.add("yellow");
+				break;
 				case 15:
-					tooltip.add("white");
-					break;
+				tooltip.add("white");
+				break;
 			}
 		}
 		drawHoveringText(tooltip, mouseX, mouseY);

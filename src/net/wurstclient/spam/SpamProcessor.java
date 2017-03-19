@@ -29,16 +29,16 @@ public class SpamProcessor
 	public static TagManager tagManager = new TagManager();
 	public static VarManager varManager = new VarManager();
 	
-	public static void runScript(final String filename, final String description)
+	public static void runScript(final String filename,
+		final String description)
 	{
 		new Thread(new Runnable()
 		{
 			@Override
 			public void run()
 			{
-				File file =
-					new File(WurstClient.INSTANCE.files.scriptsDir, filename
-						+ ".wspam");
+				File file = new File(WurstClient.INSTANCE.files.scriptsDir,
+					filename + ".wspam");
 				try
 				{
 					long startTime = System.currentTimeMillis();
@@ -67,12 +67,11 @@ public class SpamProcessor
 					e.printStackTrace();
 					StringWriter tracewriter = new StringWriter();
 					e.printStackTrace(new PrintWriter(tracewriter));
-					String message =
-						"An error occurred while running " + file.getName()
-							+ ":\n" + e.getLocalizedMessage() + "\n"
-							+ tracewriter.toString();
-					JOptionPane.showMessageDialog(FrameHook.getFrame(),
-						message, "Error", JOptionPane.ERROR_MESSAGE);
+					String message = "An error occurred while running "
+						+ file.getName() + ":\n" + e.getLocalizedMessage()
+						+ "\n" + tracewriter.toString();
+					JOptionPane.showMessageDialog(FrameHook.getFrame(), message,
+						"Error", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		}).start();
@@ -107,12 +106,11 @@ public class SpamProcessor
 					e.printStackTrace();
 					StringWriter tracewriter = new StringWriter();
 					e.printStackTrace(new PrintWriter(tracewriter));
-					String message =
-						"An error occurred while running " + file.getName()
-							+ ":\n" + e.getLocalizedMessage() + "\n"
-							+ tracewriter.toString();
-					JOptionPane.showMessageDialog(FrameHook.getFrame(),
-						message, "Error", JOptionPane.ERROR_MESSAGE);
+					String message = "An error occurred while running "
+						+ file.getName() + ":\n" + e.getLocalizedMessage()
+						+ "\n" + tracewriter.toString();
+					JOptionPane.showMessageDialog(FrameHook.getFrame(), message,
+						"Error", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		}).start();
@@ -123,9 +121,8 @@ public class SpamProcessor
 	{
 		try
 		{
-			BufferedReader load =
-				new BufferedReader(new InputStreamReader(new FileInputStream(
-					file), "UTF-8"));
+			BufferedReader load = new BufferedReader(
+				new InputStreamReader(new FileInputStream(file), "UTF-8"));
 			String content = load.readLine();
 			for(String line = ""; (line = load.readLine()) != null;)
 				content += "\n" + line;
@@ -184,8 +181,8 @@ public class SpamProcessor
 					tagName = tag.substring(1, tag.indexOf(">")).split(" ")[0];
 				}catch(StringIndexOutOfBoundsException e1)
 				{
-					throw new UnreadableTagException(
-						source.substring(tagStart), tagLine);
+					throw new UnreadableTagException(source.substring(tagStart),
+						tagLine);
 				}
 				log("TagName: " + tagName);
 				String[] tagArgs;
@@ -211,8 +208,8 @@ public class SpamProcessor
 				{
 					log("Found subtag: "
 						+ tmpTag.substring(tmpTag.indexOf("<"),
-							tmpTag.indexOf("<") + 2) + " at "
-						+ tmpTag.indexOf("<"));
+							tmpTag.indexOf("<") + 2)
+						+ " at " + tmpTag.indexOf("<"));
 					if(tmpTag.substring(tmpTag.indexOf("<") + 1,
 						tmpTag.indexOf("<") + 2).equals("/"))
 						tmpSubTags--;
@@ -241,19 +238,15 @@ public class SpamProcessor
 						tagClosed, tag, tagContent, tagContentLength, spam);
 				String tagReplacement = tagManager.process(tagData);
 				if(test)
-					spam =
-						spam.substring(0, tagStart)
-							+ (tagClosed ? tag.replaceFirst("<", "#")
-								.replaceFirst("(?s)(.*)<", "$1#") : tag
-								.replaceFirst("<", "#"))
-							+ spam.substring(tagStart + tagLength,
-								spam.length());
+					spam = spam.substring(0, tagStart)
+						+ (tagClosed
+							? tag.replaceFirst("<", "#")
+								.replaceFirst("(?s)(.*)<", "$1#")
+							: tag.replaceFirst("<", "#"))
+						+ spam.substring(tagStart + tagLength, spam.length());
 				else
-					spam =
-						spam.substring(0, tagStart)
-							+ tagReplacement
-							+ spam.substring(tagStart + tagLength,
-								spam.length());
+					spam = spam.substring(0, tagStart) + tagReplacement
+						+ spam.substring(tagStart + tagLength, spam.length());
 				log("** Processed tag:\n" + spam);
 			}
 			log("### Processing variables...");
@@ -286,13 +279,11 @@ public class SpamProcessor
 				if(varReplacement == null)
 					throw new InvalidVariableException(varName, varLine);
 				if(test)
-					spam =
-						spam.substring(0, varStart) + var.replace("§", "*")
-							+ spam.substring(varEnd, spam.length());
+					spam = spam.substring(0, varStart) + var.replace("§", "*")
+						+ spam.substring(varEnd, spam.length());
 				else
-					spam =
-						spam.substring(0, varStart) + varReplacement
-							+ spam.substring(varEnd, spam.length());
+					spam = spam.substring(0, varStart) + varReplacement
+						+ spam.substring(varEnd, spam.length());
 			}
 			log("### Final Spam:\n" + spam);
 		}catch(SpamException e)
@@ -304,32 +295,30 @@ public class SpamProcessor
 				e.printStackTrace();
 				return null;
 			}
-			String message =
-				e.getClass().getSimpleName() + " at line " + (e.line + 1)
-					+ ":\n" + e.getMessage();
-			switch(JOptionPane.showOptionDialog(spammerMod.getDialog(),
-				message, "Error", JOptionPane.DEFAULT_OPTION,
-				JOptionPane.ERROR_MESSAGE, null, new String[]{"Go to line",
-					"Show help"}, 0))
+			String message = e.getClass().getSimpleName() + " at line "
+				+ (e.line + 1) + ":\n" + e.getMessage();
+			switch(JOptionPane.showOptionDialog(spammerMod.getDialog(), message,
+				"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE,
+				null, new String[]{"Go to line", "Show help"}, 0))
 			{
 				case 0:
-					spammerMod.goToLine(e.line);
-					break;
+				spammerMod.goToLine(e.line);
+				break;
 				case 1:
-					try
-					{
-						JOptionPane.showOptionDialog(spammerMod.getDialog(),
-							e.getHelp(), "Help", JOptionPane.DEFAULT_OPTION,
-							JOptionPane.INFORMATION_MESSAGE, null,
-							new String[]{"OK"}, 0);
-					}catch(HeadlessException e1)
-					{
-						e1.printStackTrace();
-					}
-					break;
+				try
+				{
+					JOptionPane.showOptionDialog(spammerMod.getDialog(),
+						e.getHelp(), "Help", JOptionPane.DEFAULT_OPTION,
+						JOptionPane.INFORMATION_MESSAGE, null,
+						new String[]{"OK"}, 0);
+				}catch(HeadlessException e1)
+				{
+					e1.printStackTrace();
+				}
+				break;
 				
 				default:
-					break;
+				break;
 			}
 			return null;
 		}catch(Exception e)

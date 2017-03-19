@@ -51,8 +51,8 @@ public class GuiAltAdd extends AltEditorScreen
 			displayText =
 				LoginManager.login(emailBox.getText(), passwordBox.getText());
 			if(displayText.equals(""))
-				GuiAltList.alts.add(new Alt(emailBox.getText(), passwordBox
-					.getText(), mc.session.getUsername()));
+				GuiAltList.alts.add(new Alt(emailBox.getText(),
+					passwordBox.getText(), mc.session.getUsername()));
 		}
 		if(displayText.equals(""))
 		{

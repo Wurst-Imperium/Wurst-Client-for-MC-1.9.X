@@ -38,10 +38,9 @@ public class EntityUtils
 		float[] rotations = getRotationsNeeded(entity);
 		if(rotations != null)
 		{
-			Minecraft.getMinecraft().thePlayer.rotationYaw =
-				limitAngleChange(
-					Minecraft.getMinecraft().thePlayer.prevRotationYaw,
-					rotations[0], 55);// NoCheat+
+			Minecraft.getMinecraft().thePlayer.rotationYaw = limitAngleChange(
+				Minecraft.getMinecraft().thePlayer.prevRotationYaw,
+				rotations[0], 55);// NoCheat+
 			// bypass!!!
 			Minecraft.getMinecraft().thePlayer.rotationPitch = rotations[1];
 		}
@@ -69,17 +68,13 @@ public class EntityUtils
 		{
 			EntityLivingBase entityLivingBase = (EntityLivingBase)entity;
 			diffY =
-				entityLivingBase.posY
-					+ entityLivingBase.getEyeHeight()
-					* 0.9
-					- (Minecraft.getMinecraft().thePlayer.posY + Minecraft
-						.getMinecraft().thePlayer.getEyeHeight());
+				entityLivingBase.posY + entityLivingBase.getEyeHeight() * 0.9
+					- (Minecraft.getMinecraft().thePlayer.posY
+						+ Minecraft.getMinecraft().thePlayer.getEyeHeight());
 		}else
-			diffY =
-				(entity.boundingBox.minY + entity.boundingBox.maxY)
-					/ 2.0D
-					- (Minecraft.getMinecraft().thePlayer.posY + Minecraft
-						.getMinecraft().thePlayer.getEyeHeight());
+			diffY = (entity.boundingBox.minY + entity.boundingBox.maxY) / 2.0D
+				- (Minecraft.getMinecraft().thePlayer.posY
+					+ Minecraft.getMinecraft().thePlayer.getEyeHeight());
 		double diffZ = entity.posZ - Minecraft.getMinecraft().thePlayer.posZ;
 		double dist = MathHelper.sqrt_double(diffX * diffX + diffZ * diffZ);
 		float yaw =
@@ -87,11 +82,11 @@ public class EntityUtils
 		float pitch = (float)-(Math.atan2(diffY, dist) * 180.0D / Math.PI);
 		return new float[]{
 			Minecraft.getMinecraft().thePlayer.rotationYaw
-				+ MathHelper.wrapAngleTo180_float(yaw
-					- Minecraft.getMinecraft().thePlayer.rotationYaw),
+				+ MathHelper.wrapAngleTo180_float(
+					yaw - Minecraft.getMinecraft().thePlayer.rotationYaw),
 			Minecraft.getMinecraft().thePlayer.rotationPitch
-				+ MathHelper.wrapAngleTo180_float(pitch
-					- Minecraft.getMinecraft().thePlayer.rotationPitch)};
+				+ MathHelper.wrapAngleTo180_float(
+					pitch - Minecraft.getMinecraft().thePlayer.rotationPitch)};
 		
 	}
 	
@@ -113,12 +108,11 @@ public class EntityUtils
 		{
 			float neededYaw =
 				Minecraft.getMinecraft().thePlayer.rotationYaw
-					- neededRotations[0], neededPitch =
-				Minecraft.getMinecraft().thePlayer.rotationPitch
+					- neededRotations[0],
+				neededPitch = Minecraft.getMinecraft().thePlayer.rotationPitch
 					- neededRotations[1];
-			float distanceFromMouse =
-				MathHelper.sqrt_float(neededYaw * neededYaw + neededPitch
-					* neededPitch);
+			float distanceFromMouse = MathHelper
+				.sqrt_float(neededYaw * neededYaw + neededPitch * neededPitch);
 			return (int)distanceFromMouse;
 		}
 		return -1;
@@ -132,10 +126,10 @@ public class EntityUtils
 		
 		// friends
 		if(ignoreFriends && o instanceof EntityPlayer)
-			if(WurstClient.INSTANCE.friends.contains(((EntityPlayer)o)
-				.getName()))
+			if(WurstClient.INSTANCE.friends
+				.contains(((EntityPlayer)o).getName()))
 				return false;
-		
+			
 		TargetSpf targetSpf = WurstClient.INSTANCE.special.targetSpf;
 		
 		// invisible entities
@@ -143,38 +137,36 @@ public class EntityUtils
 			return targetSpf.invisibleMobs.isChecked()
 				&& o instanceof EntityLiving
 				|| targetSpf.invisiblePlayers.isChecked()
-				&& o instanceof EntityPlayer;
+					&& o instanceof EntityPlayer;
 		
 		// players
 		if(o instanceof EntityPlayer)
 			return (((EntityPlayer)o).isPlayerSleeping()
-				&& targetSpf.sleepingPlayers.isChecked() || !((EntityPlayer)o)
-				.isPlayerSleeping() && targetSpf.players.isChecked())
-				&& (!targetSpf.teams.isChecked() || checkName(((EntityPlayer)o)
-					.getDisplayName().getFormattedText()));
+				&& targetSpf.sleepingPlayers.isChecked()
+				|| !((EntityPlayer)o).isPlayerSleeping()
+					&& targetSpf.players.isChecked())
+				&& (!targetSpf.teams.isChecked() || checkName(
+					((EntityPlayer)o).getDisplayName().getFormattedText()));
 		
 		// animals
 		if(o instanceof EntityAgeable || o instanceof EntityAmbientCreature
 			|| o instanceof EntityWaterMob)
 			return targetSpf.animals.isChecked()
-				&& (!targetSpf.teams.isChecked()
-					|| !((Entity)o).hasCustomName() || checkName(((Entity)o)
-						.getCustomNameTag()));
+				&& (!targetSpf.teams.isChecked() || !((Entity)o).hasCustomName()
+					|| checkName(((Entity)o).getCustomNameTag()));
 		
 		// monsters
 		if(o instanceof EntityMob || o instanceof EntitySlime
 			|| o instanceof EntityFlying)
 			return targetSpf.monsters.isChecked()
-				&& (!targetSpf.teams.isChecked()
-					|| !((Entity)o).hasCustomName() || checkName(((Entity)o)
-						.getCustomNameTag()));
+				&& (!targetSpf.teams.isChecked() || !((Entity)o).hasCustomName()
+					|| checkName(((Entity)o).getCustomNameTag()));
 		
 		// golems
 		if(o instanceof EntityGolem)
 			return targetSpf.golems.isChecked()
-				&& (!targetSpf.teams.isChecked()
-					|| !((Entity)o).hasCustomName() || checkName(((Entity)o)
-						.getCustomNameTag()));
+				&& (!targetSpf.teams.isChecked() || !((Entity)o).hasCustomName()
+					|| checkName(((Entity)o).getCustomNameTag()));
 		
 		return false;
 	}
@@ -182,9 +174,8 @@ public class EntityUtils
 	private static boolean checkName(String name)
 	{
 		// check colors
-		String[] colors =
-			{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c",
-				"d", "e", "f"};
+		String[] colors = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
+			"a", "b", "c", "d", "e", "f"};
 		boolean[] teamColors =
 			WurstClient.INSTANCE.special.targetSpf.teamColors.getSelected();
 		boolean hasKnownColor = false;
@@ -209,17 +200,17 @@ public class EntityUtils
 				&& getDistanceFromMouse((Entity)o) <= fov / 2)
 			{
 				EntityLivingBase en = (EntityLivingBase)o;
-				if(!(o instanceof EntityPlayerSP)
-					&& !en.isDead
+				if(!(o instanceof EntityPlayerSP) && !en.isDead
 					&& en.getHealth() > 0
 					&& (hitThroughWalls || Minecraft.getMinecraft().thePlayer
 						.canEntityBeSeen(en))
-					&& !en.getName().equals(
-						Minecraft.getMinecraft().thePlayer.getName()))
+					&& !en.getName()
+						.equals(Minecraft.getMinecraft().thePlayer.getName()))
 					if(closestEntity == null
 						|| Minecraft.getMinecraft().thePlayer
-							.getDistanceToEntity(en) < Minecraft.getMinecraft().thePlayer
-							.getDistanceToEntity(closestEntity))
+							.getDistanceToEntity(
+								en) < Minecraft.getMinecraft().thePlayer
+									.getDistanceToEntity(closestEntity))
 						closestEntity = en;
 			}
 		return closestEntity;
@@ -234,13 +225,12 @@ public class EntityUtils
 			if(isCorrectEntity(o, ignoreFriends))
 			{
 				EntityLivingBase en = (EntityLivingBase)o;
-				if(!(o instanceof EntityPlayerSP)
-					&& !en.isDead
+				if(!(o instanceof EntityPlayerSP) && !en.isDead
 					&& en.getHealth() > 0
 					&& (hitThroughWalls || Minecraft.getMinecraft().thePlayer
 						.canEntityBeSeen(en))
-					&& !en.getName().equals(
-						Minecraft.getMinecraft().thePlayer.getName())
+					&& !en.getName()
+						.equals(Minecraft.getMinecraft().thePlayer.getName())
 					&& Minecraft.getMinecraft().thePlayer
 						.getDistanceToEntity(en) <= range)
 					closeEntities.add(en);
@@ -259,8 +249,9 @@ public class EntityUtils
 					&& en.getHealth() > 0)
 					if(closestEntity == null
 						|| Minecraft.getMinecraft().thePlayer
-							.getDistanceToEntity(en) < Minecraft.getMinecraft().thePlayer
-							.getDistanceToEntity(closestEntity))
+							.getDistanceToEntity(
+								en) < Minecraft.getMinecraft().thePlayer
+									.getDistanceToEntity(closestEntity))
 						closestEntity = en;
 			}
 		return closestEntity;
@@ -278,8 +269,9 @@ public class EntityUtils
 					&& Minecraft.getMinecraft().thePlayer.canEntityBeSeen(en))
 					if(closestEnemy == null
 						|| Minecraft.getMinecraft().thePlayer
-							.getDistanceToEntity(en) < Minecraft.getMinecraft().thePlayer
-							.getDistanceToEntity(closestEnemy))
+							.getDistanceToEntity(
+								en) < Minecraft.getMinecraft().thePlayer
+									.getDistanceToEntity(closestEnemy))
 						closestEnemy = en;
 			}
 		return closestEnemy;

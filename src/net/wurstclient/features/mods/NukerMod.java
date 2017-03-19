@@ -38,8 +38,8 @@ import net.wurstclient.utils.RenderUtils;
 	name = "Nuker",
 	help = "Mods/Nuker")
 @Bypasses
-public class NukerMod extends Mod implements LeftClickListener, RenderListener,
-	UpdateListener
+public class NukerMod extends Mod
+	implements LeftClickListener, RenderListener, UpdateListener
 {
 	private static Block currentBlock;
 	private float currentDamage;
@@ -50,10 +50,10 @@ public class NukerMod extends Mod implements LeftClickListener, RenderListener,
 	private boolean shouldRenderESP;
 	private int oldSlot = -1;
 	
-	public final SliderSetting range = new SliderSetting("Range", 6, 1, 6,
-		0.05, ValueDisplay.DECIMAL);
-	public final ModeSetting mode = new ModeSetting("Mode", new String[]{
-		"Normal", "ID", "Flat", "Smash"}, 0);
+	public final SliderSetting range =
+		new SliderSetting("Range", 6, 1, 6, 0.05, ValueDisplay.DECIMAL);
+	public final ModeSetting mode = new ModeSetting("Mode",
+		new String[]{"Normal", "ID", "Flat", "Smash"}, 0);
 	
 	@Override
 	public String getRenderName()
@@ -61,11 +61,11 @@ public class NukerMod extends Mod implements LeftClickListener, RenderListener,
 		switch(mode.getSelected())
 		{
 			case 0:
-				return "Nuker";
+			return "Nuker";
 			case 1:
-				return "IDNuker [" + id + "]";
+			return "IDNuker [" + id + "]";
 			default:
-				return mode.getSelectedMode() + "Nuker";
+			return mode.getSelectedMode() + "Nuker";
 		}
 	}
 	
@@ -79,10 +79,9 @@ public class NukerMod extends Mod implements LeftClickListener, RenderListener,
 	@Override
 	public Feature[] getSeeAlso()
 	{
-		return new Feature[]{wurst.mods.nukerLegitMod,
-			wurst.mods.speedNukerMod, wurst.mods.tunnellerMod,
-			wurst.mods.fastBreakMod, wurst.mods.autoMineMod,
-			wurst.mods.overlayMod};
+		return new Feature[]{wurst.mods.nukerLegitMod, wurst.mods.speedNukerMod,
+			wurst.mods.tunnellerMod, wurst.mods.fastBreakMod,
+			wurst.mods.autoMineMod, wurst.mods.overlayMod};
 	}
 	
 	@Override
@@ -103,10 +102,9 @@ public class NukerMod extends Mod implements LeftClickListener, RenderListener,
 	public void onRender()
 	{
 		if(blockHitDelay == 0 && shouldRenderESP)
-			if(!mc.thePlayer.capabilities.isCreativeMode
-				&& currentBlock.getPlayerRelativeBlockHardness(
-					mc.theWorld.getBlockState(pos), mc.thePlayer, mc.theWorld,
-					pos) < 1)
+			if(!mc.thePlayer.capabilities.isCreativeMode && currentBlock
+				.getPlayerRelativeBlockHardness(mc.theWorld.getBlockState(pos),
+					mc.thePlayer, mc.theWorld, pos) < 1)
 				RenderUtils.nukerBox(pos, currentDamage);
 			else
 				RenderUtils.nukerBox(pos, 1);
@@ -142,15 +140,14 @@ public class NukerMod extends Mod implements LeftClickListener, RenderListener,
 				Action.START_DESTROY_BLOCK, pos, side));
 			if(wurst.mods.autoToolMod.isActive() && oldSlot == -1)
 				oldSlot = mc.thePlayer.inventory.currentItem;
-			if(mc.thePlayer.capabilities.isCreativeMode
-				|| currentBlock.getPlayerRelativeBlockHardness(
-					mc.theWorld.getBlockState(pos), mc.thePlayer, mc.theWorld,
-					pos) >= 1)
+			if(mc.thePlayer.capabilities.isCreativeMode || currentBlock
+				.getPlayerRelativeBlockHardness(mc.theWorld.getBlockState(pos),
+					mc.thePlayer, mc.theWorld, pos) >= 1)
 			{
 				currentDamage = 0;
 				if(mc.thePlayer.capabilities.isCreativeMode
-					&& wurst.special.yesCheatSpf.getBypassLevel().ordinal() <= BypassLevel.MINEPLEX_ANTICHEAT
-						.ordinal())
+					&& wurst.special.yesCheatSpf.getBypassLevel()
+						.ordinal() <= BypassLevel.MINEPLEX_ANTICHEAT.ordinal())
 					nukeAll();
 				else
 				{
@@ -163,29 +160,28 @@ public class NukerMod extends Mod implements LeftClickListener, RenderListener,
 		}
 		if(wurst.mods.autoToolMod.isActive())
 			AutoToolMod.setSlot(pos);
-		mc.thePlayer.sendQueue.addToSendQueue(new CPacketAnimation(
-			EnumHand.MAIN_HAND));
+		mc.thePlayer.sendQueue
+			.addToSendQueue(new CPacketAnimation(EnumHand.MAIN_HAND));
 		shouldRenderESP = true;
 		BlockUtils.faceBlockPacket(pos);
-		currentDamage +=
-			currentBlock.getPlayerRelativeBlockHardness(
-				mc.theWorld.getBlockState(pos), mc.thePlayer, mc.theWorld, pos)
-				* (wurst.mods.fastBreakMod.isActive()
-					&& wurst.mods.fastBreakMod.getMode() == 0
+		currentDamage += currentBlock.getPlayerRelativeBlockHardness(
+			mc.theWorld.getBlockState(pos), mc.thePlayer, mc.theWorld, pos)
+			* (wurst.mods.fastBreakMod.isActive()
+				&& wurst.mods.fastBreakMod.getMode() == 0
 					? wurst.mods.fastBreakMod.speed : 1);
 		mc.theWorld.sendBlockBreakProgress(mc.thePlayer.getEntityId(), pos,
 			(int)(currentDamage * 10.0F) - 1);
 		if(currentDamage >= 1)
 		{
-			mc.thePlayer.sendQueue.addToSendQueue(new CPacketPlayerDigging(
-				Action.STOP_DESTROY_BLOCK, pos, side));
+			mc.thePlayer.sendQueue.addToSendQueue(
+				new CPacketPlayerDigging(Action.STOP_DESTROY_BLOCK, pos, side));
 			mc.playerController.onPlayerDestroyBlock(pos);
 			blockHitDelay = (byte)4;
 			currentDamage = 0;
 		}else if(wurst.mods.fastBreakMod.isActive()
 			&& wurst.mods.fastBreakMod.getMode() == 1)
-			mc.thePlayer.sendQueue.addToSendQueue(new CPacketPlayerDigging(
-				Action.STOP_DESTROY_BLOCK, pos, side));
+			mc.thePlayer.sendQueue.addToSendQueue(
+				new CPacketPlayerDigging(Action.STOP_DESTROY_BLOCK, pos, side));
 	}
 	
 	@Override
@@ -198,9 +194,8 @@ public class NukerMod extends Mod implements LeftClickListener, RenderListener,
 			&& mc.theWorld.getBlockState(mc.objectMouseOver.getBlockPos())
 				.getBlock().getMaterial(null) != Material.air)
 		{
-			id =
-				Block.getIdFromBlock(mc.theWorld.getBlockState(
-					mc.objectMouseOver.getBlockPos()).getBlock());
+			id = Block.getIdFromBlock(mc.theWorld
+				.getBlockState(mc.objectMouseOver.getBlockPos()).getBlock());
 			wurst.files.saveOptions();
 		}
 	}
@@ -230,14 +225,14 @@ public class NukerMod extends Mod implements LeftClickListener, RenderListener,
 			default:
 			case OFF:
 			case MINEPLEX_ANTICHEAT:
-				range.unlock();
-				break;
+			range.unlock();
+			break;
 			case ANTICHEAT:
 			case OLDER_NCP:
 			case LATEST_NCP:
 			case GHOST_MODE:
-				range.lockToMax(4.25);
-				break;
+			range.lockToMax(4.25);
+			break;
 		}
 	}
 	
@@ -255,34 +250,31 @@ public class NukerMod extends Mod implements LeftClickListener, RenderListener,
 			if(BlockUtils.getPlayerBlockDistance(currentPos) > range
 				.getValueF())
 				continue;
-			int currentID =
-				Block.getIdFromBlock(mc.theWorld.getBlockState(currentPos)
-					.getBlock());
+			int currentID = Block.getIdFromBlock(
+				mc.theWorld.getBlockState(currentPos).getBlock());
 			if(currentID != 0)
 				switch(mode.getSelected())
 				{
 					case 1:
-						if(currentID == id)
-							return currentPos;
-						break;
-					case 2:
-						if(currentPos.getY() >= mc.thePlayer.posY)
-							return currentPos;
-						break;
-					case 3:
-						if(mc.theWorld
-							.getBlockState(currentPos)
-							.getBlock()
-							.getPlayerRelativeBlockHardness(
-								mc.theWorld.getBlockState(pos), mc.thePlayer,
-								mc.theWorld, currentPos) >= 1)
-							return currentPos;
-						break;
-					default:
+					if(currentID == id)
 						return currentPos;
+					break;
+					case 2:
+					if(currentPos.getY() >= mc.thePlayer.posY)
+						return currentPos;
+					break;
+					case 3:
+					if(mc.theWorld.getBlockState(currentPos).getBlock()
+						.getPlayerRelativeBlockHardness(
+							mc.theWorld.getBlockState(pos), mc.thePlayer,
+							mc.theWorld, currentPos) >= 1)
+						return currentPos;
+					break;
+					default:
+					return currentPos;
 				}
-			if(wurst.special.yesCheatSpf.getBypassLevel().ordinal() <= BypassLevel.MINEPLEX_ANTICHEAT
-				.ordinal()
+			if(wurst.special.yesCheatSpf.getBypassLevel()
+				.ordinal() <= BypassLevel.MINEPLEX_ANTICHEAT.ordinal()
 				|| !mc.theWorld.getBlockState(currentPos).getBlock()
 					.getMaterial(null).blocksMovement())
 			{
@@ -301,8 +293,10 @@ public class NukerMod extends Mod implements LeftClickListener, RenderListener,
 	{
 		for(int y = (int)range.getValueF(); y >= (mode.getSelected() == 2 ? 0
 			: -range.getValueF()); y--)
-			for(int x = (int)range.getValueF(); x >= -range.getValueF() - 1; x--)
-				for(int z = (int)range.getValueF(); z >= -range.getValueF(); z--)
+			for(int x = (int)range.getValueF(); x >= -range.getValueF()
+				- 1; x--)
+				for(int z =
+					(int)range.getValueF(); z >= -range.getValueF(); z--)
 				{
 					int posX = (int)(Math.floor(mc.thePlayer.posX) + x);
 					int posY = (int)(Math.floor(mc.thePlayer.posY) + y);
@@ -329,9 +323,9 @@ public class NukerMod extends Mod implements LeftClickListener, RenderListener,
 						side = mc.objectMouseOver.sideHit;
 						shouldRenderESP = true;
 						BlockUtils.faceBlockPacket(pos);
-						mc.thePlayer.sendQueue
-							.addToSendQueue(new CPacketPlayerDigging(
-								Action.START_DESTROY_BLOCK, blockPos, side));
+						mc.thePlayer.sendQueue.addToSendQueue(
+							new CPacketPlayerDigging(Action.START_DESTROY_BLOCK,
+								blockPos, side));
 						block.onBlockDestroyedByPlayer(mc.theWorld, blockPos,
 							mc.theWorld.getBlockState(blockPos));
 					}

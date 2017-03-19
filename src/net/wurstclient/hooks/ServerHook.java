@@ -54,8 +54,8 @@ public class ServerHook
 			};
 		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		fileChooser.setAcceptAllFileFilterUsed(false);
-		fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(
-			"TXT files", "txt"));
+		fileChooser.addChoosableFileFilter(
+			new FileNameExtensionFilter("TXT files", "txt"));
 		int action = fileChooser.showOpenDialog(FrameHook.getFrame());
 		if(action == JFileChooser.APPROVE_OPTION)
 			try
@@ -66,9 +66,8 @@ public class ServerHook
 				for(String line = ""; (line = load.readLine()) != null;)
 				{
 					i++;
-					guiMultiplayer.savedServerList
-						.addServerData(new ServerData("Grief me #" + i, line,
-							false));
+					guiMultiplayer.savedServerList.addServerData(
+						new ServerData("Grief me #" + i, line, false));
 					guiMultiplayer.savedServerList.saveServerList();
 					guiMultiplayer.serverListSelector.setSelectedSlotIndex(-1);
 					guiMultiplayer.serverListSelector
@@ -99,8 +98,8 @@ public class ServerHook
 			};
 		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		fileChooser.setAcceptAllFileFilterUsed(false);
-		fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(
-			"TXT files", "txt"));
+		fileChooser.addChoosableFileFilter(
+			new FileNameExtensionFilter("TXT files", "txt"));
 		int action = fileChooser.showSaveDialog(FrameHook.getFrame());
 		if(action == JFileChooser.APPROVE_OPTION)
 			try
@@ -143,8 +142,8 @@ public class ServerHook
 			currentServerIP += ":25565";
 		
 		Minecraft mc = Minecraft.getMinecraft();
-		mc.displayGuiScreen(new GuiConnecting(prevScreen, mc, lastServer
-			.getServerData()));
+		mc.displayGuiScreen(
+			new GuiConnecting(prevScreen, mc, lastServer.getServerData()));
 	}
 	
 	public static void updateLastServerFromServerlist(IGuiListEntry entry,
@@ -159,19 +158,18 @@ public class ServerHook
 			
 			lastServer =
 				(ServerListEntryNormal)(guiMultiplayer.serverListSelector
-					.getSelectedServer() < 0 ? null
-					: guiMultiplayer.serverListSelector
-						.getListEntry(guiMultiplayer.serverListSelector
-							.getSelectedServer()));
+					.getSelectedServer() < 0
+						? null
+						: guiMultiplayer.serverListSelector
+							.getListEntry(guiMultiplayer.serverListSelector
+								.getSelectedServer()));
 		}else if(entry instanceof ServerListEntryLanDetected)
 		{
-			currentServerIP =
-				((ServerListEntryLanDetected)entry).getLanServer()
-					.getServerIpPort();
+			currentServerIP = ((ServerListEntryLanDetected)entry).getLanServer()
+				.getServerIpPort();
 			
-			lastServer =
-				new ServerListEntryNormal(guiMultiplayer, new ServerData(
-					"LAN-Server", currentServerIP, false));
+			lastServer = new ServerListEntryNormal(guiMultiplayer,
+				new ServerData("LAN-Server", currentServerIP, false));
 		}
 	}
 	
@@ -224,20 +222,20 @@ public class ServerHook
 		switch(protocolVersion)
 		{
 			case 107:
-				text += "1.9";
-				break;
+			text += "1.9";
+			break;
 			case 108:
-				text += "1.9.1";
-				break;
+			text += "1.9.1";
+			break;
 			case 109:
-				text += "1.9.2";
-				break;
+			text += "1.9.2";
+			break;
 			case 110:
-				text += "1.9.3/4";
-				break;
+			text += "1.9.3/4";
+			break;
 			default:
-				text += "unknown";
-				break;
+			text += "unknown";
+			break;
 		}
 		return text;
 	}
@@ -250,14 +248,14 @@ public class ServerHook
 			case 108:
 			case 109:
 			case 110:
-				bytes = 10;
-				break;
+			bytes = 10;
+			break;
 			case 107:
 			default:
-				bytes = 0;
-				break;
+			bytes = 0;
+			break;
 		}
-        for(int i2 = 0; i2 < bytes; i2++)
+		for(int i2 = 0; i2 < bytes; i2++)
 			buf.readByte();
 	}
 	

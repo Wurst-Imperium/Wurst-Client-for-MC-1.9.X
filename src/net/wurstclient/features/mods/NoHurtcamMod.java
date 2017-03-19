@@ -18,6 +18,6 @@ import net.wurstclient.features.mods.Mod.Info;
 	help = "Mods/NoHurtcam")
 @Bypasses
 public class NoHurtcamMod extends Mod
-{	
+{
 	
 }

@@ -52,20 +52,20 @@ public class WurstBot
 		BufferedReader br =
 			new BufferedReader(new InputStreamReader(System.in));
 		System.out.println();
-		System.out
-			.println("           +++++++++++++++++++++++++++++++++++++++++++++++           ");
-		System.out
-			.println("       +++#++++##++++#+#+++++++#++######+++++######+#######+++       ");
-		System.out
-			.println("     +++++#++++##++++#+#+++++++#++#+++++##++#++++++++++#++++++++     ");
-		System.out
-			.println("    +++++++#++#++#++#++#+++++++#++#######++++######++++#+++++++++    ");
-		System.out
-			.println("     ++++++#++#++#++#+++#+++++#+++#+++##+++++++++++#+++#++++++++     ");
-		System.out
-			.println("       +++++##++++##+++++#####++++#+++++##+++######++++#++++++       ");
-		System.out
-			.println("           +++++++++++++++++++++++++++++++++++++++++++++++           ");
+		System.out.println(
+			"           +++++++++++++++++++++++++++++++++++++++++++++++           ");
+		System.out.println(
+			"       +++#++++##++++#+#+++++++#++######+++++######+#######+++       ");
+		System.out.println(
+			"     +++++#++++##++++#+#+++++++#++#+++++##++#++++++++++#++++++++     ");
+		System.out.println(
+			"    +++++++#++#++#++#++#+++++++#++#######++++######++++#+++++++++    ");
+		System.out.println(
+			"     ++++++#++#++#++#+++#+++++#+++#+++##+++++++++++#+++#++++++++     ");
+		System.out.println(
+			"       +++++##++++##+++++#####++++#+++++##+++######++++#++++++       ");
+		System.out.println(
+			"           +++++++++++++++++++++++++++++++++++++++++++++++           ");
 		System.out.println();
 		System.out.println("Wurst-Bot v" + WurstClient.VERSION);
 		System.out.println("Type \"help\" for a list of commands.");
@@ -98,8 +98,8 @@ public class WurstBot
 					e.printStackTrace();
 				}
 			else
-				System.err.println("\"" + commandName
-					+ "\" is not a valid command.");
+				System.err
+					.println("\"" + commandName + "\" is not a valid command.");
 		}
 	}
 	

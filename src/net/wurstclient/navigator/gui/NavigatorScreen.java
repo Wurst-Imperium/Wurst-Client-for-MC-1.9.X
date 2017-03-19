@@ -148,7 +148,8 @@ public abstract class NavigatorScreen extends GuiScreen
 			y2 = y1 + 24;
 			drawForegroundBox(x1, y1, x2, y2);
 			int i;
-			for(x1++, x2--, y1 += 8, y2 -= 15, i = 0; i < 3; y1 += 4, y2 += 4, i++)
+			for(x1++, x2--, y1 += 8, y2 -= 15, i = 0; i < 3; y1 += 4, y2 +=
+				4, i++)
 				drawDownShadow(x1, y1, x2, y2);
 		}
 		
@@ -173,7 +174,8 @@ public abstract class NavigatorScreen extends GuiScreen
 	
 	protected abstract void onUpdate();
 	
-	protected abstract void onRender(int mouseX, int mouseY, float partialTicks);
+	protected abstract void onRender(int mouseX, int mouseY,
+		float partialTicks);
 	
 	@Override
 	public final boolean doesGuiPauseGame()

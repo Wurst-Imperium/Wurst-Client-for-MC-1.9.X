@@ -14,8 +14,8 @@ import java.util.TreeMap;
 
 public class SpfManager
 {
-	private final TreeMap<String, Spf> features = new TreeMap<String, Spf>(
-		new Comparator<String>()
+	private final TreeMap<String, Spf> features =
+		new TreeMap<String, Spf>(new Comparator<String>()
 		{
 			@Override
 			public int compare(String o1, String o2)

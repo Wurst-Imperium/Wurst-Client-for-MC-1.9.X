@@ -235,109 +235,105 @@ public class GuiPasswordField extends Gui
 			switch(p_146201_1_)
 			{
 				case 1:
-					func_146202_e();
-					func_146199_i(0);
-					return true;
-					
+				func_146202_e();
+				func_146199_i(0);
+				return true;
+				
 				case 3:
-					GuiScreen.setClipboardString(func_146207_c());
-					return true;
-					
+				GuiScreen.setClipboardString(func_146207_c());
+				return true;
+				
 				case 22:
-					if(field_146226_p)
-						func_146191_b(GuiScreen.getClipboardString());
-					
-					return true;
-					
+				if(field_146226_p)
+					func_146191_b(GuiScreen.getClipboardString());
+				
+				return true;
+				
 				case 24:
-					GuiScreen.setClipboardString(func_146207_c());
-					
-					if(field_146226_p)
-						func_146191_b("");
+				GuiScreen.setClipboardString(func_146207_c());
+				
+				if(field_146226_p)
+					func_146191_b("");
+				
+				return true;
+				
+				default:
+				switch(p_146201_2_)
+				{
+					case 14:
+					if(GuiScreen.isCtrlKeyDown())
+					{
+						if(field_146226_p)
+							func_146177_a(-1);
+					}else if(field_146226_p)
+						func_146175_b(-1);
 					
 					return true;
 					
-				default:
-					switch(p_146201_2_)
+					case 199:
+					if(GuiScreen.isShiftKeyDown())
+						func_146199_i(0);
+					else
+						func_146196_d();
+					
+					return true;
+					
+					case 203:
+					if(GuiScreen.isShiftKeyDown())
 					{
-						case 14:
-							if(GuiScreen.isCtrlKeyDown())
-							{
-								if(field_146226_p)
-									func_146177_a(-1);
-							}else if(field_146226_p)
-								func_146175_b(-1);
-							
-							return true;
-							
-						case 199:
-							if(GuiScreen.isShiftKeyDown())
-								func_146199_i(0);
-							else
-								func_146196_d();
-							
-							return true;
-							
-						case 203:
-							if(GuiScreen.isShiftKeyDown())
-							{
-								if(GuiScreen.isCtrlKeyDown())
-									func_146199_i(func_146183_a(-1,
-										func_146186_n()));
-								else
-									func_146199_i(func_146186_n() - 1);
-							}else if(GuiScreen.isCtrlKeyDown())
-								func_146190_e(func_146187_c(-1));
-							else
-								func_146182_d(-1);
-							
-							return true;
-							
-						case 205:
-							if(GuiScreen.isShiftKeyDown())
-							{
-								if(GuiScreen.isCtrlKeyDown())
-									func_146199_i(func_146183_a(1,
-										func_146186_n()));
-								else
-									func_146199_i(func_146186_n() + 1);
-							}else if(GuiScreen.isCtrlKeyDown())
-								func_146190_e(func_146187_c(1));
-							else
-								func_146182_d(1);
-							
-							return true;
-							
-						case 207:
-							if(GuiScreen.isShiftKeyDown())
-								func_146199_i(field_146216_j.length());
-							else
-								func_146202_e();
-							
-							return true;
-							
-						case 211:
-							if(GuiScreen.isCtrlKeyDown())
-							{
-								if(field_146226_p)
-									func_146177_a(1);
-							}else if(field_146226_p)
-								func_146175_b(1);
-							
-							return true;
-							
-						default:
-							if(ChatAllowedCharacters
-								.isAllowedCharacter(p_146201_1_))
-							{
-								if(field_146226_p)
-									func_146191_b(Character
-										.toString(p_146201_1_));
-								
-								return true;
-							}else
-								return false;
-					}
+						if(GuiScreen.isCtrlKeyDown())
+							func_146199_i(func_146183_a(-1, func_146186_n()));
+						else
+							func_146199_i(func_146186_n() - 1);
+					}else if(GuiScreen.isCtrlKeyDown())
+						func_146190_e(func_146187_c(-1));
+					else
+						func_146182_d(-1);
+					
+					return true;
+					
+					case 205:
+					if(GuiScreen.isShiftKeyDown())
+					{
+						if(GuiScreen.isCtrlKeyDown())
+							func_146199_i(func_146183_a(1, func_146186_n()));
+						else
+							func_146199_i(func_146186_n() + 1);
+					}else if(GuiScreen.isCtrlKeyDown())
+						func_146190_e(func_146187_c(1));
+					else
+						func_146182_d(1);
+					
+					return true;
+					
+					case 207:
+					if(GuiScreen.isShiftKeyDown())
+						func_146199_i(field_146216_j.length());
+					else
+						func_146202_e();
+					
+					return true;
+					
+					case 211:
+					if(GuiScreen.isCtrlKeyDown())
+					{
+						if(field_146226_p)
+							func_146177_a(1);
+					}else if(field_146226_p)
+						func_146175_b(1);
+					
+					return true;
+					
+					default:
+					if(ChatAllowedCharacters.isAllowedCharacter(p_146201_1_))
+					{
+						if(field_146226_p)
+							func_146191_b(Character.toString(p_146201_1_));
+						
+						return true;
+					}else
+						return false;
+				}
 			}
 	}
 	
@@ -346,11 +342,10 @@ public class GuiPasswordField extends Gui
 	 */
 	public void mouseClicked(int p_146192_1_, int p_146192_2_, int p_146192_3_)
 	{
-		boolean var4 =
-			p_146192_1_ >= field_146209_f
-				&& p_146192_1_ < field_146209_f + field_146218_h
-				&& p_146192_2_ >= field_146210_g
-				&& p_146192_2_ < field_146210_g + field_146219_i;
+		boolean var4 = p_146192_1_ >= field_146209_f
+			&& p_146192_1_ < field_146209_f + field_146218_h
+			&& p_146192_2_ >= field_146210_g
+			&& p_146192_2_ < field_146210_g + field_146219_i;
 		
 		if(field_146212_n)
 			setFocused(var4);
@@ -362,9 +357,8 @@ public class GuiPasswordField extends Gui
 			if(field_146215_m)
 				var5 -= 4;
 			
-			String var6 =
-				field_146211_a.trimStringToWidth(
-					field_146216_j.substring(field_146225_q), func_146200_o());
+			String var6 = field_146211_a.trimStringToWidth(
+				field_146216_j.substring(field_146225_q), func_146200_o());
 			func_146190_e(field_146211_a.trimStringToWidth(var6, var5).length()
 				+ field_146225_q);
 		}
@@ -379,27 +373,25 @@ public class GuiPasswordField extends Gui
 		{
 			if(func_146181_i())
 			{
-				drawRect(field_146209_f - 1, field_146210_g - 1, field_146209_f
-					+ field_146218_h + 1, field_146210_g + field_146219_i + 1,
-					-6250336);
-				drawRect(field_146209_f, field_146210_g, field_146209_f
-					+ field_146218_h, field_146210_g + field_146219_i,
-					-16777216);
+				drawRect(field_146209_f - 1, field_146210_g - 1,
+					field_146209_f + field_146218_h + 1,
+					field_146210_g + field_146219_i + 1, -6250336);
+				drawRect(field_146209_f, field_146210_g,
+					field_146209_f + field_146218_h,
+					field_146210_g + field_146219_i, -16777216);
 			}
 			
 			int var1 = field_146226_p ? field_146222_t : field_146221_u;
 			int var2 = field_146224_r - field_146225_q;
 			int var3 = field_146223_s - field_146225_q;
-			String var4 =
-				field_146211_a.trimStringToWidth(
-					field_146216_j.substring(field_146225_q), func_146200_o());
+			String var4 = field_146211_a.trimStringToWidth(
+				field_146216_j.substring(field_146225_q), func_146200_o());
 			boolean var5 = var2 >= 0 && var2 <= var4.length();
 			boolean var6 =
 				field_146213_o && field_146214_l / 6 % 2 == 0 && var5;
 			int var7 = field_146215_m ? field_146209_f + 4 : field_146209_f;
-			int var8 =
-				field_146215_m ? field_146210_g + (field_146219_i - 8) / 2
-					: field_146210_g;
+			int var8 = field_146215_m
+				? field_146210_g + (field_146219_i - 8) / 2 : field_146210_g;
 			int var9 = var7;
 			
 			if(var3 > var4.length())
@@ -411,14 +403,12 @@ public class GuiPasswordField extends Gui
 				String stars = "";
 				for(int i = 0; i < var10.length(); i++)
 					stars = stars.concat("*");
-				var9 =
-					field_146211_a
-						.drawStringWithShadow(stars, var7, var8, var1);
+				var9 = field_146211_a.drawStringWithShadow(stars, var7, var8,
+					var1);
 			}
 			
-			boolean var13 =
-				field_146224_r < field_146216_j.length()
-					|| field_146216_j.length() >= func_146208_g();
+			boolean var13 = field_146224_r < field_146216_j.length()
+				|| field_146216_j.length() >= func_146208_g();
 			int var11 = var9;
 			
 			if(!var5)
@@ -439,19 +429,19 @@ public class GuiPasswordField extends Gui
 			
 			if(var6)
 				if(var13)
-					Gui.drawRect(var11, var8 - 1, var11 + 1, var8 + 1
-						+ field_146211_a.FONT_HEIGHT, -3092272);
+					Gui.drawRect(var11, var8 - 1, var11 + 1,
+						var8 + 1 + field_146211_a.FONT_HEIGHT, -3092272);
 				else
 					field_146211_a.drawStringWithShadow("_", var11, var8, var1);
-			
+				
 			if(var3 != var2)
 			{
 				String stars = "";
 				for(int i = 0; i < var4.substring(0, var3).length(); i++)
 					stars = stars.concat("*");
 				int var12 = var7 + field_146211_a.getStringWidth(stars);
-				func_146188_c(var11, var8 - 1, var12 - 1, var8 + 1
-					+ field_146211_a.FONT_HEIGHT);
+				func_146188_c(var11, var8 - 1, var12 - 1,
+					var8 + 1 + field_146211_a.FONT_HEIGHT);
 			}
 		}
 	}
@@ -587,15 +577,13 @@ public class GuiPasswordField extends Gui
 				field_146225_q = var2;
 			
 			int var3 = func_146200_o();
-			String var4 =
-				field_146211_a.trimStringToWidth(
-					field_146216_j.substring(field_146225_q), var3);
+			String var4 = field_146211_a.trimStringToWidth(
+				field_146216_j.substring(field_146225_q), var3);
 			int var5 = var4.length() + field_146225_q;
 			
 			if(p_146199_1_ == field_146225_q)
-				field_146225_q -=
-					field_146211_a
-						.trimStringToWidth(field_146216_j, var3, true).length();
+				field_146225_q -= field_146211_a
+					.trimStringToWidth(field_146216_j, var3, true).length();
 			
 			if(p_146199_1_ > var5)
 				field_146225_q += p_146199_1_ - var5;

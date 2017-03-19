@@ -10,7 +10,8 @@ package net.wurstclient.features.commands;
 import net.minecraft.entity.EntityLivingBase;
 import net.wurstclient.utils.EntityUtils;
 
-@Cmd.Info(description = "Toggles Protect or makes it protect a specific entity.",
+@Cmd.Info(
+	description = "Toggles Protect or makes it protect a specific entity.",
 	name = "protect",
 	syntax = {"[<entity>]"},
 	help = "Commands/protect")

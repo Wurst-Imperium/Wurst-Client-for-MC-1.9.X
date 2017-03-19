@@ -47,8 +47,8 @@ public class SearchCmd extends Cmd
 				wurst.options.searchID = Integer.valueOf(newID);
 				wurst.files.saveOptions();
 				wurst.mods.searchMod.notify = true;
-				ChatUtils.message("Search ID set to " + newID + " (" + args[1]
-					+ ").");
+				ChatUtils.message(
+					"Search ID set to " + newID + " (" + args[1] + ").");
 			}
 		}else
 			syntaxError();

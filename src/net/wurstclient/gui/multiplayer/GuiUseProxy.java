@@ -46,12 +46,12 @@ public class GuiUseProxy extends GuiScreen
 	{
 		Keyboard.enableRepeatEvents(true);
 		buttonList.clear();
-		buttonList.add(new GuiButton(0, width / 2 - 100, height / 4 + 120 + 12,
-			"Cancel"));
-		buttonList.add(new GuiButton(1, width / 2 - 100, height / 4 + 72 + 12,
-			"Connect"));
-		buttonList.add(new GuiButton(2, width / 2 - 100, height / 4 + 96 + 12,
-			"Reset"));
+		buttonList.add(
+			new GuiButton(0, width / 2 - 100, height / 4 + 120 + 12, "Cancel"));
+		buttonList.add(
+			new GuiButton(1, width / 2 - 100, height / 4 + 72 + 12, "Connect"));
+		buttonList.add(
+			new GuiButton(2, width / 2 - 100, height / 4 + 96 + 12, "Reset"));
 		proxyBox =
 			new GuiTextField(0, fontRendererObj, width / 2 - 100, 60, 200, 20);
 		proxyBox.setFocused(true);
@@ -60,7 +60,8 @@ public class GuiUseProxy extends GuiScreen
 	}
 	
 	/**
-	 * "Called when the screen is unloaded. Used to disable keyboard repeat events."
+	 * "Called when the screen is unloaded. Used to disable keyboard repeat
+	 * events."
 	 */
 	@Override
 	public void onGuiClosed()
@@ -74,8 +75,8 @@ public class GuiUseProxy extends GuiScreen
 		if(clickedButton.enabled)
 			if(clickedButton.id == 0)
 			{// Cancel
-				WurstClient.INSTANCE.analytics
-					.trackEvent("use proxy", "cancel");
+				WurstClient.INSTANCE.analytics.trackEvent("use proxy",
+					"cancel");
 				mc.displayGuiScreen(prevMenu);
 			}else if(clickedButton.id == 1)
 			{// Connect
@@ -155,8 +156,7 @@ public class GuiUseProxy extends GuiScreen
 	 * @throws IOException
 	 */
 	@Override
-	protected void mouseClicked(int par1, int par2, int par3)
-		throws IOException
+	protected void mouseClicked(int par1, int par2, int par3) throws IOException
 	{
 		super.mouseClicked(par1, par2, par3);
 		proxyBox.mouseClicked(par1, par2, par3);
@@ -176,9 +176,8 @@ public class GuiUseProxy extends GuiScreen
 		drawString(fontRendererObj, "IP:Port (must be a SOCKS proxy)",
 			width / 2 - 100, 47, 0xA0A0A0);
 		drawCenteredString(fontRendererObj, error, width / 2, 87, 0xFF0000);
-		String currentProxy =
-			System.getProperty("socksProxyHost") + ":"
-				+ System.getProperty("socksProxyPort");
+		String currentProxy = System.getProperty("socksProxyHost") + ":"
+			+ System.getProperty("socksProxyPort");
 		if(currentProxy.equals(":") || currentProxy.equals("null:null"))
 			currentProxy = "none";
 		drawString(fontRendererObj, "Current proxy: " + currentProxy,

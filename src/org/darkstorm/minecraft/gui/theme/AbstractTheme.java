@@ -39,11 +39,11 @@ public abstract class AbstractTheme implements Theme
 		}
 		if(componentClass.getSuperclass().equals(Component.class))
 			return uis.get(componentClass);
-		else if(!Component.class.isAssignableFrom(componentClass
-			.getSuperclass()))
+		else if(!Component.class
+			.isAssignableFrom(componentClass.getSuperclass()))
 			return null; // WTF?
-		return getComponentUIForClass((Class<? extends Component>)componentClass
-			.getSuperclass());
+		return getComponentUIForClass(
+			(Class<? extends Component>)componentClass.getSuperclass());
 	}
 	
 }

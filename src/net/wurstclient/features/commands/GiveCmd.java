@@ -18,11 +18,12 @@ import net.wurstclient.features.commands.Cmd.Info;
 import net.wurstclient.utils.ChatUtils;
 import net.wurstclient.utils.MiscUtils;
 
-@Info(description = "Gives you an item with custom NBT data. Requires creative mode.",
+@Info(
+	description = "Gives you an item with custom NBT data. Requires creative mode.",
 	name = "give",
 	syntax = {"(<item_name>|<item_id>) [<amount>] [<metadata>] [<nbt>]",
 		"template <template_id> [<amount>]", "templates"},
-		help = "Commands/give")
+	help = "Commands/give")
 public class GiveCmd extends Cmd
 {
 	private static class ItemTemplate
@@ -39,30 +40,26 @@ public class GiveCmd extends Cmd
 	}
 	
 	private ItemTemplate[] templates =
-		new ItemTemplate[]{
-			new ItemTemplate("Knockback Stick", Items.stick,
-				"{ench:[{id:19, lvl:12}], display:{Name:§6Knockback Stick},"
-					+ "HideFlags:63}"),
+		new ItemTemplate[]{new ItemTemplate("Knockback Stick", Items.stick,
+			"{ench:[{id:19, lvl:12}], display:{Name:§6Knockback Stick},"
+				+ "HideFlags:63}"),
 			
 			new ItemTemplate("One Hit Sword", Items.diamond_sword,
-				"{AttributeModifiers:["
-					+ "{AttributeName:generic.attackDamage,"
+				"{AttributeModifiers:[" + "{AttributeName:generic.attackDamage,"
 					+ "Name:generic.attackDamage, Amount:2147483647,"
 					+ "Operation:0, UUIDMost:246216, UUIDLeast:24636}"
 					+ "], display:{Name:§6One Hitter}, Unbreakable:1,"
 					+ "HideFlags:63}"),
 			
-			new ItemTemplate("Super Bow", Items.bow, "{ench:["
-				+ "{id:48, lvl:32767}, {id:49, lvl:5}, {id:50, lvl:1},"
-				+ "{id:51, lvl:1}"
-				+ "], display:{Name:§6Super Bow}, HideFlags:63}"),
-			
-			new ItemTemplate(
-				"Super Thorns Chestplate",
-				Items.diamond_chestplate,
+			new ItemTemplate("Super Bow", Items.bow,
 				"{ench:["
-					+ "{id:7, lvl:32767},"
-					+ "{id:0, lvl:32767}"
+					+ "{id:48, lvl:32767}, {id:49, lvl:5}, {id:50, lvl:1},"
+					+ "{id:51, lvl:1}"
+					+ "], display:{Name:§6Super Bow}, HideFlags:63}"),
+			
+			new ItemTemplate("Super Thorns Chestplate",
+				Items.diamond_chestplate,
+				"{ench:[" + "{id:7, lvl:32767}," + "{id:0, lvl:32767}"
 					+ "], AttributeModifiers:["
 					+ "{AttributeName:generic.maxHealth, Name:generic.maxHealth,"
 					+ "Amount:200, Operation:0, UUIDMost:43631, UUIDLeast:2641}"
@@ -146,9 +143,8 @@ public class GiveCmd extends Cmd
 			// custom item
 			
 			// id/name
-			item =
-				(Item)Item.itemRegistry
-					.getObject(new ResourceLocation(args[0]));
+			item = (Item)Item.itemRegistry
+				.getObject(new ResourceLocation(args[0]));
 			if(item == null && MiscUtils.isInteger(args[0]))
 				item = Item.getItemById(Integer.parseInt(args[0]));
 			if(item == null)
@@ -191,11 +187,10 @@ public class GiveCmd extends Cmd
 		for(int i = 0; i < 9; i++)
 			if(mc.thePlayer.inventory.getStackInSlot(i) == null)
 			{
-				mc.thePlayer.sendQueue
-					.addToSendQueue(new CPacketCreativeInventoryAction(
-						36 + i, stack));
-				ChatUtils.message("Item" + (amount > 1 ? "s" : "")
-					+ " created.");
+				mc.thePlayer.sendQueue.addToSendQueue(
+					new CPacketCreativeInventoryAction(36 + i, stack));
+				ChatUtils
+					.message("Item" + (amount > 1 ? "s" : "") + " created.");
 				return;
 			}
 		error("Please clear a slot of your hotbar.");

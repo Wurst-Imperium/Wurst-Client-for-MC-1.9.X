@@ -15,6 +15,6 @@ import net.wurstclient.features.mods.Mod.Bypasses;
 	help = "Mods/Liquids")
 @Bypasses(ghostMode = false, latestNCP = false, olderNCP = false)
 public class LiquidsMod extends Mod
-{	
+{
 	
 }

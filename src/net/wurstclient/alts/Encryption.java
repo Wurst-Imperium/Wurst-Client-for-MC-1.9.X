@@ -37,14 +37,14 @@ public class Encryption
 	public static final String CHARSET = "UTF-8";
 	
 	private static final File rsaKeyDir =
-		System.getProperty("user.home") != null ? new File(
-			System.getProperty("user.home"), ".ssh") : null;
-	private static final File privateFile = rsaKeyDir != null ? new File(
-		rsaKeyDir, "wurst_rsa") : null;
-	private static final File publicFile = rsaKeyDir != null ? new File(
-		rsaKeyDir, "wurst_rsa.pub") : null;
-	private static final File aesFile = new File(
-		WurstClient.INSTANCE.files.wurstDir, "key");
+		System.getProperty("user.home") != null
+			? new File(System.getProperty("user.home"), ".ssh") : null;
+	private static final File privateFile =
+		rsaKeyDir != null ? new File(rsaKeyDir, "wurst_rsa") : null;
+	private static final File publicFile =
+		rsaKeyDir != null ? new File(rsaKeyDir, "wurst_rsa.pub") : null;
+	private static final File aesFile =
+		new File(WurstClient.INSTANCE.files.wurstDir, "key");
 	
 	private static KeyPair keypair;
 	private static SecretKey aesKey;
@@ -57,8 +57,8 @@ public class Encryption
 			Cipher cipher = Cipher.getInstance("AES/CFB8/NoPadding");
 			cipher.init(Cipher.ENCRYPT_MODE, aesKey,
 				new IvParameterSpec(aesKey.getEncoded()));
-			return Base64.getEncoder().encodeToString(
-				cipher.doFinal(string.getBytes(CHARSET)));
+			return Base64.getEncoder()
+				.encodeToString(cipher.doFinal(string.getBytes(CHARSET)));
 		}catch(Exception e)
 		{
 			e.printStackTrace();
@@ -193,16 +193,18 @@ public class Encryption
 			ObjectInputStream publicLoad =
 				new ObjectInputStream(new FileInputStream(publicFile));
 			PublicKey loadedPublicKey =
-				KeyFactory.getInstance("RSA").generatePublic(
-					new RSAPublicKeySpec((BigInteger)publicLoad.readObject(),
+				KeyFactory.getInstance("RSA")
+					.generatePublic(new RSAPublicKeySpec(
+						(BigInteger)publicLoad.readObject(),
 						(BigInteger)publicLoad.readObject()));
 			publicLoad.close();
 			
 			ObjectInputStream privateLoad =
 				new ObjectInputStream(new FileInputStream(privateFile));
 			PrivateKey loadedPrivateKey =
-				KeyFactory.getInstance("RSA").generatePrivate(
-					new RSAPrivateKeySpec((BigInteger)privateLoad.readObject(),
+				KeyFactory.getInstance("RSA")
+					.generatePrivate(new RSAPrivateKeySpec(
+						(BigInteger)privateLoad.readObject(),
 						(BigInteger)privateLoad.readObject()));
 			privateLoad.close();
 			
@@ -223,9 +225,8 @@ public class Encryption
 		{
 			Cipher rsaCipher = Cipher.getInstance("RSA");
 			rsaCipher.init(Cipher.DECRYPT_MODE, keypair.getPrivate());
-			aesKey =
-				new SecretKeySpec(rsaCipher.doFinal(Files.readAllBytes(aesFile
-					.toPath())), "AES");
+			aesKey = new SecretKeySpec(
+				rsaCipher.doFinal(Files.readAllBytes(aesFile.toPath())), "AES");
 			return true;
 			
 		}catch(Exception e)

@@ -29,8 +29,8 @@ import org.lwjgl.opengl.GL11;
 
 public class UIRenderer
 {
-	private static final ResourceLocation wurstLogo = new ResourceLocation(
-		"wurst/wurst_128.png");
+	private static final ResourceLocation wurstLogo =
+		new ResourceLocation("wurst/wurst_128.png");
 	
 	private static void renderModList()
 	{
@@ -77,11 +77,8 @@ public class UIRenderer
 		RenderUtil.setColor(new Color(255, 255, 255, 128));
 		
 		// get version string
-		String version =
-			"v"
-				+ WurstClient.VERSION
-				+ (WurstClient.INSTANCE.updater.isOutdated() ? " (outdated)"
-					: "");
+		String version = "v" + WurstClient.VERSION
+			+ (WurstClient.INSTANCE.updater.isOutdated() ? " (outdated)" : "");
 		
 		// draw version background
 		glBegin(GL_QUADS);
@@ -135,8 +132,8 @@ public class UIRenderer
 	public static void renderPinnedFrames()
 	{
 		for(Frame moduleFrame : WurstClient.INSTANCE.gui.getFrames())
-			if(moduleFrame.isPinned()
-				&& !(Minecraft.getMinecraft().currentScreen instanceof GuiManagerDisplayScreen))
+			if(moduleFrame.isPinned() && !(Minecraft
+				.getMinecraft().currentScreen instanceof GuiManagerDisplayScreen))
 				moduleFrame.render();
 	}
 }

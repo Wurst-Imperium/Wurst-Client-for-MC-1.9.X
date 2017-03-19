@@ -24,8 +24,8 @@ public class GuiManagerDisplayScreen extends GuiScreen
 	@Override
 	public void initGui()
 	{
-		buttonList.add(new GuiButton(0, 2, height - 20, 150, 16,
-			"Switch to the new GUI"));
+		buttonList.add(
+			new GuiButton(0, 2, height - 20, 150, 16, "Switch to the new GUI"));
 		buttonList
 			.add(new GuiButton(1, 156, height - 20, 150, 16, "Learn More"));
 	}
@@ -49,8 +49,8 @@ public class GuiManagerDisplayScreen extends GuiScreen
 					for(Rectangle area : component.getTheme()
 						.getUIForComponent(component)
 						.getInteractableRegions(component))
-						if(area.contains(x - frame.getX() - component.getX(), y
-							- frame.getY() - component.getY()))
+						if(area.contains(x - frame.getX() - component.getX(),
+							y - frame.getY() - component.getY()))
 						{
 							frame.onMousePress(x - frame.getX(),
 								y - frame.getY(), button);
@@ -93,8 +93,8 @@ public class GuiManagerDisplayScreen extends GuiScreen
 					for(Rectangle area : component.getTheme()
 						.getUIForComponent(component)
 						.getInteractableRegions(component))
-						if(area.contains(x - frame.getX() - component.getX(), y
-							- frame.getY() - component.getY()))
+						if(area.contains(x - frame.getX() - component.getX(),
+							y - frame.getY() - component.getY()))
 						{
 							frame.onMouseRelease(x - frame.getX(),
 								y - frame.getY(), button);
@@ -108,8 +108,8 @@ public class GuiManagerDisplayScreen extends GuiScreen
 				continue;
 			if(!frame.isMinimized() && frame.getArea().contains(x, y))
 			{
-				frame
-					.onMouseRelease(x - frame.getX(), y - frame.getY(), button);
+				frame.onMouseRelease(x - frame.getX(), y - frame.getY(),
+					button);
 				guiManager.bringForward(frame);
 				break;
 			}else if(frame.isMinimized())
@@ -117,8 +117,8 @@ public class GuiManagerDisplayScreen extends GuiScreen
 					.getInteractableRegions(frame))
 					if(area.contains(x - frame.getX(), y - frame.getY()))
 					{
-						frame.onMouseRelease(x - frame.getX(),
-							y - frame.getY(), button);
+						frame.onMouseRelease(x - frame.getX(), y - frame.getY(),
+							button);
 						guiManager.bringForward(frame);
 						return;
 					}

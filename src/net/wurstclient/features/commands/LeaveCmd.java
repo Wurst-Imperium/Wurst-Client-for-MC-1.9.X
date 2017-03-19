@@ -14,7 +14,8 @@ import net.minecraft.util.EnumHand;
 import net.wurstclient.events.ChatOutputEvent;
 import net.wurstclient.utils.ChatUtils;
 
-@Cmd.Info(description = "Leaves the current server or changes the mode of AutoLeave.",
+@Cmd.Info(
+	description = "Leaves the current server or changes the mode of AutoLeave.",
 	name = "leave",
 	syntax = {"[chars|tp|selfhurt|quit]", "mode chars|tp|selfhurt|quit"},
 	help = "Commands/leave")
@@ -31,23 +32,22 @@ public class LeaveCmd extends Cmd
 		switch(args.length)
 		{
 			case 0:
-				disconnectWithMode(wurst.mods.autoLeaveMod.getMode());
-				break;
+			disconnectWithMode(wurst.mods.autoLeaveMod.getMode());
+			break;
 			case 1:
-				if(args[0].equalsIgnoreCase("taco"))
-					for(int i = 0; i < 128; i++)
-						mc.thePlayer.sendAutomaticChatMessage("Taco!");
-				else
-					disconnectWithMode(parseMode(args[0]));
-				break;
+			if(args[0].equalsIgnoreCase("taco"))
+				for(int i = 0; i < 128; i++)
+					mc.thePlayer.sendAutomaticChatMessage("Taco!");
+			else
+				disconnectWithMode(parseMode(args[0]));
+			break;
 			case 2:
-				wurst.mods.autoLeaveMod.setMode(parseMode(args[1]));
-				wurst.files.saveOptions();
-				ChatUtils
-					.message("AutoLeave mode set to \"" + args[1] + "\".");
-				break;
+			wurst.mods.autoLeaveMod.setMode(parseMode(args[1]));
+			wurst.files.saveOptions();
+			ChatUtils.message("AutoLeave mode set to \"" + args[1] + "\".");
+			break;
 			default:
-				break;
+			break;
 		}
 	}
 	
@@ -68,22 +68,20 @@ public class LeaveCmd extends Cmd
 		switch(mode)
 		{
 			case 0:
-				mc.theWorld.sendQuittingDisconnectingPacket();
-				break;
+			mc.theWorld.sendQuittingDisconnectingPacket();
+			break;
 			case 1:
-				mc.thePlayer.sendQueue.addToSendQueue(new CPacketChatMessage(
-					"§"));
-				break;
+			mc.thePlayer.sendQueue.addToSendQueue(new CPacketChatMessage("§"));
+			break;
 			case 2:
-				mc.thePlayer.sendQueue
-					.addToSendQueue(new C04PacketPlayerPosition(3.1e7d, 100,
-						3.1e7d, false));
+			mc.thePlayer.sendQueue.addToSendQueue(
+				new C04PacketPlayerPosition(3.1e7d, 100, 3.1e7d, false));
 			case 3:
-				mc.thePlayer.sendQueue.addToSendQueue(new CPacketUseEntity(
-					mc.thePlayer, EnumHand.MAIN_HAND));
-				break;
+			mc.thePlayer.sendQueue.addToSendQueue(
+				new CPacketUseEntity(mc.thePlayer, EnumHand.MAIN_HAND));
+			break;
 			default:
-				break;
+			break;
 		}
 	}
 	
@@ -94,7 +92,7 @@ public class LeaveCmd extends Cmd
 		for(int i = 0; i < modeNames.length; i++)
 			if(input.equals(modeNames[i].toLowerCase()))
 				return i;
-		
+			
 		// syntax error if mode does not exist
 		syntaxError("Invalid mode: " + input);
 		return 0;

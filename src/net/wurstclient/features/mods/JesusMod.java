@@ -17,6 +17,6 @@ import net.wurstclient.features.mods.Mod.Bypasses;
 	help = "Mods/Jesus")
 @Bypasses(ghostMode = false)
 public class JesusMod extends Mod
-{	
+{
 	
 }

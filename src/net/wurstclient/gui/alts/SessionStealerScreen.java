@@ -63,8 +63,8 @@ public class SessionStealerScreen extends GuiScreen
 			"Steal Session"));
 		buttonList.add(new GuiButton(2, width / 2 - 100, height / 4 + 96 + 12,
 			"How to Use"));
-		buttonList.add(new GuiButton(1, width / 2 - 100, height / 4 + 120 + 12,
-			"Cancel"));
+		buttonList.add(
+			new GuiButton(1, width / 2 - 100, height / 4 + 120 + 12, "Cancel"));
 		tokenBox =
 			new GuiTextField(1, fontRendererObj, width / 2 - 100, 60, 200, 20);
 		tokenBox.setMaxStringLength(65);
@@ -75,7 +75,8 @@ public class SessionStealerScreen extends GuiScreen
 	}
 	
 	/**
-	 * "Called when the screen is unloaded. Used to disable keyboard repeat events."
+	 * "Called when the screen is unloaded. Used to disable keyboard repeat
+	 * events."
 	 */
 	@Override
 	public void onGuiClosed()
@@ -99,8 +100,8 @@ public class SessionStealerScreen extends GuiScreen
 					errorText = "That is not a session token!";
 					helpText =
 						"If you're lost, click the \"How to Use\" button.";
-					WurstClient.INSTANCE.analytics.trackEvent(
-						"session stealer", "invalid input");
+					WurstClient.INSTANCE.analytics.trackEvent("session stealer",
+						"invalid input");
 					return;
 				}
 				String uuid = input.split(":")[1];
@@ -108,8 +109,8 @@ public class SessionStealerScreen extends GuiScreen
 				{
 					errorText = "That is not a session token!";
 					helpText = "Try without the dashes (-).";
-					WurstClient.INSTANCE.analytics.trackEvent(
-						"session stealer", "dashes in token");
+					WurstClient.INSTANCE.analytics.trackEvent("session stealer",
+						"dashes in token");
 					return;
 				}
 				
@@ -117,18 +118,16 @@ public class SessionStealerScreen extends GuiScreen
 				JsonElement rawJson;
 				try
 				{
-					rawJson =
-						JsonUtils.jsonParser.parse(new InputStreamReader(
-							new URL("https://api.mojang.com/user/profiles/"
-								+ uuid + "/names").openConnection()
-								.getInputStream()));
+					rawJson = JsonUtils.jsonParser.parse(new InputStreamReader(
+						new URL("https://api.mojang.com/user/profiles/" + uuid
+							+ "/names").openConnection().getInputStream()));
 				}catch(JsonIOException | JsonSyntaxException | IOException e)
 				{
 					e.printStackTrace();
 					errorText = "An error occurred";
 					helpText = "Mojang servers might be down.";
-					WurstClient.INSTANCE.analytics.trackEvent(
-						"session stealer", "mojang servers down");
+					WurstClient.INSTANCE.analytics.trackEvent("session stealer",
+						"mojang servers down");
 					return;
 				}
 				
@@ -137,23 +136,21 @@ public class SessionStealerScreen extends GuiScreen
 				{
 					errorText = "Invalid UUID";
 					helpText = "This session is fake. Try a different one.";
-					WurstClient.INSTANCE.analytics.trackEvent(
-						"session stealer", "invalid uuid");
+					WurstClient.INSTANCE.analytics.trackEvent("session stealer",
+						"invalid uuid");
 					return;
 				}
 				
 				// get latest name
 				JsonArray json = rawJson.getAsJsonArray();
-				String name =
-					json.get(json.size() - 1).getAsJsonObject().get("name")
-						.getAsString();
+				String name = json.get(json.size() - 1).getAsJsonObject()
+					.get("name").getAsString();
 				
 				// validate session
 				try
 				{
-					HttpURLConnection connection =
-						(HttpURLConnection)new URL(
-							"https://authserver.mojang.com/validate")
+					HttpURLConnection connection = (HttpURLConnection)new URL(
+						"https://authserver.mojang.com/validate")
 							.openConnection(Proxy.NO_PROXY);
 					
 					connection.setRequestMethod("POST");
@@ -163,8 +160,8 @@ public class SessionStealerScreen extends GuiScreen
 					String content =
 						"{\"accessToken\":\"" + input.split(":")[0] + "\"}";
 					
-					connection.setRequestProperty("Content-Length", ""
-						+ content.getBytes().length);
+					connection.setRequestProperty("Content-Length",
+						"" + content.getBytes().length);
 					connection.setRequestProperty("Content-Language", "en-US");
 					connection.setUseCaches(false);
 					connection.setDoInput(true);
@@ -183,8 +180,8 @@ public class SessionStealerScreen extends GuiScreen
 					errorText = "Invalid Session";
 					helpText =
 						"This token doesn't work anymore. Try a different one.";
-					WurstClient.INSTANCE.analytics.trackEvent(
-						"session stealer", "invalid session");
+					WurstClient.INSTANCE.analytics.trackEvent("session stealer",
+						"invalid session");
 					return;
 				}
 				
@@ -196,8 +193,8 @@ public class SessionStealerScreen extends GuiScreen
 				mc.displayGuiScreen(prevMenu);
 			}else if(button.id == 2)
 			{
-				MiscUtils
-					.openLink("https://www.wurst-client.tk/wiki/Special_Features/Force_OP_(Session_Stealer)/");
+				MiscUtils.openLink(
+					"https://www.wurst-client.tk/wiki/Special_Features/Force_OP_(Session_Stealer)/");
 				WurstClient.INSTANCE.analytics.trackEvent("session stealer",
 					"view tutorial");
 			}
@@ -222,8 +219,7 @@ public class SessionStealerScreen extends GuiScreen
 	 * @throws IOException
 	 */
 	@Override
-	protected void mouseClicked(int par1, int par2, int par3)
-		throws IOException
+	protected void mouseClicked(int par1, int par2, int par3) throws IOException
 	{
 		super.mouseClicked(par1, par2, par3);
 		tokenBox.mouseClicked(par1, par2, par3);
@@ -244,8 +240,8 @@ public class SessionStealerScreen extends GuiScreen
 		
 		drawCenteredString(fontRendererObj, "Session Stealer", width / 2, 20,
 			16777215);
-		drawString(fontRendererObj, "Session ID is token:", width / 2 - 100,
-			47, 10526880);
+		drawString(fontRendererObj, "Session ID is token:", width / 2 - 100, 47,
+			10526880);
 		drawCenteredString(fontRendererObj, "§c" + errorText, width / 2, 96,
 			0xFFFFFF);
 		drawCenteredString(fontRendererObj, "§7" + helpText, width / 2, 112,

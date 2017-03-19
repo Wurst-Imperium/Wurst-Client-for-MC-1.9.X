@@ -25,8 +25,7 @@ import org.lwjgl.input.Keyboard;
 
 public class NavigatorMainScreen extends NavigatorScreen
 {
-	private static ArrayList<Feature> navigatorDisplayList =
-		new ArrayList<>();
+	private static ArrayList<Feature> navigatorDisplayList = new ArrayList<>();
 	private GuiTextField searchBar;
 	private int hoveredItem = -1;
 	private boolean hoveringArrow;
@@ -61,7 +60,7 @@ public class NavigatorMainScreen extends NavigatorScreen
 		if(keyCode == 1)
 			if(clickTimer == -1)
 				mc.displayGuiScreen((GuiScreen)null);
-		
+			
 		if(clickTimer == -1)
 		{
 			String oldText = searchBar.getText();
@@ -120,13 +119,13 @@ public class NavigatorMainScreen extends NavigatorScreen
 	
 	@Override
 	protected void onMouseDrag(int x, int y, int button, long timeDragged)
-	{	
+	{
 		
 	}
 	
 	@Override
 	protected void onMouseRelease(int x, int y, int button)
-	{	
+	{
 		
 	}
 	
@@ -146,7 +145,8 @@ public class NavigatorMainScreen extends NavigatorScreen
 				String query = searchBar.getText();
 				if(query.isEmpty())
 					WurstClient.INSTANCE.navigator.analytics.trackPageView(
-						"/" + item.getType() + "/" + item.getName(), item.getName());
+						"/" + item.getType() + "/" + item.getName(),
+						item.getName());
 				else
 					WurstClient.INSTANCE.navigator.analytics
 						.trackPageViewFromSearch(
@@ -192,14 +192,14 @@ public class NavigatorMainScreen extends NavigatorScreen
 			switch(i % 3)
 			{
 				case 0:
-					xi = x - 104;
-					break;
+				xi = x - 104;
+				break;
 				case 1:
-					xi = x;
-					break;
+				xi = x;
+				break;
 				case 2:
-					xi = x + 104;
-					break;
+				xi = x + 104;
+				break;
 			}
 			
 			// item & area
@@ -230,8 +230,8 @@ public class NavigatorMainScreen extends NavigatorScreen
 				area.height =
 					(int)(area.height * antiFactor + (height - 103) * factor);
 				
-				drawBackgroundBox(area.x, area.y, area.x + area.width, area.y
-					+ area.height);
+				drawBackgroundBox(area.x, area.y, area.x + area.width,
+					area.y + area.height);
 			}else
 			{
 				// color
@@ -249,8 +249,8 @@ public class NavigatorMainScreen extends NavigatorScreen
 					glColor4f(0.25F, 0.25F, 0.25F, 0.5F);
 				
 				// box & shadow
-				drawBox(area.x, area.y, area.x + area.width, area.y
-					+ area.height);
+				drawBox(area.x, area.y, area.x + area.width,
+					area.y + area.height);
 				
 				// separator
 				int bx1 = area.x + area.width - area.height;
@@ -301,8 +301,8 @@ public class NavigatorMainScreen extends NavigatorScreen
 				if(clickTimerNotRunning)
 				{
 					String buttonText = item.getName();
-					Fonts.segoe15.drawString(buttonText, area.x + 4,
-						area.y + 2, 0xffffff);
+					Fonts.segoe15.drawString(buttonText, area.x + 4, area.y + 2,
+						0xffffff);
 					glDisable(GL_TEXTURE_2D);
 				}
 			}

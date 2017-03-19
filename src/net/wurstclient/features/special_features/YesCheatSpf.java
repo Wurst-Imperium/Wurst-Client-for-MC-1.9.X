@@ -13,7 +13,8 @@ import net.wurstclient.features.mods.Mod;
 import net.wurstclient.features.mods.Mod.Bypasses;
 import net.wurstclient.settings.ModeSetting;
 
-@Spf.Info(description = "Makes other features bypass AntiCheat plugins or blocks them if they can't.",
+@Spf.Info(
+	description = "Makes other features bypass AntiCheat plugins or blocks them if they can't.",
 	name = "YesCheat+",
 	tags = "YesCheatPlus, NoCheat+, NoCheatPlus, AntiMAC, yes cheat plus, no cheat plus, anti mac, ncp bypasses",
 	help = "Special_Features/YesCheat")
@@ -42,8 +43,8 @@ public class YesCheatSpf extends Spf
 				
 				blockedMods.forEach((mod) -> mod.setBlocked(true));
 				
-				wurst.mods.getAllMods().forEach(
-					(mod) -> mod.onYesCheatUpdate(bypassLevel));
+				wurst.mods.getAllMods()
+					.forEach((mod) -> mod.onYesCheatUpdate(bypassLevel));
 			}
 		});
 	}

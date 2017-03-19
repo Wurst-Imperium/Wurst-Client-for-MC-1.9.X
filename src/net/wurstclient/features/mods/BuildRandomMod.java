@@ -32,8 +32,8 @@ public class BuildRandomMod extends Mod implements UpdateListener
 	@Override
 	public Feature[] getSeeAlso()
 	{
-		return new Feature[]{wurst.mods.autoBuildMod,
-			wurst.mods.fastPlaceMod, wurst.mods.autoSwitchMod};
+		return new Feature[]{wurst.mods.autoBuildMod, wurst.mods.fastPlaceMod,
+			wurst.mods.autoSwitchMod};
 	}
 	
 	@Override
@@ -46,8 +46,7 @@ public class BuildRandomMod extends Mod implements UpdateListener
 	public void onUpdate()
 	{
 		if(wurst.mods.freecamMod.isActive()
-			|| wurst.mods.remoteViewMod.isActive()
-			|| mc.objectMouseOver == null
+			|| wurst.mods.remoteViewMod.isActive() || mc.objectMouseOver == null
 			|| mc.objectMouseOver.typeOfHit != Type.BLOCK)
 			return;
 		if(mc.rightClickDelayTimer > 0 && !wurst.mods.fastPlaceMod.isActive())
@@ -62,10 +61,13 @@ public class BuildRandomMod extends Mod implements UpdateListener
 			for(int x = (int)range; x >= -range - 1; x--)
 			{
 				for(int z = (int)range; z >= -range; z--)
-					if(Block.getIdFromBlock(mc.theWorld.getBlockState(
-						new BlockPos((int)(x + mc.thePlayer.posX),
-							(int)(y + mc.thePlayer.posY),
-							(int)(z + mc.thePlayer.posZ))).getBlock()) != 0
+					if(Block.getIdFromBlock(
+						mc.theWorld
+							.getBlockState(
+								new BlockPos((int)(x + mc.thePlayer.posX),
+									(int)(y + mc.thePlayer.posY),
+									(int)(z + mc.thePlayer.posZ)))
+							.getBlock()) != 0
 						&& BlockUtils.getBlockDistance(x, y, z) <= range)
 					{
 						hasBlocks = true;
@@ -80,11 +82,9 @@ public class BuildRandomMod extends Mod implements UpdateListener
 		if(!hasBlocks)
 			return;
 		BlockPos randomPos = null;
-		while(distance > range
-			|| distance < -range
-			|| randomPos == null
-			|| Block.getIdFromBlock(mc.theWorld.getBlockState(randomPos)
-				.getBlock()) == 0)
+		while(distance > range || distance < -range || randomPos == null
+			|| Block.getIdFromBlock(
+				mc.theWorld.getBlockState(randomPos).getBlock()) == 0)
 		{
 			xDiff = (int)(Math.random() * range * 2 - range - 1);
 			yDiff = (int)(Math.random() * range * 2 - range);

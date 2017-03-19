@@ -29,8 +29,8 @@ public class ProphuntEspMod extends Mod implements RenderListener
 	@Override
 	public Feature[] getSeeAlso()
 	{
-		return new Feature[]{wurst.mods.playerEspMod,
-			wurst.mods.mobEspMod, wurst.mods.tracersMod};
+		return new Feature[]{wurst.mods.playerEspMod, wurst.mods.mobEspMod,
+			wurst.mods.tracersMod};
 	}
 	
 	@Override
@@ -51,12 +51,12 @@ public class ProphuntEspMod extends Mod implements RenderListener
 				float alpha;
 				if(mc.thePlayer.getDistanceToEntity((Entity)entity) >= 0.5)
 					alpha =
-						0.5F - MathHelper.abs(MathHelper.sin(Minecraft
-							.getSystemTime()
-							% 1000L
-							/ 1000.0F
-							* (float)Math.PI
-							* 1.0F) * 0.3F);
+						0.5F - MathHelper
+							.abs(
+								MathHelper
+									.sin(Minecraft.getSystemTime() % 1000L
+										/ 1000.0F * (float)Math.PI * 1.0F)
+									* 0.3F);
 				else
 					alpha = 0;
 				RenderUtils.box(x - 0.5, y - 0.1, z - 0.5, x + 0.5, y + 0.9,

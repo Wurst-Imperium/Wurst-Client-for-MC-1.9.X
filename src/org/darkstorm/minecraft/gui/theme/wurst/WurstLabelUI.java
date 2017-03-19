@@ -42,34 +42,27 @@ public class WurstLabelUI extends AbstractComponentUI<Label>
 		switch(label.getHorizontalAlignment())
 		{
 			case CENTER:
-				x +=
-					label.getWidth()
-						/ 2
-						- theme.getFontRenderer().getStringWidth(
-							label.getText()) / 2;
-				break;
+			x += label.getWidth() / 2
+				- theme.getFontRenderer().getStringWidth(label.getText()) / 2;
+			break;
 			case RIGHT:
-				x +=
-					label.getWidth()
-						- theme.getFontRenderer().getStringWidth(
-							label.getText()) - 2;
-				break;
+			x += label.getWidth()
+				- theme.getFontRenderer().getStringWidth(label.getText()) - 2;
+			break;
 			default:
-				x += 2;
+			x += 2;
 		}
 		switch(label.getVerticalAlignment())
 		{
 			case TOP:
-				y += 2;
-				break;
+			y += 2;
+			break;
 			case BOTTOM:
-				y +=
-					label.getHeight() - theme.getFontRenderer().FONT_HEIGHT - 2;
-				break;
+			y += label.getHeight() - theme.getFontRenderer().FONT_HEIGHT - 2;
+			break;
 			default:
-				y +=
-					label.getHeight() / 2 - theme.getFontRenderer().FONT_HEIGHT
-						/ 2;
+			y += label.getHeight() / 2
+				- theme.getFontRenderer().FONT_HEIGHT / 2;
 		}
 		glEnable(GL_BLEND);
 		glEnable(GL_TEXTURE_2D);
@@ -85,7 +78,8 @@ public class WurstLabelUI extends AbstractComponentUI<Label>
 	@Override
 	protected Dimension getDefaultComponentSize(Label component)
 	{
-		return new Dimension(theme.getFontRenderer().getStringWidth(
-			component.getText()) + 4, theme.getFontRenderer().FONT_HEIGHT + 4);
+		return new Dimension(
+			theme.getFontRenderer().getStringWidth(component.getText()) + 4,
+			theme.getFontRenderer().FONT_HEIGHT + 4);
 	}
 }

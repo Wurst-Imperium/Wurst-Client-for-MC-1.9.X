@@ -55,8 +55,8 @@ public class LsdMod extends Mod implements UpdateListener
 	public void onUpdate()
 	{
 		if(!OpenGlHelper.shadersSupported)
-			mc.thePlayer.addPotionEffect(new PotionEffect(MobEffects.confusion,
-				10801220));
+			mc.thePlayer.addPotionEffect(
+				new PotionEffect(MobEffects.confusion, 10801220));
 		mc.gameSettings.smoothCamera = isEnabled();
 	}
 	

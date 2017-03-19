@@ -25,8 +25,8 @@ import net.wurstclient.features.mods.Mod.Info;
 	tags = "auto tool",
 	help = "Mods/AutoTool")
 @Bypasses
-public class AutoToolMod extends Mod implements LeftClickListener,
-	UpdateListener
+public class AutoToolMod extends Mod
+	implements LeftClickListener, UpdateListener
 {
 	private boolean isActive = false;
 	private int oldSlot;
@@ -51,8 +51,7 @@ public class AutoToolMod extends Mod implements LeftClickListener,
 		{
 			isActive = false;
 			mc.thePlayer.inventory.currentItem = oldSlot;
-		}else if(isActive
-			&& mc.objectMouseOver != null
+		}else if(isActive && mc.objectMouseOver != null
 			&& mc.objectMouseOver.getBlockPos() != null
 			&& mc.theWorld.getBlockState(mc.objectMouseOver.getBlockPos())
 				.getBlock().getMaterial(null) != Material.air)

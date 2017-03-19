@@ -45,8 +45,8 @@ public class InvseeCmd extends Cmd implements RenderListener
 				EntityOtherPlayerMP player = (EntityOtherPlayerMP)entity;
 				if(player.getName().equals(playerName))
 				{
-					ChatUtils.message("Showing inventory of "
-						+ player.getName() + ".");
+					ChatUtils.message(
+						"Showing inventory of " + player.getName() + ".");
 					mc.displayGuiScreen(new GuiInventory(player));
 					found = true;
 				}

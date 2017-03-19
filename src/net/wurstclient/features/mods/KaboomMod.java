@@ -45,15 +45,15 @@ public class KaboomMod extends Mod implements UpdateListener
 	@Override
 	public void initSettings()
 	{
-		settings.add(new SliderSetting("Power", power, 32, 512, 32,
-			ValueDisplay.INTEGER)
-		{
-			@Override
-			public void update()
+		settings.add(
+			new SliderSetting("Power", power, 32, 512, 32, ValueDisplay.INTEGER)
 			{
-				power = (int)getValue();
-			}
-		});
+				@Override
+				public void update()
+				{
+					power = (int)getValue();
+				}
+			});
 	}
 	
 	@Override
@@ -80,7 +80,7 @@ public class KaboomMod extends Mod implements UpdateListener
 				{
 					new Explosion(mc.theWorld, mc.thePlayer, mc.thePlayer.posX,
 						mc.thePlayer.posY, mc.thePlayer.posZ, 6F, false, true)
-						.doExplosionB(true);
+							.doExplosionB(true);
 					for(int x = range; x >= -range - 1; x--)
 						for(int z = range; z >= -range; z--)
 						{
@@ -95,9 +95,8 @@ public class KaboomMod extends Mod implements UpdateListener
 							float xDiff = (float)(mc.thePlayer.posX - posX);
 							float yDiff = (float)(mc.thePlayer.posY - posY);
 							float zDiff = (float)(mc.thePlayer.posZ - posZ);
-							float currentDistance =
-								BlockUtils
-									.getBlockDistance(xDiff, yDiff, zDiff);
+							float currentDistance = BlockUtils
+								.getBlockDistance(xDiff, yDiff, zDiff);
 							if(Block.getIdFromBlock(block) != 0 && posY >= 0
 								&& currentDistance <= range)
 							{
@@ -105,15 +104,14 @@ public class KaboomMod extends Mod implements UpdateListener
 									continue;
 								EnumFacing side = mc.objectMouseOver.sideHit;
 								BlockUtils.faceBlockPacket(pos);
-								mc.thePlayer.sendQueue
-									.addToSendQueue(new CPacketAnimation(
-										EnumHand.MAIN_HAND));
+								mc.thePlayer.sendQueue.addToSendQueue(
+									new CPacketAnimation(EnumHand.MAIN_HAND));
 								mc.thePlayer.sendQueue
 									.addToSendQueue(new CPacketPlayerDigging(
 										Action.START_DESTROY_BLOCK, pos, side));
 								for(int i = 0; i < power; i++)
-									mc.thePlayer.sendQueue
-										.addToSendQueue(new CPacketPlayerDigging(
+									mc.thePlayer.sendQueue.addToSendQueue(
+										new CPacketPlayerDigging(
 											Action.STOP_DESTROY_BLOCK, pos,
 											side));
 								block.onBlockDestroyedByPlayer(

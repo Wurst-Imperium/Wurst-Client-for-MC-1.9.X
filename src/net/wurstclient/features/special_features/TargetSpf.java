@@ -11,24 +11,25 @@ import net.wurstclient.features.Feature;
 import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.ColorsSetting;
 
-@Spf.Info(description = "Controls what entities are targeted by other features (e.g. Killaura). Also allows you to\n"
-	+ "bypass AntiAura plugins by filtering out fake entities.",
+@Spf.Info(
+	description = "Controls what entities are targeted by other features (e.g. Killaura). Also allows you to\n"
+		+ "bypass AntiAura plugins by filtering out fake entities.",
 	name = "Target",
 	help = "Special_Features/Target")
 public class TargetSpf extends Spf
 {
 	public final CheckboxSetting players = new CheckboxSetting("Players", true);
 	public final CheckboxSetting animals = new CheckboxSetting("Animals", true);
-	public final CheckboxSetting monsters = new CheckboxSetting("Monsters",
-		true);
+	public final CheckboxSetting monsters =
+		new CheckboxSetting("Monsters", true);
 	public final CheckboxSetting golems = new CheckboxSetting("Golems", true);
 	
-	public final CheckboxSetting sleepingPlayers = new CheckboxSetting(
-		"Sleeping players", false);
-	public final CheckboxSetting invisiblePlayers = new CheckboxSetting(
-		"Invisible players", false);
-	public final CheckboxSetting invisibleMobs = new CheckboxSetting(
-		"Invisible mobs", false);
+	public final CheckboxSetting sleepingPlayers =
+		new CheckboxSetting("Sleeping players", false);
+	public final CheckboxSetting invisiblePlayers =
+		new CheckboxSetting("Invisible players", false);
+	public final CheckboxSetting invisibleMobs =
+		new CheckboxSetting("Invisible mobs", false);
 	
 	public final CheckboxSetting teams = new CheckboxSetting("Teams", false);
 	public final ColorsSetting teamColors = new ColorsSetting("Team Colors",

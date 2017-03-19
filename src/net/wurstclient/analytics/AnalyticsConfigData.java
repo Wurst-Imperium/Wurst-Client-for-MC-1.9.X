@@ -54,11 +54,12 @@ public class AnalyticsConfigData
 	 */
 	public AnalyticsConfigData(String argTrackingCode)
 	{
-		this(argTrackingCode, VisitorData.newSession(
-			WurstClient.INSTANCE.options.google_analytics.id,
-			WurstClient.INSTANCE.options.google_analytics.first_launch,
-			WurstClient.INSTANCE.options.google_analytics.last_launch,
-			WurstClient.INSTANCE.options.google_analytics.launches));
+		this(argTrackingCode,
+			VisitorData.newSession(
+				WurstClient.INSTANCE.options.google_analytics.id,
+				WurstClient.INSTANCE.options.google_analytics.first_launch,
+				WurstClient.INSTANCE.options.google_analytics.last_launch,
+				WurstClient.INSTANCE.options.google_analytics.launches));
 	}
 	
 	/**

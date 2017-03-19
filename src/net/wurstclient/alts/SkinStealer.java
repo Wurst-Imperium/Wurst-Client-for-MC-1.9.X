@@ -23,9 +23,8 @@ public class SkinStealer
 		String reply = "";
 		try
 		{
-			URL skinURL =
-				new URL("http://skins.minecraft.net/MinecraftSkins/" + name
-					+ ".png");
+			URL skinURL = new URL(
+				"http://skins.minecraft.net/MinecraftSkins/" + name + ".png");
 			URLConnection skinCon = skinURL.openConnection();
 			BufferedInputStream skinputStream =
 				new BufferedInputStream(skinCon.getInputStream());

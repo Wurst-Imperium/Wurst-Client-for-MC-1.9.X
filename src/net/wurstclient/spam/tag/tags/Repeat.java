@@ -19,7 +19,8 @@ public class Repeat extends Tag
 	public Repeat()
 	{
 		super("repeat", "Repeats a chat message or a part of a chat message.",
-			"<repeat number>", "Repeating a part of a message:\n"
+			"<repeat number>",
+			"Repeating a part of a message:\n"
 				+ "Spam<repeat 2>, spam</repeat>!\n" + "\n"
 				+ "Repeating a message:<repeat 3>\n" + "Spam!</repeat>");
 	}
@@ -35,7 +36,8 @@ public class Repeat extends Tag
 		if(!MiscUtils.isInteger(tagData.getTagArgs()[0]))
 			throw new InvalidArgumentException(
 				"Invalid number in <repeat> tag: \"" + tagData.getTagArgs()[0]
-					+ "\"", tagData.getTagLine(), this);
+					+ "\"",
+				tagData.getTagLine(), this);
 		int count = Integer.parseInt(tagData.getTagArgs()[0]);
 		for(int i = 0; i < count; i++)
 			processed += tagData.getTagContent();

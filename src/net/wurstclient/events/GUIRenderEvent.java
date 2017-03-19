@@ -21,7 +21,7 @@ public class GUIRenderEvent extends Event<GUIRenderListener>
 		for(int i = 0; i < listeners.size(); i++)
 			listeners.get(i).onRenderGUI();
 	}
-
+	
 	@Override
 	public Class<GUIRenderListener> getListenerType()
 	{

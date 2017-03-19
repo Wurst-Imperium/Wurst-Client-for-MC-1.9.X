@@ -25,9 +25,9 @@ import org.lwjgl.input.Keyboard;
 
 public class GuiServerFinder extends GuiScreen
 {
-	private static final String[] stateStrings = {"", "§2Searching...",
-		"§2Resolving...", "§4Unknown Host!", "§4Cancelled!", "§2Done!",
-		"§4An error occurred!"};
+	private static final String[] stateStrings =
+		{"", "§2Searching...", "§2Resolving...", "§4Unknown Host!",
+			"§4Cancelled!", "§2Done!", "§4An error occurred!"};
 	
 	enum ServerFinderState
 	{
@@ -89,33 +89,32 @@ public class GuiServerFinder extends GuiScreen
 	{
 		Keyboard.enableRepeatEvents(true);
 		buttonList.clear();
-		buttonList.add(new GuiButton(0, width / 2 - 100, height / 4 + 96 + 12,
-			"Search"));
+		buttonList.add(
+			new GuiButton(0, width / 2 - 100, height / 4 + 96 + 12, "Search"));
 		buttonList.add(new GuiButton(1, width / 2 - 100, height / 4 + 120 + 12,
 			"Tutorial"));
-		buttonList.add(new GuiButton(2, width / 2 - 100, height / 4 + 144 + 12,
-			"Back"));
-		ipBox =
-			new GuiTextField(0, fontRendererObj, width / 2 - 100,
-				height / 4 + 34, 200, 20);
+		buttonList.add(
+			new GuiButton(2, width / 2 - 100, height / 4 + 144 + 12, "Back"));
+		ipBox = new GuiTextField(0, fontRendererObj, width / 2 - 100,
+			height / 4 + 34, 200, 20);
 		ipBox.setMaxStringLength(200);
 		ipBox.setFocused(true);
-		maxThreadsBox =
-			new GuiTextField(1, fontRendererObj, width / 2 - 32,
-				height / 4 + 58, 26, 12);
+		maxThreadsBox = new GuiTextField(1, fontRendererObj, width / 2 - 32,
+			height / 4 + 58, 26, 12);
 		maxThreadsBox.setMaxStringLength(3);
 		maxThreadsBox.setFocused(false);
-		maxThreadsBox.setText(Integer
-			.toString(WurstClient.INSTANCE.options.serverFinderThreads));
+		maxThreadsBox.setText(
+			Integer.toString(WurstClient.INSTANCE.options.serverFinderThreads));
 		
 		state = ServerFinderState.NOT_RUNNING;
 		
-		WurstClient.INSTANCE.analytics.trackPageView(
-			"/multiplayer/server-finder", "Server Finder");
+		WurstClient.INSTANCE.analytics
+			.trackPageView("/multiplayer/server-finder", "Server Finder");
 	}
 	
 	/**
-	 * "Called when the screen is unloaded. Used to disable keyboard repeat events."
+	 * "Called when the screen is unloaded. Used to disable keyboard repeat
+	 * events."
 	 */
 	@Override
 	public void onGuiClosed()
@@ -164,9 +163,8 @@ public class GuiServerFinder extends GuiScreen
 						{
 							try
 							{
-								InetAddress addr =
-									InetAddress.getByName(ipBox.getText()
-										.split(":")[0].trim());
+								InetAddress addr = InetAddress.getByName(
+									ipBox.getText().split(":")[0].trim());
 								
 								int[] ipParts = new int[4];
 								for(int i = 0; i < 4; i++)
@@ -186,16 +184,16 @@ public class GuiServerFinder extends GuiScreen
 										ipParts2[2] =
 											ipParts[2] + change & 0xff;
 										ipParts2[3] = i2;
-										String ip =
-											ipParts2[0] + "." + ipParts2[1]
-												+ "." + ipParts2[2] + "."
-												+ ipParts2[3];
+										String ip = ipParts2[0] + "."
+											+ ipParts2[1] + "." + ipParts2[2]
+											+ "." + ipParts2[3];
 										
 										WurstServerPinger pinger =
 											new WurstServerPinger();
 										pinger.ping(ip);
 										pingers.add(pinger);
-										while(pingers.size() >= WurstClient.INSTANCE.options.serverFinderThreads)
+										while(pingers
+											.size() >= WurstClient.INSTANCE.options.serverFinderThreads)
 										{
 											if(state == ServerFinderState.CANCELLED)
 												return;
@@ -222,8 +220,8 @@ public class GuiServerFinder extends GuiScreen
 							{
 								e.printStackTrace();
 								state = ServerFinderState.ERROR;
-								WurstClient.INSTANCE.analytics.trackEvent(
-									"server finder", "error");
+								WurstClient.INSTANCE.analytics
+									.trackEvent("server finder", "error");
 							}
 						}
 					}.start();
@@ -231,8 +229,8 @@ public class GuiServerFinder extends GuiScreen
 						"start");
 				}
 			}else if(clickedButton.id == 1)
-				MiscUtils
-					.openLink("https://www.wurst-client.tk/wiki/Special_Features/Server_Finder/");
+				MiscUtils.openLink(
+					"https://www.wurst-client.tk/wiki/Special_Features/Server_Finder/");
 			else if(clickedButton.id == 2)
 				mc.displayGuiScreen(prevMenu);
 	}
@@ -242,7 +240,7 @@ public class GuiServerFinder extends GuiScreen
 		for(int i = 0; i < prevMenu.savedServerList.countServers(); i++)
 			if(prevMenu.savedServerList.getServerData(i).serverIP.equals(ip))
 				return true;
-		
+			
 		return false;
 	}
 	
@@ -259,15 +257,16 @@ public class GuiServerFinder extends GuiScreen
 					if(!serverInList(pingers.get(i).server.serverIP))
 					{
 						GuiServerFinder.this.prevMenu.savedServerList
-							.addServerData(new ServerData("Grief me #"
-								+ working, pingers.get(i).server.serverIP,
-								false));
+							.addServerData(
+								new ServerData("Grief me #" + working,
+									pingers.get(i).server.serverIP, false));
 						GuiServerFinder.this.prevMenu.savedServerList
 							.saveServerList();
 						GuiServerFinder.this.prevMenu.serverListSelector
 							.setSelectedSlotIndex(-1);
 						GuiServerFinder.this.prevMenu.serverListSelector
-							.func_148195_a(GuiServerFinder.this.prevMenu.savedServerList);
+							.func_148195_a(
+								GuiServerFinder.this.prevMenu.savedServerList);
 					}
 				}
 				pingers.remove(i);
@@ -294,8 +293,7 @@ public class GuiServerFinder extends GuiScreen
 	 * @throws IOException
 	 */
 	@Override
-	protected void mouseClicked(int par1, int par2, int par3)
-		throws IOException
+	protected void mouseClicked(int par1, int par2, int par3) throws IOException
 	{
 		super.mouseClicked(par1, par2, par3);
 		ipBox.mouseClicked(par1, par2, par3);
@@ -315,7 +313,8 @@ public class GuiServerFinder extends GuiScreen
 			"This will search for servers with similar IPs", width / 2, 40,
 			10526880);
 		drawCenteredString(fontRendererObj,
-			"to the IP you type into the field below.", width / 2, 50, 10526880);
+			"to the IP you type into the field below.", width / 2, 50,
+			10526880);
 		drawCenteredString(fontRendererObj,
 			"The servers it finds will be added to your server list.",
 			width / 2, 60, 10526880);

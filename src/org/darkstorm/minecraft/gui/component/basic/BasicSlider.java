@@ -28,7 +28,8 @@ public class BasicSlider extends AbstractComponent implements Slider
 		this(text, value, 0, 100);
 	}
 	
-	public BasicSlider(String text, double value, double minimum, double maximum)
+	public BasicSlider(String text, double value, double minimum,
+		double maximum)
 	{
 		this(text, value, minimum, maximum, 1);
 	}
@@ -46,8 +47,8 @@ public class BasicSlider extends AbstractComponent implements Slider
 		this.minimum = Math.max(0, Math.min(minimum, maximum));
 		this.maximum = Math.max(0, Math.max(minimum, maximum));
 		value = Math.max(minimum, Math.min(maximum, value));
-		this.value =
-			(double)(Math.round(value / increment) * 1000000 * (long)(increment * 1000000)) / 1000000 / 1000000;
+		this.value = (double)(Math.round(value / increment) * 1000000
+			* (long)(increment * 1000000)) / 1000000 / 1000000;
 		this.increment = Math.min(maximum, Math.max(0.0005, increment));
 		this.display = display != null ? display : ValueDisplay.DECIMAL;
 	}

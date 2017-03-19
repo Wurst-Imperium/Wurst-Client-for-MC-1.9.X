@@ -44,7 +44,8 @@ import java.util.regex.MatchResult;
  * <ul>
  * <li>If you are tracking an event,
  * {@link AnalyticsRequestData#setEventCategory(String)} and
- * {@link AnalyticsRequestData#setEventAction(String)} must both be populated.</li>
+ * {@link AnalyticsRequestData#setEventAction(String)} must both be
+ * populated.</li>
  * <li>If you are not tracking an event,
  * {@link AnalyticsRequestData#setPageURL(String)} must be populated</li>
  * </ul>
@@ -99,10 +100,10 @@ public class JGoogleAnalyticsTracker
 		SINGLE_THREAD
 	}
 	
-	private static Logger logger = Logger
-		.getLogger(JGoogleAnalyticsTracker.class.getName());
-	private static final ThreadGroup asyncThreadGroup = new ThreadGroup(
-		"Async Google Analytics Threads");
+	private static Logger logger =
+		Logger.getLogger(JGoogleAnalyticsTracker.class.getName());
+	private static final ThreadGroup asyncThreadGroup =
+		new ThreadGroup("Async Google Analytics Threads");
 	private static long asyncThreadsRunning = 0;
 	private static Proxy proxy = Proxy.NO_PROXY;
 	private static LinkedList<String> fifo = new LinkedList<String>();
@@ -433,7 +434,8 @@ public class JGoogleAnalyticsTracker
 	 * @param argAction
 	 * @param argLabel
 	 */
-	public void trackEvent(String argCategory, String argAction, String argLabel)
+	public void trackEvent(String argCategory, String argAction,
+		String argLabel)
 	{
 		trackEvent(argCategory, argAction, argLabel, null);
 	}
@@ -488,48 +490,45 @@ public class JGoogleAnalyticsTracker
 		switch(mode)
 		{
 			case MULTI_THREAD:
-				Thread t =
-					new Thread(asyncThreadGroup, "AnalyticsThread-"
-						+ asyncThreadGroup.activeCount())
-					{
-						@Override
-						public void run()
-						{
-							synchronized(JGoogleAnalyticsTracker.class)
-							{
-								asyncThreadsRunning++;
-							}
-							try
-							{
-								dispatchRequest(url, userAgent);
-							}finally
-							{
-								synchronized(JGoogleAnalyticsTracker.class)
-								{
-									asyncThreadsRunning--;
-								}
-							}
-						}
-					};
-				t.setDaemon(true);
-				t.start();
-				break;
-			case SYNCHRONOUS:
-				dispatchRequest(url, userAgent);
-				break;
-			default: // in case it's null, we default to the single-thread
-				synchronized(fifo)
+			Thread t = new Thread(asyncThreadGroup,
+				"AnalyticsThread-" + asyncThreadGroup.activeCount())
+			{
+				@Override
+				public void run()
 				{
-					fifo.addLast(url);
-					fifo.notify();
+					synchronized(JGoogleAnalyticsTracker.class)
+					{
+						asyncThreadsRunning++;
+					}
+					try
+					{
+						dispatchRequest(url, userAgent);
+					}finally
+					{
+						synchronized(JGoogleAnalyticsTracker.class)
+						{
+							asyncThreadsRunning--;
+						}
+					}
 				}
-				if(!backgroundThreadMayRun)
-					logger
-						.log(
-							Level.SEVERE,
-							"A tracker request has been added to the queue but the background thread isn't running.",
-							url);
-				break;
+			};
+			t.setDaemon(true);
+			t.start();
+			break;
+			case SYNCHRONOUS:
+			dispatchRequest(url, userAgent);
+			break;
+			default: // in case it's null, we default to the single-thread
+			synchronized(fifo)
+			{
+				fifo.addLast(url);
+				fifo.notify();
+			}
+			if(!backgroundThreadMayRun)
+				logger.log(Level.SEVERE,
+					"A tracker request has been added to the queue but the background thread isn't running.",
+					url);
+			break;
 		}
 	}
 	
@@ -565,11 +564,11 @@ public class JGoogleAnalyticsTracker
 		switch(gaVersion)
 		{
 			case V_4_7_2:
-				builder = new GoogleAnalyticsV4_7_2(configData);
-				break;
+			builder = new GoogleAnalyticsV4_7_2(configData);
+			break;
 			default:
-				builder = new GoogleAnalyticsV4_7_2(configData);
-				break;
+			builder = new GoogleAnalyticsV4_7_2(configData);
+			break;
 		}
 	}
 	

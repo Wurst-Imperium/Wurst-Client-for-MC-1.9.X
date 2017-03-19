@@ -29,88 +29,100 @@ public class BuildUtils
 			for(int[] element : building)
 				Minecraft.getMinecraft().thePlayer.sendQueue
 					.addToSendQueue(new CPacketPlayerTryUseItem(
-						new BlockPos(Minecraft.getMinecraft().objectMouseOver
-							.getBlockPos().getX() + element[0], Minecraft
-							.getMinecraft().objectMouseOver.getBlockPos()
-							.getY()
-							+ element[1],
+						new BlockPos(
+							Minecraft.getMinecraft().objectMouseOver
+								.getBlockPos().getX() + element[0],
+							Minecraft.getMinecraft().objectMouseOver
+								.getBlockPos().getY() + element[1],
 							Minecraft.getMinecraft().objectMouseOver
 								.getBlockPos().getZ() + element[2]),
 						Minecraft.getMinecraft().objectMouseOver.sideHit,
 						EnumHand.MAIN_HAND,
-						(float)Minecraft.getMinecraft().objectMouseOver.hitVec.xCoord
+						(float)Minecraft
+							.getMinecraft().objectMouseOver.hitVec.xCoord
 							- (Minecraft.getMinecraft().objectMouseOver
 								.getBlockPos().getX() + element[0]),
-						(float)Minecraft.getMinecraft().objectMouseOver.hitVec.yCoord
+						(float)Minecraft
+							.getMinecraft().objectMouseOver.hitVec.yCoord
 							- (Minecraft.getMinecraft().objectMouseOver
 								.getBlockPos().getY() + element[1]),
-						(float)Minecraft.getMinecraft().objectMouseOver.hitVec.zCoord
+						(float)Minecraft
+							.getMinecraft().objectMouseOver.hitVec.zCoord
 							- (Minecraft.getMinecraft().objectMouseOver
 								.getBlockPos().getZ() + element[2])));
 		else if(playerYaw > 45 && playerYaw <= 135)
 			for(int[] element : building)
 				Minecraft.getMinecraft().thePlayer.sendQueue
 					.addToSendQueue(new CPacketPlayerTryUseItem(
-						new BlockPos(Minecraft.getMinecraft().objectMouseOver
-							.getBlockPos().getX() - element[2], Minecraft
-							.getMinecraft().objectMouseOver.getBlockPos()
-							.getY()
-							+ element[1],
+						new BlockPos(
+							Minecraft.getMinecraft().objectMouseOver
+								.getBlockPos().getX() - element[2],
+							Minecraft.getMinecraft().objectMouseOver
+								.getBlockPos().getY() + element[1],
 							Minecraft.getMinecraft().objectMouseOver
 								.getBlockPos().getZ() + element[0]),
 						Minecraft.getMinecraft().objectMouseOver.sideHit,
 						EnumHand.MAIN_HAND,
-						(float)Minecraft.getMinecraft().objectMouseOver.hitVec.xCoord
+						(float)Minecraft
+							.getMinecraft().objectMouseOver.hitVec.xCoord
 							- (Minecraft.getMinecraft().objectMouseOver
 								.getBlockPos().getX() - element[2]),
-						(float)Minecraft.getMinecraft().objectMouseOver.hitVec.xCoord
+						(float)Minecraft
+							.getMinecraft().objectMouseOver.hitVec.xCoord
 							- (Minecraft.getMinecraft().objectMouseOver
 								.getBlockPos().getY() + element[1]),
-						(float)Minecraft.getMinecraft().objectMouseOver.hitVec.xCoord
+						(float)Minecraft
+							.getMinecraft().objectMouseOver.hitVec.xCoord
 							- (Minecraft.getMinecraft().objectMouseOver
 								.getBlockPos().getZ() + element[0])));
 		else if(playerYaw > 135 || playerYaw <= -135)
 			for(int[] element : building)
 				Minecraft.getMinecraft().thePlayer.sendQueue
 					.addToSendQueue(new CPacketPlayerTryUseItem(
-						new BlockPos(Minecraft.getMinecraft().objectMouseOver
-							.getBlockPos().getX() - element[0], Minecraft
-							.getMinecraft().objectMouseOver.getBlockPos()
-							.getY()
-							+ element[1],
+						new BlockPos(
+							Minecraft.getMinecraft().objectMouseOver
+								.getBlockPos().getX() - element[0],
+							Minecraft.getMinecraft().objectMouseOver
+								.getBlockPos().getY() + element[1],
 							Minecraft.getMinecraft().objectMouseOver
 								.getBlockPos().getZ() - element[2]),
 						Minecraft.getMinecraft().objectMouseOver.sideHit,
 						EnumHand.MAIN_HAND,
-						(float)Minecraft.getMinecraft().objectMouseOver.hitVec.xCoord
+						(float)Minecraft
+							.getMinecraft().objectMouseOver.hitVec.xCoord
 							- (Minecraft.getMinecraft().objectMouseOver
 								.getBlockPos().getX() - element[0]),
-						(float)Minecraft.getMinecraft().objectMouseOver.hitVec.xCoord
+						(float)Minecraft
+							.getMinecraft().objectMouseOver.hitVec.xCoord
 							- (Minecraft.getMinecraft().objectMouseOver
 								.getBlockPos().getY() + element[1]),
-						(float)Minecraft.getMinecraft().objectMouseOver.hitVec.xCoord
+						(float)Minecraft
+							.getMinecraft().objectMouseOver.hitVec.xCoord
 							- (Minecraft.getMinecraft().objectMouseOver
 								.getBlockPos().getZ() - element[2])));
 		else if(playerYaw > -135 && playerYaw <= -45)
 			for(int[] element : building)
 				Minecraft.getMinecraft().thePlayer.sendQueue
 					.addToSendQueue(new CPacketPlayerTryUseItem(
-						new BlockPos(Minecraft.getMinecraft().objectMouseOver
-							.getBlockPos().getX() + element[2], Minecraft
-							.getMinecraft().objectMouseOver.getBlockPos()
-							.getY()
-							+ element[1],
+						new BlockPos(
+							Minecraft.getMinecraft().objectMouseOver
+								.getBlockPos().getX() + element[2],
+							Minecraft.getMinecraft().objectMouseOver
+								.getBlockPos().getY() + element[1],
 							Minecraft.getMinecraft().objectMouseOver
 								.getBlockPos().getZ() - element[0]),
 						Minecraft.getMinecraft().objectMouseOver.sideHit,
 						EnumHand.MAIN_HAND,
-						(float)Minecraft.getMinecraft().objectMouseOver.hitVec.xCoord
+						(float)Minecraft
+							.getMinecraft().objectMouseOver.hitVec.xCoord
 							- (Minecraft.getMinecraft().objectMouseOver
 								.getBlockPos().getX() + element[2]),
-						(float)Minecraft.getMinecraft().objectMouseOver.hitVec.xCoord
+						(float)Minecraft
+							.getMinecraft().objectMouseOver.hitVec.xCoord
 							- (Minecraft.getMinecraft().objectMouseOver
 								.getBlockPos().getY() + element[1]),
-						(float)Minecraft.getMinecraft().objectMouseOver.hitVec.xCoord
+						(float)Minecraft
+							.getMinecraft().objectMouseOver.hitVec.xCoord
 							- (Minecraft.getMinecraft().objectMouseOver
 								.getBlockPos().getZ() - element[0])));
 	}
@@ -120,16 +132,17 @@ public class BuildUtils
 	{
 		if(playerYaw > -45 && playerYaw <= 45)
 		{// F: 0 South
-			BlockUtils.faceBlockPacket(new BlockPos(mouseOver.getBlockPos()
-				.getX() + building[i][0], mouseOver.getBlockPos().getY()
-				+ building[i][1], mouseOver.getBlockPos().getZ()
-				+ building[i][2]));
+			BlockUtils.faceBlockPacket(
+				new BlockPos(mouseOver.getBlockPos().getX() + building[i][0],
+					mouseOver.getBlockPos().getY() + building[i][1],
+					mouseOver.getBlockPos().getZ() + building[i][2]));
 			Minecraft.getMinecraft().thePlayer.swingArm(EnumHand.MAIN_HAND);
 			Minecraft.getMinecraft().thePlayer.sendQueue
-				.addToSendQueue(new CPacketPlayerTryUseItem(new BlockPos(
-					mouseOver.getBlockPos().getX() + building[i][0], mouseOver
-						.getBlockPos().getY() + building[i][1], mouseOver
-						.getBlockPos().getZ() + building[i][2]),
+				.addToSendQueue(new CPacketPlayerTryUseItem(
+					new BlockPos(
+						mouseOver.getBlockPos().getX() + building[i][0],
+						mouseOver.getBlockPos().getY() + building[i][1],
+						mouseOver.getBlockPos().getZ() + building[i][2]),
 					mouseOver.sideHit, EnumHand.MAIN_HAND,
 					(float)mouseOver.hitVec.xCoord
 						- (mouseOver.getBlockPos().getX() + building[i][0]),
@@ -139,16 +152,17 @@ public class BuildUtils
 						- (mouseOver.getBlockPos().getZ() + building[i][2])));
 		}else if(playerYaw > 45 && playerYaw <= 135)
 		{// F: 1 West
-			BlockUtils.faceBlockPacket(new BlockPos(mouseOver.getBlockPos()
-				.getX() - building[i][2], mouseOver.getBlockPos().getY()
-				+ building[i][1], mouseOver.getBlockPos().getZ()
-				+ building[i][0]));
+			BlockUtils.faceBlockPacket(
+				new BlockPos(mouseOver.getBlockPos().getX() - building[i][2],
+					mouseOver.getBlockPos().getY() + building[i][1],
+					mouseOver.getBlockPos().getZ() + building[i][0]));
 			Minecraft.getMinecraft().thePlayer.swingArm(EnumHand.MAIN_HAND);
 			Minecraft.getMinecraft().thePlayer.sendQueue
-				.addToSendQueue(new CPacketPlayerTryUseItem(new BlockPos(
-					mouseOver.getBlockPos().getX() - building[i][2], mouseOver
-						.getBlockPos().getY() + building[i][1], mouseOver
-						.getBlockPos().getZ() + building[i][0]),
+				.addToSendQueue(new CPacketPlayerTryUseItem(
+					new BlockPos(
+						mouseOver.getBlockPos().getX() - building[i][2],
+						mouseOver.getBlockPos().getY() + building[i][1],
+						mouseOver.getBlockPos().getZ() + building[i][0]),
 					mouseOver.sideHit, EnumHand.MAIN_HAND,
 					(float)mouseOver.hitVec.xCoord
 						- (mouseOver.getBlockPos().getX() - building[i][2]),
@@ -158,16 +172,17 @@ public class BuildUtils
 						- (mouseOver.getBlockPos().getZ() + building[i][0])));
 		}else if(playerYaw > 135 || playerYaw <= -135)
 		{// F: 2 North
-			BlockUtils.faceBlockPacket(new BlockPos(mouseOver.getBlockPos()
-				.getX() - building[i][0], mouseOver.getBlockPos().getY()
-				+ building[i][1], mouseOver.getBlockPos().getZ()
-				- building[i][2]));
+			BlockUtils.faceBlockPacket(
+				new BlockPos(mouseOver.getBlockPos().getX() - building[i][0],
+					mouseOver.getBlockPos().getY() + building[i][1],
+					mouseOver.getBlockPos().getZ() - building[i][2]));
 			Minecraft.getMinecraft().thePlayer.swingArm(EnumHand.MAIN_HAND);
 			Minecraft.getMinecraft().thePlayer.sendQueue
-				.addToSendQueue(new CPacketPlayerTryUseItem(new BlockPos(
-					mouseOver.getBlockPos().getX() - building[i][0], mouseOver
-						.getBlockPos().getY() + building[i][1], mouseOver
-						.getBlockPos().getZ() - building[i][2]),
+				.addToSendQueue(new CPacketPlayerTryUseItem(
+					new BlockPos(
+						mouseOver.getBlockPos().getX() - building[i][0],
+						mouseOver.getBlockPos().getY() + building[i][1],
+						mouseOver.getBlockPos().getZ() - building[i][2]),
 					mouseOver.sideHit, EnumHand.MAIN_HAND,
 					(float)mouseOver.hitVec.xCoord
 						- (mouseOver.getBlockPos().getX() - building[i][0]),
@@ -177,16 +192,17 @@ public class BuildUtils
 						- (mouseOver.getBlockPos().getZ() - building[i][2])));
 		}else if(playerYaw > -135 && playerYaw <= -45)
 		{// F: 3 East
-			BlockUtils.faceBlockPacket(new BlockPos(mouseOver.getBlockPos()
-				.getX() + building[i][2], mouseOver.getBlockPos().getY()
-				+ building[i][1], mouseOver.getBlockPos().getZ()
-				- building[i][0]));
+			BlockUtils.faceBlockPacket(
+				new BlockPos(mouseOver.getBlockPos().getX() + building[i][2],
+					mouseOver.getBlockPos().getY() + building[i][1],
+					mouseOver.getBlockPos().getZ() - building[i][0]));
 			Minecraft.getMinecraft().thePlayer.swingArm(EnumHand.MAIN_HAND);
 			Minecraft.getMinecraft().thePlayer.sendQueue
-				.addToSendQueue(new CPacketPlayerTryUseItem(new BlockPos(
-					mouseOver.getBlockPos().getX() + building[i][2], mouseOver
-						.getBlockPos().getY() + building[i][1], mouseOver
-						.getBlockPos().getZ() - building[i][0]),
+				.addToSendQueue(new CPacketPlayerTryUseItem(
+					new BlockPos(
+						mouseOver.getBlockPos().getX() + building[i][2],
+						mouseOver.getBlockPos().getY() + building[i][1],
+						mouseOver.getBlockPos().getZ() - building[i][0]),
 					mouseOver.sideHit, EnumHand.MAIN_HAND,
 					(float)mouseOver.hitVec.xCoord
 						- (mouseOver.getBlockPos().getX() + building[i][2]),
@@ -207,95 +223,143 @@ public class BuildUtils
 		if(playerYaw > -45 && playerYaw <= 45)
 			for(int[] element : building)
 				Minecraft.getMinecraft().thePlayer.sendQueue
-					.addToSendQueue(new CPacketPlayerTryUseItem(
-						new BlockPos(convertPos(1,
-							Minecraft.getMinecraft().objectMouseOver.sideHit
-								.getIndex())
-							+ element[0], convertPos(2, Minecraft
-							.getMinecraft().objectMouseOver.sideHit.getIndex())
-							+ element[1], convertPos(3, Minecraft
-							.getMinecraft().objectMouseOver.sideHit.getIndex())
-							+ element[2]),
-						EnumFacing.getFront(element[3]),
-						EnumHand.MAIN_HAND,
-						(float)Minecraft.getMinecraft().objectMouseOver.hitVec.xCoord
-							- (Minecraft.getMinecraft().objectMouseOver
-								.getBlockPos().getX() + element[0]),
-						(float)Minecraft.getMinecraft().objectMouseOver.hitVec.yCoord
-							- (Minecraft.getMinecraft().objectMouseOver
-								.getBlockPos().getY() + element[1]),
-						(float)Minecraft.getMinecraft().objectMouseOver.hitVec.zCoord
-							- (Minecraft.getMinecraft().objectMouseOver
-								.getBlockPos().getZ() + element[2])));
+					.addToSendQueue(
+						new CPacketPlayerTryUseItem(
+							new BlockPos(
+								convertPos(
+									1,
+									Minecraft
+										.getMinecraft().objectMouseOver.sideHit
+											.getIndex())
+									+ element[0],
+								convertPos(2,
+									Minecraft
+										.getMinecraft().objectMouseOver.sideHit
+											.getIndex())
+									+ element[1],
+								convertPos(3,
+									Minecraft
+										.getMinecraft().objectMouseOver.sideHit
+											.getIndex())
+									+ element[2]),
+							EnumFacing.getFront(element[3]), EnumHand.MAIN_HAND,
+							(float)Minecraft
+								.getMinecraft().objectMouseOver.hitVec.xCoord
+								- (Minecraft.getMinecraft().objectMouseOver
+									.getBlockPos().getX() + element[0]),
+							(float)Minecraft
+								.getMinecraft().objectMouseOver.hitVec.yCoord
+								- (Minecraft.getMinecraft().objectMouseOver
+									.getBlockPos().getY() + element[1]),
+							(float)Minecraft
+								.getMinecraft().objectMouseOver.hitVec.zCoord
+								- (Minecraft.getMinecraft().objectMouseOver
+									.getBlockPos().getZ() + element[2])));
 		else if(playerYaw > 45 && playerYaw <= 135)
 			for(int[] element : building)
 				Minecraft.getMinecraft().thePlayer.sendQueue
-					.addToSendQueue(new CPacketPlayerTryUseItem(
-						new BlockPos(convertPos(1,
-							Minecraft.getMinecraft().objectMouseOver.sideHit
-								.getIndex())
-							- element[2], convertPos(2, Minecraft
-							.getMinecraft().objectMouseOver.sideHit.getIndex())
-							+ element[1], convertPos(3, Minecraft
-							.getMinecraft().objectMouseOver.sideHit.getIndex())
-							+ element[0]),
-						convertSide(element[3], 1),
-						EnumHand.MAIN_HAND,
-						(float)Minecraft.getMinecraft().objectMouseOver.hitVec.xCoord
-							- (Minecraft.getMinecraft().objectMouseOver
-								.getBlockPos().getX() - element[2]),
-						(float)Minecraft.getMinecraft().objectMouseOver.hitVec.xCoord
-							- (Minecraft.getMinecraft().objectMouseOver
-								.getBlockPos().getY() + element[1]),
-						(float)Minecraft.getMinecraft().objectMouseOver.hitVec.xCoord
-							- (Minecraft.getMinecraft().objectMouseOver
-								.getBlockPos().getZ() + element[0])));
+					.addToSendQueue(
+						new CPacketPlayerTryUseItem(
+							new BlockPos(
+								convertPos(
+									1,
+									Minecraft
+										.getMinecraft().objectMouseOver.sideHit
+											.getIndex())
+									- element[2],
+								convertPos(2,
+									Minecraft
+										.getMinecraft().objectMouseOver.sideHit
+											.getIndex())
+									+ element[1],
+								convertPos(3,
+									Minecraft
+										.getMinecraft().objectMouseOver.sideHit
+											.getIndex())
+									+ element[0]),
+							convertSide(element[3], 1), EnumHand.MAIN_HAND,
+							(float)Minecraft
+								.getMinecraft().objectMouseOver.hitVec.xCoord
+								- (Minecraft.getMinecraft().objectMouseOver
+									.getBlockPos().getX() - element[2]),
+							(float)Minecraft
+								.getMinecraft().objectMouseOver.hitVec.xCoord
+								- (Minecraft.getMinecraft().objectMouseOver
+									.getBlockPos().getY() + element[1]),
+							(float)Minecraft
+								.getMinecraft().objectMouseOver.hitVec.xCoord
+								- (Minecraft.getMinecraft().objectMouseOver
+									.getBlockPos().getZ() + element[0])));
 		else if(playerYaw > 135 || playerYaw <= -135)
 			for(int[] element : building)
 				Minecraft.getMinecraft().thePlayer.sendQueue
-					.addToSendQueue(new CPacketPlayerTryUseItem(
-						new BlockPos(convertPos(1,
-							Minecraft.getMinecraft().objectMouseOver.sideHit
-								.getIndex())
-							- element[0], convertPos(2, Minecraft
-							.getMinecraft().objectMouseOver.sideHit.getIndex())
-							+ element[1], convertPos(3, Minecraft
-							.getMinecraft().objectMouseOver.sideHit.getIndex())
-							- element[2]),
-						convertSide(element[3], 2),
-						EnumHand.MAIN_HAND,
-						(float)Minecraft.getMinecraft().objectMouseOver.hitVec.xCoord
-							- (Minecraft.getMinecraft().objectMouseOver
-								.getBlockPos().getX() - element[0]),
-						(float)Minecraft.getMinecraft().objectMouseOver.hitVec.xCoord
-							- (Minecraft.getMinecraft().objectMouseOver
-								.getBlockPos().getY() + element[1]),
-						(float)Minecraft.getMinecraft().objectMouseOver.hitVec.xCoord
-							- (Minecraft.getMinecraft().objectMouseOver
-								.getBlockPos().getZ() - element[2])));
+					.addToSendQueue(
+						new CPacketPlayerTryUseItem(
+							new BlockPos(
+								convertPos(
+									1,
+									Minecraft
+										.getMinecraft().objectMouseOver.sideHit
+											.getIndex())
+									- element[0],
+								convertPos(2,
+									Minecraft
+										.getMinecraft().objectMouseOver.sideHit
+											.getIndex())
+									+ element[1],
+								convertPos(3,
+									Minecraft
+										.getMinecraft().objectMouseOver.sideHit
+											.getIndex())
+									- element[2]),
+							convertSide(element[3], 2), EnumHand.MAIN_HAND,
+							(float)Minecraft
+								.getMinecraft().objectMouseOver.hitVec.xCoord
+								- (Minecraft.getMinecraft().objectMouseOver
+									.getBlockPos().getX() - element[0]),
+							(float)Minecraft
+								.getMinecraft().objectMouseOver.hitVec.xCoord
+								- (Minecraft.getMinecraft().objectMouseOver
+									.getBlockPos().getY() + element[1]),
+							(float)Minecraft
+								.getMinecraft().objectMouseOver.hitVec.xCoord
+								- (Minecraft.getMinecraft().objectMouseOver
+									.getBlockPos().getZ() - element[2])));
 		else if(playerYaw > -135 && playerYaw <= -45)
 			for(int[] element : building)
 				Minecraft.getMinecraft().thePlayer.sendQueue
-					.addToSendQueue(new CPacketPlayerTryUseItem(
-						new BlockPos(convertPos(1,
-							Minecraft.getMinecraft().objectMouseOver.sideHit
-								.getIndex())
-							+ element[2], convertPos(2, Minecraft
-							.getMinecraft().objectMouseOver.sideHit.getIndex())
-							+ element[1], convertPos(3, Minecraft
-							.getMinecraft().objectMouseOver.sideHit.getIndex())
-							- element[0]),
-						convertSide(element[3], 3),
-						EnumHand.MAIN_HAND,
-						(float)Minecraft.getMinecraft().objectMouseOver.hitVec.xCoord
-							- (Minecraft.getMinecraft().objectMouseOver
-								.getBlockPos().getX() + element[2]),
-						(float)Minecraft.getMinecraft().objectMouseOver.hitVec.xCoord
-							- (Minecraft.getMinecraft().objectMouseOver
-								.getBlockPos().getY() + element[1]),
-						(float)Minecraft.getMinecraft().objectMouseOver.hitVec.xCoord
-							- (Minecraft.getMinecraft().objectMouseOver
-								.getBlockPos().getZ() - element[0])));
+					.addToSendQueue(
+						new CPacketPlayerTryUseItem(
+							new BlockPos(
+								convertPos(
+									1,
+									Minecraft
+										.getMinecraft().objectMouseOver.sideHit
+											.getIndex())
+									+ element[2],
+								convertPos(2,
+									Minecraft
+										.getMinecraft().objectMouseOver.sideHit
+											.getIndex())
+									+ element[1],
+								convertPos(3,
+									Minecraft
+										.getMinecraft().objectMouseOver.sideHit
+											.getIndex())
+									- element[0]),
+							convertSide(element[3], 3), EnumHand.MAIN_HAND,
+							(float)Minecraft
+								.getMinecraft().objectMouseOver.hitVec.xCoord
+								- (Minecraft.getMinecraft().objectMouseOver
+									.getBlockPos().getX() + element[2]),
+							(float)Minecraft
+								.getMinecraft().objectMouseOver.hitVec.xCoord
+								- (Minecraft.getMinecraft().objectMouseOver
+									.getBlockPos().getY() + element[1]),
+							(float)Minecraft
+								.getMinecraft().objectMouseOver.hitVec.xCoord
+								- (Minecraft.getMinecraft().objectMouseOver
+									.getBlockPos().getZ() - element[0])));
 	}
 	
 	public static void advancedBuildNext(int[][] building,
@@ -303,17 +367,17 @@ public class BuildUtils
 	{
 		if(playerYaw > -45 && playerYaw <= 45)
 		{// F: 0 South
-			BlockUtils.faceBlockPacket(new BlockPos(
-				convertPosNext(1, mouseOver) + building[i][0], convertPosNext(
-					2, mouseOver) + building[i][1],
-				convertPosNext(3, mouseOver) + building[i][2]));
+			BlockUtils.faceBlockPacket(
+				new BlockPos(convertPosNext(1, mouseOver) + building[i][0],
+					convertPosNext(2, mouseOver) + building[i][1],
+					convertPosNext(3, mouseOver) + building[i][2]));
 			Minecraft.getMinecraft().thePlayer.swingArm(EnumHand.MAIN_HAND);
 			Minecraft.getMinecraft().thePlayer.sendQueue
-				.addToSendQueue(new CPacketPlayerTryUseItem(new BlockPos(
-					convertPosNext(1, mouseOver) + building[i][0],
-					convertPosNext(2, mouseOver) + building[i][1],
-					convertPosNext(3, mouseOver) + building[i][2]), EnumFacing
-					.getFront(building[i][3]), EnumHand.MAIN_HAND,
+				.addToSendQueue(new CPacketPlayerTryUseItem(
+					new BlockPos(convertPosNext(1, mouseOver) + building[i][0],
+						convertPosNext(2, mouseOver) + building[i][1],
+						convertPosNext(3, mouseOver) + building[i][2]),
+					EnumFacing.getFront(building[i][3]), EnumHand.MAIN_HAND,
 					(float)mouseOver.hitVec.xCoord
 						- (mouseOver.getBlockPos().getX() + building[i][0]),
 					(float)mouseOver.hitVec.yCoord
@@ -322,16 +386,16 @@ public class BuildUtils
 						- (mouseOver.getBlockPos().getZ() + building[i][2])));
 		}else if(playerYaw > 45 && playerYaw <= 135)
 		{// F: 1 West
-			BlockUtils.faceBlockPacket(new BlockPos(
-				convertPosNext(1, mouseOver) - building[i][2], convertPosNext(
-					2, mouseOver) + building[i][1],
-				convertPosNext(3, mouseOver) + building[i][0]));
+			BlockUtils.faceBlockPacket(
+				new BlockPos(convertPosNext(1, mouseOver) - building[i][2],
+					convertPosNext(2, mouseOver) + building[i][1],
+					convertPosNext(3, mouseOver) + building[i][0]));
 			Minecraft.getMinecraft().thePlayer.swingArm(EnumHand.MAIN_HAND);
 			Minecraft.getMinecraft().thePlayer.sendQueue
-				.addToSendQueue(new CPacketPlayerTryUseItem(new BlockPos(
-					convertPosNext(1, mouseOver) - building[i][2],
-					convertPosNext(2, mouseOver) + building[i][1],
-					convertPosNext(3, mouseOver) + building[i][0]),
+				.addToSendQueue(new CPacketPlayerTryUseItem(
+					new BlockPos(convertPosNext(1, mouseOver) - building[i][2],
+						convertPosNext(2, mouseOver) + building[i][1],
+						convertPosNext(3, mouseOver) + building[i][0]),
 					convertSide(building[i][3], 1), EnumHand.MAIN_HAND,
 					(float)mouseOver.hitVec.xCoord
 						- (mouseOver.getBlockPos().getX() - building[i][2]),
@@ -341,16 +405,16 @@ public class BuildUtils
 						- (mouseOver.getBlockPos().getZ() + building[i][0])));
 		}else if(playerYaw > 135 || playerYaw <= -135)
 		{// F: 2 North
-			BlockUtils.faceBlockPacket(new BlockPos(
-				convertPosNext(1, mouseOver) - building[i][0], convertPosNext(
-					2, mouseOver) + building[i][1],
-				convertPosNext(3, mouseOver) - building[i][2]));
+			BlockUtils.faceBlockPacket(
+				new BlockPos(convertPosNext(1, mouseOver) - building[i][0],
+					convertPosNext(2, mouseOver) + building[i][1],
+					convertPosNext(3, mouseOver) - building[i][2]));
 			Minecraft.getMinecraft().thePlayer.swingArm(EnumHand.MAIN_HAND);
 			Minecraft.getMinecraft().thePlayer.sendQueue
-				.addToSendQueue(new CPacketPlayerTryUseItem(new BlockPos(
-					convertPosNext(1, mouseOver) - building[i][0],
-					convertPosNext(2, mouseOver) + building[i][1],
-					convertPosNext(3, mouseOver) - building[i][2]),
+				.addToSendQueue(new CPacketPlayerTryUseItem(
+					new BlockPos(convertPosNext(1, mouseOver) - building[i][0],
+						convertPosNext(2, mouseOver) + building[i][1],
+						convertPosNext(3, mouseOver) - building[i][2]),
 					convertSide(building[i][3], 2), EnumHand.MAIN_HAND,
 					(float)mouseOver.hitVec.xCoord
 						- (mouseOver.getBlockPos().getX() - building[i][0]),
@@ -360,16 +424,16 @@ public class BuildUtils
 						- (mouseOver.getBlockPos().getZ() - building[i][2])));
 		}else if(playerYaw > -135 && playerYaw <= -45)
 		{// F: 3 East
-			BlockUtils.faceBlockPacket(new BlockPos(
-				convertPosNext(1, mouseOver) + building[i][2], convertPosNext(
-					2, mouseOver) + building[i][1],
-				convertPosNext(3, mouseOver) - building[i][0]));
+			BlockUtils.faceBlockPacket(
+				new BlockPos(convertPosNext(1, mouseOver) + building[i][2],
+					convertPosNext(2, mouseOver) + building[i][1],
+					convertPosNext(3, mouseOver) - building[i][0]));
 			Minecraft.getMinecraft().thePlayer.swingArm(EnumHand.MAIN_HAND);
 			Minecraft.getMinecraft().thePlayer.sendQueue
-				.addToSendQueue(new CPacketPlayerTryUseItem(new BlockPos(
-					convertPosNext(1, mouseOver) + building[i][2],
-					convertPosNext(2, mouseOver) + building[i][1],
-					convertPosNext(3, mouseOver) - building[i][0]),
+				.addToSendQueue(new CPacketPlayerTryUseItem(
+					new BlockPos(convertPosNext(1, mouseOver) + building[i][2],
+						convertPosNext(2, mouseOver) + building[i][1],
+						convertPosNext(3, mouseOver) - building[i][0]),
 					convertSide(building[i][3], 3), EnumHand.MAIN_HAND,
 					(float)mouseOver.hitVec.xCoord
 						- (mouseOver.getBlockPos().getX() + building[i][2]),
@@ -427,86 +491,68 @@ public class BuildUtils
 		if(side == 0)
 		{
 			if(xyz == 1)
-				convertedPos =
-					Minecraft.getMinecraft().objectMouseOver.getBlockPos()
-						.getX();
+				convertedPos = Minecraft.getMinecraft().objectMouseOver
+					.getBlockPos().getX();
 			else if(xyz == 2)
-				convertedPos =
-					Minecraft.getMinecraft().objectMouseOver.getBlockPos()
-						.getY() - 2;
+				convertedPos = Minecraft.getMinecraft().objectMouseOver
+					.getBlockPos().getY() - 2;
 			else if(xyz == 3)
-				convertedPos =
-					Minecraft.getMinecraft().objectMouseOver.getBlockPos()
-						.getZ();
+				convertedPos = Minecraft.getMinecraft().objectMouseOver
+					.getBlockPos().getZ();
 		}else if(side == 1)
 		{
 			if(xyz == 1)
-				convertedPos =
-					Minecraft.getMinecraft().objectMouseOver.getBlockPos()
-						.getX();
+				convertedPos = Minecraft.getMinecraft().objectMouseOver
+					.getBlockPos().getX();
 			else if(xyz == 2)
-				convertedPos =
-					Minecraft.getMinecraft().objectMouseOver.getBlockPos()
-						.getY();
+				convertedPos = Minecraft.getMinecraft().objectMouseOver
+					.getBlockPos().getY();
 			else if(xyz == 3)
-				convertedPos =
-					Minecraft.getMinecraft().objectMouseOver.getBlockPos()
-						.getZ();
+				convertedPos = Minecraft.getMinecraft().objectMouseOver
+					.getBlockPos().getZ();
 		}else if(side == 2)
 		{
 			if(xyz == 1)
-				convertedPos =
-					Minecraft.getMinecraft().objectMouseOver.getBlockPos()
-						.getX();
+				convertedPos = Minecraft.getMinecraft().objectMouseOver
+					.getBlockPos().getX();
 			else if(xyz == 2)
-				convertedPos =
-					Minecraft.getMinecraft().objectMouseOver.getBlockPos()
-						.getY() - 1;
+				convertedPos = Minecraft.getMinecraft().objectMouseOver
+					.getBlockPos().getY() - 1;
 			else if(xyz == 3)
-				convertedPos =
-					Minecraft.getMinecraft().objectMouseOver.getBlockPos()
-						.getZ() - 1;
+				convertedPos = Minecraft.getMinecraft().objectMouseOver
+					.getBlockPos().getZ() - 1;
 		}else if(side == 3)
 		{
 			if(xyz == 1)
-				convertedPos =
-					Minecraft.getMinecraft().objectMouseOver.getBlockPos()
-						.getX();
+				convertedPos = Minecraft.getMinecraft().objectMouseOver
+					.getBlockPos().getX();
 			else if(xyz == 2)
-				convertedPos =
-					Minecraft.getMinecraft().objectMouseOver.getBlockPos()
-						.getY() - 1;
+				convertedPos = Minecraft.getMinecraft().objectMouseOver
+					.getBlockPos().getY() - 1;
 			else if(xyz == 3)
-				convertedPos =
-					Minecraft.getMinecraft().objectMouseOver.getBlockPos()
-						.getZ() + 1;
+				convertedPos = Minecraft.getMinecraft().objectMouseOver
+					.getBlockPos().getZ() + 1;
 		}else if(side == 4)
 		{
 			if(xyz == 1)
-				convertedPos =
-					Minecraft.getMinecraft().objectMouseOver.getBlockPos()
-						.getX() - 1;
+				convertedPos = Minecraft.getMinecraft().objectMouseOver
+					.getBlockPos().getX() - 1;
 			else if(xyz == 2)
-				convertedPos =
-					Minecraft.getMinecraft().objectMouseOver.getBlockPos()
-						.getY() - 1;
+				convertedPos = Minecraft.getMinecraft().objectMouseOver
+					.getBlockPos().getY() - 1;
 			else if(xyz == 3)
-				convertedPos =
-					Minecraft.getMinecraft().objectMouseOver.getBlockPos()
-						.getZ();
+				convertedPos = Minecraft.getMinecraft().objectMouseOver
+					.getBlockPos().getZ();
 		}else if(side == 5)
 			if(xyz == 1)
-				convertedPos =
-					Minecraft.getMinecraft().objectMouseOver.getBlockPos()
-						.getX() + 1;
+				convertedPos = Minecraft.getMinecraft().objectMouseOver
+					.getBlockPos().getX() + 1;
 			else if(xyz == 2)
-				convertedPos =
-					Minecraft.getMinecraft().objectMouseOver.getBlockPos()
-						.getY() - 1;
+				convertedPos = Minecraft.getMinecraft().objectMouseOver
+					.getBlockPos().getY() - 1;
 			else if(xyz == 3)
-				convertedPos =
-					Minecraft.getMinecraft().objectMouseOver.getBlockPos()
-						.getZ();
+				convertedPos = Minecraft.getMinecraft().objectMouseOver
+					.getBlockPos().getZ();
 		return convertedPos;
 	}
 	
@@ -693,38 +739,46 @@ public class BuildUtils
 								+ element[1],
 							(int)Minecraft.getMinecraft().thePlayer.posZ
 								+ element[2]),
-						EnumFacing.getFront(element[3]),
-						EnumHand.MAIN_HAND,
-						(float)Minecraft.getMinecraft().objectMouseOver.hitVec.xCoord
+						EnumFacing.getFront(element[3]), EnumHand.MAIN_HAND,
+						(float)Minecraft
+							.getMinecraft().objectMouseOver.hitVec.xCoord
 							- (Minecraft.getMinecraft().objectMouseOver
 								.getBlockPos().getX() + element[0]),
-						(float)Minecraft.getMinecraft().objectMouseOver.hitVec.yCoord
+						(float)Minecraft
+							.getMinecraft().objectMouseOver.hitVec.yCoord
 							- (Minecraft.getMinecraft().objectMouseOver
 								.getBlockPos().getY() + element[1]),
-						(float)Minecraft.getMinecraft().objectMouseOver.hitVec.zCoord
+						(float)Minecraft
+							.getMinecraft().objectMouseOver.hitVec.zCoord
 							- (Minecraft.getMinecraft().objectMouseOver
 								.getBlockPos().getZ() + element[2])));
 		else if(playerYaw > 45 && playerYaw <= 135)
 			for(int[] element : building)
-				Minecraft.getMinecraft().thePlayer.sendQueue
-					.addToSendQueue(new CPacketPlayerTryUseItem(
-						new BlockPos(
-							(int)(Minecraft.getMinecraft().thePlayer.posX - element[2]),
-							(int)Minecraft.getMinecraft().thePlayer.posY - 2
-								+ element[1],
-							(int)Minecraft.getMinecraft().thePlayer.posZ
-								+ element[0]),
-						convertSide(element[3], 1),
-						EnumHand.MAIN_HAND,
-						(float)Minecraft.getMinecraft().objectMouseOver.hitVec.xCoord
-							- (Minecraft.getMinecraft().objectMouseOver
-								.getBlockPos().getX() - element[2]),
-						(float)Minecraft.getMinecraft().objectMouseOver.hitVec.xCoord
-							- (Minecraft.getMinecraft().objectMouseOver
-								.getBlockPos().getY() + element[1]),
-						(float)Minecraft.getMinecraft().objectMouseOver.hitVec.xCoord
-							- (Minecraft.getMinecraft().objectMouseOver
-								.getBlockPos().getZ() + element[0])));
+				Minecraft
+					.getMinecraft().thePlayer.sendQueue
+						.addToSendQueue(
+							new CPacketPlayerTryUseItem(
+								new BlockPos(
+									(int)(Minecraft
+										.getMinecraft().thePlayer.posX
+										- element[2]),
+									(int)Minecraft.getMinecraft().thePlayer.posY
+										- 2 + element[1],
+									(int)Minecraft.getMinecraft().thePlayer.posZ
+										+ element[0]),
+								convertSide(element[3], 1), EnumHand.MAIN_HAND,
+								(float)Minecraft
+									.getMinecraft().objectMouseOver.hitVec.xCoord
+									- (Minecraft.getMinecraft().objectMouseOver
+										.getBlockPos().getX() - element[2]),
+								(float)Minecraft
+									.getMinecraft().objectMouseOver.hitVec.xCoord
+									- (Minecraft.getMinecraft().objectMouseOver
+										.getBlockPos().getY() + element[1]),
+								(float)Minecraft
+									.getMinecraft().objectMouseOver.hitVec.xCoord
+									- (Minecraft.getMinecraft().objectMouseOver
+										.getBlockPos().getZ() + element[0])));
 		else if(playerYaw > 135 || playerYaw <= -135)
 			for(int[] element : building)
 				Minecraft.getMinecraft().thePlayer.sendQueue
@@ -736,15 +790,17 @@ public class BuildUtils
 								+ element[1],
 							(int)Minecraft.getMinecraft().thePlayer.posZ
 								- element[2]),
-						convertSide(element[3], 2),
-						EnumHand.MAIN_HAND,
-						(float)Minecraft.getMinecraft().objectMouseOver.hitVec.xCoord
+						convertSide(element[3], 2), EnumHand.MAIN_HAND,
+						(float)Minecraft
+							.getMinecraft().objectMouseOver.hitVec.xCoord
 							- (Minecraft.getMinecraft().objectMouseOver
 								.getBlockPos().getX() - element[0]),
-						(float)Minecraft.getMinecraft().objectMouseOver.hitVec.xCoord
+						(float)Minecraft
+							.getMinecraft().objectMouseOver.hitVec.xCoord
 							- (Minecraft.getMinecraft().objectMouseOver
 								.getBlockPos().getY() + element[1]),
-						(float)Minecraft.getMinecraft().objectMouseOver.hitVec.xCoord
+						(float)Minecraft
+							.getMinecraft().objectMouseOver.hitVec.xCoord
 							- (Minecraft.getMinecraft().objectMouseOver
 								.getBlockPos().getZ() - element[2])));
 		else if(playerYaw > -135 && playerYaw <= -45)
@@ -758,15 +814,17 @@ public class BuildUtils
 								+ element[1],
 							(int)Minecraft.getMinecraft().thePlayer.posZ
 								- element[0]),
-						convertSide(element[3], 3),
-						EnumHand.MAIN_HAND,
-						(float)Minecraft.getMinecraft().objectMouseOver.hitVec.xCoord
+						convertSide(element[3], 3), EnumHand.MAIN_HAND,
+						(float)Minecraft
+							.getMinecraft().objectMouseOver.hitVec.xCoord
 							- (Minecraft.getMinecraft().objectMouseOver
 								.getBlockPos().getX() + element[2]),
-						(float)Minecraft.getMinecraft().objectMouseOver.hitVec.xCoord
+						(float)Minecraft
+							.getMinecraft().objectMouseOver.hitVec.xCoord
 							- (Minecraft.getMinecraft().objectMouseOver
 								.getBlockPos().getY() + element[1]),
-						(float)Minecraft.getMinecraft().objectMouseOver.hitVec.xCoord
+						(float)Minecraft
+							.getMinecraft().objectMouseOver.hitVec.xCoord
 							- (Minecraft.getMinecraft().objectMouseOver
 								.getBlockPos().getZ() - element[0])));
 	}
@@ -777,14 +835,15 @@ public class BuildUtils
 	{
 		if(playerYaw > -45 && playerYaw <= 45)
 		{// F: 0 South
-			BlockUtils.faceBlockPacket(new BlockPos((int)posX - 1
-				+ building[i][0], (int)posY - 2 + building[i][1], (int)posZ
-				+ building[i][2]));
+			BlockUtils.faceBlockPacket(new BlockPos(
+				(int)posX - 1 + building[i][0], (int)posY - 2 + building[i][1],
+				(int)posZ + building[i][2]));
 			Minecraft.getMinecraft().thePlayer.swingArm(EnumHand.MAIN_HAND);
 			Minecraft.getMinecraft().thePlayer.sendQueue
-				.addToSendQueue(new CPacketPlayerTryUseItem(new BlockPos(
-					(int)posX - 1 + building[i][0], (int)posY - 2
-						+ building[i][1], (int)posZ + building[i][2]),
+				.addToSendQueue(new CPacketPlayerTryUseItem(
+					new BlockPos((int)posX - 1 + building[i][0],
+						(int)posY - 2 + building[i][1],
+						(int)posZ + building[i][2]),
 					EnumFacing.getFront(building[i][3]), EnumHand.MAIN_HAND,
 					(float)mouseOver.hitVec.xCoord
 						- (mouseOver.getBlockPos().getX() + building[i][0]),
@@ -795,13 +854,14 @@ public class BuildUtils
 		}else if(playerYaw > 45 && playerYaw <= 135)
 		{// F: 1 West
 			BlockUtils.faceBlockPacket(new BlockPos(
-				(int)(posX - 1 - building[i][2]), (int)posY - 2
-					+ building[i][1], (int)posZ + building[i][0]));
+				(int)(posX - 1 - building[i][2]),
+				(int)posY - 2 + building[i][1], (int)posZ + building[i][0]));
 			Minecraft.getMinecraft().thePlayer.swingArm(EnumHand.MAIN_HAND);
 			Minecraft.getMinecraft().thePlayer.sendQueue
-				.addToSendQueue(new CPacketPlayerTryUseItem(new BlockPos(
-					(int)(posX - 1 - building[i][2]), (int)posY - 2
-						+ building[i][1], (int)posZ + building[i][0]),
+				.addToSendQueue(new CPacketPlayerTryUseItem(
+					new BlockPos((int)(posX - 1 - building[i][2]),
+						(int)posY - 2 + building[i][1],
+						(int)posZ + building[i][0]),
 					convertSide(building[i][3], 1), EnumHand.MAIN_HAND,
 					(float)mouseOver.hitVec.xCoord
 						- (mouseOver.getBlockPos().getX() - building[i][2]),
@@ -811,14 +871,15 @@ public class BuildUtils
 						- (mouseOver.getBlockPos().getZ() + building[i][0])));
 		}else if(playerYaw > 135 || playerYaw <= -135)
 		{// F: 2 North
-			BlockUtils.faceBlockPacket(new BlockPos((int)posX - 1
-				- building[i][0], (int)posY - 2 + building[i][1], (int)posZ
-				- building[i][2]));
+			BlockUtils.faceBlockPacket(new BlockPos(
+				(int)posX - 1 - building[i][0], (int)posY - 2 + building[i][1],
+				(int)posZ - building[i][2]));
 			Minecraft.getMinecraft().thePlayer.swingArm(EnumHand.MAIN_HAND);
 			Minecraft.getMinecraft().thePlayer.sendQueue
-				.addToSendQueue(new CPacketPlayerTryUseItem(new BlockPos(
-					(int)posX - 1 - building[i][0], (int)posY - 2
-						+ building[i][1], (int)posZ - building[i][2]),
+				.addToSendQueue(new CPacketPlayerTryUseItem(
+					new BlockPos((int)posX - 1 - building[i][0],
+						(int)posY - 2 + building[i][1],
+						(int)posZ - building[i][2]),
 					convertSide(building[i][3], 2), EnumHand.MAIN_HAND,
 					(float)mouseOver.hitVec.xCoord
 						- (mouseOver.getBlockPos().getX() - building[i][0]),
@@ -828,14 +889,15 @@ public class BuildUtils
 						- (mouseOver.getBlockPos().getZ() - building[i][2])));
 		}else if(playerYaw > -135 && playerYaw <= -45)
 		{// F: 3 East
-			BlockUtils.faceBlockPacket(new BlockPos((int)posX - 1
-				+ building[i][2], (int)posY - 2 + building[i][1], (int)posZ
-				- building[i][0]));
+			BlockUtils.faceBlockPacket(new BlockPos(
+				(int)posX - 1 + building[i][2], (int)posY - 2 + building[i][1],
+				(int)posZ - building[i][0]));
 			Minecraft.getMinecraft().thePlayer.swingArm(EnumHand.MAIN_HAND);
 			Minecraft.getMinecraft().thePlayer.sendQueue
-				.addToSendQueue(new CPacketPlayerTryUseItem(new BlockPos(
-					(int)posX - 1 + building[i][2], (int)posY - 2
-						+ building[i][1], (int)posZ - building[i][0]),
+				.addToSendQueue(new CPacketPlayerTryUseItem(
+					new BlockPos((int)posX - 1 + building[i][2],
+						(int)posY - 2 + building[i][1],
+						(int)posZ - building[i][0]),
 					convertSide(building[i][3], 3), EnumHand.MAIN_HAND,
 					(float)mouseOver.hitVec.xCoord
 						- (mouseOver.getBlockPos().getX() + building[i][2]),

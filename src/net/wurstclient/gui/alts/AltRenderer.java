@@ -24,9 +24,10 @@ public class AltRenderer
 	{
 		try
 		{
-			AbstractClientPlayer.getDownloadImageSkin(
-				AbstractClientPlayer.getLocationSkin(name), name).loadTexture(
-				Minecraft.getMinecraft().getResourceManager());
+			AbstractClientPlayer
+				.getDownloadImageSkin(
+					AbstractClientPlayer.getLocationSkin(name), name)
+				.loadTexture(Minecraft.getMinecraft().getResourceManager());
 			Minecraft.getMinecraft().getTextureManager()
 				.bindTexture(AbstractClientPlayer.getLocationSkin(name));
 			glEnable(GL_BLEND);
@@ -58,15 +59,14 @@ public class AltRenderer
 	{
 		try
 		{
-			AbstractClientPlayer.getDownloadImageSkin(
-				AbstractClientPlayer.getLocationSkin(name), name).loadTexture(
-				Minecraft.getMinecraft().getResourceManager());
+			AbstractClientPlayer
+				.getDownloadImageSkin(
+					AbstractClientPlayer.getLocationSkin(name), name)
+				.loadTexture(Minecraft.getMinecraft().getResourceManager());
 			Minecraft.getMinecraft().getTextureManager()
 				.bindTexture(AbstractClientPlayer.getLocationSkin(name));
-			boolean slim =
-				DefaultPlayerSkin
-					.getSkinType(EntityPlayer.getOfflineUUID(name)).equals(
-						"slim");
+			boolean slim = DefaultPlayerSkin
+				.getSkinType(EntityPlayer.getOfflineUUID(name)).equals("slim");
 			glEnable(GL_BLEND);
 			glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			
@@ -192,15 +192,14 @@ public class AltRenderer
 	{
 		try
 		{
-			AbstractClientPlayer.getDownloadImageSkin(
-				AbstractClientPlayer.getLocationSkin(name), name).loadTexture(
-				Minecraft.getMinecraft().getResourceManager());
+			AbstractClientPlayer
+				.getDownloadImageSkin(
+					AbstractClientPlayer.getLocationSkin(name), name)
+				.loadTexture(Minecraft.getMinecraft().getResourceManager());
 			Minecraft.getMinecraft().getTextureManager()
 				.bindTexture(AbstractClientPlayer.getLocationSkin(name));
-			boolean slim =
-				DefaultPlayerSkin
-					.getSkinType(EntityPlayer.getOfflineUUID(name)).equals(
-						"slim");
+			boolean slim = DefaultPlayerSkin
+				.getSkinType(EntityPlayer.getOfflineUUID(name)).equals("slim");
 			glEnable(GL_BLEND);
 			glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			

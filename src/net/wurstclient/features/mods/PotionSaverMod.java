@@ -16,6 +16,6 @@ import net.wurstclient.features.mods.Mod.Bypasses;
 	help = "Mods/PotionSaver")
 @Bypasses
 public class PotionSaverMod extends Mod
-{	
+{
 	
 }
