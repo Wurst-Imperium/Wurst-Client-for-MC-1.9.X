@@ -13,13 +13,18 @@ import net.wurstclient.events.listeners.RenderListener;
 
 public class RenderEvent extends Event<RenderListener>
 {
-	public static final RenderEvent INSTANCE = new RenderEvent();
+	private final float partialTicks;
+	
+	public RenderEvent(float partialTicks)
+	{
+		this.partialTicks = partialTicks;
+	}
 	
 	@Override
 	public void fire(ArrayList<RenderListener> listeners)
 	{
 		for(int i = 0; i < listeners.size(); i++)
-			listeners.get(i).onRender();
+			listeners.get(i).onRender(partialTicks);
 	}
 	
 	@Override

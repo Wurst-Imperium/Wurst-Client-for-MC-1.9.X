@@ -119,7 +119,7 @@ public class NukerLegitMod extends Mod
 	}
 	
 	@Override
-	public void onRender()
+	public void onRender(float partialTicks)
 	{
 		if(blockHitDelay == 0 && shouldRenderESP)
 			if(!mc.thePlayer.capabilities.isCreativeMode && currentBlock

@@ -36,7 +36,7 @@ public class InvseeCmd extends Cmd implements RenderListener
 	}
 	
 	@Override
-	public void onRender()
+	public void onRender(float partialTicks)
 	{
 		boolean found = false;
 		for(Object entity : mc.theWorld.loadedEntityList)

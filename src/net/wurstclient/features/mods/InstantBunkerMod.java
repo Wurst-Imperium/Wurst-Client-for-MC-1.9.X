@@ -80,7 +80,7 @@ public class InstantBunkerMod extends Mod
 	}
 	
 	@Override
-	public void onRender()
+	public void onRender(float partialTicks)
 	{
 		if(shouldBuild && i < building.length && i >= 0)
 			if(playerYaw > -45 && playerYaw <= 45)

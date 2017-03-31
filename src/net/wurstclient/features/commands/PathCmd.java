@@ -62,7 +62,7 @@ public class PathCmd extends Cmd implements RenderListener
 	}
 	
 	@Override
-	public void onRender()
+	public void onRender(float partialTicks)
 	{
 		PathPoint path2 = path;
 		while(path2 != null)

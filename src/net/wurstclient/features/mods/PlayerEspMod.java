@@ -38,7 +38,7 @@ public class PlayerEspMod extends Mod implements RenderListener
 	}
 	
 	@Override
-	public void onRender()
+	public void onRender(float partialTicks)
 	{
 		for(Object entity : mc.theWorld.loadedEntityList)
 			if(entity instanceof EntityPlayer && !((Entity)entity).getName()

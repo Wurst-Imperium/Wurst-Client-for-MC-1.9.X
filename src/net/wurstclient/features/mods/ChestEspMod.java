@@ -44,7 +44,7 @@ public class ChestEspMod extends Mod implements RenderListener
 	}
 	
 	@Override
-	public void onRender()
+	public void onRender(float partialTicks)
 	{
 		int i = 0;
 		for(Object o : mc.theWorld.loadedTileEntityList)

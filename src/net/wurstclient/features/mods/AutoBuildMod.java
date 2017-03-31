@@ -78,7 +78,7 @@ public class AutoBuildMod extends Mod implements UpdateListener, RenderListener
 	}
 	
 	@Override
-	public void onRender()
+	public void onRender(float partialTicks)
 	{
 		if(templates.get(template)[0].length == 4)
 			renderAdvanced();

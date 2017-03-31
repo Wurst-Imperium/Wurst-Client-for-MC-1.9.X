@@ -38,7 +38,7 @@ public class OverlayMod extends Mod implements RenderListener
 	}
 	
 	@Override
-	public void onRender()
+	public void onRender(float partialTicks)
 	{
 		if(mc.objectMouseOver == null
 			|| mc.objectMouseOver.typeOfHit != Type.BLOCK)
