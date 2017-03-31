@@ -18,6 +18,7 @@ import net.minecraft.network.play.client.CPacketPlayerDigging.Action;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.wurstclient.events.LeftClickEvent;
 import net.wurstclient.events.listeners.LeftClickListener;
 import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.events.listeners.UpdateListener;
@@ -185,7 +186,7 @@ public class NukerMod extends Mod
 	}
 	
 	@Override
-	public void onLeftClick()
+	public void onLeftClick(LeftClickEvent event)
 	{
 		if(mc.objectMouseOver == null
 			|| mc.objectMouseOver.getBlockPos() == null)

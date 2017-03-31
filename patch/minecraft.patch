@@ -1,6 +1,6 @@
-From 1d68c402c9734f7190b3dd209e345e2df633866a Mon Sep 17 00:00:00 2001
+From bde68c4d3ec114fc63faa36023de80d958a0450c Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Tue, 14 Mar 2017 15:49:21 +0100
+Date: Fri, 31 Mar 2017 16:12:46 +0200
 Subject: [PATCH] mod
 
 ---
@@ -12,7 +12,7 @@ Subject: [PATCH] mod
  net/minecraft/block/BlockSoulSand.java             |   5 +
  net/minecraft/block/state/BlockStateContainer.java |   3 +-
  net/minecraft/block/state/IBlockState.java         |   2 +-
- net/minecraft/client/Minecraft.java                | 197 ++++++++++-----------
+ net/minecraft/client/Minecraft.java                | 200 +++++++++++----------
  .../client/audio/PositionedSoundRecord.java        |   2 +-
  .../client/entity/AbstractClientPlayer.java        |   4 +-
  net/minecraft/client/entity/EntityPlayerSP.java    | 152 ++++++++++++----
@@ -87,7 +87,7 @@ Subject: [PATCH] mod
  .../management/PlayerInteractionManager.java       |   6 +-
  net/minecraft/tileentity/TileEntitySign.java       |   2 +-
  net/minecraft/util/Timer.java                      |   6 +
- 83 files changed, 1246 insertions(+), 410 deletions(-)
+ 83 files changed, 1249 insertions(+), 410 deletions(-)
 
 diff --git a/Start.java b/Start.java
 index ae0025f..078afa5 100644
@@ -330,7 +330,7 @@ index e590b46..157dc4b 100644
      <T extends Comparable<T>> IBlockState cycleProperty(IProperty<T> property);
  
 diff --git a/net/minecraft/client/Minecraft.java b/net/minecraft/client/Minecraft.java
-index 61b2545..b95cd00 100644
+index 61b2545..c8fc5dc 100644
 --- a/net/minecraft/client/Minecraft.java
 +++ b/net/minecraft/client/Minecraft.java
 @@ -1,17 +1,5 @@
@@ -616,17 +616,20 @@ index 61b2545..b95cd00 100644
          {
              if (leftClick && this.objectMouseOver != null && this.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK)
              {
-@@ -1530,6 +1502,9 @@ public class Minecraft implements IThreadListener, ISnooperInfo
+@@ -1530,6 +1502,12 @@ public class Minecraft implements IThreadListener, ISnooperInfo
      {
          if (this.leftClickCounter <= 0)
          {
 +			// TODO: Client
-+			WurstClient.INSTANCE.events.fire(LeftClickEvent.INSTANCE);
++			LeftClickEvent event = new LeftClickEvent();
++			WurstClient.INSTANCE.events.fire(event);
++			if(event.isCancelled())
++				return;
 +        	
              if (this.objectMouseOver == null)
              {
                  logger.error("Null returned as \'hitResult\', this shouldn\'t happen!");
-@@ -1563,7 +1538,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo
+@@ -1563,7 +1541,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo
                              this.leftClickCounter = 10;
                          }
  
@@ -635,7 +638,7 @@ index 61b2545..b95cd00 100644
                  }
  
                  this.thePlayer.swingArm(EnumHand.MAIN_HAND);
-@@ -1571,12 +1546,12 @@ public class Minecraft implements IThreadListener, ISnooperInfo
+@@ -1571,12 +1549,12 @@ public class Minecraft implements IThreadListener, ISnooperInfo
          }
      }
  
@@ -650,7 +653,7 @@ index 61b2545..b95cd00 100644
      {
          if (!this.playerController.getIsHittingBlock())
          {
-@@ -1641,7 +1616,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo
+@@ -1641,7 +1619,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo
  
                      ItemStack itemstack1 = this.thePlayer.getHeldItem(enumhand);
  
@@ -659,7 +662,7 @@ index 61b2545..b95cd00 100644
                      {
                          this.entityRenderer.itemRenderer.func_187460_a(enumhand);
                          return;
-@@ -1803,7 +1778,9 @@ public class Minecraft implements IThreadListener, ISnooperInfo
+@@ -1803,7 +1781,9 @@ public class Minecraft implements IThreadListener, ISnooperInfo
              this.leftClickCounter = 10000;
          }
  
@@ -670,7 +673,7 @@ index 61b2545..b95cd00 100644
          {
              try
              {
-@@ -1845,7 +1822,9 @@ public class Minecraft implements IThreadListener, ISnooperInfo
+@@ -1845,7 +1825,9 @@ public class Minecraft implements IThreadListener, ISnooperInfo
              }
          }
  
@@ -681,7 +684,7 @@ index 61b2545..b95cd00 100644
          {
              this.mcProfiler.endStartSection("mouse");
              this.func_184124_aB();
-@@ -1939,7 +1918,9 @@ public class Minecraft implements IThreadListener, ISnooperInfo
+@@ -1939,7 +1921,9 @@ public class Minecraft implements IThreadListener, ISnooperInfo
  
              this.mcProfiler.endStartSection("animateTick");
  
@@ -692,7 +695,7 @@ index 61b2545..b95cd00 100644
              {
                  this.theWorld.doVoidFogParticles(MathHelper.floor_double(this.thePlayer.posX), MathHelper.floor_double(this.thePlayer.posY), MathHelper.floor_double(this.thePlayer.posZ));
              }
-@@ -2005,6 +1986,17 @@ public class Minecraft implements IThreadListener, ISnooperInfo
+@@ -2005,6 +1989,17 @@ public class Minecraft implements IThreadListener, ISnooperInfo
  
                  if (this.currentScreen == null)
                  {
@@ -710,7 +713,7 @@ index 61b2545..b95cd00 100644
                      if (i == 1)
                      {
                          this.displayInGameMenu();
-@@ -2242,7 +2234,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo
+@@ -2242,7 +2237,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo
              }
          }
  
@@ -719,7 +722,7 @@ index 61b2545..b95cd00 100644
          {
              if (!this.gameSettings.keyBindUseItem.isKeyDown())
              {
-@@ -2290,7 +2282,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo
+@@ -2290,7 +2285,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo
              }
          }
  
@@ -728,7 +731,7 @@ index 61b2545..b95cd00 100644
          {
              this.rightClickMouse();
          }
-@@ -2440,6 +2432,10 @@ public class Minecraft implements IThreadListener, ISnooperInfo
+@@ -2440,6 +2435,10 @@ public class Minecraft implements IThreadListener, ISnooperInfo
          networkmanager.sendPacket(new C00Handshake(107, socketaddress.toString(), 0, EnumConnectionState.LOGIN));
          networkmanager.sendPacket(new CPacketLoginStart(this.getSession().getProfile()));
          this.myNetworkManager = networkmanager;
@@ -739,7 +742,7 @@ index 61b2545..b95cd00 100644
      }
  
      /**
-@@ -2644,6 +2640,9 @@ public class Minecraft implements IThreadListener, ISnooperInfo
+@@ -2644,6 +2643,9 @@ public class Minecraft implements IThreadListener, ISnooperInfo
              }
              else
              {
@@ -749,7 +752,7 @@ index 61b2545..b95cd00 100644
                  if (this.objectMouseOver.typeOfHit != RayTraceResult.Type.ENTITY || this.objectMouseOver.entityHit == null || !flag)
                  {
                      return;
-@@ -3387,7 +3386,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo
+@@ -3387,7 +3389,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo
          return this.dataFixer;
      }
  

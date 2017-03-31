@@ -7,7 +7,9 @@
  */
 package net.wurstclient.events.listeners;
 
+import net.wurstclient.events.LeftClickEvent;
+
 public interface LeftClickListener extends Listener
 {
-	public void onLeftClick();
+	public void onLeftClick(LeftClickEvent event);
 }
