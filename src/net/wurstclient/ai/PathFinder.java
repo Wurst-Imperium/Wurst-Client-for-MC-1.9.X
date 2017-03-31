@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -20,8 +20,7 @@ public class PathFinder
 {
 	private BlockPos goal;
 	private PriorityQueue<PathPoint> queue;
-	private HashMap<BlockPos, PathPoint> processed =
-		new HashMap<BlockPos, PathPoint>();
+	private HashMap<BlockPos, PathPoint> processed = new HashMap<>();
 	private PathPoint lastPoint;
 	
 	public PathFinder(BlockPos goal)
@@ -32,7 +31,7 @@ public class PathFinder
 	public PathFinder(BlockPos start, BlockPos goal)
 	{
 		this.goal = goal;
-		queue = new PriorityQueue<PathPoint>(new Comparator<PathPoint>()
+		queue = new PriorityQueue<>(new Comparator<PathPoint>()
 		{
 			@Override
 			public int compare(PathPoint o1, PathPoint o2)
@@ -110,7 +109,7 @@ public class PathFinder
 	
 	public ArrayList<BlockPos> formatPath()
 	{
-		ArrayList<BlockPos> path = new ArrayList<BlockPos>();
+		ArrayList<BlockPos> path = new ArrayList<>();
 		PathPoint point = lastPoint;
 		while(point != null)
 		{

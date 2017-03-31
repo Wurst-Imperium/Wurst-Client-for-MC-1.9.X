@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -12,6 +12,9 @@ import static org.lwjgl.opengl.GL11.*;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
+import org.darkstorm.minecraft.gui.util.RenderUtil;
+import org.lwjgl.input.Keyboard;
+
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.wurstclient.WurstClient;
@@ -19,9 +22,6 @@ import net.wurstclient.features.Feature;
 import net.wurstclient.font.Fonts;
 import net.wurstclient.navigator.Navigator;
 import net.wurstclient.utils.MiscUtils;
-
-import org.darkstorm.minecraft.gui.util.RenderUtil;
-import org.lwjgl.input.Keyboard;
 
 public class NavigatorMainScreen extends NavigatorScreen
 {
@@ -85,10 +85,9 @@ public class NavigatorMainScreen extends NavigatorScreen
 			if(button == 0
 				&& (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || hoveringArrow)
 				|| button == 2)
-			{
 				// arrow click, shift click, wheel click
 				expanding = true;
-			}else if(button == 0)
+			else if(button == 0)
 			{
 				// left click
 				Feature item = navigatorDisplayList.get(hoveredItem);

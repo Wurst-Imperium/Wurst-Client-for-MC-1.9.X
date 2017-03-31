@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -12,6 +12,9 @@ import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
 
 import java.io.IOException;
 
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
@@ -20,9 +23,6 @@ import net.wurstclient.alts.Alt;
 import net.wurstclient.alts.NameGenerator;
 import net.wurstclient.alts.SkinStealer;
 import net.wurstclient.utils.MiscUtils;
-
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
 
 public abstract class AltEditorScreen extends GuiScreen
 {
@@ -47,11 +47,10 @@ public abstract class AltEditorScreen extends GuiScreen
 	{
 		emailBox.updateCursorCounter();
 		passwordBox.updateCursorCounter();
-		((GuiButton)buttonList.get(0)).enabled = emailBox.getText().trim()
-			.length() > 0
+		buttonList.get(0).enabled = emailBox.getText().trim().length() > 0
 			&& (!emailBox.getText().trim().equalsIgnoreCase("Alexander01998")
 				|| passwordBox.getText().length() != 0);
-		((GuiButton)buttonList.get(3)).enabled =
+		buttonList.get(3).enabled =
 			!emailBox.getText().trim().equalsIgnoreCase("Alexander01998");
 	}
 	
@@ -135,7 +134,7 @@ public abstract class AltEditorScreen extends GuiScreen
 		passwordBox.textboxKeyTyped(par1, par2);
 		
 		if(par2 == 28 || par2 == 156)
-			actionPerformed((GuiButton)buttonList.get(0));
+			actionPerformed(buttonList.get(0));
 	}
 	
 	/**

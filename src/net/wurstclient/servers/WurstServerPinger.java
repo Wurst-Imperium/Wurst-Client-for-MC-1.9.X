@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -10,11 +10,11 @@ package net.wurstclient.servers;
 import java.net.UnknownHostException;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import net.minecraft.client.multiplayer.ServerData;
-import net.minecraft.client.network.ServerPinger;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.client.network.ServerPinger;
 
 public class WurstServerPinger
 {

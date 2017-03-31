@@ -11,7 +11,7 @@ public abstract class AbstractTheme implements Theme
 	
 	public AbstractTheme()
 	{
-		uis = new HashMap<Class<? extends Component>, ComponentUI>();
+		uis = new HashMap<>();
 	}
 	
 	protected void installUI(AbstractComponentUI<?> ui)

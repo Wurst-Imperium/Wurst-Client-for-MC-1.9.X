@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -9,14 +9,14 @@ package net.wurstclient.gui.multiplayer;
 
 import java.io.IOException;
 
+import org.lwjgl.input.Keyboard;
+
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiMultiplayer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.wurstclient.WurstClient;
 import net.wurstclient.utils.MiscUtils;
-
-import org.lwjgl.input.Keyboard;
 
 public class GuiUseProxy extends GuiScreen
 {
@@ -147,7 +147,7 @@ public class GuiUseProxy extends GuiScreen
 		proxyBox.textboxKeyTyped(par1, par2);
 		
 		if(par2 == 28 || par2 == 156)
-			actionPerformed((GuiButton)buttonList.get(1));
+			actionPerformed(buttonList.get(1));
 	}
 	
 	/**

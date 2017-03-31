@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -103,19 +103,18 @@ public class GuiWurstMainMenu extends GuiMainMenu
 		
 		// adjust position of options, quit & language buttons
 		for(int i = 3; i <= 5; i++)
-			((GuiButton)buttonList.get(i)).yPosition =
-				Math.min(((GuiButton)buttonList.get(i)).yPosition, height - 56);
+			buttonList.get(i).yPosition =
+				Math.min(buttonList.get(i).yPosition, height - 56);
 		
 		// notice
-		this.noticeWidth1 =
-			this.fontRendererObj.getStringWidth(this.noticeText);
-		this.noticeWidth2 =
-			this.fontRendererObj.getStringWidth(GuiMainMenu.field_96138_a);
-		int noticeWidth = Math.max(this.noticeWidth1, this.noticeWidth2);
-		this.noticeX1 = (this.width - noticeWidth) / 2;
-		this.noticeY1 = ((GuiButton)this.buttonList.get(0)).yPosition - 24;
-		this.noticeX2 = this.noticeX1 + noticeWidth;
-		this.noticeY2 = this.noticeY1 + 24;
+		noticeWidth1 = fontRendererObj.getStringWidth(noticeText);
+		noticeWidth2 =
+			fontRendererObj.getStringWidth(GuiMainMenu.field_96138_a);
+		int noticeWidth = Math.max(noticeWidth1, noticeWidth2);
+		noticeX1 = (width - noticeWidth) / 2;
+		noticeY1 = buttonList.get(0).yPosition - 24;
+		noticeX2 = noticeX1 + noticeWidth;
+		noticeY2 = noticeY1 + 24;
 		
 		// news
 		newsTicker = "";
@@ -365,14 +364,10 @@ public class GuiWurstMainMenu extends GuiMainMenu
 		if(mouseButton == 0 && mouseY >= height - 26 && mouseY < height - 16
 			&& mouseX > width / 2 - linkWidth / 2
 			&& mouseX < width / 2 + linkWidth / 2)
-		{
 			MiscUtils.openLink("https://www.wurstclient.net/");
-		}
 		
 		if(news != null && mouseButton == 0 && mouseY >= height - 10)
-		{
 			MiscUtils.openLink("https://www.wurstclient.net/news");
-		}
 		
 		// notice
 		if(noticeText.length() > 0 && mouseX >= noticeX1 && mouseX <= noticeX2

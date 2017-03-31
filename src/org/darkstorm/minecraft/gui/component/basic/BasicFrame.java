@@ -73,9 +73,7 @@ public class BasicFrame extends AbstractContainer implements Frame
 			dragOffset =
 				new Point(mouseLocation.x - getX(), mouseLocation.y - getY());
 		}else
-		{
 			dragOffset = null;
-		}
 	}
 	
 	@Override

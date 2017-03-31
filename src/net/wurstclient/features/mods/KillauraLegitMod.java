@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -112,10 +112,8 @@ public class KillauraLegitMod extends Mod implements UpdateListener
 		{
 			if(wurst.mods.criticalsMod.isActive() && mc.thePlayer.onGround)
 				mc.thePlayer.jump();
-			if((useCooldown.isChecked()
-				? mc.thePlayer.getSwordCooldown(0F) >= 1F
-				: hasTimePassedS(speed.getValueF())))
-			{
+			if(useCooldown.isChecked() ? mc.thePlayer.getSwordCooldown(0F) >= 1F
+				: hasTimePassedS(speed.getValueF()))
 				if(EntityUtils.getDistanceFromMouse(en) > 55)
 					EntityUtils.faceEntityClient(en);
 				else
@@ -127,7 +125,6 @@ public class KillauraLegitMod extends Mod implements UpdateListener
 					
 					updateLastMS();
 				}
-			}
 		}
 	}
 	

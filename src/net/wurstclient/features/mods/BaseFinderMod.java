@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -33,8 +33,8 @@ public class BaseFinderMod extends Mod implements UpdateListener, RenderListener
 		initBlocks();
 	}
 	
-	private ArrayList<Block> naturalBlocks = new ArrayList<Block>();
-	private ArrayList<BlockPos> matchingBlocks = new ArrayList<BlockPos>();
+	private ArrayList<Block> naturalBlocks = new ArrayList<>();
+	private ArrayList<BlockPos> matchingBlocks = new ArrayList<>();
 	private int range = 50;
 	private int maxBlocks = 1024;
 	private boolean shouldInform = true;

@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -14,13 +14,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiSlot;
 import net.minecraft.util.math.MathHelper;
 import net.wurstclient.alts.Alt;
-
-import org.lwjgl.opengl.GL11;
 
 public class GuiAltList extends GuiSlot
 {
@@ -35,7 +35,7 @@ public class GuiAltList extends GuiSlot
 	
 	private int selectedSlot;
 	private Minecraft mc;
-	public static ArrayList<Alt> alts = new ArrayList<Alt>();
+	public static ArrayList<Alt> alts = new ArrayList<>();
 	public static int premiumAlts;
 	public static int crackedAlts;
 	private GuiAlts prevMenu;
@@ -53,7 +53,7 @@ public class GuiAltList extends GuiSlot
 					.compareToIgnoreCase(o2.getNameOrEmail());
 			}
 		});
-		ArrayList<Alt> newAlts = new ArrayList<Alt>();
+		ArrayList<Alt> newAlts = new ArrayList<>();
 		premiumAlts = 0;
 		crackedAlts = 0;
 		for(int i = 0; i < alts.size(); i++)

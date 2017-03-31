@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -34,8 +34,8 @@ import net.wurstclient.utils.RenderUtils;
 @Bypasses(ghostMode = false)
 public class AutoBuildMod extends Mod implements UpdateListener, RenderListener
 {
-	public static ArrayList<String> names = new ArrayList<String>();
-	public static ArrayList<int[][]> templates = new ArrayList<int[][]>();
+	public static ArrayList<String> names = new ArrayList<>();
+	public static ArrayList<int[][]> templates = new ArrayList<>();
 	private int template = 1;
 	
 	private float speed = 5;

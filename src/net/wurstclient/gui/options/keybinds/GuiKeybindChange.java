@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -8,9 +8,11 @@
 package net.wurstclient.gui.options.keybinds;
 
 import java.io.IOException;
-import java.util.Map.Entry;
 import java.util.Arrays;
+import java.util.Map.Entry;
 import java.util.TreeSet;
+
+import org.lwjgl.input.Keyboard;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -18,8 +20,6 @@ import net.minecraft.client.gui.GuiTextField;
 import net.wurstclient.WurstClient;
 import net.wurstclient.gui.options.GuiPressAKey;
 import net.wurstclient.gui.options.GuiPressAKeyCallback;
-
-import org.lwjgl.input.Keyboard;
 
 public class GuiKeybindChange extends GuiScreen implements GuiPressAKeyCallback
 {
@@ -95,7 +95,7 @@ public class GuiKeybindChange extends GuiScreen implements GuiPressAKeyCallback
 			{
 				if(entry != null)
 					WurstClient.INSTANCE.keybinds.remove(entry.getKey());
-				WurstClient.INSTANCE.keybinds.put(key, new TreeSet<String>(
+				WurstClient.INSTANCE.keybinds.put(key, new TreeSet<>(
 					Arrays.asList(commandBox.getText().split(";"))));
 				WurstClient.INSTANCE.files.saveKeybinds();
 				mc.displayGuiScreen(prevMenu);

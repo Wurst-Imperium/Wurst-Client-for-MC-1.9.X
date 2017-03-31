@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -11,10 +11,8 @@ import java.util.HashMap;
 
 public class VarManager
 {
-	private final HashMap<String, String> spammerVars =
-		new HashMap<String, String>();
-	private final HashMap<String, String> userVars =
-		new HashMap<String, String>();
+	private final HashMap<String, String> spammerVars = new HashMap<>();
+	private final HashMap<String, String> userVars = new HashMap<>();
 	
 	public VarManager()
 	{

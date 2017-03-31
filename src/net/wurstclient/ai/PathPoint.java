@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -31,7 +31,7 @@ public class PathPoint
 	public ArrayList<BlockPos> getNeighbors()
 	{
 		BlockPos playerPos = new BlockPos(Minecraft.getMinecraft().thePlayer);
-		ArrayList<BlockPos> neighbors = new ArrayList<BlockPos>();
+		ArrayList<BlockPos> neighbors = new ArrayList<>();
 		neighbors.add(pos.add(0, 0, -1));// north
 		neighbors.add(pos.add(0, 0, 1));// south
 		neighbors.add(pos.add(1, 0, 0));// east

@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -35,11 +35,9 @@ public class Navigator
 		try
 		{
 			for(Field field : modFields)
-			{
 				if(field.getName().endsWith("Mod"))
 					navigatorList
 						.add((Feature)field.get(WurstClient.INSTANCE.mods));
-			}
 		}catch(Exception e)
 		{
 			e.printStackTrace();
@@ -50,11 +48,9 @@ public class Navigator
 		try
 		{
 			for(Field field : cmdFields)
-			{
 				if(field.getName().endsWith("Cmd"))
 					navigatorList
 						.add((Feature)field.get(WurstClient.INSTANCE.commands));
-			}
 		}catch(Exception e)
 		{
 			e.printStackTrace();
@@ -65,11 +61,9 @@ public class Navigator
 		try
 		{
 			for(Field field : specialFields)
-			{
 				if(field.getName().endsWith("Spf"))
 					navigatorList
 						.add((Feature)field.get(WurstClient.INSTANCE.special));
-			}
 		}catch(Exception e)
 		{
 			e.printStackTrace();

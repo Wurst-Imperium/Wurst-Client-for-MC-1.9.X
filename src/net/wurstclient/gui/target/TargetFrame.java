@@ -1,16 +1,11 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 package net.wurstclient.gui.target;
-
-import net.minecraft.client.Minecraft;
-import net.wurstclient.WurstClient;
-import net.wurstclient.settings.CheckboxSetting;
-import net.wurstclient.settings.Setting;
 
 import org.darkstorm.minecraft.gui.component.Button;
 import org.darkstorm.minecraft.gui.component.basic.BasicButton;
@@ -19,6 +14,11 @@ import org.darkstorm.minecraft.gui.component.basic.BasicFrame;
 import org.darkstorm.minecraft.gui.layout.GridLayoutManager;
 import org.darkstorm.minecraft.gui.layout.GridLayoutManager.HorizontalGridConstraint;
 import org.darkstorm.minecraft.gui.listener.ButtonListener;
+
+import net.minecraft.client.Minecraft;
+import net.wurstclient.WurstClient;
+import net.wurstclient.settings.CheckboxSetting;
+import net.wurstclient.settings.Setting;
 
 public class TargetFrame extends BasicFrame
 {

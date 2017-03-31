@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -19,6 +19,12 @@ import java.util.Map.Entry;
 import java.util.TreeSet;
 import java.util.function.Consumer;
 
+import com.google.common.collect.Sets;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.wurstclient.WurstClient;
@@ -34,12 +40,6 @@ import net.wurstclient.options.OptionsManager;
 import net.wurstclient.settings.Setting;
 import net.wurstclient.utils.JsonUtils;
 import net.wurstclient.utils.XRayUtils;
-
-import com.google.common.collect.Sets;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 
 public class FileManager
 {

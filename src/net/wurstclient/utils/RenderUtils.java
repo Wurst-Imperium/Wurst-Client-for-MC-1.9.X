@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -10,6 +10,9 @@ package net.wurstclient.utils;
 import static org.lwjgl.opengl.GL11.*;
 
 import java.awt.Color;
+
+import org.darkstorm.minecraft.gui.util.RenderUtil;
+import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderGlobal;
@@ -22,9 +25,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-
-import org.darkstorm.minecraft.gui.util.RenderUtil;
-import org.lwjgl.opengl.GL11;
 
 public class RenderUtils
 {

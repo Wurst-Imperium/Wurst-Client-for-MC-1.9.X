@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -107,7 +107,7 @@ public class GuiWurstOptions extends GuiScreen
 			100, 20, "Report a Bug"));
 		// buttonList.add(new GuiButton(15, width / 2 + 54, height / 4 + 120 -
 		// 16, 100, 20, "???"));
-		((GuiButton)buttonList.get(3)).enabled = !Minecraft.isRunningOnMac;
+		buttonList.get(3).enabled = !Minecraft.isRunningOnMac;
 	}
 	
 	@Override
@@ -237,7 +237,7 @@ public class GuiWurstOptions extends GuiScreen
 		super.drawScreen(par1, par2, par3);
 		for(int i = 0; i < buttonList.size(); i++)
 		{
-			GuiButton button = (GuiButton)buttonList.get(i);
+			GuiButton button = buttonList.get(i);
 			if(button.isMouseOver() && !toolTips[button.id].isEmpty())
 			{
 				drawHoveringText(Arrays.asList(toolTips[button.id].split("\n")),

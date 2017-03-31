@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -12,6 +12,11 @@ import static org.lwjgl.opengl.GL11.*;
 import java.awt.Color;
 import java.util.LinkedList;
 
+import org.darkstorm.minecraft.gui.component.Frame;
+import org.darkstorm.minecraft.gui.util.GuiManagerDisplayScreen;
+import org.darkstorm.minecraft.gui.util.RenderUtil;
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
@@ -22,11 +27,6 @@ import net.wurstclient.events.GUIRenderEvent;
 import net.wurstclient.features.mods.Mod;
 import net.wurstclient.font.Fonts;
 
-import org.darkstorm.minecraft.gui.component.Frame;
-import org.darkstorm.minecraft.gui.util.GuiManagerDisplayScreen;
-import org.darkstorm.minecraft.gui.util.RenderUtil;
-import org.lwjgl.opengl.GL11;
-
 public class UIRenderer
 {
 	private static final ResourceLocation wurstLogo =
@@ -36,7 +36,7 @@ public class UIRenderer
 	{
 		if(WurstClient.INSTANCE.options.modListMode == 2)
 			return;
-		LinkedList<String> modList = new LinkedList<String>();
+		LinkedList<String> modList = new LinkedList<>();
 		for(Mod mod : WurstClient.INSTANCE.mods.getAllMods())
 		{
 			if(mod.getCategory() == Mod.Category.HIDDEN)

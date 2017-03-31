@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -49,7 +49,7 @@ public class GuiXRayBlocksManager extends GuiScreen
 	@Override
 	public void updateScreen()
 	{
-		((GuiButton)buttonList.get(1)).enabled =
+		buttonList.get(1).enabled =
 			blockList.getSelectedSlot() != -1 && !XRayMod.xrayBlocks.isEmpty();
 	}
 	
@@ -79,7 +79,7 @@ public class GuiXRayBlocksManager extends GuiScreen
 	protected void keyTyped(char par1, int par2)
 	{
 		if(par2 == 28 || par2 == 156)
-			actionPerformed((GuiButton)buttonList.get(0));
+			actionPerformed(buttonList.get(0));
 	}
 	
 	/**

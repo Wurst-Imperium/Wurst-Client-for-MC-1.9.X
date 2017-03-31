@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -422,7 +422,7 @@ public class ForceOpMod extends Mod implements ChatInputListener
 				File pwList = new File(wurst.options.forceOPList);
 				BufferedReader load =
 					new BufferedReader(new FileReader(pwList));
-				ArrayList<String> loadedPWs = new ArrayList<String>();
+				ArrayList<String> loadedPWs = new ArrayList<>();
 				for(String line = ""; (line = load.readLine()) != null;)
 					loadedPWs.add(line);
 				load.close();

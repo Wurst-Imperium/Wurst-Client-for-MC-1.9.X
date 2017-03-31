@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -76,7 +76,6 @@ public class CriticalsMod extends Mod implements LeftClickListener
 		if(!mc.thePlayer.isInWater()
 			&& !mc.thePlayer.isInsideOfMaterial(Material.lava)
 			&& mc.thePlayer.onGround)
-		{
 			switch(mode)
 			{
 				case 0:
@@ -100,7 +99,5 @@ public class CriticalsMod extends Mod implements LeftClickListener
 					new C04PacketPlayerPosition(posX, posY, posZ, false));
 				break;
 			}
-			
-		}
 	}
 }

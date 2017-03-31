@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -18,6 +18,8 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import org.darkstorm.minecraft.gui.util.RenderUtil;
+
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.init.SoundEvents;
@@ -29,8 +31,6 @@ import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.Setting;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.utils.MiscUtils;
-
-import org.darkstorm.minecraft.gui.util.RenderUtil;
 
 public class NavigatorFeatureScreen extends NavigatorScreen
 {
@@ -152,7 +152,6 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 			boolean noKeybindsSet = true;
 			for(Entry<String, TreeSet<String>> entry : WurstClient.INSTANCE.keybinds
 				.entrySet())
-			{
 				for(String command : entry.getValue())
 				{
 					String keybindDescription =
@@ -167,7 +166,6 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 							new PossibleKeybind(command, keybindDescription));
 					}
 				}
-			}
 			if(noKeybindsSet)
 				text += "\nNone";
 			else
@@ -347,8 +345,8 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 			drawEngravedBox(x1, y1, x2, y2);
 			
 			// lock
-			boolean renderAsDisabled = slider.isDisabled() || (slider.isLocked()
-				&& slider.getLockMinX() == slider.getLockMaxX());
+			boolean renderAsDisabled = slider.isDisabled() || slider.isLocked()
+				&& slider.getLockMinX() == slider.getLockMaxX();
 			if(!renderAsDisabled && slider.isLocked())
 			{
 				glColor4f(0.75F, 0.125F, 0.125F, 0.25F);
@@ -485,7 +483,7 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 		// buttons below scissor box
 		for(int i = 0; i < buttonList.size(); i++)
 		{
-			GuiButton button = (GuiButton)buttonList.get(i);
+			GuiButton button = buttonList.get(i);
 			
 			// positions
 			int x1 = button.xPosition;

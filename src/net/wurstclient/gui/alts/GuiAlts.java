@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -21,6 +21,8 @@ import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiYesNo;
@@ -30,8 +32,6 @@ import net.wurstclient.alts.LoginManager;
 import net.wurstclient.alts.NameGenerator;
 import net.wurstclient.hooks.FrameHook;
 import net.wurstclient.utils.MiscUtils;
-
-import org.lwjgl.opengl.GL11;
 
 public class GuiAlts extends GuiScreen
 {
@@ -83,13 +83,13 @@ public class GuiAlts extends GuiScreen
 	@Override
 	public void updateScreen()
 	{
-		((GuiButton)buttonList.get(0)).enabled =
+		buttonList.get(0).enabled =
 			!GuiAltList.alts.isEmpty() && altList.getSelectedSlot() != -1;
-		((GuiButton)buttonList.get(3)).enabled =
+		buttonList.get(3).enabled =
 			!GuiAltList.alts.isEmpty() && altList.getSelectedSlot() != -1;
-		((GuiButton)buttonList.get(4)).enabled =
+		buttonList.get(4).enabled =
 			!GuiAltList.alts.isEmpty() && altList.getSelectedSlot() != -1;
-		((GuiButton)buttonList.get(5)).enabled =
+		buttonList.get(5).enabled =
 			!GuiAltList.alts.isEmpty() && altList.getSelectedSlot() != -1;
 	}
 	
@@ -236,7 +236,7 @@ public class GuiAlts extends GuiScreen
 	protected void keyTyped(char par1, int par2)
 	{
 		if(par2 == 28 || par2 == 156)
-			actionPerformed((GuiButton)buttonList.get(0));
+			actionPerformed(buttonList.get(0));
 	}
 	
 	/**

@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -8,17 +8,17 @@
 /*
  * Copyright (c) 2013, DarkStorm (darkstorm@evilminecraft.net)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  * this
  * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
  * and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -42,15 +42,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.wurstclient.WurstClient;
-import net.wurstclient.features.mods.AutoBuildMod;
-import net.wurstclient.features.mods.Mod;
-import net.wurstclient.features.mods.Mod.Category;
-import net.wurstclient.gui.target.TargetFrame;
-import net.wurstclient.settings.Setting;
-
 import org.darkstorm.minecraft.gui.AbstractGuiManager;
 import org.darkstorm.minecraft.gui.component.Button;
 import org.darkstorm.minecraft.gui.component.ComboBox;
@@ -66,6 +57,15 @@ import org.darkstorm.minecraft.gui.listener.ButtonListener;
 import org.darkstorm.minecraft.gui.listener.ComboBoxListener;
 import org.darkstorm.minecraft.gui.theme.Theme;
 import org.darkstorm.minecraft.gui.theme.wurst.WurstTheme;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.wurstclient.WurstClient;
+import net.wurstclient.features.mods.AutoBuildMod;
+import net.wurstclient.features.mods.Mod;
+import net.wurstclient.features.mods.Mod.Category;
+import net.wurstclient.gui.target.TargetFrame;
+import net.wurstclient.settings.Setting;
 
 /**
  * Minecraft GUI API
@@ -91,8 +91,7 @@ public final class GuiManager extends AbstractGuiManager
 	}
 	
 	private final AtomicBoolean setup;
-	private final Map<Category, ModuleFrame> categoryFrames =
-		new HashMap<Category, ModuleFrame>();
+	private final Map<Category, ModuleFrame> categoryFrames = new HashMap<>();
 	
 	public GuiManager()
 	{

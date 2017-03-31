@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -12,6 +12,8 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
+import org.lwjgl.input.Keyboard;
+
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiMultiplayer;
 import net.minecraft.client.gui.GuiScreen;
@@ -20,8 +22,6 @@ import net.minecraft.client.multiplayer.ServerData;
 import net.wurstclient.WurstClient;
 import net.wurstclient.servers.WurstServerPinger;
 import net.wurstclient.utils.MiscUtils;
-
-import org.lwjgl.input.Keyboard;
 
 public class GuiServerFinder extends GuiScreen
 {
@@ -71,14 +71,13 @@ public class GuiServerFinder extends GuiScreen
 	{
 		ipBox.updateCursorCounter();
 		
-		((GuiButton)buttonList.get(0)).displayString =
+		buttonList.get(0).displayString =
 			state.isRunning() ? "Cancel" : "Search";
 		ipBox.setEnabled(!state.isRunning());
 		maxThreadsBox.setEnabled(!state.isRunning());
 		
-		((GuiButton)buttonList.get(0)).enabled =
-			MiscUtils.isInteger(maxThreadsBox.getText())
-				&& !ipBox.getText().isEmpty();
+		buttonList.get(0).enabled = MiscUtils.isInteger(maxThreadsBox.getText())
+			&& !ipBox.getText().isEmpty();
 	}
 	
 	/**
@@ -172,7 +171,7 @@ public class GuiServerFinder extends GuiScreen
 								
 								state = ServerFinderState.SEARCHING;
 								ArrayList<WurstServerPinger> pingers =
-									new ArrayList<WurstServerPinger>();
+									new ArrayList<>();
 								int[] changes = {0, 1, -1, 2, -2, 3, -3};
 								for(int change : changes)
 									for(int i2 = 0; i2 <= 255; i2++)
@@ -284,7 +283,7 @@ public class GuiServerFinder extends GuiScreen
 		maxThreadsBox.textboxKeyTyped(par1, par2);
 		
 		if(par2 == 28 || par2 == 156)
-			actionPerformed((GuiButton)buttonList.get(0));
+			actionPerformed(buttonList.get(0));
 	}
 	
 	/**

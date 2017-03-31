@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -143,8 +143,7 @@ public class GiveCmd extends Cmd
 			// custom item
 			
 			// id/name
-			item = (Item)Item.itemRegistry
-				.getObject(new ResourceLocation(args[0]));
+			item = Item.itemRegistry.getObject(new ResourceLocation(args[0]));
 			if(item == null && MiscUtils.isInteger(args[0]))
 				item = Item.getItemById(Integer.parseInt(args[0]));
 			if(item == null)

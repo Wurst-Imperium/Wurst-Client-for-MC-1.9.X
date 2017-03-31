@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -27,7 +27,7 @@ import net.wurstclient.features.mods.Mod.Info;
 @Bypasses
 public class BlinkMod extends Mod implements PacketOutputListener
 {
-	private static ArrayList<Packet> packets = new ArrayList<Packet>();
+	private static ArrayList<Packet> packets = new ArrayList<>();
 	private EntityOtherPlayerMP fakePlayer = null;
 	private double oldX;
 	private double oldY;

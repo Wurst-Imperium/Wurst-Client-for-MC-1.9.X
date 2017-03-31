@@ -106,7 +106,7 @@ public class JGoogleAnalyticsTracker
 		new ThreadGroup("Async Google Analytics Threads");
 	private static long asyncThreadsRunning = 0;
 	private static Proxy proxy = Proxy.NO_PROXY;
-	private static LinkedList<String> fifo = new LinkedList<String>();
+	private static LinkedList<String> fifo = new LinkedList<>();
 	private static volatile Thread backgroundThread = null; // the thread used
 	// in
 	// 'queued' mode.

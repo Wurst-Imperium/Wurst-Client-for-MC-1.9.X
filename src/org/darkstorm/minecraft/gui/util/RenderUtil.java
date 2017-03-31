@@ -7,13 +7,13 @@ import static org.lwjgl.opengl.GL13.GL_SAMPLE_ALPHA_TO_COVERAGE;
 import java.awt.Color;
 import java.awt.Point;
 
+import org.lwjgl.input.Mouse;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-
-import org.lwjgl.input.Mouse;
 
 public class RenderUtil
 {
@@ -74,22 +74,14 @@ public class RenderUtil
 		Tessellator tessellator = Tessellator.getInstance();
 		VertexBuffer vertexbuffer = tessellator.getBuffer();
 		vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX);
-		vertexbuffer.pos((double)(x + 0), (double)(y + height), (double)0)
-			.tex((double)((float)(textureX + 0) * f),
-				(double)((float)(textureY + height) * f1))
-			.endVertex();
-		vertexbuffer.pos((double)(x + width), (double)(y + height), (double)0)
-			.tex((double)((float)(textureX + width) * f),
-				(double)((float)(textureY + height) * f1))
-			.endVertex();
-		vertexbuffer.pos((double)(x + width), (double)(y + 0), (double)0)
-			.tex((double)((float)(textureX + width) * f),
-				(double)((float)(textureY + 0) * f1))
-			.endVertex();
-		vertexbuffer.pos((double)(x + 0), (double)(y + 0), (double)0)
-			.tex((double)((float)(textureX + 0) * f),
-				(double)((float)(textureY + 0) * f1))
-			.endVertex();
+		vertexbuffer.pos(x + 0, y + height, 0)
+			.tex((textureX + 0) * f, (textureY + height) * f1).endVertex();
+		vertexbuffer.pos(x + width, y + height, 0)
+			.tex((textureX + width) * f, (textureY + height) * f1).endVertex();
+		vertexbuffer.pos(x + width, y + 0, 0)
+			.tex((textureX + width) * f, (textureY + 0) * f1).endVertex();
+		vertexbuffer.pos(x + 0, y + 0, 0)
+			.tex((textureX + 0) * f, (textureY + 0) * f1).endVertex();
 		tessellator.draw();
 	}
 	

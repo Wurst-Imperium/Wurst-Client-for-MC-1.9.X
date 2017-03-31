@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -23,15 +23,15 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.DefaultResourcePack;
-import net.minecraft.util.ResourceLocation;
-import net.wurstclient.bot.WurstBot;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.DefaultResourcePack;
+import net.minecraft.util.ResourceLocation;
+import net.wurstclient.bot.WurstBot;
 
 public class FrameHook
 {

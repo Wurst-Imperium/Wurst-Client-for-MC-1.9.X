@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -14,14 +14,14 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import net.minecraft.client.Minecraft;
-
 import org.darkstorm.minecraft.gui.component.CheckButton;
 import org.darkstorm.minecraft.gui.component.Component;
 import org.darkstorm.minecraft.gui.theme.AbstractComponentUI;
 import org.darkstorm.minecraft.gui.util.GuiManagerDisplayScreen;
 import org.darkstorm.minecraft.gui.util.RenderUtil;
 import org.lwjgl.input.Mouse;
+
+import net.minecraft.client.Minecraft;
 
 public class WurstCheckButtonUI extends AbstractComponentUI<CheckButton>
 {

@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -12,9 +12,9 @@ import static org.lwjgl.opengl.GL11.*;
 import java.awt.Rectangle;
 import java.io.IOException;
 
-import net.minecraft.client.gui.GuiScreen;
-
 import org.lwjgl.input.Mouse;
+
+import net.minecraft.client.gui.GuiScreen;
 
 public abstract class NavigatorScreen extends GuiScreen
 {

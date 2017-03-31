@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -15,13 +15,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.lang.reflect.Field;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.wurstclient.WurstClient;
-import net.wurstclient.features.mods.Mod;
-import net.wurstclient.features.mods.ModManager;
-import net.wurstclient.features.mods.Mod.Category;
-
 import org.darkstorm.minecraft.gui.component.Button;
 import org.darkstorm.minecraft.gui.component.Component;
 import org.darkstorm.minecraft.gui.component.Frame;
@@ -29,6 +22,13 @@ import org.darkstorm.minecraft.gui.theme.AbstractComponentUI;
 import org.darkstorm.minecraft.gui.util.GuiManagerDisplayScreen;
 import org.darkstorm.minecraft.gui.util.RenderUtil;
 import org.lwjgl.input.Mouse;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.wurstclient.WurstClient;
+import net.wurstclient.features.mods.Mod;
+import net.wurstclient.features.mods.Mod.Category;
+import net.wurstclient.features.mods.ModManager;
 
 public class WurstButtonUI extends AbstractComponentUI<Button>
 {

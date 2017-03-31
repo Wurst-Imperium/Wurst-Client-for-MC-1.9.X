@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -219,8 +219,7 @@ public class EntityUtils
 	public static ArrayList<EntityLivingBase> getCloseEntities(
 		boolean ignoreFriends, float range, boolean hitThroughWalls)
 	{
-		ArrayList<EntityLivingBase> closeEntities =
-			new ArrayList<EntityLivingBase>();
+		ArrayList<EntityLivingBase> closeEntities = new ArrayList<>();
 		for(Object o : Minecraft.getMinecraft().theWorld.loadedEntityList)
 			if(isCorrectEntity(o, ignoreFriends))
 			{
