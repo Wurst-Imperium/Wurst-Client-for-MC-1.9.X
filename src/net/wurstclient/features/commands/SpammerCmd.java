@@ -7,13 +7,13 @@
  */
 package net.wurstclient.features.commands;
 
-import net.wurstclient.features.commands.Cmd.Info;
 import net.wurstclient.features.mods.SpammerMod;
 import net.wurstclient.spam.SpamProcessor;
 import net.wurstclient.utils.ChatUtils;
 import net.wurstclient.utils.MiscUtils;
 
-@Info(description = "Changes the delay of Spammer or spams spam from a file.",
+@Cmd.Info(
+	description = "Changes the delay of Spammer or spams spam from a file.",
 	name = "spammer",
 	syntax = {"delay <delay_in_ms>", "spam <file>"},
 	help = "Commands/spammer")

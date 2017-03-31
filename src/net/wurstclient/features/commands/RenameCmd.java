@@ -8,10 +8,9 @@
 package net.wurstclient.features.commands;
 
 import net.minecraft.item.ItemStack;
-import net.wurstclient.features.commands.Cmd.Info;
 import net.wurstclient.utils.ChatUtils;
 
-@Info(
+@Cmd.Info(
 	description = "Renames the item in your hand. Use $ for colors, use $$ for $.",
 	name = "rename",
 	syntax = {"<new_name>"},

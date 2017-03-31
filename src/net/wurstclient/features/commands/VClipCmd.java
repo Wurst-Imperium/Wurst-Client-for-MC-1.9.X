@@ -7,10 +7,9 @@
  */
 package net.wurstclient.features.commands;
 
-import net.wurstclient.features.commands.Cmd.Info;
 import net.wurstclient.utils.MiscUtils;
 
-@Info(
+@Cmd.Info(
 	description = "Teleports you up/down. Can glitch you through floors & "
 		+ "ceilings.\nThe maximum distance is 100 blocks on vanilla servers and "
 		+ "10 blocks on Bukkit servers.",

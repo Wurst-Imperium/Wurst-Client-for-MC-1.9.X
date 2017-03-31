@@ -9,11 +9,10 @@ package net.wurstclient.features.commands;
 
 import java.util.Iterator;
 
-import net.wurstclient.features.commands.Cmd.Info;
 import net.wurstclient.utils.ChatUtils;
 import net.wurstclient.utils.MiscUtils;
 
-@Info(description = "Shows the command list or the help for a command.",
+@Cmd.Info(description = "Shows the command list or the help for a command.",
 	name = "help",
 	syntax = {"[<page>]", "[<command>]"},
 	help = "Commands/help")

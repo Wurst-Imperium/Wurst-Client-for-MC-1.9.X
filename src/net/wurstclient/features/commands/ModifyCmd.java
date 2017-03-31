@@ -13,11 +13,10 @@ import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTException;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
-import net.wurstclient.features.commands.Cmd.Info;
 import net.wurstclient.utils.ChatUtils;
 import net.wurstclient.utils.MiscUtils;
 
-@Info(description = "Modifies items in creative mode.",
+@Cmd.Info(description = "Modifies items in creative mode.",
 	name = "modify",
 	syntax = {"add <nbt>", "remove <nbt_path>", "set <nbt>",
 		"metadata <value>"},

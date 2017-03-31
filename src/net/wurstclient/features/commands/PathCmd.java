@@ -11,11 +11,10 @@ import net.minecraft.util.math.BlockPos;
 import net.wurstclient.ai.PathFinder;
 import net.wurstclient.ai.PathPoint;
 import net.wurstclient.events.listeners.RenderListener;
-import net.wurstclient.features.commands.Cmd.Info;
 import net.wurstclient.utils.ChatUtils;
 import net.wurstclient.utils.RenderUtils;
 
-@Info(
+@Cmd.Info(
 	description = "Shows the shortest path to a specific point. Useful for labyrinths and caves.",
 	name = "path",
 	syntax = {"<x> <y> <z>", "<entity>"},

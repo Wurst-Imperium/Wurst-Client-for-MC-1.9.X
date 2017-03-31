@@ -12,11 +12,10 @@ import java.util.Iterator;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.util.StringUtils;
 import net.wurstclient.alts.Alt;
-import net.wurstclient.features.commands.Cmd.Info;
 import net.wurstclient.gui.alts.GuiAltList;
 import net.wurstclient.utils.ChatUtils;
 
-@Info(
+@Cmd.Info(
 	description = "Adds a player or all players on a server to your alt list.",
 	name = "addalt",
 	syntax = {"<player>", "all"},

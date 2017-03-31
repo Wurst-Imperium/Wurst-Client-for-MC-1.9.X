@@ -9,10 +9,9 @@ package net.wurstclient.features.commands;
 
 import net.wurstclient.events.ChatInputEvent;
 import net.wurstclient.events.listeners.ChatInputListener;
-import net.wurstclient.features.commands.Cmd.Info;
 import net.wurstclient.utils.ChatUtils;
 
-@Info(description = "Annoys a player by repeating everything he says.",
+@Cmd.Info(description = "Annoys a player by repeating everything he says.",
 	name = "annoy",
 	syntax = {"[<player>]"},
 	help = "Commands/annoy")

@@ -11,10 +11,9 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.init.Enchantments;
 import net.minecraft.item.ItemStack;
 import net.wurstclient.events.ChatOutputEvent;
-import net.wurstclient.features.commands.Cmd.Info;
 import net.wurstclient.utils.ChatUtils;
 
-@Info(description = "Enchants items with everything.",
+@Cmd.Info(description = "Enchants items with everything.",
 	name = "enchant",
 	syntax = {"[all]"},
 	help = "Commands/enchant")

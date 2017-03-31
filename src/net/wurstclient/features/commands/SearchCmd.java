@@ -8,11 +8,10 @@
 package net.wurstclient.features.commands;
 
 import net.minecraft.block.Block;
-import net.wurstclient.features.commands.Cmd.Info;
 import net.wurstclient.utils.ChatUtils;
 import net.wurstclient.utils.MiscUtils;
 
-@Info(description = "Changes the settings of Search or toggles it.",
+@Cmd.Info(description = "Changes the settings of Search or toggles it.",
 	name = "search",
 	syntax = {"id <block_id>", "name <block_name>"},
 	help = "Commands/search")

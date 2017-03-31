@@ -10,10 +10,10 @@ package net.wurstclient.features.commands;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.wurstclient.events.listeners.RenderListener;
-import net.wurstclient.features.commands.Cmd.Info;
 import net.wurstclient.utils.ChatUtils;
 
-@Info(description = "Allows you to see parts of another player's inventory.",
+@Cmd.Info(
+	description = "Allows you to see parts of another player's inventory.",
 	name = "invsee",
 	syntax = {"<player>"},
 	help = "Commands/invsee")

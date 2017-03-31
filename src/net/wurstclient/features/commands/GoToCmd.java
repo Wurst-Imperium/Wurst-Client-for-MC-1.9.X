@@ -9,10 +9,9 @@ package net.wurstclient.features.commands;
 
 import net.minecraft.util.math.BlockPos;
 import net.wurstclient.ai.PathFinder;
-import net.wurstclient.features.commands.Cmd.Info;
 import net.wurstclient.utils.ChatUtils;
 
-@Info(description = "Walks or flies you to a specific location.",
+@Cmd.Info(description = "Walks or flies you to a specific location.",
 	name = "goto",
 	syntax = {"<x> <y> <z>", "<entity>"},
 	help = "Commands/goto")

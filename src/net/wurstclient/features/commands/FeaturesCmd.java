@@ -8,12 +8,11 @@
 package net.wurstclient.features.commands;
 
 import net.wurstclient.events.ChatOutputEvent;
-import net.wurstclient.features.commands.Cmd.Info;
 import net.wurstclient.features.mods.Mod;
 import net.wurstclient.features.special_features.Spf;
 import net.wurstclient.utils.ChatUtils;
 
-@Info(description = "Shows the feature count and some over statistics.",
+@Cmd.Info(description = "Shows the feature count and some over statistics.",
 	name = "features",
 	syntax = {},
 	help = "Commands/features")

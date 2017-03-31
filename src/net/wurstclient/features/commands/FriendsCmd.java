@@ -9,11 +9,10 @@ package net.wurstclient.features.commands;
 
 import java.util.Iterator;
 
-import net.wurstclient.features.commands.Cmd.Info;
 import net.wurstclient.utils.ChatUtils;
 import net.wurstclient.utils.MiscUtils;
 
-@Info(description = "Manages your friends list.",
+@Cmd.Info(description = "Manages your friends list.",
 	name = "friends",
 	syntax = {"(add | remove) <player>", "list [<page>]"},
 	help = "Commands/friends")

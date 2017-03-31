@@ -7,10 +7,9 @@
  */
 package net.wurstclient.features.commands;
 
-import net.wurstclient.features.commands.Cmd.Info;
 import net.wurstclient.features.mods.Mod;
 
-@Info(description = "Toggles a mod.",
+@Cmd.Info(description = "Toggles a mod.",
 	name = "t",
 	syntax = {"<mod> [(on|off)]"},
 	help = "Commands/t")

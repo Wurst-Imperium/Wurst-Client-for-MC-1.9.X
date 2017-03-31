@@ -11,11 +11,10 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.TreeSet;
 
-import net.wurstclient.features.commands.Cmd.Info;
 import net.wurstclient.utils.ChatUtils;
 import net.wurstclient.utils.MiscUtils;
 
-@Info(description = "Lists all keybinds.",
+@Cmd.Info(description = "Lists all keybinds.",
 	name = "binds",
 	syntax = {"[<page>]"},
 	help = "Commands/binds")

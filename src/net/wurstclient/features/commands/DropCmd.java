@@ -14,10 +14,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
 import net.wurstclient.events.listeners.UpdateListener;
-import net.wurstclient.features.commands.Cmd.Info;
 import net.wurstclient.features.special_features.YesCheatSpf.BypassLevel;
 
-@Info(description = "Drops all your items on the ground.",
+@Cmd.Info(description = "Drops all your items on the ground.",
 	name = "drop",
 	syntax = {"[infinite]"},
 	help = "Commands/drop")

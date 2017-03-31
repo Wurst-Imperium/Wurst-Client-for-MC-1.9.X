@@ -8,12 +8,11 @@
 package net.wurstclient.features.commands;
 
 import net.minecraft.block.Block;
-import net.wurstclient.features.commands.Cmd.Info;
 import net.wurstclient.features.mods.NukerMod;
 import net.wurstclient.utils.ChatUtils;
 import net.wurstclient.utils.MiscUtils;
 
-@Info(description = "Changes the settings of Nuker.",
+@Cmd.Info(description = "Changes the settings of Nuker.",
 	name = "nuker",
 	syntax = {"mode (normal|id|flat|smash)", "id <block_id>",
 		"name <block_name>"},

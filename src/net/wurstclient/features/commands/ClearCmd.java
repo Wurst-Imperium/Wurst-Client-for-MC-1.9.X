@@ -7,9 +7,7 @@
  */
 package net.wurstclient.features.commands;
 
-import net.wurstclient.features.commands.Cmd.Info;
-
-@Info(description = "Clears the chat completely.",
+@Cmd.Info(description = "Clears the chat completely.",
 	name = "clear",
 	syntax = {},
 	help = "Commands/clear")

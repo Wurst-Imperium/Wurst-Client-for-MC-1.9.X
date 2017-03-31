@@ -10,9 +10,8 @@ package net.wurstclient.features.commands;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagString;
-import net.wurstclient.features.commands.Cmd.Info;
 
-@Info(description = "Changes the held book's author.",
+@Cmd.Info(description = "Changes the held book's author.",
 	name = "author",
 	syntax = {"<author>"},
 	help = "Commands/author")

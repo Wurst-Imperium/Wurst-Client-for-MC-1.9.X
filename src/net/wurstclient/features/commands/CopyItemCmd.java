@@ -10,10 +10,9 @@ package net.wurstclient.features.commands;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
-import net.wurstclient.features.commands.Cmd.Info;
 import net.wurstclient.utils.ChatUtils;
 
-@Info(
+@Cmd.Info(
 	description = "Allows you to copy items that other people are holding\n"
 		+ "or wearing. Requires creative mode.",
 	name = "copyitem",

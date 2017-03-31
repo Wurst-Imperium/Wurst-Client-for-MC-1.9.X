@@ -7,11 +7,10 @@
  */
 package net.wurstclient.features.commands;
 
-import net.wurstclient.features.commands.Cmd.Info;
 import net.wurstclient.utils.ChatUtils;
 import net.wurstclient.utils.MiscUtils;
 
-@Info(description = "Changes the amount of Throw or toggles it.",
+@Cmd.Info(description = "Changes the amount of Throw or toggles it.",
 	name = "throw",
 	syntax = {"[amount <amount>]"},
 	help = "Commands/throw")
