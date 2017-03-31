@@ -15,7 +15,7 @@ import net.wurstclient.utils.EntityUtils;
 	name = "protect",
 	syntax = {"[<entity>]"},
 	help = "Commands/protect")
-public class ProtectCmd extends Cmd
+public final class ProtectCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws CmdError

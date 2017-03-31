@@ -13,7 +13,7 @@ import net.wurstclient.events.ChatOutputEvent;
 	name = "jump",
 	syntax = {},
 	help = "Commands/jump")
-public class JumpCmd extends Cmd
+public final class JumpCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws CmdError

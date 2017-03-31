@@ -17,7 +17,7 @@ import net.wurstclient.utils.ChatUtils;
 	name = "invsee",
 	syntax = {"<player>"},
 	help = "Commands/invsee")
-public class InvseeCmd extends Cmd implements RenderListener
+public final class InvseeCmd extends Cmd implements RenderListener
 {
 	private String playerName;
 	

@@ -15,7 +15,7 @@ import net.wurstclient.utils.MiscUtils;
 	name = "damage",
 	syntax = {"<amount>"},
 	help = "Commands/damage")
-public class DamageCmd extends Cmd
+public final class DamageCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws CmdError

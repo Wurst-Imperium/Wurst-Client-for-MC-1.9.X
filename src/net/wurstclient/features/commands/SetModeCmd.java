@@ -19,7 +19,7 @@ import net.wurstclient.settings.Setting;
 	name = "setmode",
 	syntax = {"<feature> <mode_setting> (<mode>|next|prev)"},
 	help = "Commands/setmode")
-public class SetModeCmd extends Cmd
+public final class SetModeCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws CmdError

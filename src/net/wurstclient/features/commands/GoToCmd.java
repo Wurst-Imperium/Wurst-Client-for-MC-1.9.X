@@ -15,7 +15,7 @@ import net.wurstclient.utils.ChatUtils;
 	name = "goto",
 	syntax = {"<x> <y> <z>", "<entity>"},
 	help = "Commands/goto")
-public class GoToCmd extends Cmd
+public final class GoToCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws CmdError

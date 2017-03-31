@@ -17,7 +17,7 @@ import net.wurstclient.utils.MiscUtils;
 	name = "spammer",
 	syntax = {"delay <delay_in_ms>", "spam <file>"},
 	help = "Commands/spammer")
-public class SpammerCmd extends Cmd
+public final class SpammerCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws CmdError

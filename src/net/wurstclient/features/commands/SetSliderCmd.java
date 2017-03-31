@@ -20,7 +20,7 @@ import net.wurstclient.utils.MiscUtils;
 	name = "setslider",
 	syntax = {"<feature> <slider_setting> (<value>|more|less)"},
 	help = "Commands/setslider")
-public class SetSliderCmd extends Cmd
+public final class SetSliderCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws CmdError

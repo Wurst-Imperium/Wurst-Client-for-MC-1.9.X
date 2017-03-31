@@ -19,7 +19,7 @@ import net.wurstclient.settings.Setting;
 	name = "setcheckbox",
 	syntax = {"<feature> <checkbox_setting> (on|off|toggle)"},
 	help = "Commands/setcheckbox")
-public class SetCheckboxCmd extends Cmd
+public final class SetCheckboxCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws CmdError

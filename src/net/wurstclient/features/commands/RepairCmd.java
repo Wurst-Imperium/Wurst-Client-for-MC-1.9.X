@@ -16,7 +16,7 @@ import net.wurstclient.events.ChatOutputEvent;
 	name = "repair",
 	syntax = {},
 	help = "Commands/repair")
-public class RepairCmd extends Cmd
+public final class RepairCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws CmdError

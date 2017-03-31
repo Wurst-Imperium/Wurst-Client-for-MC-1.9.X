@@ -14,7 +14,7 @@ import net.wurstclient.utils.EntityUtils;
 	name = "follow",
 	syntax = {"[<entity>]"},
 	help = "Commands/follow")
-public class FollowCmd extends Cmd
+public final class FollowCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws CmdError

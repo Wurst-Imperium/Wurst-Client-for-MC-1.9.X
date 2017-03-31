@@ -18,7 +18,7 @@ import net.wurstclient.utils.ChatUtils;
 	name = "copyitem",
 	syntax = {"<player> (hand|head|chest|legs|feet)"},
 	help = "Commands/copyitem")
-public class CopyItemCmd extends Cmd
+public final class CopyItemCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws CmdError

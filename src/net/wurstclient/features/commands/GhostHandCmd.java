@@ -15,7 +15,7 @@ import net.wurstclient.utils.MiscUtils;
 	name = "ghosthand",
 	syntax = {"id <block_id>", "name <block_name>"},
 	help = "Commands/ghosthand")
-public class GhostHandCmd extends Cmd
+public final class GhostHandCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws CmdError

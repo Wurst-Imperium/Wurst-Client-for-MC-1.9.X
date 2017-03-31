@@ -14,7 +14,7 @@ import net.wurstclient.features.mods.RemoteViewMod;
 	name = "rv",
 	syntax = {"[<Player>]"},
 	help = "Commands/rv")
-public class RvCmd extends Cmd
+public final class RvCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws CmdError

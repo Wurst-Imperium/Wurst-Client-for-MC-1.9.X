@@ -13,7 +13,7 @@ import net.wurstclient.events.ChatOutputEvent;
 	name = "nothing",
 	syntax = {},
 	help = "Commands/nothing")
-public class NothingCmd extends Cmd
+public final class NothingCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws CmdError

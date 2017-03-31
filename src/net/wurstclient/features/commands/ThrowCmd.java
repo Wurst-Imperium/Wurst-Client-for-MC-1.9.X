@@ -14,7 +14,7 @@ import net.wurstclient.utils.MiscUtils;
 	name = "throw",
 	syntax = {"[amount <amount>]"},
 	help = "Commands/throw")
-public class ThrowCmd extends Cmd
+public final class ThrowCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws CmdError

@@ -11,7 +11,7 @@ package net.wurstclient.features.commands;
 	name = "clear",
 	syntax = {},
 	help = "Commands/clear")
-public class ClearCmd extends Cmd
+public final class ClearCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws CmdError

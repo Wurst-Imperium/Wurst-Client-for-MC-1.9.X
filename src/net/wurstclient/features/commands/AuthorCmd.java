@@ -15,7 +15,7 @@ import net.minecraft.nbt.NBTTagString;
 	name = "author",
 	syntax = {"<author>"},
 	help = "Commands/author")
-public class AuthorCmd extends Cmd
+public final class AuthorCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws Cmd.CmdError

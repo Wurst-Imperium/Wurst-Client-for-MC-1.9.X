@@ -16,7 +16,7 @@ import net.wurstclient.utils.MiscUtils;
 	name = "vclip",
 	syntax = {"<height>"},
 	help = "Commands/vclip")
-public class VClipCmd extends Cmd
+public final class VClipCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws CmdError

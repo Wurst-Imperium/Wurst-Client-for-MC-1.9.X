@@ -17,7 +17,7 @@ import net.wurstclient.utils.ChatUtils;
 	name = "enchant",
 	syntax = {"[all]"},
 	help = "Commands/enchant")
-public class EnchantCmd extends Cmd
+public final class EnchantCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws CmdError

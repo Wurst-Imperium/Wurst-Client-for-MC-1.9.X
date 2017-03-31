@@ -18,7 +18,7 @@ import net.wurstclient.utils.MiscUtils;
 	name = "binds",
 	syntax = {"[<page>]"},
 	help = "Commands/binds")
-public class BindsCmd extends Cmd
+public final class BindsCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws CmdError

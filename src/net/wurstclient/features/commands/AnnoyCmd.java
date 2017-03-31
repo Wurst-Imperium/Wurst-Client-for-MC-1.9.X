@@ -15,7 +15,7 @@ import net.wurstclient.utils.ChatUtils;
 	name = "annoy",
 	syntax = {"[<player>]"},
 	help = "Commands/annoy")
-public class AnnoyCmd extends Cmd implements ChatInputListener
+public final class AnnoyCmd extends Cmd implements ChatInputListener
 {
 	private boolean toggled;
 	private String name;

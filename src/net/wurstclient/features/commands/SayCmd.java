@@ -15,7 +15,7 @@ import net.minecraft.network.play.client.CPacketChatMessage;
 	syntax = {"<message>"},
 	tags = ".legit, dots in chat, command bypass, prefix",
 	help = "Commands/say")
-public class SayCmd extends Cmd
+public final class SayCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws CmdError

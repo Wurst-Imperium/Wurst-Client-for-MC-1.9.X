@@ -19,7 +19,7 @@ import net.wurstclient.utils.ChatUtils;
 	name = "ip",
 	syntax = {"[copy]"},
 	help = "Commands/ip")
-public class IpCmd extends Cmd
+public final class IpCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws CmdError

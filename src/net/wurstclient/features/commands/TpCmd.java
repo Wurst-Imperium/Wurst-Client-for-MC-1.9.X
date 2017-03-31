@@ -12,7 +12,7 @@ package net.wurstclient.features.commands;
 	name = "tp",
 	syntax = {"<x> <y> <z>", "<entity>"},
 	help = "Commands/tp")
-public class TpCmd extends Cmd
+public final class TpCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws CmdError

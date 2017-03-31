@@ -21,7 +21,7 @@ import net.wurstclient.utils.MiscUtils;
 	syntax = {"add <nbt>", "remove <nbt_path>", "set <nbt>",
 		"metadata <value>"},
 	help = "Commands/modify")
-public class ModifyCmd extends Cmd
+public final class ModifyCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws CmdError

@@ -16,7 +16,7 @@ import net.wurstclient.utils.ChatUtils;
 	name = "sv",
 	syntax = {},
 	help = "Commands/sv")
-public class SvCmd extends Cmd
+public final class SvCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws CmdError

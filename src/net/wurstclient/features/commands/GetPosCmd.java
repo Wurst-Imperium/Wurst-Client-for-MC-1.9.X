@@ -19,7 +19,7 @@ import net.wurstclient.utils.ChatUtils;
 	name = "getpos",
 	syntax = {"[copy]"},
 	help = "Commands/getpos")
-public class GetPosCmd extends Cmd
+public final class GetPosCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws CmdError

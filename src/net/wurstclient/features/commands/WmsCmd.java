@@ -13,7 +13,7 @@ import net.wurstclient.utils.ChatUtils;
 	name = "wms",
 	syntax = {"(on | off)", "echo <message>"},
 	help = "Commands/wms")
-public class WmsCmd extends Cmd
+public final class WmsCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws CmdError

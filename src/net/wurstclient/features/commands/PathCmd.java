@@ -19,7 +19,7 @@ import net.wurstclient.utils.RenderUtils;
 	name = "path",
 	syntax = {"<x> <y> <z>", "<entity>"},
 	help = "Commands/path")
-public class PathCmd extends Cmd implements RenderListener
+public final class PathCmd extends Cmd implements RenderListener
 {
 	private PathPoint path;
 	private boolean enabled;

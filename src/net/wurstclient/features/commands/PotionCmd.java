@@ -24,7 +24,7 @@ import net.wurstclient.utils.MiscUtils;
 	syntax = {"add (<effect> <amplifier> <duration>)...",
 		"set (<effect> <amplifier> <duration>)...", "remove <effect>"},
 	help = "Commands/potion")
-public class PotionCmd extends Cmd
+public final class PotionCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws CmdError

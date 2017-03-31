@@ -20,7 +20,7 @@ import net.wurstclient.utils.ChatUtils;
 	name = "addalt",
 	syntax = {"<player>", "all"},
 	help = "Commands/addalt")
-public class AddAltCmd extends Cmd
+public final class AddAltCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws CmdError

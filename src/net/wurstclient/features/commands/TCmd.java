@@ -13,7 +13,7 @@ import net.wurstclient.features.mods.Mod;
 	name = "t",
 	syntax = {"<mod> [(on|off)]"},
 	help = "Commands/t")
-public class TCmd extends Cmd
+public final class TCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws CmdError

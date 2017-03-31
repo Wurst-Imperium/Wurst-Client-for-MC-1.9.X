@@ -12,7 +12,7 @@ package net.wurstclient.features.commands;
 	name = "gm",
 	syntax = {"<gamemode>"},
 	help = "Commands/gm")
-public class GmCmd extends Cmd
+public final class GmCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws CmdError

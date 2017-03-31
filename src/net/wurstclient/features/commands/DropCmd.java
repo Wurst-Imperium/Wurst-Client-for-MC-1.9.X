@@ -20,7 +20,7 @@ import net.wurstclient.features.special_features.YesCheatSpf.BypassLevel;
 	name = "drop",
 	syntax = {"[infinite]"},
 	help = "Commands/drop")
-public class DropCmd extends Cmd implements UpdateListener
+public final class DropCmd extends Cmd implements UpdateListener
 {
 	private int timer;
 	private int counter;
