@@ -1,6 +1,6 @@
-From bde68c4d3ec114fc63faa36023de80d958a0450c Mon Sep 17 00:00:00 2001
+From 1e78a859c3cdd8632c5c220c7afcaee9408c3760 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Fri, 31 Mar 2017 16:12:46 +0200
+Date: Fri, 31 Mar 2017 16:50:34 +0200
 Subject: [PATCH] mod
 
 ---
@@ -2854,7 +2854,7 @@ index 628f4dd..e08a1ee 100644
              this.renderQuadsSmooth(worldIn, stateIn, posIn, buffer, list1, afloat, bitset, blockmodelrenderer$ambientocclusionface);
              flag = true;
 diff --git a/net/minecraft/client/renderer/EntityRenderer.java b/net/minecraft/client/renderer/EntityRenderer.java
-index e8fdae5..588bd7b 100644
+index e8fdae5..161e855 100644
 --- a/net/minecraft/client/renderer/EntityRenderer.java
 +++ b/net/minecraft/client/renderer/EntityRenderer.java
 @@ -3,6 +3,7 @@ package net.minecraft.client.renderer;
@@ -2976,7 +2976,7 @@ index e8fdae5..588bd7b 100644
          this.mc.mcProfiler.endStartSection("hand");
  
 +		// TODO: Client
-+		WurstClient.INSTANCE.events.fire(RenderEvent.INSTANCE);
++		WurstClient.INSTANCE.events.fire(new RenderEvent(partialTicks));
 +
          if (this.renderHand)
          {
