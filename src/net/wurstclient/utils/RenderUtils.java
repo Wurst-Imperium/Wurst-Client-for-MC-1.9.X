@@ -11,10 +11,10 @@ import static org.lwjgl.opengl.GL11.*;
 
 import java.awt.Color;
 
-import org.darkstorm.minecraft.gui.util.RenderUtil;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
@@ -93,7 +93,7 @@ public class RenderUtils
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL11.glDisable(GL_DEPTH_TEST);
 		GL11.glDepthMask(false);
-		RenderUtil.setColor(color);
+		RenderUtils.setColor(color);
 		RenderGlobal
 			.drawSelectionBoundingBox(new AxisAlignedBB(x, y, z, x2, y2, z2));
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
@@ -471,7 +471,7 @@ public class RenderUtils
 		glDisable(GL11.GL_TEXTURE_2D);
 		glDisable(GL_DEPTH_TEST);
 		glDepthMask(false);
-		RenderUtil.setColor(color);
+		RenderUtils.setColor(color);
 		glBegin(GL_LINES);
 		{
 			glVertex3d(0, Minecraft.getMinecraft().thePlayer.getEyeHeight(), 0);
@@ -495,7 +495,7 @@ public class RenderUtils
 		glDisable(GL11.GL_TEXTURE_2D);
 		glDisable(GL_DEPTH_TEST);
 		glDepthMask(false);
-		RenderUtil.setColor(color);
+		RenderUtils.setColor(color);
 		glBegin(GL_LINES);
 		{
 			glVertex3d(0, Minecraft.getMinecraft().thePlayer.getEyeHeight(), 0);
@@ -506,5 +506,22 @@ public class RenderUtils
 		glEnable(GL_DEPTH_TEST);
 		glDepthMask(true);
 		glDisable(GL_BLEND);
+	}
+	
+	public static void scissorBox(int x, int y, int xend, int yend)
+	{
+		int width = xend - x;
+		int height = yend - y;
+		ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
+		int factor = sr.getScaleFactor();
+		int bottomY = Minecraft.getMinecraft().currentScreen.height - yend;
+		glScissor(x * factor, bottomY * factor, width * factor,
+			height * factor);
+	}
+	
+	public static void setColor(Color c)
+	{
+		glColor4f(c.getRed() / 255f, c.getGreen() / 255f, c.getBlue() / 255f,
+			c.getAlpha() / 255f);
 	}
 }

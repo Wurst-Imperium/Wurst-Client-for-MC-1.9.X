@@ -12,7 +12,6 @@ import static org.lwjgl.opengl.GL11.*;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
-import org.darkstorm.minecraft.gui.util.RenderUtil;
 import org.lwjgl.input.Keyboard;
 
 import net.minecraft.client.gui.GuiScreen;
@@ -22,6 +21,7 @@ import net.wurstclient.features.Feature;
 import net.wurstclient.font.Fonts;
 import net.wurstclient.navigator.Navigator;
 import net.wurstclient.utils.MiscUtils;
+import net.wurstclient.utils.RenderUtils;
 
 public class NavigatorMainScreen extends NavigatorScreen
 {
@@ -174,7 +174,7 @@ public class NavigatorMainScreen extends NavigatorScreen
 		int x = middleX - 50;
 		if(clickTimerNotRunning)
 			hoveredItem = -1;
-		RenderUtil.scissorBox(0, 59, width, height - 42);
+		RenderUtils.scissorBox(0, 59, width, height - 42);
 		glEnable(GL_SCISSOR_TEST);
 		for(int i = Math.max(-scroll * 3 / 20 - 3, 0); i < navigatorDisplayList
 			.size(); i++)

@@ -7,12 +7,7 @@
  */
 package net.wurstclient.features.mods;
 
-import static org.lwjgl.opengl.GL11.*;
-
-import java.awt.Color;
-
-import org.darkstorm.minecraft.gui.theme.wurst.WurstTheme;
-import org.darkstorm.minecraft.gui.util.RenderUtil;
+import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.Entity;
@@ -24,6 +19,7 @@ import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
 import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
+import net.wurstclient.font.Fonts;
 import net.wurstclient.utils.EntityUtils;
 import net.wurstclient.utils.RenderUtils;
 
@@ -65,39 +61,49 @@ public class BowAimbotMod extends Mod
 	@Override
 	public void onRenderGUI()
 	{
-		if(target == null || velocity < 0.1)
+		if(target == null)
 			return;
-		glEnable(GL_BLEND);
-		glDisable(GL_CULL_FACE);
-		glDisable(GL_TEXTURE_2D);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		RenderUtil.setColor(new Color(8, 8, 8, 128));
+		
+		// GL settings
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		GL11.glDisable(GL11.GL_CULL_FACE);
+		
+		GL11.glPushMatrix();
+		
+		String message;
+		if(velocity < 1)
+			message = "Charging: " + (int)(velocity * 100) + "%";
+		else
+			message = "Ready To Shoot";
+		
+		// translate to center
 		ScaledResolution sr = new ScaledResolution(mc);
-		int width = sr.getScaledWidth();
-		int height = sr.getScaledHeight();
-		String targetLocked = "Target locked";
-		glBegin(GL_QUADS);
+		int msgWidth = Fonts.segoe15.getStringWidth(message);
+		GL11.glTranslated(sr.getScaledWidth() / 2 - msgWidth / 2,
+			sr.getScaledHeight() / 2 + 1, 0);
+		
+		// background
+		GL11.glColor4f(0, 0, 0, 0.5F);
+		GL11.glBegin(GL11.GL_QUADS);
 		{
-			glVertex2d(width / 2 + 1, height / 2 + 1);
-			glVertex2d(width / 2 + ((WurstTheme)wurst.gui.getTheme())
-				.getFontRenderer().getStringWidth(targetLocked) + 4,
-				height / 2 + 1);
-			glVertex2d(
-				width / 2 + ((WurstTheme)wurst.gui.getTheme()).getFontRenderer()
-					.getStringWidth(targetLocked) + 4,
-				height / 2 + ((WurstTheme)wurst.gui.getTheme())
-					.getFontRenderer().FONT_HEIGHT);
-			glVertex2d(width / 2 + 1,
-				height / 2 + ((WurstTheme)wurst.gui.getTheme())
-					.getFontRenderer().FONT_HEIGHT);
+			GL11.glVertex2d(0, 0);
+			GL11.glVertex2d(msgWidth + 3, 0);
+			GL11.glVertex2d(msgWidth + 3, 10);
+			GL11.glVertex2d(0, 10);
 		}
-		glEnd();
-		glEnable(GL_TEXTURE_2D);
-		((WurstTheme)wurst.gui.getTheme()).getFontRenderer()
-			.drawStringWithShadow(targetLocked, width / 2 + 2, height / 2,
-				RenderUtil.toRGBA(Color.WHITE));
-		glEnable(GL_CULL_FACE);
-		glDisable(GL_BLEND);
+		GL11.glEnd();
+		
+		// text
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		Fonts.segoe15.drawString(message, 2, -1, 0xffffffff);
+		
+		GL11.glPopMatrix();
+		
+		// GL resets
+		GL11.glEnable(GL11.GL_CULL_FACE);
+		GL11.glDisable(GL11.GL_BLEND);
 	}
 	
 	@Override

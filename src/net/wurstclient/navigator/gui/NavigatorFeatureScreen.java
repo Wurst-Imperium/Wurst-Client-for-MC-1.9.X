@@ -18,8 +18,6 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import org.darkstorm.minecraft.gui.util.RenderUtil;
-
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.init.SoundEvents;
@@ -31,6 +29,7 @@ import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.Setting;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.utils.MiscUtils;
+import net.wurstclient.utils.RenderUtils;
 
 public class NavigatorFeatureScreen extends NavigatorScreen
 {
@@ -329,7 +328,7 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 		int bgy2 = height - 43;
 		
 		// scissor box
-		RenderUtil.scissorBox(bgx1, bgy1, bgx2,
+		RenderUtils.scissorBox(bgx1, bgy1, bgx2,
 			bgy2 - (buttonList.isEmpty() ? 0 : 24));
 		glEnable(GL_SCISSOR_TEST);
 		

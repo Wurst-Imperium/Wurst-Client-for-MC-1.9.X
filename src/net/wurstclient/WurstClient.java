@@ -7,8 +7,6 @@
  */
 package net.wurstclient;
 
-import org.darkstorm.minecraft.gui.theme.wurst.WurstTheme;
-
 import net.wurstclient.analytics.AnalyticsManager;
 import net.wurstclient.events.EventManager;
 import net.wurstclient.features.commands.CmdManager;
@@ -16,7 +14,6 @@ import net.wurstclient.features.mods.ModManager;
 import net.wurstclient.features.special_features.SpfManager;
 import net.wurstclient.files.FileManager;
 import net.wurstclient.font.Fonts;
-import net.wurstclient.gui.GuiManager;
 import net.wurstclient.hooks.FrameHook;
 import net.wurstclient.navigator.Navigator;
 import net.wurstclient.options.FriendsList;
@@ -36,7 +33,6 @@ public enum WurstClient
 	public EventManager events;
 	public FileManager files;
 	public FriendsList friends;
-	public GuiManager gui;
 	public ModManager mods;
 	public Navigator navigator;
 	public KeybindManager keybinds;
@@ -48,7 +44,6 @@ public enum WurstClient
 	{
 		events = new EventManager();
 		mods = new ModManager();
-		gui = new GuiManager();
 		commands = new CmdManager();
 		special = new SpfManager();
 		files = new FileManager();
@@ -61,8 +56,6 @@ public enum WurstClient
 		files.init();
 		navigator.sortFeatures();
 		Fonts.loadFonts();
-		gui.setTheme(new WurstTheme());
-		gui.setup();
 		updater.checkForUpdate();
 		analytics =
 			new AnalyticsManager("UA-52838431-5", "client.wurst-client.tk");

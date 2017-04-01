@@ -16,7 +16,6 @@ import static org.lwjgl.opengl.GL11.glEnable;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.darkstorm.minecraft.gui.util.RenderUtil;
 import org.lwjgl.input.Keyboard;
 
 import net.minecraft.client.gui.GuiButton;
@@ -24,6 +23,7 @@ import net.wurstclient.WurstClient;
 import net.wurstclient.font.Fonts;
 import net.wurstclient.navigator.PossibleKeybind;
 import net.wurstclient.options.KeybindManager;
+import net.wurstclient.utils.RenderUtils;
 
 public class NavigatorNewKeybindScreen extends NavigatorScreen
 {
@@ -169,7 +169,7 @@ public class NavigatorNewKeybindScreen extends NavigatorScreen
 		int bgy2 = height - 43;
 		
 		// scissor box
-		RenderUtil.scissorBox(bgx1, bgy1, bgx2,
+		RenderUtils.scissorBox(bgx1, bgy1, bgx2,
 			bgy2 - (buttonList.isEmpty() ? 0 : 24));
 		glEnable(GL_SCISSOR_TEST);
 		

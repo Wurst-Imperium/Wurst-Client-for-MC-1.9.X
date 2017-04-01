@@ -12,9 +12,6 @@ import static org.lwjgl.opengl.GL11.*;
 import java.awt.Color;
 import java.util.LinkedList;
 
-import org.darkstorm.minecraft.gui.component.Frame;
-import org.darkstorm.minecraft.gui.util.GuiManagerDisplayScreen;
-import org.darkstorm.minecraft.gui.util.RenderUtil;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
@@ -26,6 +23,7 @@ import net.wurstclient.WurstClient;
 import net.wurstclient.events.GUIRenderEvent;
 import net.wurstclient.features.mods.Mod;
 import net.wurstclient.font.Fonts;
+import net.wurstclient.utils.RenderUtils;
 
 public class UIRenderer
 {
@@ -74,7 +72,7 @@ public class UIRenderer
 		glDisable(GL_CULL_FACE);
 		glDisable(GL_TEXTURE_2D);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		RenderUtil.setColor(new Color(255, 255, 255, 128));
+		RenderUtils.setColor(new Color(255, 255, 255, 128));
 		
 		// get version string
 		String version = "v" + WurstClient.VERSION
@@ -99,7 +97,6 @@ public class UIRenderer
 		
 		// mod list & pinned frames
 		renderModList();
-		UIRenderer.renderPinnedFrames();
 		
 		// Wurst logo
 		OpenGlHelper.glBlendFunc(770, 771, 1, 0);
@@ -127,13 +124,5 @@ public class UIRenderer
 		// is this needed?
 		GL11.glPushMatrix();
 		GL11.glPopMatrix();
-	}
-	
-	public static void renderPinnedFrames()
-	{
-		for(Frame moduleFrame : WurstClient.INSTANCE.gui.getFrames())
-			if(moduleFrame.isPinned() && !(Minecraft
-				.getMinecraft().currentScreen instanceof GuiManagerDisplayScreen))
-				moduleFrame.render();
 	}
 }
