@@ -64,7 +64,7 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 			break;
 			case 1:
 			MiscUtils.openLink(
-				"https://www.wurst-client.tk/wiki/" + item.getHelpPage() + "/");
+				"https://www.wurstclient.net/wiki/" + item.getHelpPage() + "/");
 			wurst.navigator.analytics.trackEvent("help", "open",
 				item.getName());
 			break;

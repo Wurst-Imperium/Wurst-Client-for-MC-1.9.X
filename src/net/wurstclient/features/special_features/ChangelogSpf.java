@@ -23,6 +23,6 @@ public class ChangelogSpf extends Spf
 	@Override
 	public void doPrimaryAction()
 	{
-		MiscUtils.openLink("https://www.wurst-client.tk/changelog/");
+		MiscUtils.openLink("https://www.wurstclient.net/changelog/");
 	}
 }

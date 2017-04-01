@@ -187,21 +187,21 @@ public class GuiWurstOptions extends GuiScreen
 				
 			}else if(clickedButton.id == 11)
 			{
-				MiscUtils.openLink("https://www.wurst-client.tk/");
+				MiscUtils.openLink("https://www.wurstclient.net/");
 				WurstClient.INSTANCE.analytics.trackEvent("options",
 					"wurst website");
 			}else if(clickedButton.id == 12)
 			{
-				MiscUtils.openLink("https://www.wurst-client.tk/youtube/");
+				MiscUtils.openLink("https://www.wurstclient.net/youtube/");
 				WurstClient.INSTANCE.analytics.trackEvent("options",
 					"youtube channel");
 			}else if(clickedButton.id == 13)
 			{
-				MiscUtils.openLink("https://www.wurst-client.tk/twitter/");
+				MiscUtils.openLink("https://www.wurstclient.net/twitter/");
 				WurstClient.INSTANCE.analytics.trackEvent("options", "twitter");
 			}else if(clickedButton.id == 14)
 			{
-				MiscUtils.openLink("https://www.wurst-client.tk/bugs/");
+				MiscUtils.openLink("https://www.wurstclient.net/bugs/");
 				WurstClient.INSTANCE.analytics.trackEvent("options",
 					"bug tracker");
 			}else if(clickedButton.id == 15)

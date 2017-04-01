@@ -19,6 +19,6 @@ public class SpamException extends Exception
 	
 	public String getHelp()
 	{
-		return "<html><center>Error! No help available.<br>Please report this at <a href=\"\">wurst-client.tk/bugs</a>!";
+		return "<html><center>Error! No help available.<br>Please report this at <a href=\"\">wurstclient.net/bugs</a>!";
 	}
 }

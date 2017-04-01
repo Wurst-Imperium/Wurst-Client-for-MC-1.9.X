@@ -52,7 +52,7 @@ public class GuiWurstMainMenu extends GuiMainMenu
 	
 	private String noticeText = "Wurst for Minecraft 1.10 is now available.";
 	private String noticeLink =
-		"https://www.wurst-client.tk/news/2016-07-15-Wurst-4.0-for-Minecraft-1.10";
+		"https://www.wurstclient.net/news/2016-07-15-Wurst-4.0-for-Minecraft-1.10";
 	
 	private int noticeWidth2;
 	private int noticeWidth1;
@@ -179,7 +179,7 @@ public class GuiWurstMainMenu extends GuiMainMenu
 					"go play");
 			else
 			{
-				MiscUtils.openLink("https://www.wurst-client.tk/changelog/");
+				MiscUtils.openLink("https://www.wurstclient.net/changelog/");
 				WurstClient.INSTANCE.analytics.trackEvent("changelog",
 					"view changelog");
 			}

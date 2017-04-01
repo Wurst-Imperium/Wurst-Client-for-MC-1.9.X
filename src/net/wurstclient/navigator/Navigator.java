@@ -26,7 +26,7 @@ public class Navigator
 	private ArrayList<Feature> navigatorList = new ArrayList<>();
 	private final HashMap<String, Long> preferences = new HashMap<>();
 	public AnalyticsManager analytics = new AnalyticsManager("UA-52838431-7",
-		"navigator.client.wurst-client.tk");
+		"navigator.client.wurstclient.net");
 	
 	public Navigator()
 	{

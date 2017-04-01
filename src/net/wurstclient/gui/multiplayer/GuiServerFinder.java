@@ -229,7 +229,7 @@ public class GuiServerFinder extends GuiScreen
 				}
 			}else if(clickedButton.id == 1)
 				MiscUtils.openLink(
-					"https://www.wurst-client.tk/wiki/Special_Features/Server_Finder/");
+					"https://www.wurstclient.net/wiki/Special_Features/Server_Finder/");
 			else if(clickedButton.id == 2)
 				mc.displayGuiScreen(prevMenu);
 	}

@@ -47,8 +47,8 @@ public class CrashChestMod extends Mod
 		NBTTagList nbtList = new NBTTagList();
 		for(int i = 0; i < 40000; i++)
 			nbtList.appendTag(new NBTTagList());
-		nbtTagCompound.setTag("www.wurst-client.tk", nbtList);
-		stack.setTagInfo("www.wurst-client.tk", nbtTagCompound);
+		nbtTagCompound.setTag("www.wurstclient.net", nbtList);
+		stack.setTagInfo("www.wurstclient.net", nbtTagCompound);
 		mc.thePlayer.inventory.armorInventory[0] = stack;
 		stack.setStackDisplayName("§6§lCOPY ME");
 		ChatUtils.message("A CrashChest was placed in your shoes slot.");
