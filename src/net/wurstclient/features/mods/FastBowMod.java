@@ -15,6 +15,7 @@ import net.minecraft.network.play.client.CPacketPlayerDigging.Action;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
 import net.wurstclient.features.mods.Mod.Bypasses;
@@ -45,26 +46,33 @@ public class FastBowMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		if(mc.thePlayer.getHealth() > 0 && (mc.thePlayer.onGround
-			|| Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode)
-			&& mc.thePlayer.inventory.getCurrentItem() != null
-			&& mc.thePlayer.inventory.getCurrentItem()
+		if(WMinecraft.getPlayer().getHealth() > 0
+			&& (WMinecraft.getPlayer().onGround
+				|| WMinecraft.getPlayer().capabilities.isCreativeMode)
+			&& WMinecraft.getPlayer().inventory.getCurrentItem() != null
+			&& WMinecraft.getPlayer().inventory.getCurrentItem()
 				.getItem() instanceof ItemBow
 			&& mc.gameSettings.keyBindUseItem.pressed)
 		{
-			mc.playerController.sendUseItem(mc.thePlayer, mc.theWorld,
-				mc.thePlayer.inventory.getCurrentItem(), EnumHand.MAIN_HAND);
-			mc.thePlayer.inventory.getCurrentItem().getItem().onItemRightClick(
-				mc.thePlayer.inventory.getCurrentItem(), mc.theWorld,
-				mc.thePlayer, EnumHand.MAIN_HAND);
+			mc.playerController.sendUseItem(WMinecraft.getPlayer(),
+				WMinecraft.getWorld(),
+				WMinecraft.getPlayer().inventory.getCurrentItem(),
+				EnumHand.MAIN_HAND);
+			WMinecraft.getPlayer().inventory.getCurrentItem().getItem()
+				.onItemRightClick(
+					WMinecraft.getPlayer().inventory.getCurrentItem(),
+					WMinecraft.getWorld(), WMinecraft.getPlayer(),
+					EnumHand.MAIN_HAND);
 			for(int i = 0; i < 20; i++)
-				mc.thePlayer.sendQueue.addToSendQueue(new CPacketPlayer(false));
+				WMinecraft.getPlayer().sendQueue
+					.addToSendQueue(new CPacketPlayer(false));
 			Minecraft.getMinecraft().getNetHandler().addToSendQueue(
 				new CPacketPlayerDigging(Action.RELEASE_USE_ITEM,
 					new BlockPos(0, 0, 0), EnumFacing.DOWN));
-			mc.thePlayer.inventory.getCurrentItem().getItem()
-				.onPlayerStoppedUsing(mc.thePlayer.inventory.getCurrentItem(),
-					mc.theWorld, mc.thePlayer, 10);
+			WMinecraft.getPlayer().inventory.getCurrentItem().getItem()
+				.onPlayerStoppedUsing(
+					WMinecraft.getPlayer().inventory.getCurrentItem(),
+					WMinecraft.getWorld(), WMinecraft.getPlayer(), 10);
 		}
 	}
 	

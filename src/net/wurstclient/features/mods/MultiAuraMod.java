@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumHand;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
 import net.wurstclient.features.mods.Mod.Bypasses;
@@ -117,15 +118,15 @@ public class MultiAuraMod extends Mod implements UpdateListener
 		updateMS();
 		EntityLivingBase closestEntity = EntityUtils.getClosestEntity(true, 360,
 			hitThroughWalls.isChecked());
-		if(closestEntity == null || mc.thePlayer
+		if(closestEntity == null || WMinecraft.getPlayer()
 			.getDistanceToEntity(closestEntity) > range.getValueF())
 		{
 			EntityUtils.lookChanged = false;
 			return;
 		}
 		EntityUtils.lookChanged = true;
-		if(useCooldown.isChecked() ? mc.thePlayer.getSwordCooldown(0F) >= 1F
-			: true)
+		if(useCooldown.isChecked()
+			? WMinecraft.getPlayer().getSwordCooldown(0F) >= 1F : true)
 		{
 			if(wurst.mods.autoSwordMod.isActive())
 				AutoSwordMod.setSlot();
@@ -138,8 +139,8 @@ public class MultiAuraMod extends Mod implements UpdateListener
 				EntityLivingBase en = entities.get(i);
 				EntityUtils.faceEntityPacket(en);
 				
-				mc.playerController.attackEntity(mc.thePlayer, en);
-				mc.thePlayer.swingArm(EnumHand.MAIN_HAND);
+				mc.playerController.attackEntity(WMinecraft.getPlayer(), en);
+				WMinecraft.getPlayer().swingArm(EnumHand.MAIN_HAND);
 			}
 			updateLastMS();
 		}

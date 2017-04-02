@@ -11,6 +11,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.LeftClickEvent;
 import net.wurstclient.events.listeners.LeftClickListener;
 import net.wurstclient.events.listeners.UpdateListener;
@@ -51,11 +52,12 @@ public class AutoToolMod extends Mod
 		if(!mc.gameSettings.keyBindAttack.pressed && isActive)
 		{
 			isActive = false;
-			mc.thePlayer.inventory.currentItem = oldSlot;
+			WMinecraft.getPlayer().inventory.currentItem = oldSlot;
 		}else if(isActive && mc.objectMouseOver != null
 			&& mc.objectMouseOver.getBlockPos() != null
-			&& mc.theWorld.getBlockState(mc.objectMouseOver.getBlockPos())
-				.getBlock().getMaterial(null) != Material.air)
+			&& WMinecraft.getWorld()
+				.getBlockState(mc.objectMouseOver.getBlockPos()).getBlock()
+				.getMaterial(null) != Material.air)
 			setSlot(mc.objectMouseOver.getBlockPos());
 	}
 	
@@ -65,7 +67,7 @@ public class AutoToolMod extends Mod
 		wurst.events.remove(LeftClickListener.class, this);
 		wurst.events.remove(UpdateListener.class, this);
 		isActive = false;
-		mc.thePlayer.inventory.currentItem = oldSlot;
+		WMinecraft.getPlayer().inventory.currentItem = oldSlot;
 	}
 	
 	@Override
@@ -74,11 +76,11 @@ public class AutoToolMod extends Mod
 		if(mc.objectMouseOver == null
 			|| mc.objectMouseOver.getBlockPos() == null)
 			return;
-		if(mc.theWorld.getBlockState(mc.objectMouseOver.getBlockPos())
+		if(WMinecraft.getWorld().getBlockState(mc.objectMouseOver.getBlockPos())
 			.getBlock().getMaterial(null) != Material.air)
 		{
 			isActive = true;
-			oldSlot = mc.thePlayer.inventory.currentItem;
+			oldSlot = WMinecraft.getPlayer().inventory.currentItem;
 			setSlot(mc.objectMouseOver.getBlockPos());
 		}
 	}
@@ -87,10 +89,10 @@ public class AutoToolMod extends Mod
 	{
 		float bestSpeed = 1F;
 		int bestSlot = -1;
-		IBlockState blockState = mc.theWorld.getBlockState(blockPos);
+		IBlockState blockState = WMinecraft.getWorld().getBlockState(blockPos);
 		for(int i = 0; i < 9; i++)
 		{
-			ItemStack item = mc.thePlayer.inventory.getStackInSlot(i);
+			ItemStack item = WMinecraft.getPlayer().inventory.getStackInSlot(i);
 			if(item == null)
 				continue;
 			float speed = item.getStrVsBlock(blockState);
@@ -101,6 +103,6 @@ public class AutoToolMod extends Mod
 			}
 		}
 		if(bestSlot != -1)
-			mc.thePlayer.inventory.currentItem = bestSlot;
+			WMinecraft.getPlayer().inventory.currentItem = bestSlot;
 	}
 }

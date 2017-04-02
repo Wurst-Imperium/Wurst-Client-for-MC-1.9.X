@@ -9,6 +9,7 @@ package net.wurstclient.features.mods;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumHand;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
 import net.wurstclient.features.mods.Mod.Category;
@@ -42,7 +43,8 @@ public class ProtectMod extends Mod implements UpdateListener
 	{
 		friend = null;
 		EntityLivingBase en = EntityUtils.getClosestEntity(false, 360, false);
-		if(en != null && mc.thePlayer.getDistanceToEntity(en) <= range)
+		if(en != null
+			&& WMinecraft.getPlayer().getDistanceToEntity(en) <= range)
 			friend = en;
 		wurst.events.add(UpdateListener.class, this);
 	}
@@ -51,7 +53,7 @@ public class ProtectMod extends Mod implements UpdateListener
 	public void onUpdate()
 	{
 		if(friend == null || friend.isDead || friend.getHealth() <= 0
-			|| mc.thePlayer.getHealth() <= 0)
+			|| WMinecraft.getPlayer().getHealth() <= 0)
 		{
 			friend = null;
 			enemy = null;
@@ -60,41 +62,44 @@ public class ProtectMod extends Mod implements UpdateListener
 		}
 		if(enemy != null && (enemy.getHealth() <= 0 || enemy.isDead))
 			enemy = null;
-		double xDistF = Math.abs(mc.thePlayer.posX - friend.posX);
-		double zDistF = Math.abs(mc.thePlayer.posZ - friend.posZ);
+		double xDistF = Math.abs(WMinecraft.getPlayer().posX - friend.posX);
+		double zDistF = Math.abs(WMinecraft.getPlayer().posZ - friend.posZ);
 		double xDistE = distanceE;
 		double zDistE = distanceE;
-		if(enemy != null && mc.thePlayer.getDistanceToEntity(enemy) <= range)
+		if(enemy != null
+			&& WMinecraft.getPlayer().getDistanceToEntity(enemy) <= range)
 		{
-			xDistE = Math.abs(mc.thePlayer.posX - enemy.posX);
-			zDistE = Math.abs(mc.thePlayer.posZ - enemy.posZ);
+			xDistE = Math.abs(WMinecraft.getPlayer().posX - enemy.posX);
+			zDistE = Math.abs(WMinecraft.getPlayer().posZ - enemy.posZ);
 		}else
 			EntityUtils.faceEntityClient(friend);
 		if((xDistF > distanceF || zDistF > distanceF)
 			&& (enemy == null
-				|| mc.thePlayer.getDistanceToEntity(enemy) > range)
+				|| WMinecraft.getPlayer().getDistanceToEntity(enemy) > range)
 			|| xDistE > distanceE || zDistE > distanceE)
 			mc.gameSettings.keyBindForward.pressed = true;
 		else
 			mc.gameSettings.keyBindForward.pressed = false;
-		if(mc.thePlayer.isCollidedHorizontally && mc.thePlayer.onGround)
-			mc.thePlayer.jump();
-		if(mc.thePlayer.isInWater() && mc.thePlayer.posY < friend.posY)
-			mc.thePlayer.motionY += 0.04;
+		if(WMinecraft.getPlayer().isCollidedHorizontally
+			&& WMinecraft.getPlayer().onGround)
+			WMinecraft.getPlayer().jump();
+		if(WMinecraft.getPlayer().isInWater()
+			&& WMinecraft.getPlayer().posY < friend.posY)
+			WMinecraft.getPlayer().motionY += 0.04;
 		updateMS();
 		if(hasTimePassedS(wurst.mods.killauraMod.speed.getValueF())
 			&& EntityUtils.getClosestEnemy(friend) != null)
 		{
 			enemy = EntityUtils.getClosestEnemy(friend);
-			if(mc.thePlayer.getDistanceToEntity(enemy) <= range)
+			if(WMinecraft.getPlayer().getDistanceToEntity(enemy) <= range)
 			{
 				if(wurst.mods.autoSwordMod.isActive())
 					AutoSwordMod.setSlot();
 				wurst.mods.criticalsMod.doCritical();
 				wurst.mods.blockHitMod.doBlock();
 				EntityUtils.faceEntityClient(enemy);
-				mc.thePlayer.swingArm(EnumHand.MAIN_HAND);
-				mc.playerController.attackEntity(mc.thePlayer, enemy);
+				WMinecraft.getPlayer().swingArm(EnumHand.MAIN_HAND);
+				mc.playerController.attackEntity(WMinecraft.getPlayer(), enemy);
 				updateLastMS();
 			}
 		}

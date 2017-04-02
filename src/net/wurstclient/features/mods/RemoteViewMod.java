@@ -9,9 +9,11 @@ package net.wurstclient.features.mods;
 
 import java.util.UUID;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.EntityLivingBase;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
 import net.wurstclient.features.mods.Mod.Category;
@@ -47,22 +49,22 @@ public class RemoteViewMod extends Mod implements UpdateListener
 			setEnabled(false);
 			return;
 		}
-		oldX = mc.thePlayer.posX;
-		oldY = mc.thePlayer.posY;
-		oldZ = mc.thePlayer.posZ;
-		oldYaw = mc.thePlayer.rotationYaw;
-		oldPitch = mc.thePlayer.rotationPitch;
-		mc.thePlayer.noClip = true;
+		oldX = WMinecraft.getPlayer().posX;
+		oldY = WMinecraft.getPlayer().posY;
+		oldZ = WMinecraft.getPlayer().posZ;
+		oldYaw = WMinecraft.getPlayer().rotationYaw;
+		oldPitch = WMinecraft.getPlayer().rotationPitch;
+		WMinecraft.getPlayer().noClip = true;
 		if(otherID == null)
 			otherID = EntityUtils.getClosestEntityRaw(false).getUniqueID();
 		otherView = EntityUtils.searchEntityByIdRaw(otherID);
-		wasInvisible = otherView.isInvisibleToPlayer(mc.thePlayer);
-		EntityOtherPlayerMP fakePlayer =
-			new EntityOtherPlayerMP(mc.theWorld, mc.thePlayer.getGameProfile());
-		fakePlayer.clonePlayer(mc.thePlayer, true);
-		fakePlayer.copyLocationAndAnglesFrom(mc.thePlayer);
-		fakePlayer.rotationYawHead = mc.thePlayer.rotationYawHead;
-		mc.theWorld.addEntityToWorld(-69, fakePlayer);
+		wasInvisible = otherView.isInvisibleToPlayer(WMinecraft.getPlayer());
+		EntityOtherPlayerMP fakePlayer = new EntityOtherPlayerMP(
+			WMinecraft.getWorld(), WMinecraft.getPlayer().getGameProfile());
+		fakePlayer.clonePlayer(WMinecraft.getPlayer(), true);
+		fakePlayer.copyLocationAndAnglesFrom(WMinecraft.getPlayer());
+		fakePlayer.rotationYawHead = WMinecraft.getPlayer().rotationYawHead;
+		WMinecraft.getWorld().addEntityToWorld(-69, fakePlayer);
 		ChatUtils.message("Now viewing " + otherView.getName() + ".");
 		wurst.events.add(UpdateListener.class, this);
 	}
@@ -89,13 +91,13 @@ public class RemoteViewMod extends Mod implements UpdateListener
 			setEnabled(false);
 			return;
 		}
-		newView = mc.thePlayer;
+		newView = WMinecraft.getPlayer();
 		otherView = EntityUtils.searchEntityByIdRaw(otherID);
 		newView.copyLocationAndAnglesFrom(otherView);
-		mc.thePlayer.motionX = 0;
-		mc.thePlayer.motionY = 0;
-		mc.thePlayer.motionZ = 0;
-		mc.thePlayer = newView;
+		WMinecraft.getPlayer().motionX = 0;
+		WMinecraft.getPlayer().motionY = 0;
+		WMinecraft.getPlayer().motionZ = 0;
+		Minecraft.getMinecraft().thePlayer = newView;
 		otherView.setInvisible(true);
 	}
 	
@@ -107,10 +109,10 @@ public class RemoteViewMod extends Mod implements UpdateListener
 		{
 			ChatUtils.message("No longer viewing " + otherView.getName() + ".");
 			otherView.setInvisible(wasInvisible);
-			mc.thePlayer.noClip = false;
-			mc.thePlayer.setPositionAndRotation(oldX, oldY, oldZ, oldYaw,
-				oldPitch);
-			mc.theWorld.removeEntityFromWorld(-69);
+			WMinecraft.getPlayer().noClip = false;
+			WMinecraft.getPlayer().setPositionAndRotation(oldX, oldY, oldZ,
+				oldYaw, oldPitch);
+			WMinecraft.getWorld().removeEntityFromWorld(-69);
 		}
 		newView = null;
 		otherView = null;

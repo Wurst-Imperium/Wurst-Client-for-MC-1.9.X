@@ -8,6 +8,7 @@
 package net.wurstclient.features.commands;
 
 import net.minecraft.item.ItemStack;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.utils.ChatUtils;
 
 @Cmd.Info(
@@ -20,7 +21,7 @@ public final class RenameCmd extends Cmd
 	@Override
 	public void execute(String[] args) throws CmdError
 	{
-		if(!mc.thePlayer.capabilities.isCreativeMode)
+		if(!WMinecraft.getPlayer().capabilities.isCreativeMode)
 			error("Creative mode only.");
 		if(args.length == 0)
 			syntaxError();
@@ -28,7 +29,7 @@ public final class RenameCmd extends Cmd
 		for(int i = 1; i < args.length; i++)
 			message += " " + args[i];
 		message = message.replace("$", "§").replace("§§", "$");
-		ItemStack item = mc.thePlayer.inventory.getCurrentItem();
+		ItemStack item = WMinecraft.getPlayer().inventory.getCurrentItem();
 		if(item == null)
 			error("There is no item in your hand.");
 		item.setStackDisplayName(message);

@@ -9,6 +9,7 @@ package net.wurstclient.features.mods;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumHand;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
 import net.wurstclient.features.mods.Mod.Category;
@@ -41,26 +42,28 @@ public class FightBotMod extends Mod implements UpdateListener
 		if(entity == null)
 			return;
 		if(entity.getHealth() <= 0 || entity.isDead
-			|| mc.thePlayer.getHealth() <= 0)
+			|| WMinecraft.getPlayer().getHealth() <= 0)
 		{
 			entity = null;
 			mc.gameSettings.keyBindForward.pressed = false;
 			return;
 		}
-		double xDist = Math.abs(mc.thePlayer.posX - entity.posX);
-		double zDist = Math.abs(mc.thePlayer.posZ - entity.posZ);
+		double xDist = Math.abs(WMinecraft.getPlayer().posX - entity.posX);
+		double zDist = Math.abs(WMinecraft.getPlayer().posZ - entity.posZ);
 		EntityUtils.faceEntityClient(entity);
 		if(xDist > distance || zDist > distance)
 			mc.gameSettings.keyBindForward.pressed = true;
 		else
 			mc.gameSettings.keyBindForward.pressed = false;
-		if(mc.thePlayer.isCollidedHorizontally && mc.thePlayer.onGround)
-			mc.thePlayer.jump();
-		if(mc.thePlayer.isInWater() && mc.thePlayer.posY < entity.posY)
-			mc.thePlayer.motionY += 0.04;
+		if(WMinecraft.getPlayer().isCollidedHorizontally
+			&& WMinecraft.getPlayer().onGround)
+			WMinecraft.getPlayer().jump();
+		if(WMinecraft.getPlayer().isInWater()
+			&& WMinecraft.getPlayer().posY < entity.posY)
+			WMinecraft.getPlayer().motionY += 0.04;
 		updateMS();
 		if(hasTimePassedS(wurst.mods.killauraMod.speed.getValueF()))
-			if(mc.thePlayer.getDistanceToEntity(entity) <= range)
+			if(WMinecraft.getPlayer().getDistanceToEntity(entity) <= range)
 			{
 				if(wurst.mods.autoSwordMod.isActive())
 					AutoSwordMod.setSlot();
@@ -71,8 +74,9 @@ public class FightBotMod extends Mod implements UpdateListener
 				else
 				{
 					EntityUtils.faceEntityClient(entity);
-					mc.thePlayer.swingArm(EnumHand.MAIN_HAND);
-					mc.playerController.attackEntity(mc.thePlayer, entity);
+					WMinecraft.getPlayer().swingArm(EnumHand.MAIN_HAND);
+					mc.playerController.attackEntity(WMinecraft.getPlayer(),
+						entity);
 				}
 				updateLastMS();
 			}

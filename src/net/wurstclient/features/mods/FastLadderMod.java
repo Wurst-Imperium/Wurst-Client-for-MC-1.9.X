@@ -7,6 +7,7 @@
  */
 package net.wurstclient.features.mods;
 
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
 import net.wurstclient.features.mods.Mod.Category;
@@ -29,8 +30,9 @@ public class FastLadderMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		if(mc.thePlayer.isOnLadder() && mc.thePlayer.isCollidedHorizontally)
-			mc.thePlayer.motionY = 0.2872;
+		if(WMinecraft.getPlayer().isOnLadder()
+			&& WMinecraft.getPlayer().isCollidedHorizontally)
+			WMinecraft.getPlayer().motionY = 0.2872;
 	}
 	
 	@Override

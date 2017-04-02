@@ -11,6 +11,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult.Type;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.features.Feature;
 import net.wurstclient.features.mods.Mod.Bypasses;
@@ -44,7 +45,7 @@ public class OverlayMod extends Mod implements RenderListener
 			|| mc.objectMouseOver.typeOfHit != Type.BLOCK)
 			return;
 		BlockPos pos = mc.objectMouseOver.getBlockPos();
-		Block mouseOverBlock = mc.theWorld
+		Block mouseOverBlock = WMinecraft.getWorld()
 			.getBlockState(mc.objectMouseOver.getBlockPos()).getBlock();
 		if(Block.getIdFromBlock(mouseOverBlock) != 0)
 			RenderUtils.nukerBox(pos, PlayerControllerMP.curBlockDamageMP);

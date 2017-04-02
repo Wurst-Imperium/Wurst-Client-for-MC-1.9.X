@@ -11,6 +11,7 @@ import java.util.Random;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumHand;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
 import net.wurstclient.features.mods.Mod.Bypasses;
@@ -116,8 +117,8 @@ public class TpAuraMod extends Mod implements UpdateListener
 		updateMS();
 		EntityLivingBase en = EntityUtils.getClosestEntity(true,
 			fov.getValueF(), hitThroughWalls.isChecked());
-		if(en == null
-			|| mc.thePlayer.getDistanceToEntity(en) > range.getValueF())
+		if(en == null || WMinecraft.getPlayer().getDistanceToEntity(en) > range
+			.getValueF())
 		{
 			EntityUtils.lookChanged = false;
 			return;
@@ -125,11 +126,12 @@ public class TpAuraMod extends Mod implements UpdateListener
 		EntityUtils.lookChanged = true;
 		if(hasTimePassedS(speed.getValueF()))
 		{
-			mc.thePlayer.setPosition(en.posX + random.nextInt(3) * 2 - 2,
-				en.posY, en.posZ + random.nextInt(3) * 2 - 2);
+			WMinecraft.getPlayer().setPosition(
+				en.posX + random.nextInt(3) * 2 - 2, en.posY,
+				en.posZ + random.nextInt(3) * 2 - 2);
 			
 			if(!useCooldown.isChecked()
-				|| mc.thePlayer.getSwordCooldown(0F) >= 1F)
+				|| WMinecraft.getPlayer().getSwordCooldown(0F) >= 1F)
 			{
 				if(wurst.mods.autoSwordMod.isActive())
 					AutoSwordMod.setSlot();
@@ -137,10 +139,10 @@ public class TpAuraMod extends Mod implements UpdateListener
 				wurst.mods.blockHitMod.doBlock();
 				EntityUtils.faceEntityPacket(en);
 				
-				mc.playerController.attackEntity(mc.thePlayer, en);
-				mc.thePlayer.swingArm(EnumHand.MAIN_HAND);
+				mc.playerController.attackEntity(WMinecraft.getPlayer(), en);
+				WMinecraft.getPlayer().swingArm(EnumHand.MAIN_HAND);
 				
-				mc.thePlayer.resetSwordCooldown();
+				WMinecraft.getPlayer().resetSwordCooldown();
 			}
 			updateLastMS();
 		}

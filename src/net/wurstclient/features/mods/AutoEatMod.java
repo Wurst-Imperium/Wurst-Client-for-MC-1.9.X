@@ -10,6 +10,7 @@ package net.wurstclient.features.mods;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
 import net.wurstclient.features.mods.Mod.Bypasses;
@@ -43,14 +44,14 @@ public class AutoEatMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		if(oldSlot != -1 || mc.thePlayer.capabilities.isCreativeMode
-			|| mc.thePlayer.getFoodStats().getFoodLevel() >= 20)
+		if(oldSlot != -1 || WMinecraft.getPlayer().capabilities.isCreativeMode
+			|| WMinecraft.getPlayer().getFoodStats().getFoodLevel() >= 20)
 			return;
 		float bestSaturation = 0F;
 		bestSlot = -1;
 		for(int i = 0; i < 9; i++)
 		{
-			ItemStack item = mc.thePlayer.inventory.getStackInSlot(i);
+			ItemStack item = WMinecraft.getPlayer().inventory.getStackInSlot(i);
 			if(item == null)
 				continue;
 			float saturation = 0;
@@ -65,36 +66,37 @@ public class AutoEatMod extends Mod implements UpdateListener
 		}
 		if(bestSlot == -1)
 			return;
-		oldSlot = mc.thePlayer.inventory.currentItem;
+		oldSlot = WMinecraft.getPlayer().inventory.currentItem;
 		wurst.events.add(UpdateListener.class, new UpdateListener()
 		{
 			@Override
 			public void onUpdate()
 			{
 				if(!AutoEatMod.this.isActive()
-					|| mc.thePlayer.capabilities.isCreativeMode
-					|| mc.thePlayer.getFoodStats().getFoodLevel() >= 20)
+					|| WMinecraft.getPlayer().capabilities.isCreativeMode
+					|| WMinecraft.getPlayer().getFoodStats()
+						.getFoodLevel() >= 20)
 				{
 					stop();
 					return;
 				}
 				ItemStack item =
-					mc.thePlayer.inventory.getStackInSlot(bestSlot);
+					WMinecraft.getPlayer().inventory.getStackInSlot(bestSlot);
 				if(item == null || !(item.getItem() instanceof ItemFood))
 				{
 					stop();
 					return;
 				}
-				mc.thePlayer.inventory.currentItem = bestSlot;
-				mc.playerController.sendUseItem(mc.thePlayer, mc.theWorld, item,
-					EnumHand.MAIN_HAND);
+				WMinecraft.getPlayer().inventory.currentItem = bestSlot;
+				mc.playerController.sendUseItem(WMinecraft.getPlayer(),
+					WMinecraft.getWorld(), item, EnumHand.MAIN_HAND);
 				mc.gameSettings.keyBindUseItem.pressed = true;
 			}
 			
 			private void stop()
 			{
 				mc.gameSettings.keyBindUseItem.pressed = false;
-				mc.thePlayer.inventory.currentItem = oldSlot;
+				WMinecraft.getPlayer().inventory.currentItem = oldSlot;
 				oldSlot = -1;
 				wurst.events.remove(UpdateListener.class, this);
 			}

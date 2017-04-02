@@ -8,6 +8,7 @@
 package net.wurstclient.features.mods;
 
 import net.minecraft.block.material.Material;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
 import net.wurstclient.features.mods.Mod.Category;
@@ -29,12 +30,14 @@ public class GlideMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		if(mc.thePlayer.motionY < 0 && mc.thePlayer.isAirBorne
-			&& !mc.thePlayer.isInWater() && !mc.thePlayer.isOnLadder()
-			&& !mc.thePlayer.isInsideOfMaterial(Material.lava))
+		if(WMinecraft.getPlayer().motionY < 0
+			&& WMinecraft.getPlayer().isAirBorne
+			&& !WMinecraft.getPlayer().isInWater()
+			&& !WMinecraft.getPlayer().isOnLadder()
+			&& !WMinecraft.getPlayer().isInsideOfMaterial(Material.lava))
 		{
-			mc.thePlayer.motionY = -0.125f;
-			mc.thePlayer.jumpMovementFactor *= 1.21337f;
+			WMinecraft.getPlayer().motionY = -0.125f;
+			WMinecraft.getPlayer().jumpMovementFactor *= 1.21337f;
 		}
 	}
 	

@@ -28,6 +28,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.BadLocationException;
 
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.features.mods.Mod.Bypasses;
 import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
@@ -437,7 +438,7 @@ public class SpammerMod extends Mod
 										0; i < spam.split("\n").length; i++)
 									{
 										String message = spam.split("\n")[i];
-										mc.thePlayer
+										WMinecraft.getPlayer()
 											.sendAutomaticChatMessage(message);
 										Thread.sleep(wurst.options.spamDelay);
 									}

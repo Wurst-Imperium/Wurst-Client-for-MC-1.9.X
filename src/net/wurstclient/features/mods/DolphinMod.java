@@ -7,6 +7,7 @@
  */
 package net.wurstclient.features.mods;
 
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
 import net.wurstclient.features.mods.Mod.Category;
@@ -29,8 +30,9 @@ public class DolphinMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		if(mc.thePlayer.isInWater() && !mc.gameSettings.keyBindSneak.pressed)
-			mc.thePlayer.motionY += 0.04;
+		if(WMinecraft.getPlayer().isInWater()
+			&& !mc.gameSettings.keyBindSneak.pressed)
+			WMinecraft.getPlayer().motionY += 0.04;
 	}
 	
 	@Override

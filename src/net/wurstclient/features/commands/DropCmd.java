@@ -13,6 +13,7 @@ import net.minecraft.inventory.ClickType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.special_features.YesCheatSpf.BypassLevel;
 
@@ -51,7 +52,7 @@ public final class DropCmd extends Cmd implements UpdateListener
 			Item item = null;
 			while(item == null)
 				item = Item.getItemById(new Random().nextInt(431));
-			mc.thePlayer.sendQueue
+			WMinecraft.getPlayer().sendQueue
 				.addToSendQueue(new CPacketCreativeInventoryAction(-1,
 					new ItemStack(item, 64)));
 			return;
@@ -63,7 +64,7 @@ public final class DropCmd extends Cmd implements UpdateListener
 			if(timer >= 5)
 			{
 				mc.playerController.windowClick(0, counter, 1, ClickType.THROW,
-					mc.thePlayer);
+					WMinecraft.getPlayer());
 				counter++;
 				timer = 0;
 				if(counter >= 45)
@@ -73,7 +74,7 @@ public final class DropCmd extends Cmd implements UpdateListener
 		{
 			for(int i = 9; i < 45; i++)
 				mc.playerController.windowClick(0, i, 1, ClickType.THROW,
-					mc.thePlayer);
+					WMinecraft.getPlayer());
 			wurst.events.remove(UpdateListener.class, this);
 		}
 	}

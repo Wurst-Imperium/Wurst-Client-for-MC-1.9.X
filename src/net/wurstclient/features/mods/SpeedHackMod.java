@@ -7,6 +7,7 @@
  */
 package net.wurstclient.features.mods;
 
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
 
@@ -32,22 +33,25 @@ public class SpeedHackMod extends Mod implements UpdateListener
 	public void onUpdate()
 	{
 		// return if sneaking or not walking
-		if(mc.thePlayer.isSneaking()
-			|| mc.thePlayer.moveForward == 0 && mc.thePlayer.moveStrafing == 0)
+		if(WMinecraft.getPlayer().isSneaking()
+			|| WMinecraft.getPlayer().moveForward == 0
+				&& WMinecraft.getPlayer().moveStrafing == 0)
 			return;
 		
 		// activate sprint if walking forward
-		if(mc.thePlayer.moveForward > 0 && !mc.thePlayer.isCollidedHorizontally)
-			mc.thePlayer.setSprinting(true);
+		if(WMinecraft.getPlayer().moveForward > 0
+			&& !WMinecraft.getPlayer().isCollidedHorizontally)
+			WMinecraft.getPlayer().setSprinting(true);
 		
 		// activate mini jump if on ground
-		if(mc.thePlayer.onGround)
+		if(WMinecraft.getPlayer().onGround)
 		{
-			mc.thePlayer.motionY += 0.1;
-			mc.thePlayer.motionX *= 1.8;
-			mc.thePlayer.motionZ *= 1.8;
-			double currentSpeed = Math.sqrt(Math.pow(mc.thePlayer.motionX, 2)
-				+ Math.pow(mc.thePlayer.motionZ, 2));
+			WMinecraft.getPlayer().motionY += 0.1;
+			WMinecraft.getPlayer().motionX *= 1.8;
+			WMinecraft.getPlayer().motionZ *= 1.8;
+			double currentSpeed =
+				Math.sqrt(Math.pow(WMinecraft.getPlayer().motionX, 2)
+					+ Math.pow(WMinecraft.getPlayer().motionZ, 2));
 			
 			// limit speed to highest value that works on NoCheat+ version
 			// 3.13.0-BETA-sMD5NET-b878
@@ -55,10 +59,10 @@ public class SpeedHackMod extends Mod implements UpdateListener
 			double maxSpeed = 0.66F;
 			if(currentSpeed > maxSpeed)
 			{
-				mc.thePlayer.motionX =
-					mc.thePlayer.motionX / currentSpeed * maxSpeed;
-				mc.thePlayer.motionZ =
-					mc.thePlayer.motionZ / currentSpeed * maxSpeed;
+				WMinecraft.getPlayer().motionX =
+					WMinecraft.getPlayer().motionX / currentSpeed * maxSpeed;
+				WMinecraft.getPlayer().motionZ =
+					WMinecraft.getPlayer().motionZ / currentSpeed * maxSpeed;
 			}
 		}
 	}

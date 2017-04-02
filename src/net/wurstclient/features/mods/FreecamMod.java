@@ -8,6 +8,7 @@
 package net.wurstclient.features.mods;
 
 import net.minecraft.client.entity.EntityOtherPlayerMP;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
 import net.wurstclient.features.mods.Mod.Category;
@@ -30,38 +31,40 @@ public class FreecamMod extends Mod implements UpdateListener
 	@Override
 	public void onEnable()
 	{
-		oldX = mc.thePlayer.posX;
-		oldY = mc.thePlayer.posY;
-		oldZ = mc.thePlayer.posZ;
-		fakePlayer =
-			new EntityOtherPlayerMP(mc.theWorld, mc.thePlayer.getGameProfile());
-		fakePlayer.clonePlayer(mc.thePlayer, true);
-		fakePlayer.copyLocationAndAnglesFrom(mc.thePlayer);
-		fakePlayer.rotationYawHead = mc.thePlayer.rotationYawHead;
-		mc.theWorld.addEntityToWorld(-69, fakePlayer);
+		oldX = WMinecraft.getPlayer().posX;
+		oldY = WMinecraft.getPlayer().posY;
+		oldZ = WMinecraft.getPlayer().posZ;
+		fakePlayer = new EntityOtherPlayerMP(WMinecraft.getWorld(),
+			WMinecraft.getPlayer().getGameProfile());
+		fakePlayer.clonePlayer(WMinecraft.getPlayer(), true);
+		fakePlayer.copyLocationAndAnglesFrom(WMinecraft.getPlayer());
+		fakePlayer.rotationYawHead = WMinecraft.getPlayer().rotationYawHead;
+		WMinecraft.getWorld().addEntityToWorld(-69, fakePlayer);
 		wurst.events.add(UpdateListener.class, this);
 	}
 	
 	@Override
 	public void onUpdate()
 	{
-		mc.thePlayer.motionX = 0;
-		mc.thePlayer.motionY = 0;
-		mc.thePlayer.motionZ = 0;
-		mc.thePlayer.jumpMovementFactor = wurst.mods.flightMod.speed / 10;
+		WMinecraft.getPlayer().motionX = 0;
+		WMinecraft.getPlayer().motionY = 0;
+		WMinecraft.getPlayer().motionZ = 0;
+		WMinecraft.getPlayer().jumpMovementFactor =
+			wurst.mods.flightMod.speed / 10;
 		if(mc.gameSettings.keyBindJump.pressed)
-			mc.thePlayer.motionY += wurst.mods.flightMod.speed;
+			WMinecraft.getPlayer().motionY += wurst.mods.flightMod.speed;
 		if(mc.gameSettings.keyBindSneak.pressed)
-			mc.thePlayer.motionY -= wurst.mods.flightMod.speed;
+			WMinecraft.getPlayer().motionY -= wurst.mods.flightMod.speed;
 	}
 	
 	@Override
 	public void onDisable()
 	{
 		wurst.events.remove(UpdateListener.class, this);
-		mc.thePlayer.setPositionAndRotation(oldX, oldY, oldZ,
-			mc.thePlayer.rotationYaw, mc.thePlayer.rotationPitch);
-		mc.theWorld.removeEntityFromWorld(-69);
+		WMinecraft.getPlayer().setPositionAndRotation(oldX, oldY, oldZ,
+			WMinecraft.getPlayer().rotationYaw,
+			WMinecraft.getPlayer().rotationPitch);
+		WMinecraft.getWorld().removeEntityFromWorld(-69);
 		fakePlayer = null;
 		mc.renderGlobal.loadRenderers();
 	}

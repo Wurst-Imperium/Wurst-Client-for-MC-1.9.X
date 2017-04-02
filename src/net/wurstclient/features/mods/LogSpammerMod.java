@@ -12,6 +12,7 @@ import java.util.Random;
 import io.netty.buffer.Unpooled;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.client.CPacketCustomPayload;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
 import net.wurstclient.features.mods.Mod.Category;
@@ -48,9 +49,9 @@ public class LogSpammerMod extends Mod implements UpdateListener
 		updateMS();
 		if(hasTimePassedM(100))
 		{
-			mc.thePlayer.sendQueue.addToSendQueue(new CPacketCustomPayload(
-				vulnerableChannels[random.nextInt(vulnerableChannels.length)],
-				payload));
+			WMinecraft.getPlayer().sendQueue.addToSendQueue(
+				new CPacketCustomPayload(vulnerableChannels[random
+					.nextInt(vulnerableChannels.length)], payload));
 			updateLastMS();
 		}
 	}

@@ -10,6 +10,7 @@ package net.wurstclient.features.commands;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.utils.ChatUtils;
 
 @Cmd.Info(
@@ -25,12 +26,12 @@ public final class CopyItemCmd extends Cmd
 	{
 		if(args.length != 2)
 			syntaxError();
-		if(!mc.thePlayer.capabilities.isCreativeMode)
+		if(!WMinecraft.getPlayer().capabilities.isCreativeMode)
 			error("Creative mode only.");
 		
 		// find item
 		ItemStack item = null;
-		for(Object entity : mc.theWorld.loadedEntityList)
+		for(Object entity : WMinecraft.getWorld().loadedEntityList)
 			if(entity instanceof EntityOtherPlayerMP)
 			{
 				EntityOtherPlayerMP player = (EntityOtherPlayerMP)entity;
@@ -65,9 +66,9 @@ public final class CopyItemCmd extends Cmd
 		
 		// copy item
 		for(int i = 0; i < 9; i++)
-			if(mc.thePlayer.inventory.getStackInSlot(i) == null)
+			if(WMinecraft.getPlayer().inventory.getStackInSlot(i) == null)
 			{
-				mc.thePlayer.sendQueue.addToSendQueue(
+				WMinecraft.getPlayer().sendQueue.addToSendQueue(
 					new CPacketCreativeInventoryAction(36 + i, item));
 				ChatUtils.message("Item copied.");
 				return;

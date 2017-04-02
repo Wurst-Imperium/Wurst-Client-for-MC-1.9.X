@@ -7,11 +7,11 @@
  */
 package net.wurstclient.features.mods;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.play.client.CPacketChatMessage;
 import net.minecraft.network.play.client.CPacketPlayer.C04PacketPlayerPosition;
 import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.util.EnumHand;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
 import net.wurstclient.features.mods.Mod.Bypasses;
@@ -66,28 +66,29 @@ public class AutoLeaveMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		if(mc.thePlayer.getHealth() <= 8.0
-			&& !mc.thePlayer.capabilities.isCreativeMode
+		if(WMinecraft.getPlayer().getHealth() <= 8.0
+			&& !WMinecraft.getPlayer().capabilities.isCreativeMode
 			&& (!mc.isIntegratedServerRunning()
-				|| Minecraft.getMinecraft().thePlayer.sendQueue
-					.getPlayerInfoMap().size() > 1))
+				|| WMinecraft.getPlayer().sendQueue.getPlayerInfoMap()
+					.size() > 1))
 		{
 			switch(mode)
 			{
 				case 0:
-				mc.theWorld.sendQuittingDisconnectingPacket();
+				WMinecraft.getWorld().sendQuittingDisconnectingPacket();
 				break;
 				case 1:
-				mc.thePlayer.sendQueue
+				WMinecraft.getPlayer().sendQueue
 					.addToSendQueue(new CPacketChatMessage("§"));
 				break;
 				case 2:
-				mc.thePlayer.sendQueue.addToSendQueue(
+				WMinecraft.getPlayer().sendQueue.addToSendQueue(
 					new C04PacketPlayerPosition(3.1e7d, 100, 3.1e7d, false));
 				break;
 				case 3:
-				mc.thePlayer.sendQueue.addToSendQueue(
-					new CPacketUseEntity(mc.thePlayer, EnumHand.MAIN_HAND));
+				WMinecraft.getPlayer().sendQueue
+					.addToSendQueue(new CPacketUseEntity(WMinecraft.getPlayer(),
+						EnumHand.MAIN_HAND));
 				break;
 				default:
 				break;

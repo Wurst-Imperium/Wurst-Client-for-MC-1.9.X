@@ -28,6 +28,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.ChatInputEvent;
 import net.wurstclient.events.listeners.ChatInputListener;
 import net.wurstclient.features.Feature;
@@ -336,7 +337,7 @@ public class ForceOpMod extends Mod implements ChatInputListener
 							@Override
 							public void run()
 							{
-								mc.thePlayer.sendChatMessage(
+								WMinecraft.getPlayer().sendChatMessage(
 									"/login " + mc.session.getUsername());
 								lastPW = 0;
 								loadPWList();
@@ -349,7 +350,7 @@ public class ForceOpMod extends Mod implements ChatInputListener
 										gotWrongPWMSG = false;
 									while(!cbDontWait.isSelected()
 										&& !hasGotWrongPWMSG()
-										|| mc.thePlayer == null)
+										|| WMinecraft.getPlayer() == null)
 									{
 										if(!wurst.mods.forceOpMod.isActive())
 											return;
@@ -360,7 +361,7 @@ public class ForceOpMod extends Mod implements ChatInputListener
 										{
 											e.printStackTrace();
 										}
-										if(mc.thePlayer == null)
+										if(WMinecraft.getPlayer() == null)
 											gotWrongPWMSG = true;// If you get
 										// kicked,
 										// it won't
@@ -379,8 +380,9 @@ public class ForceOpMod extends Mod implements ChatInputListener
 									while(!sent)
 										try
 										{
-											mc.thePlayer.sendChatMessage(
-												"/login " + passwords[i]);
+											WMinecraft.getPlayer()
+												.sendChatMessage(
+													"/login " + passwords[i]);
 											sent = true;
 										}catch(Exception e)
 										{

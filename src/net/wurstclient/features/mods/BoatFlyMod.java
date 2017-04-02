@@ -7,6 +7,7 @@
  */
 package net.wurstclient.features.mods;
 
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
 
@@ -28,10 +29,10 @@ public class BoatFlyMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		if(!mc.thePlayer.isRiding())
+		if(!WMinecraft.getPlayer().isRiding())
 			return;
 		
-		mc.thePlayer.getRidingEntity().motionY =
+		WMinecraft.getPlayer().getRidingEntity().motionY =
 			mc.gameSettings.keyBindJump.pressed ? 0.3 : 0;
 	}
 	

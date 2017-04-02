@@ -7,8 +7,8 @@
  */
 package net.wurstclient.features.mods;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.play.client.CPacketPlayer.C05PacketPlayerLook;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
 import net.wurstclient.features.mods.Mod.Category;
@@ -31,9 +31,10 @@ public class TiredMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		mc.thePlayer.sendQueue.addToSendQueue(new C05PacketPlayerLook(
-			Minecraft.getMinecraft().thePlayer.rotationYaw,
-			mc.thePlayer.ticksExisted % 100, mc.thePlayer.onGround));
+		WMinecraft.getPlayer().sendQueue.addToSendQueue(
+			new C05PacketPlayerLook(WMinecraft.getPlayer().rotationYaw,
+				WMinecraft.getPlayer().ticksExisted % 100,
+				WMinecraft.getPlayer().onGround));
 	}
 	
 	@Override

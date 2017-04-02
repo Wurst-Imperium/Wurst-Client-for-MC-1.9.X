@@ -8,6 +8,7 @@
 package net.wurstclient.features.mods;
 
 import net.minecraft.network.play.client.CPacketPlayer.C04PacketPlayerPosition;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
 import net.wurstclient.features.mods.Mod.Bypasses;
@@ -61,18 +62,18 @@ public class FlightMod extends Mod implements UpdateListener
 		if(wurst.special.yesCheatSpf.getBypassLevel()
 			.ordinal() >= BypassLevel.MINEPLEX_ANTICHEAT.ordinal())
 		{
-			double startX = mc.thePlayer.posX;
-			startY = mc.thePlayer.posY;
-			double startZ = mc.thePlayer.posZ;
+			double startX = WMinecraft.getPlayer().posX;
+			startY = WMinecraft.getPlayer().posY;
+			double startZ = WMinecraft.getPlayer().posZ;
 			for(int i = 0; i < 4; i++)
 			{
-				mc.thePlayer.sendQueue
+				WMinecraft.getPlayer().sendQueue
 					.addToSendQueue(new C04PacketPlayerPosition(startX,
 						startY + 1.01, startZ, false));
-				mc.thePlayer.sendQueue.addToSendQueue(
+				WMinecraft.getPlayer().sendQueue.addToSendQueue(
 					new C04PacketPlayerPosition(startX, startY, startZ, false));
 			}
-			mc.thePlayer.jump();
+			WMinecraft.getPlayer().jump();
 		}
 		wurst.events.add(UpdateListener.class, this);
 	}
@@ -84,42 +85,44 @@ public class FlightMod extends Mod implements UpdateListener
 		{
 			case LATEST_NCP:
 			case OLDER_NCP:
-			if(!mc.thePlayer.onGround)
+			if(!WMinecraft.getPlayer().onGround)
 				if(mc.gameSettings.keyBindJump.pressed
-					&& mc.thePlayer.posY < startY - 1)
-					mc.thePlayer.motionY = 0.2;
+					&& WMinecraft.getPlayer().posY < startY - 1)
+					WMinecraft.getPlayer().motionY = 0.2;
 				else
-					mc.thePlayer.motionY = -0.02;
+					WMinecraft.getPlayer().motionY = -0.02;
 			break;
 			
 			case ANTICHEAT:
 			case MINEPLEX_ANTICHEAT:
 			updateMS();
-			if(!mc.thePlayer.onGround)
+			if(!WMinecraft.getPlayer().onGround)
 				if(mc.gameSettings.keyBindJump.pressed && hasTimePassedS(2))
 				{
-					mc.thePlayer.setPosition(mc.thePlayer.posX,
-						mc.thePlayer.posY + 8, mc.thePlayer.posZ);
+					WMinecraft.getPlayer().setPosition(
+						WMinecraft.getPlayer().posX,
+						WMinecraft.getPlayer().posY + 8,
+						WMinecraft.getPlayer().posZ);
 					updateLastMS();
 				}else if(mc.gameSettings.keyBindSneak.pressed)
-					mc.thePlayer.motionY = -0.4;
+					WMinecraft.getPlayer().motionY = -0.4;
 				else
-					mc.thePlayer.motionY = -0.02;
-			mc.thePlayer.jumpMovementFactor = 0.04F;
+					WMinecraft.getPlayer().motionY = -0.02;
+			WMinecraft.getPlayer().jumpMovementFactor = 0.04F;
 			break;
 			
 			case OFF:
 			default:
-			mc.thePlayer.capabilities.isFlying = false;
-			mc.thePlayer.motionX = 0;
-			mc.thePlayer.motionY = 0;
-			mc.thePlayer.motionZ = 0;
-			mc.thePlayer.jumpMovementFactor = speed;
+			WMinecraft.getPlayer().capabilities.isFlying = false;
+			WMinecraft.getPlayer().motionX = 0;
+			WMinecraft.getPlayer().motionY = 0;
+			WMinecraft.getPlayer().motionZ = 0;
+			WMinecraft.getPlayer().jumpMovementFactor = speed;
 			
 			if(mc.gameSettings.keyBindJump.pressed)
-				mc.thePlayer.motionY += speed;
+				WMinecraft.getPlayer().motionY += speed;
 			if(mc.gameSettings.keyBindSneak.pressed)
-				mc.thePlayer.motionY -= speed;
+				WMinecraft.getPlayer().motionY -= speed;
 			break;
 		}
 	}

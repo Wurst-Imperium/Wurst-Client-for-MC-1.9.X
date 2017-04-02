@@ -7,6 +7,8 @@
  */
 package net.wurstclient.features.commands;
 
+import net.wurstclient.compatibility.WMinecraft;
+
 @Cmd.Info(
 	description = "Types \"/gamemode <args>\".\nUseful for servers that don't support /gm.",
 	name = "gm",
@@ -19,6 +21,6 @@ public final class GmCmd extends Cmd
 	{
 		if(args.length != 1)
 			syntaxError();
-		mc.thePlayer.sendChatMessage("/gamemode " + args[0]);
+		WMinecraft.getPlayer().sendChatMessage("/gamemode " + args[0]);
 	}
 }

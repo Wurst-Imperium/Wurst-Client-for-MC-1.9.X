@@ -8,6 +8,7 @@
 package net.wurstclient.bot.commands;
 
 import net.minecraft.client.Minecraft;
+import net.wurstclient.compatibility.WMinecraft;
 
 @Command.Info(help = "Fixes you if you get stuck in a menu.",
 	name = "fixme",
@@ -19,7 +20,7 @@ public class FixmeCmd extends Command
 	{
 		if(args.length != 0)
 			syntaxError();
-		if(Minecraft.getMinecraft().thePlayer == null)
+		if(WMinecraft.getPlayer() == null)
 			error("Not connected to any server.");
 		Minecraft.getMinecraft().displayGuiScreen(null);
 		System.out.println("Closed all open menus.");

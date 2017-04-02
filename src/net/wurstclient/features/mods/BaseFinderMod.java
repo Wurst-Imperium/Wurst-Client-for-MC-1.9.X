@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
@@ -67,12 +68,12 @@ public class BaseFinderMod extends Mod implements UpdateListener, RenderListener
 				{
 					for(int z = range; z >= -range; z--)
 					{
-						int posX = (int)(mc.thePlayer.posX + x);
-						int posY = (int)(mc.thePlayer.posY + y);
-						int posZ = (int)(mc.thePlayer.posZ + z);
+						int posX = (int)(WMinecraft.getPlayer().posX + x);
+						int posY = (int)(WMinecraft.getPlayer().posY + y);
+						int posZ = (int)(WMinecraft.getPlayer().posZ + z);
 						BlockPos pos = new BlockPos(posX, posY, posZ);
-						if(!naturalBlocks.contains(
-							mc.theWorld.getBlockState(pos).getBlock()))
+						if(!naturalBlocks.contains(WMinecraft.getWorld()
+							.getBlockState(pos).getBlock()))
 							matchingBlocks.add(pos);
 						if(matchingBlocks.size() >= maxBlocks)
 							break;

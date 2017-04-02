@@ -10,6 +10,7 @@ package net.wurstclient.features.commands;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.ChatOutputEvent;
 
 @Cmd.Info(description = "Repairs the held item. Requires creative mode.",
@@ -25,7 +26,7 @@ public final class RepairCmd extends Cmd
 			syntaxError();
 		
 		// check for creative mode
-		EntityPlayerSP player = mc.thePlayer;
+		EntityPlayerSP player = WMinecraft.getPlayer();
 		if(!player.capabilities.isCreativeMode)
 			error("Creative mode only.");
 		

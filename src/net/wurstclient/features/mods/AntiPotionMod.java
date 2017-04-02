@@ -10,6 +10,7 @@ package net.wurstclient.features.mods;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.init.MobEffects;
 import net.minecraft.network.play.client.CPacketPlayer;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
@@ -31,7 +32,7 @@ public class AntiPotionMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		EntityPlayerSP player = mc.thePlayer;
+		EntityPlayerSP player = WMinecraft.getPlayer();
 		if(!player.capabilities.isCreativeMode && player.onGround
 			&& !player.getActivePotionEffects().isEmpty())
 			if(player.isPotionActive(MobEffects.hunger)

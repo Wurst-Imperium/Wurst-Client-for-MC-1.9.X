@@ -11,6 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.MathHelper;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.features.Feature;
 import net.wurstclient.features.mods.Mod.Bypasses;
@@ -42,14 +43,15 @@ public class ProphuntEspMod extends Mod implements RenderListener
 	@Override
 	public void onRender(float partialTicks)
 	{
-		for(Object entity : mc.theWorld.loadedEntityList)
+		for(Object entity : WMinecraft.getWorld().loadedEntityList)
 			if(entity instanceof EntityLiving && ((Entity)entity).isInvisible())
 			{
 				double x = ((Entity)entity).posX;
 				double y = ((Entity)entity).posY;
 				double z = ((Entity)entity).posZ;
 				float alpha;
-				if(mc.thePlayer.getDistanceToEntity((Entity)entity) >= 0.5)
+				if(WMinecraft.getPlayer()
+					.getDistanceToEntity((Entity)entity) >= 0.5)
 					alpha =
 						0.5F - MathHelper
 							.abs(

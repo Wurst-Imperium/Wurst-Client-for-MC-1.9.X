@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import net.minecraft.util.math.BlockPos;
 import net.wurstclient.ai.PathUtils;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
 import net.wurstclient.features.mods.Mod.Category;
@@ -50,18 +51,18 @@ public class GoToCmdMod extends Mod implements UpdateListener
 			setEnabled(false);
 			return;
 		}
-		BlockPos currentPos = new BlockPos(mc.thePlayer);
+		BlockPos currentPos = new BlockPos(WMinecraft.getPlayer());
 		BlockPos nextPos = path.get(index);
 		float dist = BlockUtils.getPlayerBlockDistance(nextPos);
 		float hDist = BlockUtils.getHorizontalPlayerBlockDistance(nextPos);
-		double vDist = Math.abs(mc.thePlayer.posY - nextPos.getY());
+		double vDist = Math.abs(WMinecraft.getPlayer().posY - nextPos.getY());
 		mc.gameSettings.keyBindForward.pressed = false;
 		mc.gameSettings.keyBindBack.pressed = false;
 		mc.gameSettings.keyBindRight.pressed = false;
 		mc.gameSettings.keyBindLeft.pressed = false;
 		mc.gameSettings.keyBindJump.pressed = false;
 		mc.gameSettings.keyBindSneak.pressed = false;
-		mc.thePlayer.rotationPitch = 10;
+		WMinecraft.getPlayer().rotationPitch = 10;
 		BlockUtils.faceBlockClientHorizontally(nextPos);
 		
 		if(hDist > 0.25)

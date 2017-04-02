@@ -7,12 +7,12 @@
  */
 package net.wurstclient.features.mods;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
 import net.wurstclient.features.mods.Mod.Category;
@@ -37,7 +37,7 @@ public class AutoArmorMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		if(mc.thePlayer.capabilities.isCreativeMode
+		if(WMinecraft.getPlayer().capabilities.isCreativeMode
 			|| mc.currentScreen instanceof GuiContainer
 				&& !(mc.currentScreen instanceof GuiInventory))
 			return;
@@ -47,7 +47,8 @@ public class AutoArmorMod extends Mod implements UpdateListener
 			bestArmor = new int[]{-1, -1, -1, -1};
 			for(int i = 0; i < 36; i++)
 			{
-				ItemStack itemstack = mc.thePlayer.inventory.getStackInSlot(i);
+				ItemStack itemstack =
+					WMinecraft.getPlayer().inventory.getStackInSlot(i);
 				if(itemstack != null
 					&& itemstack.getItem() instanceof ItemArmor)
 				{
@@ -59,7 +60,8 @@ public class AutoArmorMod extends Mod implements UpdateListener
 			}
 			for(int i = 0; i < 4; i++)
 			{
-				ItemStack itemstack = mc.thePlayer.inventory.armorItemInSlot(i);
+				ItemStack itemstack =
+					WMinecraft.getPlayer().inventory.armorItemInSlot(i);
 				ItemArmor currentArmor;
 				if(itemstack != null
 					&& itemstack.getItem() instanceof ItemArmor)
@@ -69,7 +71,7 @@ public class AutoArmorMod extends Mod implements UpdateListener
 				ItemArmor bestArmor;
 				try
 				{
-					bestArmor = (ItemArmor)mc.thePlayer.inventory
+					bestArmor = (ItemArmor)WMinecraft.getPlayer().inventory
 						.getStackInSlot(this.bestArmor[i]).getItem();
 				}catch(Exception e)
 				{
@@ -77,16 +79,15 @@ public class AutoArmorMod extends Mod implements UpdateListener
 				}
 				if(bestArmor != null && (currentArmor == null
 					|| bestArmor.damageReduceAmount > currentArmor.damageReduceAmount))
-					if(mc.thePlayer.inventory.getFirstEmptyStack() != -1
-						|| currentArmor == null)
+					if(WMinecraft.getPlayer().inventory
+						.getFirstEmptyStack() != -1 || currentArmor == null)
 					{
 						mc.playerController.windowClick(0, 8 - i, 0,
-							ClickType.QUICK_MOVE, mc.thePlayer);
+							ClickType.QUICK_MOVE, WMinecraft.getPlayer());
 						mc.playerController.windowClick(0,
 							this.bestArmor[i] < 9 ? 36 + this.bestArmor[i]
 								: this.bestArmor[i],
-							0, ClickType.QUICK_MOVE,
-							Minecraft.getMinecraft().thePlayer);
+							0, ClickType.QUICK_MOVE, WMinecraft.getPlayer());
 					}
 			}
 			updateLastMS();

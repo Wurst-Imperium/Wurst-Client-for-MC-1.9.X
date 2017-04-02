@@ -7,7 +7,7 @@
  */
 package net.wurstclient.bot.commands;
 
-import net.minecraft.client.Minecraft;
+import net.wurstclient.compatibility.WMinecraft;
 
 @Command.Info(help = "Sends a chat message. Can be used to run Wurst commands.",
 	name = "chat",
@@ -19,11 +19,11 @@ public class ChatCmd extends Command
 	{
 		if(args.length == 0)
 			syntaxError();
-		if(Minecraft.getMinecraft().thePlayer == null)
+		if(WMinecraft.getPlayer() == null)
 			error("Not connected to any server.");
 		String message = args[0];
 		for(int i = 1; i < args.length; i++)
 			message += " " + args[i];
-		Minecraft.getMinecraft().thePlayer.sendChatMessage(message);
+		WMinecraft.getPlayer().sendChatMessage(message);
 	}
 }

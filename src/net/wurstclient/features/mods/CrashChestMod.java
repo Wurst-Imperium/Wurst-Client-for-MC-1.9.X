@@ -11,6 +11,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.features.mods.Mod.Bypasses;
 import net.wurstclient.utils.ChatUtils;
 
@@ -27,16 +28,16 @@ public class CrashChestMod extends Mod
 	@Override
 	public void onEnable()
 	{
-		if(mc.thePlayer.inventory.getStackInSlot(36) != null)
+		if(WMinecraft.getPlayer().inventory.getStackInSlot(36) != null)
 		{
-			if(mc.thePlayer.inventory.getStackInSlot(36).getDisplayName()
-				.equals("§6§lCOPY ME"))
+			if(WMinecraft.getPlayer().inventory.getStackInSlot(36)
+				.getDisplayName().equals("§6§lCOPY ME"))
 				ChatUtils.error("You already have a CrashChest.");
 			else
 				ChatUtils.error("Please take off your shoes.");
 			setEnabled(false);
 			return;
-		}else if(!mc.thePlayer.capabilities.isCreativeMode)
+		}else if(!WMinecraft.getPlayer().capabilities.isCreativeMode)
 		{
 			ChatUtils.error("Creative mode only.");
 			setEnabled(false);
@@ -49,7 +50,7 @@ public class CrashChestMod extends Mod
 			nbtList.appendTag(new NBTTagList());
 		nbtTagCompound.setTag("www.wurstclient.net", nbtList);
 		stack.setTagInfo("www.wurstclient.net", nbtTagCompound);
-		mc.thePlayer.inventory.armorInventory[0] = stack;
+		WMinecraft.getPlayer().inventory.armorInventory[0] = stack;
 		stack.setStackDisplayName("§6§lCOPY ME");
 		ChatUtils.message("A CrashChest was placed in your shoes slot.");
 		setEnabled(false);

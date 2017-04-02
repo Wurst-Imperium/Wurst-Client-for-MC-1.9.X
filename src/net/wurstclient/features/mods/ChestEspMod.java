@@ -10,6 +10,7 @@ package net.wurstclient.features.mods;
 import net.minecraft.entity.item.EntityMinecartChest;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.tileentity.TileEntityEnderChest;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.features.Feature;
 import net.wurstclient.features.mods.Mod.Bypasses;
@@ -47,7 +48,7 @@ public class ChestEspMod extends Mod implements RenderListener
 	public void onRender(float partialTicks)
 	{
 		int i = 0;
-		for(Object o : mc.theWorld.loadedTileEntityList)
+		for(Object o : WMinecraft.getWorld().loadedTileEntityList)
 		{
 			if(i >= maxChests)
 				break;
@@ -61,7 +62,7 @@ public class ChestEspMod extends Mod implements RenderListener
 				RenderUtils.blockESPBox(((TileEntityEnderChest)o).getPos());
 			}
 		}
-		for(Object o : mc.theWorld.loadedEntityList)
+		for(Object o : WMinecraft.getWorld().loadedEntityList)
 		{
 			if(i >= maxChests)
 				break;

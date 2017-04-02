@@ -7,6 +7,7 @@
  */
 package net.wurstclient.features.mods;
 
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
 import net.wurstclient.features.mods.Mod.Category;
@@ -34,9 +35,9 @@ public class NoSlowdownMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		if(mc.thePlayer.onGround && mc.thePlayer.isInWater()
+		if(WMinecraft.getPlayer().onGround && WMinecraft.getPlayer().isInWater()
 			&& mc.gameSettings.keyBindJump.pressed)
-			mc.thePlayer.jump();
+			WMinecraft.getPlayer().jump();
 	}
 	
 	@Override

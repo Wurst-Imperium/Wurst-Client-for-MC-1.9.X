@@ -8,6 +8,7 @@
 package net.wurstclient.features.mods;
 
 import net.minecraft.block.Block;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
 import net.wurstclient.features.mods.Mod.Category;
@@ -34,7 +35,7 @@ public class AutoMineMod extends Mod implements UpdateListener
 		if(mc.objectMouseOver == null
 			|| mc.objectMouseOver.getBlockPos() == null)
 			return;
-		if(Block.getIdFromBlock(mc.theWorld
+		if(Block.getIdFromBlock(WMinecraft.getWorld()
 			.getBlockState(mc.objectMouseOver.getBlockPos()).getBlock()) != 0)
 			mc.gameSettings.keyBindAttack.pressed = true;
 		else

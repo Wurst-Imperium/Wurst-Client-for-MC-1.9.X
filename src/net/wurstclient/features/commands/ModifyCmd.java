@@ -13,6 +13,7 @@ import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTException;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.utils.ChatUtils;
 import net.wurstclient.utils.MiscUtils;
 
@@ -26,7 +27,7 @@ public final class ModifyCmd extends Cmd
 	@Override
 	public void execute(String[] args) throws CmdError
 	{
-		EntityPlayerSP player = mc.thePlayer;
+		EntityPlayerSP player = WMinecraft.getPlayer();
 		
 		if(!player.capabilities.isCreativeMode)
 			error("Creative mode only.");

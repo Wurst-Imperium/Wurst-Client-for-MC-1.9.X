@@ -9,6 +9,7 @@ package net.wurstclient.features.mods;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.features.Feature;
 import net.wurstclient.features.mods.Mod.Bypasses;
@@ -39,7 +40,7 @@ public class ItemEspMod extends Mod implements RenderListener
 	@Override
 	public void onRender(float partialTicks)
 	{
-		for(Object entity : mc.theWorld.loadedEntityList)
+		for(Object entity : WMinecraft.getWorld().loadedEntityList)
 			if(entity instanceof EntityItem)
 				RenderUtils.entityESPBox((Entity)entity, 2);
 	}

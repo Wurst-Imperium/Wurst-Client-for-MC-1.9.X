@@ -10,6 +10,7 @@ package net.wurstclient.features.mods;
 import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
@@ -66,10 +67,10 @@ public class InstantBunkerMod extends Mod
 			i = 0;
 			shouldBuild = true;
 			MouseOver = mc.objectMouseOver;
-			posX = mc.thePlayer.posX;
-			posY = mc.thePlayer.posY;
-			posZ = mc.thePlayer.posZ;
-			playerYaw = mc.thePlayer.rotationYaw;
+			posX = WMinecraft.getPlayer().posX;
+			posY = WMinecraft.getPlayer().posY;
+			posZ = WMinecraft.getPlayer().posZ;
+			playerYaw = WMinecraft.getPlayer().rotationYaw;
 			while(playerYaw > 180)
 				playerYaw -= 360;
 			while(playerYaw < -180)
@@ -185,8 +186,8 @@ public class InstantBunkerMod extends Mod
 				if(playerYaw > -45 && playerYaw <= 45)
 					try
 					{
-						if(Block.getIdFromBlock(
-							mc.theWorld.getBlockState(new BlockPos(
+						if(Block.getIdFromBlock(WMinecraft.getWorld()
+							.getBlockState(new BlockPos(
 								(int)posX + BuildUtils
 									.convertPosInAdvancedBuiling(1, i,
 										building),
@@ -196,15 +197,15 @@ public class InstantBunkerMod extends Mod
 								(int)posZ
 									+ BuildUtils.convertPosInAdvancedBuiling(3,
 										i, building)))
-								.getBlock()) != 0)
+							.getBlock()) != 0)
 							i += 1;
 					}catch(NullPointerException e)
 					{}// If the current item is null.
 				else if(playerYaw > 45 && playerYaw <= 135)
 					try
 					{
-						if(Block.getIdFromBlock(
-							mc.theWorld.getBlockState(new BlockPos(
+						if(Block.getIdFromBlock(WMinecraft.getWorld()
+							.getBlockState(new BlockPos(
 								(int)posX - BuildUtils
 									.convertPosInAdvancedBuiling(3, i,
 										building),
@@ -214,15 +215,15 @@ public class InstantBunkerMod extends Mod
 								(int)posZ
 									+ BuildUtils.convertPosInAdvancedBuiling(1,
 										i, building)))
-								.getBlock()) != 0)
+							.getBlock()) != 0)
 							i += 1;
 					}catch(NullPointerException e)
 					{}// If the current item is null.
 				else if(playerYaw > 135 || playerYaw <= -135)
 					try
 					{
-						if(Block.getIdFromBlock(
-							mc.theWorld.getBlockState(new BlockPos(
+						if(Block.getIdFromBlock(WMinecraft.getWorld()
+							.getBlockState(new BlockPos(
 								(int)posX - BuildUtils
 									.convertPosInAdvancedBuiling(1, i,
 										building),
@@ -232,15 +233,15 @@ public class InstantBunkerMod extends Mod
 								(int)posZ
 									- BuildUtils.convertPosInAdvancedBuiling(3,
 										i, building)))
-								.getBlock()) != 0)
+							.getBlock()) != 0)
 							i += 1;
 					}catch(NullPointerException e)
 					{}// If the current item is null.
 				else if(playerYaw > -135 && playerYaw <= -45)
 					try
 					{
-						if(Block.getIdFromBlock(
-							mc.theWorld.getBlockState(new BlockPos(
+						if(Block.getIdFromBlock(WMinecraft.getWorld()
+							.getBlockState(new BlockPos(
 								(int)posX + BuildUtils
 									.convertPosInAdvancedBuiling(3, i,
 										building),
@@ -250,7 +251,7 @@ public class InstantBunkerMod extends Mod
 								(int)posZ
 									- BuildUtils.convertPosInAdvancedBuiling(1,
 										i, building)))
-								.getBlock()) != 0)
+							.getBlock()) != 0)
 							i += 1;
 					}catch(NullPointerException e)
 					{}// If the current item is null.

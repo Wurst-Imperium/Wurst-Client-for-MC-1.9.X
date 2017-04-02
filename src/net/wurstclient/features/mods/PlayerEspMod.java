@@ -9,6 +9,7 @@ package net.wurstclient.features.mods;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.features.Feature;
 import net.wurstclient.features.mods.Mod.Bypasses;
@@ -40,7 +41,7 @@ public class PlayerEspMod extends Mod implements RenderListener
 	@Override
 	public void onRender(float partialTicks)
 	{
-		for(Object entity : mc.theWorld.loadedEntityList)
+		for(Object entity : WMinecraft.getWorld().loadedEntityList)
 			if(entity instanceof EntityPlayer && !((Entity)entity).getName()
 				.equals(mc.getSession().getUsername()))
 				RenderUtils.entityESPBox((Entity)entity,

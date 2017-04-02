@@ -15,6 +15,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.BlockPos;
 import net.wurstclient.WurstClient;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.features.Feature;
 import net.wurstclient.navigator.PossibleKeybind;
 import net.wurstclient.settings.Setting;
@@ -185,10 +186,9 @@ public abstract class Cmd implements Feature
 		int[] pos = new int[3];
 		if(args.length == 3)
 		{
-			int[] playerPos =
-				new int[]{(int)Minecraft.getMinecraft().thePlayer.posX,
-					(int)Minecraft.getMinecraft().thePlayer.posY,
-					(int)Minecraft.getMinecraft().thePlayer.posZ};
+			int[] playerPos = new int[]{(int)WMinecraft.getPlayer().posX,
+				(int)WMinecraft.getPlayer().posY,
+				(int)WMinecraft.getPlayer().posZ};
 			for(int i = 0; i < args.length; i++)
 				if(MiscUtils.isInteger(args[i]))
 					pos[i] = Integer.parseInt(args[i]);

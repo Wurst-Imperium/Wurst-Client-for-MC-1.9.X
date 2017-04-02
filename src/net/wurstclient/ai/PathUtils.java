@@ -9,10 +9,10 @@ package net.wurstclient.ai;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerCapabilities;
 import net.minecraft.util.math.BlockPos;
 import net.wurstclient.WurstClient;
+import net.wurstclient.compatibility.WMinecraft;
 
 public class PathUtils
 {
@@ -32,8 +32,8 @@ public class PathUtils
 	
 	public static boolean isSolid(BlockPos pos)
 	{
-		return Minecraft.getMinecraft().theWorld.getBlockState(pos).getBlock()
-			.getMaterial(Minecraft.getMinecraft().theWorld.getBlockState(pos))
+		return WMinecraft.getWorld().getBlockState(pos).getBlock()
+			.getMaterial(WMinecraft.getWorld().getBlockState(pos))
 			.blocksMovement()
 			|| getMaterial(pos) == Material.water
 				&& WurstClient.INSTANCE.mods.jesusMod.isEnabled();
@@ -66,14 +66,14 @@ public class PathUtils
 	public static boolean isCreative()
 	{
 		if(playerCaps == null)
-			playerCaps = Minecraft.getMinecraft().thePlayer.capabilities;
+			playerCaps = WMinecraft.getPlayer().capabilities;
 		return playerCaps.isCreativeMode;
 	}
 	
 	public static boolean isFlyable(BlockPos pos)
 	{
 		if(playerCaps == null)
-			playerCaps = Minecraft.getMinecraft().thePlayer.capabilities;
+			playerCaps = WMinecraft.getPlayer().capabilities;
 		return WurstClient.INSTANCE.mods.flightMod.isEnabled()
 			|| playerCaps.isFlying
 			|| !WurstClient.INSTANCE.mods.noSlowdownMod.isEnabled()
@@ -97,13 +97,13 @@ public class PathUtils
 	
 	private static Material getMaterial(BlockPos pos)
 	{
-		return Minecraft.getMinecraft().theWorld.getBlockState(pos).getBlock()
-			.getMaterial(Minecraft.getMinecraft().theWorld.getBlockState(pos));
+		return WMinecraft.getWorld().getBlockState(pos).getBlock()
+			.getMaterial(WMinecraft.getWorld().getBlockState(pos));
 	}
 	
 	private static int getID(BlockPos pos)
 	{
 		return Block.getIdFromBlock(
-			Minecraft.getMinecraft().theWorld.getBlockState(pos).getBlock());
+			WMinecraft.getWorld().getBlockState(pos).getBlock());
 	}
 }

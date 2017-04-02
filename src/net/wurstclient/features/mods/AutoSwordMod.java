@@ -11,6 +11,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.item.ItemTool;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.LeftClickEvent;
 import net.wurstclient.events.listeners.LeftClickListener;
 import net.wurstclient.events.listeners.UpdateListener;
@@ -55,7 +56,7 @@ public class AutoSwordMod extends Mod
 			timer--;
 			return;
 		}
-		mc.thePlayer.inventory.currentItem = oldSlot;
+		WMinecraft.getPlayer().inventory.currentItem = oldSlot;
 		wurst.events.remove(UpdateListener.class, this);
 	}
 	
@@ -81,7 +82,7 @@ public class AutoSwordMod extends Mod
 		int bestSlot = -1;
 		for(int i = 0; i < 9; i++)
 		{
-			ItemStack item = mc.thePlayer.inventory.getStackInSlot(i);
+			ItemStack item = WMinecraft.getPlayer().inventory.getStackInSlot(i);
 			if(item == null)
 				continue;
 			float speed = 0;
@@ -96,11 +97,12 @@ public class AutoSwordMod extends Mod
 				bestSlot = i;
 			}
 		}
-		if(bestSlot != -1 && bestSlot != mc.thePlayer.inventory.currentItem)
+		if(bestSlot != -1
+			&& bestSlot != WMinecraft.getPlayer().inventory.currentItem)
 		{
 			wurst.mods.autoSwordMod.oldSlot =
-				mc.thePlayer.inventory.currentItem;
-			mc.thePlayer.inventory.currentItem = bestSlot;
+				WMinecraft.getPlayer().inventory.currentItem;
+			WMinecraft.getPlayer().inventory.currentItem = bestSlot;
 			wurst.mods.autoSwordMod.timer = 4;
 			wurst.events.add(UpdateListener.class, wurst.mods.autoSwordMod);
 		}

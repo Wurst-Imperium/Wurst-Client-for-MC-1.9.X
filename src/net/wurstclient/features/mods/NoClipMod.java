@@ -7,6 +7,7 @@
  */
 package net.wurstclient.features.mods;
 
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
 import net.wurstclient.features.mods.Mod.Category;
@@ -31,27 +32,27 @@ public class NoClipMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		mc.thePlayer.noClip = true;
-		mc.thePlayer.fallDistance = 0;
-		mc.thePlayer.onGround = false;
+		WMinecraft.getPlayer().noClip = true;
+		WMinecraft.getPlayer().fallDistance = 0;
+		WMinecraft.getPlayer().onGround = false;
 		
-		mc.thePlayer.capabilities.isFlying = false;
-		mc.thePlayer.motionX = 0;
-		mc.thePlayer.motionY = 0;
-		mc.thePlayer.motionZ = 0;
+		WMinecraft.getPlayer().capabilities.isFlying = false;
+		WMinecraft.getPlayer().motionX = 0;
+		WMinecraft.getPlayer().motionY = 0;
+		WMinecraft.getPlayer().motionZ = 0;
 		
 		float speed = 0.2F;
-		mc.thePlayer.jumpMovementFactor = speed;
+		WMinecraft.getPlayer().jumpMovementFactor = speed;
 		if(mc.gameSettings.keyBindJump.pressed)
-			mc.thePlayer.motionY += speed;
+			WMinecraft.getPlayer().motionY += speed;
 		if(mc.gameSettings.keyBindSneak.pressed)
-			mc.thePlayer.motionY -= speed;
+			WMinecraft.getPlayer().motionY -= speed;
 	}
 	
 	@Override
 	public void onDisable()
 	{
 		wurst.events.remove(UpdateListener.class, this);
-		mc.thePlayer.noClip = false;
+		WMinecraft.getPlayer().noClip = false;
 	}
 }

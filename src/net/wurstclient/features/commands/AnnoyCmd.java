@@ -7,6 +7,7 @@
  */
 package net.wurstclient.features.commands;
 
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.ChatInputEvent;
 import net.wurstclient.events.listeners.ChatInputListener;
 import net.wurstclient.utils.ChatUtils;
@@ -30,7 +31,7 @@ public final class AnnoyCmd extends Cmd implements ChatInputListener
 			{
 				name = args[0];
 				ChatUtils.message("Now annoying " + name + ".");
-				if(name.equals(mc.thePlayer.getName()))
+				if(name.equals(WMinecraft.getPlayer().getName()))
 					ChatUtils.warning("Annoying yourself is a bad idea!");
 				wurst.events.add(ChatInputListener.class, this);
 			}else
@@ -58,12 +59,12 @@ public final class AnnoyCmd extends Cmd implements ChatInputListener
 		if(message.startsWith("<" + name + ">") || message.contains(name + ">"))
 		{
 			String repeatMessage = message.substring(message.indexOf(">") + 1);
-			mc.thePlayer.sendChatMessage(repeatMessage);
+			WMinecraft.getPlayer().sendChatMessage(repeatMessage);
 		}else if(message.contains("] " + name + ":")
 			|| message.contains("]" + name + ":"))
 		{
 			String repeatMessage = message.substring(message.indexOf(":") + 1);
-			mc.thePlayer.sendChatMessage(repeatMessage);
+			WMinecraft.getPlayer().sendChatMessage(repeatMessage);
 		}
 	}
 }

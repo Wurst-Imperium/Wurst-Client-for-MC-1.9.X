@@ -9,10 +9,10 @@ package net.wurstclient.features.mods;
 
 import java.util.ArrayList;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.CPacketPlayer;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.PacketOutputEvent;
 import net.wurstclient.events.listeners.PacketOutputListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
@@ -46,15 +46,15 @@ public class BlinkMod extends Mod implements PacketOutputListener
 	{
 		lastTime = System.currentTimeMillis();
 		
-		oldX = mc.thePlayer.posX;
-		oldY = mc.thePlayer.posY;
-		oldZ = mc.thePlayer.posZ;
-		fakePlayer =
-			new EntityOtherPlayerMP(mc.theWorld, mc.thePlayer.getGameProfile());
-		fakePlayer.clonePlayer(mc.thePlayer, true);
-		fakePlayer.copyLocationAndAnglesFrom(mc.thePlayer);
-		fakePlayer.rotationYawHead = mc.thePlayer.rotationYawHead;
-		mc.theWorld.addEntityToWorld(-69, fakePlayer);
+		oldX = WMinecraft.getPlayer().posX;
+		oldY = WMinecraft.getPlayer().posY;
+		oldZ = WMinecraft.getPlayer().posZ;
+		fakePlayer = new EntityOtherPlayerMP(WMinecraft.getWorld(),
+			WMinecraft.getPlayer().getGameProfile());
+		fakePlayer.clonePlayer(WMinecraft.getPlayer(), true);
+		fakePlayer.copyLocationAndAnglesFrom(WMinecraft.getPlayer());
+		fakePlayer.rotationYawHead = WMinecraft.getPlayer().rotationYawHead;
+		WMinecraft.getWorld().addEntityToWorld(-69, fakePlayer);
 		
 		wurst.events.add(PacketOutputListener.class, this);
 	}
@@ -65,11 +65,11 @@ public class BlinkMod extends Mod implements PacketOutputListener
 		Packet packet = event.getPacket();
 		if(packet instanceof CPacketPlayer)
 		{
-			if(mc.thePlayer.posX != mc.thePlayer.prevPosX
-				|| mc.thePlayer.posZ != Minecraft
-					.getMinecraft().thePlayer.prevPosZ
-				|| mc.thePlayer.posY != Minecraft
-					.getMinecraft().thePlayer.prevPosY)
+			if(WMinecraft.getPlayer().posX != WMinecraft.getPlayer().prevPosX
+				|| WMinecraft.getPlayer().posZ != WMinecraft
+					.getPlayer().prevPosZ
+				|| WMinecraft.getPlayer().posY != WMinecraft
+					.getPlayer().prevPosY)
 			{
 				blinkTime += System.currentTimeMillis() - lastTime;
 				packets.add(packet);
@@ -85,9 +85,9 @@ public class BlinkMod extends Mod implements PacketOutputListener
 		wurst.events.remove(PacketOutputListener.class, this);
 		
 		for(Packet packet : packets)
-			mc.thePlayer.sendQueue.addToSendQueue(packet);
+			WMinecraft.getPlayer().sendQueue.addToSendQueue(packet);
 		packets.clear();
-		mc.theWorld.removeEntityFromWorld(-69);
+		WMinecraft.getWorld().removeEntityFromWorld(-69);
 		fakePlayer = null;
 		blinkTime = 0;
 	}
@@ -95,8 +95,9 @@ public class BlinkMod extends Mod implements PacketOutputListener
 	public void cancel()
 	{
 		packets.clear();
-		mc.thePlayer.setPositionAndRotation(oldX, oldY, oldZ,
-			mc.thePlayer.rotationYaw, mc.thePlayer.rotationPitch);
+		WMinecraft.getPlayer().setPositionAndRotation(oldX, oldY, oldZ,
+			WMinecraft.getPlayer().rotationYaw,
+			WMinecraft.getPlayer().rotationPitch);
 		setEnabled(false);
 	}
 }

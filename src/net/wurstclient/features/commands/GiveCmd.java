@@ -14,6 +14,7 @@ import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTException;
 import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
 import net.minecraft.util.ResourceLocation;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.utils.ChatUtils;
 import net.wurstclient.utils.MiscUtils;
 
@@ -99,7 +100,7 @@ public final class GiveCmd extends Cmd
 		// validate input
 		if(args.length < 1)
 			syntaxError();
-		if(!mc.thePlayer.capabilities.isCreativeMode)
+		if(!WMinecraft.getPlayer().capabilities.isCreativeMode)
 			error("Creative mode only.");
 		
 		// list all templates
@@ -183,9 +184,9 @@ public final class GiveCmd extends Cmd
 		
 		// give item
 		for(int i = 0; i < 9; i++)
-			if(mc.thePlayer.inventory.getStackInSlot(i) == null)
+			if(WMinecraft.getPlayer().inventory.getStackInSlot(i) == null)
 			{
-				mc.thePlayer.sendQueue.addToSendQueue(
+				WMinecraft.getPlayer().sendQueue.addToSendQueue(
 					new CPacketCreativeInventoryAction(36 + i, stack));
 				ChatUtils
 					.message("Item" + (amount > 1 ? "s" : "") + " created.");

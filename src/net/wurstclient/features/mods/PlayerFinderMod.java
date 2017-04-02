@@ -14,6 +14,7 @@ import net.minecraft.network.play.server.SPacketEffect;
 import net.minecraft.network.play.server.SPacketSoundEffect;
 import net.minecraft.network.play.server.SPacketSpawnGlobalEntity;
 import net.minecraft.util.math.BlockPos;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.PacketInputEvent;
 import net.wurstclient.events.listeners.PacketInputListener;
 import net.wurstclient.events.listeners.RenderListener;
@@ -81,7 +82,7 @@ public class PlayerFinderMod extends Mod
 	@Override
 	public void onReceivedPacket(PacketInputEvent event)
 	{
-		if(mc.thePlayer == null)
+		if(WMinecraft.getPlayer() == null)
 			return;
 		Packet packet = event.getPacket();
 		if(packet instanceof SPacketEffect)

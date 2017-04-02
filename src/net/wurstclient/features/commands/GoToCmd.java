@@ -9,6 +9,7 @@ package net.wurstclient.features.commands;
 
 import net.minecraft.util.math.BlockPos;
 import net.wurstclient.ai.PathFinder;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.utils.ChatUtils;
 
 @Cmd.Info(description = "Walks or flies you to a specific location.",
@@ -21,8 +22,8 @@ public final class GoToCmd extends Cmd
 	public void execute(String[] args) throws CmdError
 	{
 		int[] pos = argsToPos(args);
-		if(Math.abs(pos[0] - mc.thePlayer.posX) > 256
-			|| Math.abs(pos[2] - mc.thePlayer.posZ) > 256)
+		if(Math.abs(pos[0] - WMinecraft.getPlayer().posX) > 256
+			|| Math.abs(pos[2] - WMinecraft.getPlayer().posZ) > 256)
 		{
 			ChatUtils.error("Goal is out of range!");
 			ChatUtils.message("Maximum range is 256 blocks.");

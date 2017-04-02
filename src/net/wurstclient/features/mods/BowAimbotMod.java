@@ -13,6 +13,7 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemBow;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.GUIRenderListener;
 import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.events.listeners.UpdateListener;
@@ -110,8 +111,8 @@ public class BowAimbotMod extends Mod
 	public void onUpdate()
 	{
 		target = null;
-		if(mc.thePlayer.inventory.getCurrentItem() != null
-			&& mc.thePlayer.inventory.getCurrentItem()
+		if(WMinecraft.getPlayer().inventory.getCurrentItem() != null
+			&& WMinecraft.getPlayer().inventory.getCurrentItem()
 				.getItem() instanceof ItemBow
 			&& mc.gameSettings.keyBindUseItem.pressed)
 		{
@@ -132,7 +133,7 @@ public class BowAimbotMod extends Mod
 	{
 		if(target == null)
 			return;
-		int bowCharge = mc.thePlayer.getItemInUseDuration();
+		int bowCharge = WMinecraft.getPlayer().getItemInUseDuration();
 		velocity = bowCharge / 20;
 		velocity = (velocity * velocity + velocity * 2) / 3;
 		if(wurst.mods.fastBowMod.isActive())
@@ -146,12 +147,12 @@ public class BowAimbotMod extends Mod
 		if(velocity > 1)
 			velocity = 1;
 		double posX = target.posX + (target.posX - target.prevPosX) * 5
-			- mc.thePlayer.posX;
+			- WMinecraft.getPlayer().posX;
 		double posY = target.posY + (target.posY - target.prevPosY) * 5
-			+ target.getEyeHeight() - 0.15 - mc.thePlayer.posY
-			- mc.thePlayer.getEyeHeight();
+			+ target.getEyeHeight() - 0.15 - WMinecraft.getPlayer().posY
+			- WMinecraft.getPlayer().getEyeHeight();
 		double posZ = target.posZ + (target.posZ - target.prevPosZ) * 5
-			- mc.thePlayer.posZ;
+			- WMinecraft.getPlayer().posZ;
 		float yaw = (float)(Math.atan2(posZ, posX) * 180 / Math.PI) - 90;
 		double y2 = Math.sqrt(posX * posX + posZ * posZ);
 		float g = 0.006F;
@@ -159,7 +160,7 @@ public class BowAimbotMod extends Mod
 			- g * (g * (y2 * y2) + 2 * posY * (velocity * velocity)));
 		float pitch = (float)-Math.toDegrees(
 			Math.atan((velocity * velocity - Math.sqrt(tmp)) / (g * y2)));
-		mc.thePlayer.rotationYaw = yaw;
-		mc.thePlayer.rotationPitch = pitch;
+		WMinecraft.getPlayer().rotationYaw = yaw;
+		WMinecraft.getPlayer().rotationPitch = pitch;
 	}
 }

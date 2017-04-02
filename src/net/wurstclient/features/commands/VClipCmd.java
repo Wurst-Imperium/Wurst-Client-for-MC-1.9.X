@@ -7,6 +7,7 @@
  */
 package net.wurstclient.features.commands;
 
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.utils.MiscUtils;
 
 @Cmd.Info(
@@ -24,9 +25,9 @@ public final class VClipCmd extends Cmd
 		if(args.length != 1)
 			syntaxError();
 		if(MiscUtils.isInteger(args[0]))
-			mc.thePlayer.setPosition(mc.thePlayer.posX,
-				mc.thePlayer.posY + Integer.valueOf(args[0]),
-				mc.thePlayer.posZ);
+			WMinecraft.getPlayer().setPosition(WMinecraft.getPlayer().posX,
+				WMinecraft.getPlayer().posY + Integer.valueOf(args[0]),
+				WMinecraft.getPlayer().posZ);
 		else
 			syntaxError();
 	}

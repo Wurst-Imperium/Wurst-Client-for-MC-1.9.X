@@ -8,6 +8,7 @@
 package net.wurstclient.features.mods;
 
 import net.minecraft.network.play.client.CPacketPlayer;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
 import net.wurstclient.features.mods.Mod.Category;
@@ -59,35 +60,42 @@ public class StepMod extends Mod implements UpdateListener
 	{
 		if(mode.getSelected() == 0)
 		{
-			mc.thePlayer.stepHeight = 0.5F;
-			if(mc.thePlayer.isCollidedHorizontally && mc.thePlayer.onGround)
-				mc.thePlayer.jump();
+			WMinecraft.getPlayer().stepHeight = 0.5F;
+			if(WMinecraft.getPlayer().isCollidedHorizontally
+				&& WMinecraft.getPlayer().onGround)
+				WMinecraft.getPlayer().jump();
 		}else if(wurst.special.yesCheatSpf.getBypassLevel()
 			.ordinal() >= BypassLevel.ANTICHEAT.ordinal())
 		{
-			mc.thePlayer.stepHeight = 0.5F;
-			if(mc.thePlayer.isCollidedHorizontally && mc.thePlayer.onGround)
+			WMinecraft.getPlayer().stepHeight = 0.5F;
+			if(WMinecraft.getPlayer().isCollidedHorizontally
+				&& WMinecraft.getPlayer().onGround)
 			{
 				mc.getNetHandler()
 					.addToSendQueue(new CPacketPlayer.C04PacketPlayerPosition(
-						mc.thePlayer.posX, mc.thePlayer.posY + 0.42D,
-						mc.thePlayer.posZ, mc.thePlayer.onGround));
+						WMinecraft.getPlayer().posX,
+						WMinecraft.getPlayer().posY + 0.42D,
+						WMinecraft.getPlayer().posZ,
+						WMinecraft.getPlayer().onGround));
 				mc.getNetHandler()
 					.addToSendQueue(new CPacketPlayer.C04PacketPlayerPosition(
-						mc.thePlayer.posX, mc.thePlayer.posY + 0.753D,
-						mc.thePlayer.posZ, mc.thePlayer.onGround));
-				mc.thePlayer.setPosition(mc.thePlayer.posX,
-					mc.thePlayer.posY + 1D, mc.thePlayer.posZ);
+						WMinecraft.getPlayer().posX,
+						WMinecraft.getPlayer().posY + 0.753D,
+						WMinecraft.getPlayer().posZ,
+						WMinecraft.getPlayer().onGround));
+				WMinecraft.getPlayer().setPosition(WMinecraft.getPlayer().posX,
+					WMinecraft.getPlayer().posY + 1D,
+					WMinecraft.getPlayer().posZ);
 			}
 		}else
-			mc.thePlayer.stepHeight = height.getValueF();
+			WMinecraft.getPlayer().stepHeight = height.getValueF();
 	}
 	
 	@Override
 	public void onDisable()
 	{
 		wurst.events.remove(UpdateListener.class, this);
-		mc.thePlayer.stepHeight = 0.5F;
+		WMinecraft.getPlayer().stepHeight = 0.5F;
 	}
 	
 	@Override

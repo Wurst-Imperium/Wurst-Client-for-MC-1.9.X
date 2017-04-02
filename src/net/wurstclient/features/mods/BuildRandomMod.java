@@ -12,6 +12,7 @@ import net.minecraft.network.play.client.CPacketPlayerTryUseItem;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult.Type;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
 import net.wurstclient.features.mods.Mod.Bypasses;
@@ -61,12 +62,12 @@ public class BuildRandomMod extends Mod implements UpdateListener
 			for(int x = (int)range; x >= -range - 1; x--)
 			{
 				for(int z = (int)range; z >= -range; z--)
-					if(Block.getIdFromBlock(
-						mc.theWorld
-							.getBlockState(
-								new BlockPos((int)(x + mc.thePlayer.posX),
-									(int)(y + mc.thePlayer.posY),
-									(int)(z + mc.thePlayer.posZ)))
+					if(Block
+						.getIdFromBlock(WMinecraft.getWorld()
+							.getBlockState(new BlockPos(
+								(int)(x + WMinecraft.getPlayer().posX),
+								(int)(y + WMinecraft.getPlayer().posY),
+								(int)(z + WMinecraft.getPlayer().posZ)))
 							.getBlock()) != 0
 						&& BlockUtils.getBlockDistance(x, y, z) <= range)
 					{
@@ -84,27 +85,28 @@ public class BuildRandomMod extends Mod implements UpdateListener
 		BlockPos randomPos = null;
 		while(distance > range || distance < -range || randomPos == null
 			|| Block.getIdFromBlock(
-				mc.theWorld.getBlockState(randomPos).getBlock()) == 0)
+				WMinecraft.getWorld().getBlockState(randomPos).getBlock()) == 0)
 		{
 			xDiff = (int)(Math.random() * range * 2 - range - 1);
 			yDiff = (int)(Math.random() * range * 2 - range);
 			zDiff = (int)(Math.random() * range * 2 - range);
 			distance = BlockUtils.getBlockDistance(xDiff, yDiff, zDiff);
-			int randomPosX = (int)(xDiff + mc.thePlayer.posX);
-			int randomPosY = (int)(yDiff + mc.thePlayer.posY);
-			int randomPosZ = (int)(zDiff + mc.thePlayer.posZ);
+			int randomPosX = (int)(xDiff + WMinecraft.getPlayer().posX);
+			int randomPosY = (int)(yDiff + WMinecraft.getPlayer().posY);
+			int randomPosZ = (int)(zDiff + WMinecraft.getPlayer().posZ);
 			randomPos = new BlockPos(randomPosX, randomPosY, randomPosZ);
 		}
 		BlockUtils.faceBlockPacket(randomPos);
-		mc.thePlayer.swingArm(EnumHand.MAIN_HAND);
-		mc.thePlayer.sendQueue.addToSendQueue(new CPacketPlayerTryUseItem(
-			randomPos, mc.objectMouseOver.sideHit, EnumHand.MAIN_HAND,
-			(float)mc.objectMouseOver.hitVec.xCoord
-				- mc.objectMouseOver.getBlockPos().getX(),
-			(float)mc.objectMouseOver.hitVec.yCoord
-				- mc.objectMouseOver.getBlockPos().getY(),
-			(float)mc.objectMouseOver.hitVec.zCoord
-				- mc.objectMouseOver.getBlockPos().getZ()));
+		WMinecraft.getPlayer().swingArm(EnumHand.MAIN_HAND);
+		WMinecraft.getPlayer().sendQueue
+			.addToSendQueue(new CPacketPlayerTryUseItem(randomPos,
+				mc.objectMouseOver.sideHit, EnumHand.MAIN_HAND,
+				(float)mc.objectMouseOver.hitVec.xCoord
+					- mc.objectMouseOver.getBlockPos().getX(),
+				(float)mc.objectMouseOver.hitVec.yCoord
+					- mc.objectMouseOver.getBlockPos().getY(),
+				(float)mc.objectMouseOver.hitVec.zCoord
+					- mc.objectMouseOver.getBlockPos().getZ()));
 	}
 	
 	@Override

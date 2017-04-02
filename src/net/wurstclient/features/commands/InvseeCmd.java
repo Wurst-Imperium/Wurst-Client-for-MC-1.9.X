@@ -9,6 +9,7 @@ package net.wurstclient.features.commands;
 
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.gui.inventory.GuiInventory;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.utils.ChatUtils;
 
@@ -26,7 +27,7 @@ public final class InvseeCmd extends Cmd implements RenderListener
 	{
 		if(args.length != 1)
 			syntaxError();
-		if(mc.thePlayer.capabilities.isCreativeMode)
+		if(WMinecraft.getPlayer().capabilities.isCreativeMode)
 		{
 			ChatUtils.error("Survival mode only.");
 			return;
@@ -39,7 +40,7 @@ public final class InvseeCmd extends Cmd implements RenderListener
 	public void onRender(float partialTicks)
 	{
 		boolean found = false;
-		for(Object entity : mc.theWorld.loadedEntityList)
+		for(Object entity : WMinecraft.getWorld().loadedEntityList)
 			if(entity instanceof EntityOtherPlayerMP)
 			{
 				EntityOtherPlayerMP player = (EntityOtherPlayerMP)entity;

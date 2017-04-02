@@ -9,8 +9,8 @@ package net.wurstclient.ai;
 
 import java.util.ArrayList;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.BlockPos;
+import net.wurstclient.compatibility.WMinecraft;
 
 public class PathPoint
 {
@@ -30,7 +30,7 @@ public class PathPoint
 	
 	public ArrayList<BlockPos> getNeighbors()
 	{
-		BlockPos playerPos = new BlockPos(Minecraft.getMinecraft().thePlayer);
+		BlockPos playerPos = new BlockPos(WMinecraft.getPlayer());
 		ArrayList<BlockPos> neighbors = new ArrayList<>();
 		neighbors.add(pos.add(0, 0, -1));// north
 		neighbors.add(pos.add(0, 0, 1));// south

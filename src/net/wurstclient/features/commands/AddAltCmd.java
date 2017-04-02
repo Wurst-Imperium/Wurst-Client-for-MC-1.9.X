@@ -12,6 +12,7 @@ import java.util.Iterator;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.util.StringUtils;
 import net.wurstclient.alts.Alt;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.gui.alts.GuiAltList;
 import net.wurstclient.utils.ChatUtils;
 
@@ -36,7 +37,7 @@ public final class AddAltCmd extends Cmd
 				NetworkPlayerInfo info = (NetworkPlayerInfo)itr.next();
 				String crackedName =
 					StringUtils.stripControlCodes(info.getPlayerNameForReal());
-				if(crackedName.equals(mc.thePlayer.getName())
+				if(crackedName.equals(WMinecraft.getPlayer().getName())
 					|| crackedName.equals("Alexander01998") || GuiAltList.alts
 						.contains(new Alt(crackedName, null, null)))
 					continue;

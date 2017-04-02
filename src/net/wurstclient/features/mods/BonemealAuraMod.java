@@ -21,6 +21,7 @@ import net.minecraft.network.play.client.CPacketPlayerTryUseItem;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
 import net.wurstclient.features.mods.Mod.Category;
@@ -81,8 +82,8 @@ public class BonemealAuraMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		ItemStack item = mc.thePlayer.inventory
-			.getStackInSlot(mc.thePlayer.inventory.currentItem);
+		ItemStack item = WMinecraft.getPlayer().inventory
+			.getStackInSlot(WMinecraft.getPlayer().inventory.currentItem);
 		if(item == null || !(item.getItem() instanceof ItemDye)
 			|| item.getMetadata() != 15)
 			return;
@@ -90,7 +91,7 @@ public class BonemealAuraMod extends Mod implements UpdateListener
 		float range = wurst.special.yesCheatSpf.getBypassLevel()
 			.ordinal() >= BypassLevel.ANTICHEAT.ordinal() ? yesCheatRange
 				: normalRange;
-		BlockPos pos = mc.thePlayer.getPosition();
+		BlockPos pos = WMinecraft.getPlayer().getPosition();
 		for(int y = (int)-range - 1; y < (int)range + 1; y++)
 			for(int x = (int)-range - 1; x < (int)range + 1; x++)
 				for(int z = (int)-range - 1; z < (int)range + 1; z++)
@@ -101,7 +102,7 @@ public class BonemealAuraMod extends Mod implements UpdateListener
 						continue;
 					
 					BlockUtils.faceBlockPacket(currentPos);
-					mc.thePlayer.sendQueue
+					WMinecraft.getPlayer().sendQueue
 						.addToSendQueue(new CPacketPlayerTryUseItem(currentPos,
 							EnumFacing.UP, EnumHand.MAIN_HAND, 0.5F, 1F, 0.5F));
 				}
@@ -109,11 +110,12 @@ public class BonemealAuraMod extends Mod implements UpdateListener
 	
 	private boolean isCorrectBlock(BlockPos pos)
 	{
-		IBlockState state = mc.theWorld.getBlockState(pos);
+		IBlockState state = WMinecraft.getWorld().getBlockState(pos);
 		Block block = state.getBlock();
 		
 		if(!(block instanceof IGrowable) || block instanceof BlockGrass
-			|| !((IGrowable)block).canGrow(mc.theWorld, pos, state, false))
+			|| !((IGrowable)block).canGrow(WMinecraft.getWorld(), pos, state,
+				false))
 			return false;
 		
 		if(block instanceof BlockSapling)

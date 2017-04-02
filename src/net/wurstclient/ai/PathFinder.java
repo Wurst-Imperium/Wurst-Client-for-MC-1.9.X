@@ -13,8 +13,8 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.PriorityQueue;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.BlockPos;
+import net.wurstclient.compatibility.WMinecraft;
 
 public class PathFinder
 {
@@ -25,7 +25,7 @@ public class PathFinder
 	
 	public PathFinder(BlockPos goal)
 	{
-		this(new BlockPos(Minecraft.getMinecraft().thePlayer), goal);
+		this(new BlockPos(WMinecraft.getPlayer()), goal);
 	}
 	
 	public PathFinder(BlockPos start, BlockPos goal)

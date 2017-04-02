@@ -10,6 +10,7 @@ package net.wurstclient.features.commands;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagString;
+import net.wurstclient.compatibility.WMinecraft;
 
 @Cmd.Info(description = "Changes the held book's author.",
 	name = "author",
@@ -22,9 +23,9 @@ public final class AuthorCmd extends Cmd
 	{
 		if(args.length == 0)
 			syntaxError();
-		if(!mc.thePlayer.capabilities.isCreativeMode)
+		if(!WMinecraft.getPlayer().capabilities.isCreativeMode)
 			error("Creative mode only.");
-		ItemStack item = mc.thePlayer.inventory.getCurrentItem();
+		ItemStack item = WMinecraft.getPlayer().inventory.getCurrentItem();
 		if(item == null || Item.getIdFromItem(item.getItem()) != 387)
 			error("You are not holding a written book in your hand.");
 		String author = args[0];

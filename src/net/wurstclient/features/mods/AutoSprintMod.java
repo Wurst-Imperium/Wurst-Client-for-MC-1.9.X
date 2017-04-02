@@ -7,6 +7,7 @@
  */
 package net.wurstclient.features.mods;
 
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
 import net.wurstclient.features.mods.Mod.Category;
@@ -29,9 +30,10 @@ public class AutoSprintMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		if(!mc.thePlayer.isCollidedHorizontally && mc.thePlayer.moveForward > 0
-			&& !mc.thePlayer.isSneaking())
-			mc.thePlayer.setSprinting(true);
+		if(!WMinecraft.getPlayer().isCollidedHorizontally
+			&& WMinecraft.getPlayer().moveForward > 0
+			&& !WMinecraft.getPlayer().isSneaking())
+			WMinecraft.getPlayer().setSprinting(true);
 	}
 	
 	@Override

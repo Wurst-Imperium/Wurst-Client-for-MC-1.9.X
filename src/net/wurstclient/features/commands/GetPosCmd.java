@@ -11,6 +11,7 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 
 import net.minecraft.util.math.BlockPos;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.ChatOutputEvent;
 import net.wurstclient.utils.ChatUtils;
 
@@ -26,7 +27,7 @@ public final class GetPosCmd extends Cmd
 	{
 		if(args.length > 1)
 			syntaxError();
-		BlockPos blockpos = new BlockPos(mc.thePlayer);
+		BlockPos blockpos = new BlockPos(WMinecraft.getPlayer());
 		String pos =
 			blockpos.getX() + " " + blockpos.getY() + " " + blockpos.getZ();
 		if(args.length == 0)

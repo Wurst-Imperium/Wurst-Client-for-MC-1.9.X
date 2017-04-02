@@ -9,6 +9,7 @@ package net.wurstclient.features.mods;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumHand;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
 import net.wurstclient.features.mods.Mod.Bypasses;
@@ -107,12 +108,14 @@ public class KillauraLegitMod extends Mod implements UpdateListener
 		updateMS();
 		EntityLivingBase en =
 			EntityUtils.getClosestEntity(true, fov.getValueF(), false);
-		if(en != null
-			&& mc.thePlayer.getDistanceToEntity(en) <= range.getValueF())
+		if(en != null && WMinecraft.getPlayer().getDistanceToEntity(en) <= range
+			.getValueF())
 		{
-			if(wurst.mods.criticalsMod.isActive() && mc.thePlayer.onGround)
-				mc.thePlayer.jump();
-			if(useCooldown.isChecked() ? mc.thePlayer.getSwordCooldown(0F) >= 1F
+			if(wurst.mods.criticalsMod.isActive()
+				&& WMinecraft.getPlayer().onGround)
+				WMinecraft.getPlayer().jump();
+			if(useCooldown.isChecked()
+				? WMinecraft.getPlayer().getSwordCooldown(0F) >= 1F
 				: hasTimePassedS(speed.getValueF()))
 				if(EntityUtils.getDistanceFromMouse(en) > 55)
 					EntityUtils.faceEntityClient(en);
@@ -120,8 +123,9 @@ public class KillauraLegitMod extends Mod implements UpdateListener
 				{
 					EntityUtils.faceEntityClient(en);
 					
-					mc.playerController.attackEntity(mc.thePlayer, en);
-					mc.thePlayer.swingArm(EnumHand.MAIN_HAND);
+					mc.playerController.attackEntity(WMinecraft.getPlayer(),
+						en);
+					WMinecraft.getPlayer().swingArm(EnumHand.MAIN_HAND);
 					
 					updateLastMS();
 				}

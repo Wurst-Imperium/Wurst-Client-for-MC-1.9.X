@@ -9,6 +9,7 @@ package net.wurstclient.features.mods;
 
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.item.ItemNameTag;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.features.mods.Mod.Bypasses;
 import net.wurstclient.utils.ChatUtils;
 
@@ -24,14 +25,14 @@ public class CrashItemMod extends Mod
 	@Override
 	public void onEnable()
 	{
-		if(mc.thePlayer.inventory.getCurrentItem() == null
-			|| !(mc.thePlayer.inventory.getCurrentItem()
+		if(WMinecraft.getPlayer().inventory.getCurrentItem() == null
+			|| !(WMinecraft.getPlayer().inventory.getCurrentItem()
 				.getItem() instanceof ItemNameTag))
 		{
 			ChatUtils.error("You are not holding a nametag in your hand.");
 			setEnabled(false);
 			return;
-		}else if(!mc.thePlayer.capabilities.isCreativeMode)
+		}else if(!WMinecraft.getPlayer().capabilities.isCreativeMode)
 		{
 			ChatUtils.error("Creative mode only.");
 			setEnabled(false);
@@ -43,9 +44,10 @@ public class CrashItemMod extends Mod
 			StringBuilder builder = new StringBuilder().append(stackName);
 			stackName = builder.append("############").toString();
 		}
-		mc.thePlayer.inventory.getCurrentItem().setStackDisplayName(stackName);
-		mc.displayGuiScreen(new GuiInventory(mc.thePlayer));
-		mc.thePlayer.closeScreen();
+		WMinecraft.getPlayer().inventory.getCurrentItem()
+			.setStackDisplayName(stackName);
+		mc.displayGuiScreen(new GuiInventory(WMinecraft.getPlayer()));
+		WMinecraft.getPlayer().closeScreen();
 		ChatUtils.message("CrashItem created. Right click a mob with it.");
 		setEnabled(false);
 	}

@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.features.mods.Mod.Bypasses;
 import net.wurstclient.utils.ChatUtils;
 
@@ -27,12 +28,12 @@ public class KillerPotionMod extends Mod
 	@Override
 	public void onEnable()
 	{
-		if(mc.thePlayer.inventory.getStackInSlot(0) != null)
+		if(WMinecraft.getPlayer().inventory.getStackInSlot(0) != null)
 		{
 			ChatUtils.error("Please clear the first slot in your hotbar.");
 			setEnabled(false);
 			return;
-		}else if(!mc.thePlayer.capabilities.isCreativeMode)
+		}else if(!WMinecraft.getPlayer().capabilities.isCreativeMode)
 		{
 			ChatUtils.error("Creative mode only.");
 			setEnabled(false);
@@ -49,7 +50,7 @@ public class KillerPotionMod extends Mod
 		stack.setTagInfo("CustomPotionEffects", effects);
 		stack.setStackDisplayName("§c§lKiller§6§lPotion");
 		
-		mc.thePlayer.sendQueue
+		WMinecraft.getPlayer().sendQueue
 			.addToSendQueue(new CPacketCreativeInventoryAction(36, stack));
 		ChatUtils.message("Potion created.");
 		setEnabled(false);
