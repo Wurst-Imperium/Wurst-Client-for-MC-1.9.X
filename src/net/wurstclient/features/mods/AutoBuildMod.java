@@ -30,7 +30,8 @@ import net.wurstclient.utils.RenderUtils;
 	tags = "AutoBridge, AutoFloor, AutoNazi, AutoPenis, AutoPillar, AutoWall, AutoWurst, auto build",
 	help = "Mods/AutoBuild")
 @Mod.Bypasses(ghostMode = false)
-public final class AutoBuildMod extends Mod implements UpdateListener, RenderListener
+public final class AutoBuildMod extends Mod
+	implements UpdateListener, RenderListener
 {
 	public static ArrayList<String> names = new ArrayList<>();
 	public static ArrayList<int[][]> templates = new ArrayList<>();

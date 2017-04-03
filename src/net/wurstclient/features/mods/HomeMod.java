@@ -17,7 +17,8 @@ import net.wurstclient.utils.ChatUtils;
 	name = "/home",
 	help = "Mods/home")
 @Mod.Bypasses
-public final class HomeMod extends Mod implements UpdateListener, ChatInputListener
+public final class HomeMod extends Mod
+	implements UpdateListener, ChatInputListener
 {
 	private int disableTimer;
 	

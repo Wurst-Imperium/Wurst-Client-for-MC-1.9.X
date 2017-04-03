@@ -24,7 +24,8 @@ import net.wurstclient.utils.RenderUtils;
 	tags = "base finder, factions",
 	help = "Mods/BaseFinder")
 @Mod.Bypasses
-public final class BaseFinderMod extends Mod implements UpdateListener, RenderListener
+public final class BaseFinderMod extends Mod
+	implements UpdateListener, RenderListener
 {
 	public BaseFinderMod()
 	{

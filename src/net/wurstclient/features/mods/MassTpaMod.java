@@ -27,7 +27,8 @@ import net.wurstclient.utils.ChatUtils;
 	tags = "mass tpa",
 	help = "Mods/MassTPA")
 @Mod.Bypasses
-public final class MassTpaMod extends Mod implements UpdateListener, ChatInputListener
+public final class MassTpaMod extends Mod
+	implements UpdateListener, ChatInputListener
 {
 	private float speed = 1F;
 	private int i;
