@@ -12,7 +12,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.TreeMap;
 
-public class SpfManager
+public final class SpfManager
 {
 	private final TreeMap<String, Spf> features =
 		new TreeMap<>(new Comparator<String>()

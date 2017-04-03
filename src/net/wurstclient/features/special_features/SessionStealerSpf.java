@@ -17,7 +17,7 @@ import net.wurstclient.features.Feature;
 	name = "SessionStealer",
 	tags = "Force OP,Session Stealer,Account Stealer",
 	help = "Special_Features/Force_OP_(Session_Stealer)")
-public class SessionStealerSpf extends Spf
+public final class SessionStealerSpf extends Spf
 {
 	@Override
 	public Feature[] getSeeAlso()

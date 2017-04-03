@@ -16,7 +16,7 @@ import net.wurstclient.features.Feature;
 	name = "BookHack",
 	tags = "Force OP,Book Hack,OP Book,command book",
 	help = "Special_Features/Force_OP_(BookHack)")
-public class BookHackSpf extends Spf
+public final class BookHackSpf extends Spf
 {
 	@Override
 	public Feature[] getSeeAlso()

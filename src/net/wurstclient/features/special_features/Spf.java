@@ -17,7 +17,7 @@ import net.wurstclient.features.Feature;
 import net.wurstclient.navigator.PossibleKeybind;
 import net.wurstclient.settings.Setting;
 
-public class Spf implements Feature
+public abstract class Spf implements Feature
 {
 	private final String name = getClass().getAnnotation(Info.class).name();
 	private final String description =

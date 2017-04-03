@@ -13,7 +13,7 @@ package net.wurstclient.features.special_features;
 	name = "ServerFinder",
 	tags = "Server Finder",
 	help = "Special_Features/Server_Finder")
-public class ServerFinderSpf extends Spf
+public final class ServerFinderSpf extends Spf
 {
 	
 }
