@@ -25,6 +25,7 @@ import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
 import net.wurstclient.features.special_features.YesCheatSpf.BypassLevel;
+import net.wurstclient.files.ConfigFiles;
 import net.wurstclient.settings.ModeSetting;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
@@ -200,7 +201,7 @@ public final class NukerMod extends Mod
 		{
 			id = Block.getIdFromBlock(WMinecraft.getWorld()
 				.getBlockState(mc.objectMouseOver.getBlockPos()).getBlock());
-			wurst.files.saveOptions();
+			ConfigFiles.OPTIONS.save();
 		}
 	}
 	
@@ -218,7 +219,7 @@ public final class NukerMod extends Mod
 		currentDamage = 0;
 		shouldRenderESP = false;
 		id = 0;
-		wurst.files.saveOptions();
+		ConfigFiles.OPTIONS.save();
 	}
 	
 	@Override

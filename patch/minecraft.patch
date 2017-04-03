@@ -1,6 +1,6 @@
-From 3074817be7c5e30afe66a960733406e03def9c3e Mon Sep 17 00:00:00 2001
+From 7477a0c28078b4e6a585df39efc159152d0ec401 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Fri, 31 Mar 2017 17:51:07 +0200
+Date: Mon, 3 Apr 2017 12:09:13 +0200
 Subject: [PATCH] mod
 
 ---
@@ -18,7 +18,7 @@ Subject: [PATCH] mod
  net/minecraft/client/entity/EntityPlayerSP.java    | 153 +++++++++++----
  net/minecraft/client/gui/FontRenderer.java         |   2 +-
  net/minecraft/client/gui/GuiButton.java            |  16 +-
- net/minecraft/client/gui/GuiDisconnected.java      |  87 +++++++++
+ net/minecraft/client/gui/GuiDisconnected.java      |  88 +++++++++
  net/minecraft/client/gui/GuiGameOver.java          |  13 +-
  net/minecraft/client/gui/GuiIngame.java            |  24 ++-
  net/minecraft/client/gui/GuiIngameMenu.java        |  52 +++++-
@@ -87,7 +87,7 @@ Subject: [PATCH] mod
  .../management/PlayerInteractionManager.java       |   6 +-
  net/minecraft/tileentity/TileEntitySign.java       |   2 +-
  net/minecraft/util/Timer.java                      |   6 +
- 83 files changed, 1257 insertions(+), 410 deletions(-)
+ 83 files changed, 1258 insertions(+), 410 deletions(-)
 
 diff --git a/Start.java b/Start.java
 index ae0025f..078afa5 100644
@@ -1143,10 +1143,10 @@ index cdb4e57..82cb9ea 100644
  
      public int getButtonWidth()
 diff --git a/net/minecraft/client/gui/GuiDisconnected.java b/net/minecraft/client/gui/GuiDisconnected.java
-index 4a7f37e..79e63c8 100644
+index 4a7f37e..825ef7e 100644
 --- a/net/minecraft/client/gui/GuiDisconnected.java
 +++ b/net/minecraft/client/gui/GuiDisconnected.java
-@@ -2,8 +2,13 @@ package net.minecraft.client.gui;
+@@ -2,8 +2,14 @@ package net.minecraft.client.gui;
  
  import java.io.IOException;
  import java.util.List;
@@ -1156,11 +1156,12 @@ index 4a7f37e..79e63c8 100644
  import net.minecraft.client.resources.I18n;
  import net.minecraft.util.text.ITextComponent;
 +import net.wurstclient.WurstClient;
++import net.wurstclient.files.ConfigFiles;
 +import net.wurstclient.hooks.ServerHook;
  
  public class GuiDisconnected extends GuiScreen
  {
-@@ -13,11 +18,20 @@ public class GuiDisconnected extends GuiScreen
+@@ -13,11 +19,20 @@ public class GuiDisconnected extends GuiScreen
      private final GuiScreen parentScreen;
      private int field_175353_i;
  
@@ -1181,7 +1182,7 @@ index 4a7f37e..79e63c8 100644
      }
  
      /**
-@@ -38,6 +52,58 @@ public class GuiDisconnected extends GuiScreen
+@@ -38,6 +53,58 @@ public class GuiDisconnected extends GuiScreen
          this.multilineMessage = this.fontRendererObj.listFormattedStringToWidth(this.message.getFormattedText(), this.width - 50);
          this.field_175353_i = this.multilineMessage.size() * this.fontRendererObj.FONT_HEIGHT;
          this.buttonList.add(new GuiButton(0, this.width / 2 - 100, this.height / 2 + this.field_175353_i / 2 + this.fontRendererObj.FONT_HEIGHT, I18n.format("gui.toMenu", new Object[0])));
@@ -1240,7 +1241,7 @@ index 4a7f37e..79e63c8 100644
      }
  
      /**
-@@ -48,6 +114,27 @@ public class GuiDisconnected extends GuiScreen
+@@ -48,6 +115,27 @@ public class GuiDisconnected extends GuiScreen
          if (button.id == 0)
          {
              this.mc.displayGuiScreen(this.parentScreen);
@@ -1253,19 +1254,19 @@ index 4a7f37e..79e63c8 100644
 +		{
 +			WurstClient.INSTANCE.options.autoReconnect =
 +				!WurstClient.INSTANCE.options.autoReconnect;
-+			WurstClient.INSTANCE.files.saveOptions();
++			ConfigFiles.OPTIONS.save();
 +			if(WurstClient.INSTANCE.options.autoReconnect)
 +				this.autoReconnectTimer = 100;
 +		}else if(button.id == 3)
 +		{
 +			GuiMultiplayer servers = (GuiMultiplayer)parentScreen;
-+			servers.savedServerList.removeServerData(servers.serverListSelector
-+				.getSelectedServer());
++			servers.savedServerList.removeServerData(
++				servers.serverListSelector.getSelectedServer());
 +			servers.savedServerList.saveServerList();
 +			servers.serverListSelector.setSelectedSlotIndex(-1);
 +			servers.serverListSelector.func_148195_a(servers.savedServerList);
 +			mc.displayGuiScreen(servers);
-         }
+ 		}
      }
  
 diff --git a/net/minecraft/client/gui/GuiGameOver.java b/net/minecraft/client/gui/GuiGameOver.java

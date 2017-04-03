@@ -24,6 +24,7 @@ import net.wurstclient.events.listeners.LeftClickListener;
 import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
+import net.wurstclient.files.ConfigFiles;
 import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.ModeSetting;
 import net.wurstclient.settings.SliderSetting;
@@ -208,7 +209,7 @@ public final class NukerLegitMod extends Mod
 		currentDamage = 0;
 		shouldRenderESP = false;
 		NukerMod.id = 0;
-		wurst.files.saveOptions();
+		ConfigFiles.OPTIONS.save();
 	}
 	
 	@Override
@@ -223,7 +224,7 @@ public final class NukerLegitMod extends Mod
 		{
 			NukerMod.id = Block.getIdFromBlock(WMinecraft.getWorld()
 				.getBlockState(mc.objectMouseOver.getBlockPos()).getBlock());
-			wurst.files.saveOptions();
+			ConfigFiles.OPTIONS.save();
 		}
 	}
 	

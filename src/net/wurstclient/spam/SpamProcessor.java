@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
 import net.wurstclient.WurstClient;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.features.mods.SpammerMod;
+import net.wurstclient.files.WurstFolders;
 import net.wurstclient.hooks.FrameHook;
 import net.wurstclient.spam.exceptions.InvalidVariableException;
 import net.wurstclient.spam.exceptions.SpamException;
@@ -37,7 +38,7 @@ public class SpamProcessor
 			@Override
 			public void run()
 			{
-				File file = new File(WurstClient.INSTANCE.files.scriptsDir,
+				File file = new File(WurstFolders.SCRIPTS.toFile(),
 					filename + ".wspam");
 				try
 				{
@@ -80,7 +81,7 @@ public class SpamProcessor
 	public static boolean runSpam(final String filename)
 	{
 		final File file =
-			new File(WurstClient.INSTANCE.files.spamDir, filename + ".wspam");
+			new File(WurstFolders.SPAM.toFile(), filename + ".wspam");
 		if(!file.exists())
 			return false;
 		new Thread(new Runnable()

@@ -18,6 +18,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.wurstclient.WurstClient;
+import net.wurstclient.files.ConfigFiles;
 import net.wurstclient.gui.options.GuiPressAKey;
 import net.wurstclient.gui.options.GuiPressAKeyCallback;
 
@@ -97,7 +98,7 @@ public class GuiKeybindChange extends GuiScreen implements GuiPressAKeyCallback
 					WurstClient.INSTANCE.keybinds.remove(entry.getKey());
 				WurstClient.INSTANCE.keybinds.put(key, new TreeSet<>(
 					Arrays.asList(commandBox.getText().split(";"))));
-				WurstClient.INSTANCE.files.saveKeybinds();
+				ConfigFiles.KEYBINDS.save();
 				mc.displayGuiScreen(prevMenu);
 				WurstClient.INSTANCE.analytics.trackEvent("keybinds", "set",
 					key);

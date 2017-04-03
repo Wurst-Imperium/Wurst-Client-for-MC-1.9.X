@@ -18,6 +18,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.util.text.TextFormatting;
 import net.wurstclient.WurstClient;
+import net.wurstclient.files.ConfigFiles;
 
 public class GuiCleanUp extends GuiScreen
 {
@@ -169,7 +170,7 @@ public class GuiCleanUp extends GuiScreen
 					!WurstClient.INSTANCE.options.cleanupUnknown;
 				clickedButton.displayString = "Unknown Hosts: "
 					+ removeOrKeep(WurstClient.INSTANCE.options.cleanupUnknown);
-				WurstClient.INSTANCE.files.saveOptions();
+				ConfigFiles.OPTIONS.save();
 				WurstClient.INSTANCE.analytics.trackEvent("clean up",
 					"unknown host",
 					removeOrKeep(WurstClient.INSTANCE.options.cleanupUnknown));
@@ -180,7 +181,7 @@ public class GuiCleanUp extends GuiScreen
 				clickedButton.displayString =
 					"Outdated Servers: " + removeOrKeep(
 						WurstClient.INSTANCE.options.cleanupOutdated);
-				WurstClient.INSTANCE.files.saveOptions();
+				ConfigFiles.OPTIONS.save();
 				WurstClient.INSTANCE.analytics.trackEvent("clean up",
 					"outdated servers",
 					removeOrKeep(WurstClient.INSTANCE.options.cleanupOutdated));
@@ -190,7 +191,7 @@ public class GuiCleanUp extends GuiScreen
 					!WurstClient.INSTANCE.options.cleanupFailed;
 				clickedButton.displayString = "Failed Ping: "
 					+ removeOrKeep(WurstClient.INSTANCE.options.cleanupFailed);
-				WurstClient.INSTANCE.files.saveOptions();
+				ConfigFiles.OPTIONS.save();
 				WurstClient.INSTANCE.analytics.trackEvent("clean up",
 					"failed ping",
 					removeOrKeep(WurstClient.INSTANCE.options.cleanupFailed));
@@ -198,7 +199,7 @@ public class GuiCleanUp extends GuiScreen
 			{// Grief me
 				WurstClient.INSTANCE.options.cleanupGriefMe =
 					!WurstClient.INSTANCE.options.cleanupGriefMe;
-				WurstClient.INSTANCE.files.saveOptions();
+				ConfigFiles.OPTIONS.save();
 				clickedButton.displayString = "\"Grief Me\" Servers: "
 					+ removeOrKeep(WurstClient.INSTANCE.options.cleanupGriefMe);
 				WurstClient.INSTANCE.analytics.trackEvent("clean up",
@@ -217,7 +218,7 @@ public class GuiCleanUp extends GuiScreen
 					!WurstClient.INSTANCE.options.cleanupRename;
 				clickedButton.displayString = "Rename all Servers: "
 					+ yesOrNo(WurstClient.INSTANCE.options.cleanupRename);
-				WurstClient.INSTANCE.files.saveOptions();
+				ConfigFiles.OPTIONS.save();
 				WurstClient.INSTANCE.analytics.trackEvent("clean up",
 					"rename servers",
 					yesOrNo(WurstClient.INSTANCE.options.cleanupRename));

@@ -14,7 +14,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
 
-import net.wurstclient.WurstClient;
+import net.wurstclient.files.WurstFolders;
 
 public class SkinStealer
 {
@@ -28,8 +28,7 @@ public class SkinStealer
 			URLConnection skinCon = skinURL.openConnection();
 			BufferedInputStream skinputStream =
 				new BufferedInputStream(skinCon.getInputStream());
-			File skin =
-				new File(WurstClient.INSTANCE.files.skinDir, name + ".png");
+			File skin = new File(WurstFolders.SKINS.toFile(), name + ".png");
 			FileOutputStream outputStream = new FileOutputStream(skin);
 			int i;
 			while((i = skinputStream.read()) != -1)

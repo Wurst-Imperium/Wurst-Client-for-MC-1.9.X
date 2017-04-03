@@ -20,6 +20,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.multiplayer.ServerData;
 import net.wurstclient.WurstClient;
+import net.wurstclient.files.ConfigFiles;
 import net.wurstclient.servers.WurstServerPinger;
 import net.wurstclient.utils.MiscUtils;
 
@@ -126,7 +127,7 @@ public class GuiServerFinder extends GuiScreen
 		{
 			WurstClient.INSTANCE.options.serverFinderThreads =
 				Integer.valueOf(maxThreadsBox.getText());
-			WurstClient.INSTANCE.files.saveOptions();
+			ConfigFiles.OPTIONS.save();
 		}
 		Keyboard.enableRepeatEvents(false);
 	}
@@ -148,7 +149,7 @@ public class GuiServerFinder extends GuiScreen
 					{
 						WurstClient.INSTANCE.options.serverFinderThreads =
 							Integer.valueOf(maxThreadsBox.getText());
-						WurstClient.INSTANCE.files.saveOptions();
+						ConfigFiles.OPTIONS.save();
 					}
 					
 					state = ServerFinderState.RESOLVING;

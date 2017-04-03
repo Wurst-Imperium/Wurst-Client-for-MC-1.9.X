@@ -8,6 +8,7 @@
 package net.wurstclient.features.commands;
 
 import net.minecraft.block.Block;
+import net.wurstclient.files.ConfigFiles;
 import net.wurstclient.utils.ChatUtils;
 import net.wurstclient.utils.MiscUtils;
 
@@ -34,7 +35,7 @@ public final class SearchCmd extends Cmd
 					wurst.options.searchID = Integer.valueOf(args[1]);
 				else
 					syntaxError("ID must be a number.");
-				wurst.files.saveOptions();
+				ConfigFiles.OPTIONS.save();
 				wurst.mods.searchMod.notify = true;
 				ChatUtils.message("Search ID set to " + args[1] + ".");
 			}else if(args[0].equalsIgnoreCase("name"))
@@ -44,7 +45,7 @@ public final class SearchCmd extends Cmd
 				if(newID == -1)
 					error("Block \"" + args[1] + "\" could not be found.");
 				wurst.options.searchID = Integer.valueOf(newID);
-				wurst.files.saveOptions();
+				ConfigFiles.OPTIONS.save();
 				wurst.mods.searchMod.notify = true;
 				ChatUtils.message(
 					"Search ID set to " + newID + " (" + args[1] + ").");

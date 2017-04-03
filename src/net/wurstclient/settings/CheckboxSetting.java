@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 import com.google.gson.JsonObject;
 
-import net.wurstclient.WurstClient;
+import net.wurstclient.files.ConfigFiles;
 import net.wurstclient.navigator.PossibleKeybind;
 import net.wurstclient.navigator.gui.NavigatorFeatureScreen;
 
@@ -74,7 +74,7 @@ public class CheckboxSetting implements Setting
 		{
 			this.checked = checked;
 			update();
-			WurstClient.INSTANCE.files.saveNavigatorData();
+			ConfigFiles.NAVIGATOR.save();
 		}
 	}
 	

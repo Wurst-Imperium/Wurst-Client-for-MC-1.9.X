@@ -29,6 +29,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.BadLocationException;
 
 import net.wurstclient.compatibility.WMinecraft;
+import net.wurstclient.files.ConfigFiles;
+import net.wurstclient.files.WurstFolders;
 import net.wurstclient.hooks.FrameHook;
 import net.wurstclient.spam.SpamProcessor;
 import net.wurstclient.spam.exceptions.UnreadableTagException;
@@ -80,7 +82,7 @@ public final class SpammerMod extends Mod
 					public void actionPerformed(ActionEvent e)
 					{
 						JFileChooser fileChooser =
-							new JFileChooser(wurst.files.spamDir)
+							new JFileChooser(WurstFolders.SPAM.toFile())
 							{
 								@Override
 								protected JDialog createDialog(Component parent)
@@ -132,7 +134,7 @@ public final class SpammerMod extends Mod
 					public void actionPerformed(ActionEvent e)
 					{
 						JFileChooser fileChooser =
-							new JFileChooser(wurst.files.spamDir)
+							new JFileChooser(WurstFolders.SPAM.toFile())
 							{
 								@Override
 								protected JDialog createDialog(Component parent)
@@ -178,7 +180,7 @@ public final class SpammerMod extends Mod
 					@Override
 					public void actionPerformed(ActionEvent e)
 					{
-						MiscUtils.openFile(wurst.files.spamDir);
+						MiscUtils.openFile(WurstFolders.SPAM.toFile());
 					}
 				});
 				fileMenu.add(fileOpenFolder);
@@ -259,7 +261,7 @@ public final class SpammerMod extends Mod
 					public void actionPerformed(ActionEvent e)
 					{
 						wurst.options.spamFont = !wurst.options.spamFont;
-						wurst.files.saveOptions();
+						ConfigFiles.OPTIONS.save();
 						updateFont();
 					}
 				});
@@ -370,7 +372,7 @@ public final class SpammerMod extends Mod
 					{
 						wurst.options.spamDelay =
 							(Integer)delaySpinner.getValue();
-						wurst.files.saveOptions();
+						ConfigFiles.OPTIONS.save();
 					}
 				});
 				delaySpinner.setEditor(

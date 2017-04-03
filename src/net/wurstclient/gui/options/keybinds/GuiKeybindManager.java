@@ -15,6 +15,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiYesNo;
 import net.wurstclient.WurstClient;
+import net.wurstclient.files.ConfigFiles;
 import net.wurstclient.options.KeybindManager;
 
 public class GuiKeybindManager extends GuiScreen
@@ -90,7 +91,7 @@ public class GuiKeybindManager extends GuiScreen
 							.toArray(new Entry[WurstClient.INSTANCE.keybinds
 								.size()])[bindList.getSelectedSlot()];
 					WurstClient.INSTANCE.keybinds.remove(entry.getKey());
-					WurstClient.INSTANCE.files.saveKeybinds();
+					ConfigFiles.KEYBINDS.save();
 					WurstClient.INSTANCE.analytics.trackEvent("keybinds",
 						"remove", entry.getKey());
 				}
@@ -103,7 +104,7 @@ public class GuiKeybindManager extends GuiScreen
 		if(par1)
 		{
 			WurstClient.INSTANCE.keybinds = new KeybindManager();
-			WurstClient.INSTANCE.files.saveKeybinds();
+			ConfigFiles.KEYBINDS.save();
 			WurstClient.INSTANCE.analytics.trackEvent("keybinds", "reset");
 		}
 		mc.displayGuiScreen(this);

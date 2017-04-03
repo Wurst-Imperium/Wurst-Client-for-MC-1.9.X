@@ -12,6 +12,7 @@ import java.util.TreeSet;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.wurstclient.WurstClient;
+import net.wurstclient.files.ConfigFiles;
 
 public class FriendsList extends TreeSet<String>
 {
@@ -28,7 +29,7 @@ public class FriendsList extends TreeSet<String>
 					friends.remove(entityName);
 				else
 					friends.add(entityName);
-				wurst.files.saveFriends();
+				ConfigFiles.FRIENDS.save();
 			}
 		}
 	}

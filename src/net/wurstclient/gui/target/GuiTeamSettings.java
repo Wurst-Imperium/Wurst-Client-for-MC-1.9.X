@@ -16,6 +16,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.wurstclient.WurstClient;
+import net.wurstclient.files.ConfigFiles;
 import net.wurstclient.settings.ColorsSetting;
 
 public class GuiTeamSettings extends GuiScreen
@@ -124,7 +125,7 @@ public class GuiTeamSettings extends GuiScreen
 					"toggle", onOff ? "on" : "off", button.id);
 				break;
 			}
-			WurstClient.INSTANCE.files.saveOptions();
+			ConfigFiles.OPTIONS.save();
 		}
 	}
 	

@@ -18,6 +18,7 @@ import net.wurstclient.events.LeftClickEvent;
 import net.wurstclient.events.listeners.LeftClickListener;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
+import net.wurstclient.files.ConfigFiles;
 import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.ModeSetting;
 import net.wurstclient.settings.SliderSetting;
@@ -152,7 +153,7 @@ public final class SpeedNukerMod extends Mod
 			oldSlot = -1;
 		}
 		NukerMod.id = 0;
-		wurst.files.saveOptions();
+		ConfigFiles.OPTIONS.save();
 	}
 	
 	@Override
@@ -167,7 +168,7 @@ public final class SpeedNukerMod extends Mod
 		{
 			NukerMod.id = Block.getIdFromBlock(WMinecraft.getWorld()
 				.getBlockState(mc.objectMouseOver.getBlockPos()).getBlock());
-			wurst.files.saveOptions();
+			ConfigFiles.OPTIONS.save();
 		}
 	}
 	

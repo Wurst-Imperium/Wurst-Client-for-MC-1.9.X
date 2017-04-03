@@ -13,6 +13,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.wurstclient.WurstClient;
+import net.wurstclient.files.ConfigFiles;
 import net.wurstclient.gui.options.keybinds.GuiKeybindManager;
 import net.wurstclient.gui.options.xray.GuiXRayBlocksManager;
 import net.wurstclient.gui.options.zoom.GuiZoomManager;
@@ -123,7 +124,7 @@ public class GuiWurstOptions extends GuiScreen
 				clickedButton.displayString = "Click Friends: "
 					+ (WurstClient.INSTANCE.options.middleClickFriends ? "ON"
 						: "OFF");
-				WurstClient.INSTANCE.files.saveOptions();
+				ConfigFiles.OPTIONS.save();
 				WurstClient.INSTANCE.analytics.trackEvent("options",
 					"click friends",
 					WurstClient.INSTANCE.options.middleClickFriends ? "ON"
@@ -135,7 +136,7 @@ public class GuiWurstOptions extends GuiScreen
 					WurstClient.INSTANCE.options.modListMode = 0;
 				clickedButton.displayString = "Mod List: "
 					+ modListModes[WurstClient.INSTANCE.options.modListMode];
-				WurstClient.INSTANCE.files.saveOptions();
+				ConfigFiles.OPTIONS.save();
 				WurstClient.INSTANCE.analytics.trackEvent("options", "mod list",
 					modListModes[WurstClient.INSTANCE.options.modListMode]);
 			}else if(clickedButton.id == 3)
@@ -152,7 +153,7 @@ public class GuiWurstOptions extends GuiScreen
 					!WurstClient.INSTANCE.options.wurstNews;
 				clickedButton.displayString = "Wurst News: "
 					+ (WurstClient.INSTANCE.options.wurstNews ? "ON" : "OFF");
-				WurstClient.INSTANCE.files.saveOptions();
+				ConfigFiles.OPTIONS.save();
 				WurstClient.INSTANCE.analytics.trackEvent("options",
 					"wurst news",
 					WurstClient.INSTANCE.options.wurstNews ? "ON" : "OFF");
@@ -169,7 +170,7 @@ public class GuiWurstOptions extends GuiScreen
 						"analytics", "enable");
 				clickedButton.displayString =
 					"Analytics: " + (analytics.enabled ? "ON" : "OFF");
-				WurstClient.INSTANCE.files.saveOptions();
+				ConfigFiles.OPTIONS.save();
 			}else if(clickedButton.id == 6)
 				// Keybind Manager
 				mc.displayGuiScreen(new GuiKeybindManager(this));

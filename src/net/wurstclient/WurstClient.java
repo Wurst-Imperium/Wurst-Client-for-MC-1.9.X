@@ -12,7 +12,9 @@ import net.wurstclient.events.EventManager;
 import net.wurstclient.features.commands.CmdManager;
 import net.wurstclient.features.mods.ModManager;
 import net.wurstclient.features.special_features.SpfManager;
+import net.wurstclient.files.ConfigFiles;
 import net.wurstclient.files.FileManager;
+import net.wurstclient.files.WurstFolders;
 import net.wurstclient.font.Fonts;
 import net.wurstclient.hooks.FrameHook;
 import net.wurstclient.navigator.Navigator;
@@ -52,13 +54,16 @@ public enum WurstClient
 		friends = new FriendsList();
 		navigator = new Navigator();
 		
+		WurstFolders.initialize();
+		ConfigFiles.initialize();
 		files.init();
+		
 		navigator.sortFeatures();
 		Fonts.loadFonts();
 		updater.checkForUpdate();
 		analytics =
 			new AnalyticsManager("UA-52838431-5", "client.wurstclient.net");
-		files.saveOptions();
+		ConfigFiles.OPTIONS.save();
 		
 		FrameHook.maximize();
 	}

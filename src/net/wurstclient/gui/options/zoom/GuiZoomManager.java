@@ -12,6 +12,7 @@ import org.lwjgl.input.Keyboard;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.wurstclient.WurstClient;
+import net.wurstclient.files.ConfigFiles;
 import net.wurstclient.gui.options.GuiPressAKey;
 import net.wurstclient.gui.options.GuiPressAKeyCallback;
 import net.wurstclient.options.OptionsManager;
@@ -75,26 +76,26 @@ public class GuiZoomManager extends GuiScreen implements GuiPressAKeyCallback
 				WurstClient.INSTANCE.options.zoom.level = Math.min(Math.round(
 					WurstClient.INSTANCE.options.zoom.level * 10F + 1F) / 10F,
 					10F);
-				WurstClient.INSTANCE.files.saveOptions();
+				ConfigFiles.OPTIONS.save();
 				break;
 				case 3:
 				// Zoom Level Less
 				WurstClient.INSTANCE.options.zoom.level = Math.max(Math.round(
 					WurstClient.INSTANCE.options.zoom.level * 10F - 1F) / 10F,
 					1F);
-				WurstClient.INSTANCE.files.saveOptions();
+				ConfigFiles.OPTIONS.save();
 				break;
 				case 4:
 				// Zoom Level Default
 				WurstClient.INSTANCE.options.zoom.level =
 					new OptionsManager().zoom.level;
-				WurstClient.INSTANCE.files.saveOptions();
+				ConfigFiles.OPTIONS.save();
 				break;
 				case 5:
 				// Use Mouse Wheel
 				WurstClient.INSTANCE.options.zoom.scroll =
 					!WurstClient.INSTANCE.options.zoom.scroll;
-				WurstClient.INSTANCE.files.saveOptions();
+				ConfigFiles.OPTIONS.save();
 				buttonList.get(5).displayString = "Use Mouse Wheel: "
 					+ (WurstClient.INSTANCE.options.zoom.scroll ? "ON" : "OFF");
 				break;
@@ -131,7 +132,7 @@ public class GuiZoomManager extends GuiScreen implements GuiPressAKeyCallback
 	public void setKey(String key)
 	{
 		WurstClient.INSTANCE.options.zoom.keybind = Keyboard.getKeyIndex(key);
-		WurstClient.INSTANCE.files.saveOptions();
+		ConfigFiles.OPTIONS.save();
 		buttonList.get(1).displayString = "Zoom Key: " + key;
 	}
 }

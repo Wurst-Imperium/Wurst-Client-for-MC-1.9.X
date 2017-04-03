@@ -9,7 +9,7 @@ package net.wurstclient.options;
 
 import java.security.SecureRandom;
 
-import net.wurstclient.WurstClient;
+import net.wurstclient.files.WurstFolders;
 
 public class OptionsManager
 {
@@ -32,7 +32,7 @@ public class OptionsManager
 	public int spamDelay = 1000;
 	public int throwAmount = 16;
 	
-	public String forceOPList = WurstClient.INSTANCE.files.wurstDir.getPath();
+	public String forceOPList = WurstFolders.MAIN.toFile().getPath();
 	public String lastLaunchedVersion = "0";
 	
 	public OptionsManager.GoogleAnalytics google_analytics =
