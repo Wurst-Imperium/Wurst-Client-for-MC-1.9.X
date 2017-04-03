@@ -47,6 +47,7 @@ import net.wurstclient.utils.ChatUtils;
 		+ "AuthMe password cracker",
 	help = "Mods/Force_OP_(AuthMeCracker)")
 @Mod.Bypasses
+@Mod.DontSaveState
 public final class ForceOpMod extends Mod implements ChatInputListener
 {
 	private String[] defaultList = {"password", "passwort", "password1",

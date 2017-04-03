@@ -27,6 +27,7 @@ import net.wurstclient.utils.ChatUtils;
 	tags = "mass tpa",
 	help = "Mods/MassTPA")
 @Mod.Bypasses
+@Mod.DontSaveState
 public final class MassTpaMod extends Mod
 	implements UpdateListener, ChatInputListener
 {

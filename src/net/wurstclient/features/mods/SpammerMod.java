@@ -42,6 +42,7 @@ import net.wurstclient.utils.MiscUtils;
 	+ ">Variables\n" + ">HTML-like tags & comments\n"
 	+ ">Integrated help system", name = "Spammer", help = "Mods/Spammer")
 @Mod.Bypasses
+@Mod.DontSaveState
 public final class SpammerMod extends Mod
 {
 	private JDialog dialog;

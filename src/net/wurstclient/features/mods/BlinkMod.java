@@ -22,6 +22,7 @@ import net.wurstclient.events.listeners.PacketOutputListener;
 	name = "Blink",
 	help = "Mods/Blink")
 @Mod.Bypasses
+@Mod.DontSaveState
 public final class BlinkMod extends Mod implements PacketOutputListener
 {
 	private static ArrayList<Packet> packets = new ArrayList<>();

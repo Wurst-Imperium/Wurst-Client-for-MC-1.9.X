@@ -25,6 +25,7 @@ import net.wurstclient.utils.EntityUtils;
 	tags = "remote view",
 	help = "Mods/RemoteView")
 @Mod.Bypasses
+@Mod.DontSaveState
 public final class RemoteViewMod extends Mod implements UpdateListener
 {
 	private EntityPlayerSP newView = null;

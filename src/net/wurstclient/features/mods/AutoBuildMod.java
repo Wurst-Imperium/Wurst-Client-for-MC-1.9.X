@@ -30,6 +30,7 @@ import net.wurstclient.utils.RenderUtils;
 	tags = "AutoBridge, AutoFloor, AutoNazi, AutoPenis, AutoPillar, AutoWall, AutoWurst, auto build",
 	help = "Mods/AutoBuild")
 @Mod.Bypasses(ghostMode = false)
+@Mod.DontSaveState
 public final class AutoBuildMod extends Mod
 	implements UpdateListener, RenderListener
 {

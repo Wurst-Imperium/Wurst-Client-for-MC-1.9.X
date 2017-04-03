@@ -20,6 +20,7 @@ import net.wurstclient.utils.BlockUtils;
 	tags = "AFKBot,anti afk,afk bot",
 	help = "Mods/AntiAFK")
 @Mod.Bypasses(ghostMode = false)
+@Mod.DontSaveState
 public final class AntiAfkMod extends Mod implements UpdateListener
 {
 	private BlockPos block;

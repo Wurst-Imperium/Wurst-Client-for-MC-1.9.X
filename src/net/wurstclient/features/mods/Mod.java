@@ -7,11 +7,12 @@
  */
 package net.wurstclient.features.mods;
 
+import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.concurrent.Callable;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.crash.CrashReport;
@@ -20,88 +21,33 @@ import net.minecraft.util.ReportedException;
 import net.wurstclient.WurstClient;
 import net.wurstclient.features.Feature;
 import net.wurstclient.features.special_features.YesCheatSpf.BypassLevel;
+import net.wurstclient.files.ConfigFiles;
 import net.wurstclient.navigator.PossibleKeybind;
 import net.wurstclient.settings.Setting;
-import net.wurstclient.utils.ChatUtils;
 
 public abstract class Mod implements Feature
 {
+	protected static final WurstClient wurst = WurstClient.INSTANCE;
+	protected static final Minecraft mc = Minecraft.getMinecraft();
+	
 	private final String name = getClass().getAnnotation(Info.class).name();
 	private final String description =
 		getClass().getAnnotation(Info.class).description();
 	private final String tags = getClass().getAnnotation(Info.class).tags();
 	private final String help = getClass().getAnnotation(Info.class).help();
+	
 	private final Bypasses bypasses = getClass().getAnnotation(Bypasses.class);
+	private final boolean stateSaved =
+		!getClass().isAnnotationPresent(DontSaveState.class);
+	
 	private boolean enabled;
 	private boolean blocked;
 	private boolean active;
+	
 	protected ArrayList<Setting> settings = new ArrayList<>();
+	
 	private long currentMS = 0L;
 	protected long lastMS = -1L;
-	
-	protected static final WurstClient wurst = WurstClient.INSTANCE;
-	protected static final Minecraft mc = Minecraft.getMinecraft();
-	
-	@Retention(RetentionPolicy.RUNTIME)
-	public @interface Info
-	{
-		String name();
-		
-		String description();
-		
-		String tags() default "";
-		
-		String help() default "";
-	}
-	
-	@Retention(RetentionPolicy.RUNTIME)
-	public @interface Bypasses
-	{
-		boolean mineplex() default true;
-		
-		boolean antiCheat() default true;
-		
-		boolean olderNCP() default true;
-		
-		boolean latestNCP() default true;
-		
-		boolean ghostMode() default true;
-	}
-	
-	@Override
-	public final String getName()
-	{
-		return name;
-	}
-	
-	@Override
-	public final String getType()
-	{
-		return "Mod";
-	}
-	
-	public String getRenderName()
-	{
-		return name;
-	}
-	
-	@Override
-	public final String getDescription()
-	{
-		return description;
-	}
-	
-	@Override
-	public final String getTags()
-	{
-		return tags;
-	}
-	
-	@Override
-	public final ArrayList<Setting> getSettings()
-	{
-		return settings;
-	}
 	
 	@Override
 	public final ArrayList<PossibleKeybind> getPossibleKeybinds()
@@ -118,29 +64,6 @@ public abstract class Mod implements Feature
 			possibleKeybinds.addAll(setting.getPossibleKeybinds(name));
 		
 		return possibleKeybinds;
-	}
-	
-	@Override
-	public final String getPrimaryAction()
-	{
-		return enabled ? "Disable" : "Enable";
-	}
-	
-	@Override
-	public final void doPrimaryAction()
-	{
-		toggle();
-	}
-	
-	@Override
-	public final String getHelpPage()
-	{
-		return help;
-	}
-	
-	public Bypasses getBypasses()
-	{
-		return bypasses;
 	}
 	
 	@Override
@@ -162,47 +85,40 @@ public abstract class Mod implements Feature
 	
 	public final void setEnabled(boolean enabled)
 	{
+		if(this.enabled == enabled)
+			return;
+		
 		this.enabled = enabled;
+		
 		active = enabled && !blocked;
+		
 		if(blocked && enabled)
 			return;
 		
 		try
 		{
 			onToggle();
+			
 			if(enabled)
 				onEnable();
 			else
 				onDisable();
+			
 		}catch(Throwable e)
 		{
-			CrashReport crashReport =
+			CrashReport report =
 				CrashReport.makeCrashReport(e, "Toggling Wurst mod");
-			CrashReportCategory crashreportcategory =
-				crashReport.makeCategory("Affected mod");
-			crashreportcategory.addCrashSectionCallable("Mod name",
-				new Callable<String>()
-				{
-					@Override
-					public String call() throws Exception
-					{
-						return name;
-					}
-				});
-			crashreportcategory.addCrashSectionCallable("Attempted action",
-				new Callable<String>()
-				{
-					@Override
-					public String call() throws Exception
-					{
-						return enabled ? "Enable" : "Disable";
-					}
-				});
-			throw new ReportedException(crashReport);
+			
+			CrashReportCategory category = report.makeCategory("Affected mod");
+			category.addCrashSectionCallable("Mod name", () -> name);
+			category.addCrashSectionCallable("Attempted action",
+				() -> enabled ? "Enable" : "Disable");
+			
+			throw new ReportedException(report);
 		}
 		
-		if(!WurstClient.INSTANCE.files.isModBlacklisted(this))
-			WurstClient.INSTANCE.files.saveMods();
+		if(stateSaved)
+			ConfigFiles.MODS.save();
 	}
 	
 	public final void enableOnStartup()
@@ -216,29 +132,15 @@ public abstract class Mod implements Feature
 			onEnable();
 		}catch(Throwable e)
 		{
-			CrashReport crashReport =
+			CrashReport report =
 				CrashReport.makeCrashReport(e, "Toggling Wurst mod");
-			CrashReportCategory crashreportcategory =
-				crashReport.makeCategory("Affected mod");
-			crashreportcategory.addCrashSectionCallable("Mod name",
-				new Callable<String>()
-				{
-					@Override
-					public String call() throws Exception
-					{
-						return name;
-					}
-				});
-			crashreportcategory.addCrashSectionCallable("Attempted action",
-				new Callable<String>()
-				{
-					@Override
-					public String call() throws Exception
-					{
-						return "Enable on startup";
-					}
-				});
-			throw new ReportedException(crashReport);
+			
+			CrashReportCategory category = report.makeCategory("Affected mod");
+			category.addCrashSectionCallable("Mod name", () -> name);
+			category.addCrashSectionCallable("Attempted action",
+				() -> "Enable on startup");
+			
+			throw new ReportedException(report);
 		}
 	}
 	
@@ -267,35 +169,17 @@ public abstract class Mod implements Feature
 					onEnable();
 			}catch(Throwable e)
 			{
-				CrashReport crashReport =
+				CrashReport report =
 					CrashReport.makeCrashReport(e, "Toggling Wurst mod");
-				CrashReportCategory crashreportcategory =
-					crashReport.makeCategory("Affected mod");
-				crashreportcategory.addCrashSectionCallable("Mod name",
-					new Callable<String>()
-					{
-						@Override
-						public String call() throws Exception
-						{
-							return name;
-						}
-					});
-				crashreportcategory.addCrashSectionCallable("Attempted action",
-					new Callable<String>()
-					{
-						@Override
-						public String call() throws Exception
-						{
-							return blocked ? "Block" : "Unblock";
-						}
-					});
-				throw new ReportedException(crashReport);
+				
+				CrashReportCategory category =
+					report.makeCategory("Affected mod");
+				category.addCrashSectionCallable("Mod name", () -> name);
+				category.addCrashSectionCallable("Attempted action",
+					() -> blocked ? "Block" : "Unblock");
+				
+				throw new ReportedException(report);
 			}
-	}
-	
-	public final void noCheatMessage()
-	{
-		ChatUtils.warning(name + " cannot bypass NoCheat+.");
 	}
 	
 	public final void updateMS()
@@ -332,4 +216,102 @@ public abstract class Mod implements Feature
 	
 	public void onYesCheatUpdate(BypassLevel bypassLevel)
 	{}
+	
+	@Override
+	public final String getName()
+	{
+		return name;
+	}
+	
+	public String getRenderName()
+	{
+		return name;
+	}
+	
+	@Override
+	public final String getType()
+	{
+		return "Mod";
+	}
+	
+	@Override
+	public final String getDescription()
+	{
+		return description;
+	}
+	
+	@Override
+	public final String getTags()
+	{
+		return tags;
+	}
+	
+	@Override
+	public final ArrayList<Setting> getSettings()
+	{
+		return settings;
+	}
+	
+	public final boolean isStateSaved()
+	{
+		return stateSaved;
+	}
+	
+	@Override
+	public final String getPrimaryAction()
+	{
+		return enabled ? "Disable" : "Enable";
+	}
+	
+	@Override
+	public final void doPrimaryAction()
+	{
+		toggle();
+	}
+	
+	@Override
+	public final String getHelpPage()
+	{
+		return help;
+	}
+	
+	public final Bypasses getBypasses()
+	{
+		return bypasses;
+	}
+	
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target(ElementType.TYPE)
+	public static @interface Info
+	{
+		String name();
+		
+		String description();
+		
+		String tags() default "";
+		
+		String help() default "";
+	}
+	
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target(ElementType.TYPE)
+	public static @interface Bypasses
+	{
+		boolean mineplex() default true;
+		
+		boolean antiCheat() default true;
+		
+		boolean olderNCP() default true;
+		
+		boolean latestNCP() default true;
+		
+		boolean ghostMode() default true;
+	}
+	
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target(ElementType.TYPE)
+	public static @interface DontSaveState
+	{
+		
+	}
 }
