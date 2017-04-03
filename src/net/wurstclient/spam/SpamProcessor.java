@@ -33,6 +33,9 @@ public class SpamProcessor
 	public static void runScript(final String filename,
 		final String description)
 	{
+		if(!WurstClient.INSTANCE.isEnabled())
+			return;
+		
 		new Thread(new Runnable()
 		{
 			@Override

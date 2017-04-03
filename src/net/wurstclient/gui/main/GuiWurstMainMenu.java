@@ -253,6 +253,12 @@ public class GuiWurstMainMenu extends GuiMainMenu
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks)
 	{
+		if(!WurstClient.INSTANCE.isEnabled())
+		{
+			super.drawScreen(mouseX, mouseY, partialTicks);
+			return;
+		}
+		
 		// panorama
 		GlStateManager.disableAlpha();
 		renderSkybox(mouseX, mouseY, partialTicks);

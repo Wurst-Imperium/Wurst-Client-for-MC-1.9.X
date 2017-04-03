@@ -68,6 +68,9 @@ public class UIRenderer
 	
 	public static void renderUI(float zLevel)
 	{
+		if(!WurstClient.INSTANCE.isEnabled())
+			return;
+		
 		// GL settings
 		glEnable(GL_BLEND);
 		glDisable(GL_CULL_FACE);

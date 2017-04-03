@@ -22,6 +22,13 @@ public final class FullbrightMod extends Mod implements UpdateListener
 	}
 	
 	@Override
+	public void onDisable()
+	{
+		if(wurst.mods.panicMod.isActive())
+			mc.gameSettings.gammaSetting = 0.5F;
+	}
+	
+	@Override
 	public void onUpdate()
 	{
 		if(isEnabled() || wurst.mods.xRayMod.isActive())
