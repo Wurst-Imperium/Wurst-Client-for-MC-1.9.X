@@ -22,17 +22,15 @@ import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.EnumHand;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 
-@Info(
+@Mod.Info(
 	description = "Automatically throws splash healing potions if your health is below the set value.",
 	name = "AutoSplashPot",
 	tags = "AutoPotion,auto potion,auto splash potion",
 	help = "Mods/AutoSplashPot")
-@Bypasses
+@Mod.Bypasses
 public class AutoSplashPotMod extends Mod implements UpdateListener
 {
 	public float health = 18F;

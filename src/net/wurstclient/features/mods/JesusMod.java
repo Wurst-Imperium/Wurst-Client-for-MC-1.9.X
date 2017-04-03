@@ -7,15 +7,13 @@
  */
 package net.wurstclient.features.mods;
 
-import net.wurstclient.features.mods.Mod.Bypasses;
-
 @Mod.Info(
 	description = "Allows you to walk on water.\n"
 		+ "The real Jesus used this hack ~2000 years ago.\n"
 		+ "Bypasses NoCheat+ if YesCheat+ is enabled.",
 	name = "Jesus",
 	help = "Mods/Jesus")
-@Bypasses(ghostMode = false)
+@Mod.Bypasses(ghostMode = false)
 public class JesusMod extends Mod
 {
 	

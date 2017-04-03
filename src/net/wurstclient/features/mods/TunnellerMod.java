@@ -18,7 +18,6 @@ import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
-import net.wurstclient.features.mods.Mod.Bypasses;
 import net.wurstclient.features.special_features.YesCheatSpf.BypassLevel;
 import net.wurstclient.utils.BlockUtils;
 import net.wurstclient.utils.RenderUtils;
@@ -26,7 +25,7 @@ import net.wurstclient.utils.RenderUtils;
 @Mod.Info(description = "Digs a 3x3 tunnel around you.",
 	name = "Tunneller",
 	help = "Mods/Tunneller")
-@Bypasses
+@Mod.Bypasses
 public class TunnellerMod extends Mod implements RenderListener, UpdateListener
 {
 	private static Block currentBlock;

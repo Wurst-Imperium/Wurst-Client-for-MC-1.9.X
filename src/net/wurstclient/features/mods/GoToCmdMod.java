@@ -13,12 +13,10 @@ import net.minecraft.util.math.BlockPos;
 import net.wurstclient.ai.PathUtils;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.utils.BlockUtils;
 
-@Info(description = "", name = "GoTo")
-@Bypasses
+@Mod.Info(description = "", name = "GoTo")
+@Mod.Bypasses
 public class GoToCmdMod extends Mod implements UpdateListener
 {
 	private static ArrayList<BlockPos> path;

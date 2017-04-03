@@ -10,14 +10,12 @@ package net.wurstclient.features.mods;
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 
-@Info(description = "Allows you to see ores through walls.",
+@Mod.Info(description = "Allows you to see ores through walls.",
 	name = "X-Ray",
 	tags = "xray, x ray",
 	help = "Mods/X-Ray")
-@Bypasses
+@Mod.Bypasses
 public class XRayMod extends Mod
 {
 	public static ArrayList<Block> xrayBlocks = new ArrayList<>();

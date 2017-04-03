@@ -29,19 +29,17 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.BadLocationException;
 
 import net.wurstclient.compatibility.WMinecraft;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.hooks.FrameHook;
 import net.wurstclient.spam.SpamProcessor;
 import net.wurstclient.spam.exceptions.UnreadableTagException;
 import net.wurstclient.spam.tag.Tag;
 import net.wurstclient.utils.MiscUtils;
 
-@Info(description = "It's called Spammer, but it's a lot more.\n"
+@Mod.Info(description = "It's called Spammer, but it's a lot more.\n"
 	+ "Special features:\n" + ">ASCII art\n" + ">Run any Wurst command\n"
 	+ ">Variables\n" + ">HTML-like tags & comments\n"
 	+ ">Integrated help system", name = "Spammer", help = "Mods/Spammer")
-@Bypasses
+@Mod.Bypasses
 public class SpammerMod extends Mod
 {
 	private JDialog dialog;

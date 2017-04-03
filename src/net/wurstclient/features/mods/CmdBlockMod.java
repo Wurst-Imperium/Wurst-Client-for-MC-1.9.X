@@ -13,7 +13,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
 import net.wurstclient.compatibility.WMinecraft;
-import net.wurstclient.features.mods.Mod.Bypasses;
 import net.wurstclient.gui.mods.GuiCmdBlock;
 import net.wurstclient.utils.ChatUtils;
 
@@ -23,7 +22,7 @@ import net.wurstclient.utils.ChatUtils;
 	name = "CMD-Block",
 	tags = "CmdBlock, CommandBlock, cmd block, command block",
 	help = "Mods/CMD-Block")
-@Bypasses
+@Mod.Bypasses
 public class CmdBlockMod extends Mod
 {
 	@Override

@@ -10,16 +10,14 @@ package net.wurstclient.features.mods;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 
-@Info(
+@Mod.Info(
 	description = "Allows you to fly out of your body.\n"
 		+ "Looks similar to spectator mode.",
 	name = "Freecam",
 	tags = "free cam, spectator",
 	help = "Mods/Freecam")
-@Bypasses
+@Mod.Bypasses
 public class FreecamMod extends Mod implements UpdateListener
 {
 	private EntityOtherPlayerMP fakePlayer = null;

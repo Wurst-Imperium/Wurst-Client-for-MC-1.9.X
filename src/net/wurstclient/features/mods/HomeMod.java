@@ -11,14 +11,12 @@ import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.ChatInputEvent;
 import net.wurstclient.events.listeners.ChatInputListener;
 import net.wurstclient.events.listeners.UpdateListener;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.utils.ChatUtils;
 
-@Info(description = "Types \"/home\" instantly.",
+@Mod.Info(description = "Types \"/home\" instantly.",
 	name = "/home",
 	help = "Mods/home")
-@Bypasses
+@Mod.Bypasses
 public class HomeMod extends Mod implements UpdateListener, ChatInputListener
 {
 	private int disableTimer;

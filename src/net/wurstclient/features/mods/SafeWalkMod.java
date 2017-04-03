@@ -7,14 +7,12 @@
  */
 package net.wurstclient.features.mods;
 
-import net.wurstclient.features.mods.Mod.Bypasses;
-
 @Mod.Info(
 	description = "Protects you from falling down as if you were sneaking.",
 	name = "SafeWalk",
 	tags = "safe walk",
 	help = "Mods/SafeWalk")
-@Bypasses
+@Mod.Bypasses
 public class SafeWalkMod extends Mod
 {
 	

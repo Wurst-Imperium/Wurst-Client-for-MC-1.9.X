@@ -10,16 +10,14 @@ package net.wurstclient.features.mods;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 
-@Info(
+@Mod.Info(
 	description = "Regenerates your health 1000 times faster.\n"
 		+ "Can cause unwanted \"Flying is not enabled!\" kicks.",
 	name = "Regen",
 	tags = "GodMode, god mode",
 	help = "Mods/Regen")
-@Bypasses(ghostMode = false, latestNCP = false, olderNCP = false)
+@Mod.Bypasses(ghostMode = false, latestNCP = false, olderNCP = false)
 public class RegenMod extends Mod implements UpdateListener
 {
 	@Override

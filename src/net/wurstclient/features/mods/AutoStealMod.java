@@ -7,16 +7,13 @@
  */
 package net.wurstclient.features.mods;
 
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
-
-@Info(
+@Mod.Info(
 	description = "Automatically steals everything from all chests you\n"
 		+ "open.",
 	name = "AutoSteal",
 	tags = "auto steal",
 	help = "Mods/AutoSteal")
-@Bypasses
+@Mod.Bypasses
 public class AutoStealMod extends Mod
 {
 	

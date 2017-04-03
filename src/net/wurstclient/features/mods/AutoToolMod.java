@@ -16,16 +16,14 @@ import net.wurstclient.events.LeftClickEvent;
 import net.wurstclient.events.listeners.LeftClickListener;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 
-@Info(
+@Mod.Info(
 	description = "Automatically uses the best tool in your hotbar to\n"
 		+ "mine blocks. Tip: This works with Nuker.",
 	name = "AutoTool",
 	tags = "auto tool",
 	help = "Mods/AutoTool")
-@Bypasses
+@Mod.Bypasses
 public class AutoToolMod extends Mod
 	implements LeftClickListener, UpdateListener
 {

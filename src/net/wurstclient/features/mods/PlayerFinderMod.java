@@ -19,16 +19,14 @@ import net.wurstclient.events.PacketInputEvent;
 import net.wurstclient.events.listeners.PacketInputListener;
 import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.features.Feature;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.utils.BlockUtils;
 import net.wurstclient.utils.RenderUtils;
 
-@Info(description = "Finds far players during thunderstorms.",
+@Mod.Info(description = "Finds far players during thunderstorms.",
 	name = "PlayerFinder",
 	tags = "player finder",
 	help = "Mods/PlayerFinder")
-@Bypasses
+@Mod.Bypasses
 public class PlayerFinderMod extends Mod
 	implements PacketInputListener, RenderListener
 {

@@ -8,19 +8,17 @@
 package net.wurstclient.features.mods;
 
 import net.wurstclient.features.Feature;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.settings.ModeSetting;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 
-@Info(
+@Mod.Info(
 	description = "Allows you to break blocks faster.\n"
 		+ "Tip: This works with Nuker.",
 	name = "FastBreak",
 	tags = "SpeedyGonzales, fast break, speedy gonzales",
 	help = "Mods/FastBreak")
-@Bypasses
+@Mod.Bypasses
 public class FastBreakMod extends Mod
 {
 	public float speed = 2;

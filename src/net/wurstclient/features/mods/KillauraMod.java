@@ -12,19 +12,17 @@ import net.minecraft.util.EnumHand;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.features.special_features.YesCheatSpf.BypassLevel;
 import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.utils.EntityUtils;
 
-@Info(description = "Automatically attacks everything in your range.",
+@Mod.Info(description = "Automatically attacks everything in your range.",
 	name = "Killaura",
 	tags = "kill aura",
 	help = "Mods/Killaura")
-@Bypasses
+@Mod.Bypasses
 public class KillauraMod extends Mod implements UpdateListener
 {
 	public CheckboxSetting useCooldown =

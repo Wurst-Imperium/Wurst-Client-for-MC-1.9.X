@@ -8,16 +8,14 @@
 package net.wurstclient.features.mods;
 
 import net.wurstclient.events.listeners.UpdateListener;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 
-@Info(
+@Mod.Info(
 	description = "Instantly turns off all enabled mods.\n"
 		+ "Be careful with this!",
 	name = "Panic",
 	tags = "legit, disable",
 	help = "Mods/Panic")
-@Bypasses
+@Mod.Bypasses
 public class PanicMod extends Mod implements UpdateListener
 {
 	@Override

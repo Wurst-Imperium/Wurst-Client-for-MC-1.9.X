@@ -8,10 +8,8 @@
 package net.wurstclient.features.mods;
 
 import net.minecraft.util.text.ITextComponent;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 
-@Info(
+@Mod.Info(
 	description = "Instantly writes whatever text you want on every sign\n"
 		+ "you place. Once activated, you can write normally on\n"
 		+ "one sign to specify the text for all other signs.",
@@ -19,7 +17,7 @@ import net.wurstclient.features.mods.Mod.Info;
 	noCheatCompatible = false,
 	tags = "auto sign",
 	help = "Mods/AutoSign")
-@Bypasses(ghostMode = false,
+@Mod.Bypasses(ghostMode = false,
 	latestNCP = false,
 	olderNCP = false,
 	antiCheat = false)

@@ -9,17 +9,15 @@ package net.wurstclient.features.mods;
 
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 
-@Info(
+@Mod.Info(
 	description = "Uses an item multiple times.\n"
 		+ "This can cause a lot of lag and even crash a server.\n"
 		+ "Works best with snowballs or eggs.\n"
 		+ "Use the .throw command to change the amount of uses per click.",
 	name = "Throw",
 	help = "Mods/Throw")
-@Bypasses(ghostMode = false)
+@Mod.Bypasses(ghostMode = false)
 public class ThrowMod extends Mod implements UpdateListener
 {
 	@Override

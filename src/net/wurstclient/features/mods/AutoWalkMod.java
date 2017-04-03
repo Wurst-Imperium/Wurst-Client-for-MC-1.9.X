@@ -8,14 +8,12 @@
 package net.wurstclient.features.mods;
 
 import net.wurstclient.events.listeners.UpdateListener;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 
-@Info(description = "Automatically walks all the time.",
+@Mod.Info(description = "Automatically walks all the time.",
 	name = "AutoWalk",
 	tags = "auto walk",
 	help = "Mods/AutoWalk")
-@Bypasses
+@Mod.Bypasses
 public class AutoWalkMod extends Mod implements UpdateListener
 {
 	@Override

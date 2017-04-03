@@ -7,8 +7,6 @@
  */
 package net.wurstclient.features.mods;
 
-import net.wurstclient.features.mods.Mod.Bypasses;
-
 @Mod.Info(
 	description = "Allows you to reach specific blocks through walls.\n"
 		+ "Use .ghosthand id <block id> or .ghosthand name <block name>\n"
@@ -16,7 +14,7 @@ import net.wurstclient.features.mods.Mod.Bypasses;
 	name = "GhostHand",
 	tags = "ghost hand",
 	help = "Mods/GhostHand")
-@Bypasses(ghostMode = false)
+@Mod.Bypasses(ghostMode = false)
 public class GhostHandMod extends Mod
 {
 	@Override

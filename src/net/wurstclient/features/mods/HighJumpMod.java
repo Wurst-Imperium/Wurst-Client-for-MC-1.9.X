@@ -7,17 +7,15 @@
  */
 package net.wurstclient.features.mods;
 
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 
-@Info(description = "Makes you jump much higher.",
+@Mod.Info(description = "Makes you jump much higher.",
 	name = "HighJump",
 	noCheatCompatible = false,
 	tags = "high jump",
 	help = "Mods/HighJump")
-@Bypasses(ghostMode = false,
+@Mod.Bypasses(ghostMode = false,
 	latestNCP = false,
 	olderNCP = false,
 	antiCheat = false,

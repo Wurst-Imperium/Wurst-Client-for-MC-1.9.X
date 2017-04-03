@@ -8,14 +8,12 @@
 package net.wurstclient.features.mods;
 
 import net.wurstclient.events.listeners.UpdateListener;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 
-@Info(description = "Makes you twerk like Miley Cyrus!",
+@Mod.Info(description = "Makes you twerk like Miley Cyrus!",
 	name = "MileyCyrus",
 	tags = "miley cyrus, twerk",
 	help = "Mods/MileyCyrus")
-@Bypasses
+@Mod.Bypasses
 public class MileyCyrusMod extends Mod implements UpdateListener
 {
 	private int timer;

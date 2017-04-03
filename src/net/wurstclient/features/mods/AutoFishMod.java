@@ -10,14 +10,12 @@ package net.wurstclient.features.mods;
 import net.minecraft.entity.projectile.EntityFishHook;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 
-@Info(description = "Automatically catches fish.",
+@Mod.Info(description = "Automatically catches fish.",
 	name = "AutoFish",
 	tags = "FishBot, auto fish, fish bot, fishing",
 	help = "Mods/AutoFish")
-@Bypasses
+@Mod.Bypasses
 public class AutoFishMod extends Mod implements UpdateListener
 {
 	private boolean catching = false;

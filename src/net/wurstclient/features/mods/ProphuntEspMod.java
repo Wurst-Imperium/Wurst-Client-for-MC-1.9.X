@@ -14,15 +14,13 @@ import net.minecraft.util.math.MathHelper;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.features.Feature;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.utils.RenderUtils;
 
-@Info(description = "Allows you to see fake blocks in Prophunt.",
+@Mod.Info(description = "Allows you to see fake blocks in Prophunt.",
 	name = "ProphuntESP",
 	tags = "prophunt esp",
 	help = "Mods/ProphuntESP")
-@Bypasses
+@Mod.Bypasses
 public class ProphuntEspMod extends Mod implements RenderListener
 {
 	@Override

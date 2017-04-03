@@ -13,19 +13,17 @@ import net.minecraft.util.math.RayTraceResult.Type;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.features.special_features.YesCheatSpf.BypassLevel;
 import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.utils.EntityUtils;
 
-@Info(description = "Automatically attacks the entity you're looking at.",
+@Mod.Info(description = "Automatically attacks the entity you're looking at.",
 	name = "TriggerBot",
 	tags = "trigger bot",
 	help = "Mods/TriggerBot")
-@Bypasses
+@Mod.Bypasses
 public class TriggerBotMod extends Mod implements UpdateListener
 {
 	public CheckboxSetting useKillaura =

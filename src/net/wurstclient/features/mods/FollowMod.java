@@ -10,15 +10,13 @@ package net.wurstclient.features.mods;
 import net.minecraft.entity.EntityLivingBase;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.utils.EntityUtils;
 
-@Info(
+@Mod.Info(
 	description = "A bot that follows the closest entity.\n" + "Very annoying.",
 	name = "Follow",
 	help = "Mods/Follow")
-@Bypasses(ghostMode = false)
+@Mod.Bypasses(ghostMode = false)
 public class FollowMod extends Mod implements UpdateListener
 {
 	private EntityLivingBase entity;

@@ -24,8 +24,6 @@ import net.wurstclient.events.listeners.LeftClickListener;
 import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.ModeSetting;
 import net.wurstclient.settings.SliderSetting;
@@ -33,13 +31,13 @@ import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.utils.BlockUtils;
 import net.wurstclient.utils.RenderUtils;
 
-@Info(
+@Mod.Info(
 	description = "Slower Nuker that bypasses any cheat prevention\n"
 		+ "PlugIn. Not required on most NoCheat+ servers!",
 	name = "NukerLegit",
 	tags = "LegitNuker, nuker legit, legit nuker",
 	help = "Mods/NukerLegit")
-@Bypasses
+@Mod.Bypasses
 public class NukerLegitMod extends Mod
 	implements LeftClickListener, RenderListener, UpdateListener
 {

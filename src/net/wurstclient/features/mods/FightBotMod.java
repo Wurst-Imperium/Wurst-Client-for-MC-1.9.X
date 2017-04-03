@@ -11,17 +11,15 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumHand;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.utils.EntityUtils;
 
-@Info(
+@Mod.Info(
 	description = "A bot that automatically fights for you.\n"
 		+ "It walks around and kills everything.\n" + "Good for MobArena.",
 	name = "FightBot",
 	tags = "fight bot",
 	help = "Mods/FightBot")
-@Bypasses(ghostMode = false)
+@Mod.Bypasses(ghostMode = false)
 public class FightBotMod extends Mod implements UpdateListener
 {
 	private float range = 6F;

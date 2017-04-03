@@ -12,15 +12,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.features.Feature;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.utils.RenderUtils;
 
-@Info(description = "Allows you to see players through walls.",
+@Mod.Info(description = "Allows you to see players through walls.",
 	name = "PlayerESP",
 	tags = "player esp",
 	help = "Mods/PlayerESP")
-@Bypasses
+@Mod.Bypasses
 public class PlayerEspMod extends Mod implements RenderListener
 {
 	@Override

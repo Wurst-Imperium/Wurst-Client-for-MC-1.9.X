@@ -10,7 +10,6 @@ package net.wurstclient.features.mods;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.item.ItemNameTag;
 import net.wurstclient.compatibility.WMinecraft;
-import net.wurstclient.features.mods.Mod.Bypasses;
 import net.wurstclient.utils.ChatUtils;
 
 @Mod.Info(
@@ -19,7 +18,7 @@ import net.wurstclient.utils.ChatUtils;
 	name = "CrashItem",
 	tags = "CrashNametag, CrashTag, crash item, crash nametag, crash tag",
 	help = "Mods/CrashItem")
-@Bypasses
+@Mod.Bypasses
 public class CrashItemMod extends Mod
 {
 	@Override

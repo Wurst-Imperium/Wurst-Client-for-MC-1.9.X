@@ -12,9 +12,8 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
-import net.wurstclient.features.mods.Mod.Info;
 
-@Info(description = "Blocks bad potion effects.",
+@Mod.Info(description = "Blocks bad potion effects.",
 	name = "AntiPotion",
 	tags = "NoPotion, Zoot, anti potions, no potions",
 	help = "Mods/AntiPotion")

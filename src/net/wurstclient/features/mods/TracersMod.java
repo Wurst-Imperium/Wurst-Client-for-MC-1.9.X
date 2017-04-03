@@ -12,14 +12,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.features.Feature;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.utils.RenderUtils;
 
-@Info(description = "Draws lines to players around you.",
+@Mod.Info(description = "Draws lines to players around you.",
 	name = "Tracers",
 	help = "Mods/Tracers")
-@Bypasses
+@Mod.Bypasses
 public class TracersMod extends Mod implements RenderListener
 {
 	@Override

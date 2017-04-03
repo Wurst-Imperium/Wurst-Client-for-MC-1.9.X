@@ -18,12 +18,11 @@ import net.wurstclient.events.listeners.GUIRenderListener;
 import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
-import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.font.Fonts;
 import net.wurstclient.utils.EntityUtils;
 import net.wurstclient.utils.RenderUtils;
 
-@Info(
+@Mod.Info(
 	description = "Automatically aims your bow at the closest entity.\n"
 		+ "Tip: This works with FastBow.",
 	name = "BowAimbot",

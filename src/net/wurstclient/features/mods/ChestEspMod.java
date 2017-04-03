@@ -13,16 +13,14 @@ import net.minecraft.tileentity.TileEntityEnderChest;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.features.Feature;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.utils.ChatUtils;
 import net.wurstclient.utils.RenderUtils;
 
-@Info(description = "Allows you to see chests through walls.",
+@Mod.Info(description = "Allows you to see chests through walls.",
 	name = "ChestESP",
 	tags = "ChestFinder, chest esp, chest finder",
 	help = "Mods/ChestESP")
-@Bypasses
+@Mod.Bypasses
 public class ChestEspMod extends Mod implements RenderListener
 {
 	private int maxChests = 1000;

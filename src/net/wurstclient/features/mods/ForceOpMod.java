@@ -32,11 +32,9 @@ import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.ChatInputEvent;
 import net.wurstclient.events.listeners.ChatInputListener;
 import net.wurstclient.features.Feature;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.utils.ChatUtils;
 
-@Info(
+@Mod.Info(
 	description = "Cracks AuthMe passwords. Can be used to get OP.\n"
 		+ "If you want to know how to use this, press the\n"
 		+ "\"How to use\" button. That will open an online\n"
@@ -46,7 +44,7 @@ import net.wurstclient.utils.ChatUtils;
 	tags = "Force OP,AuthMe Cracker,AuthMeCracker,auth me cracker,admin hack,"
 		+ "AuthMe password cracker",
 	help = "Mods/Force_OP_(AuthMeCracker)")
-@Bypasses
+@Mod.Bypasses
 public class ForceOpMod extends Mod implements ChatInputListener
 {
 	private String[] defaultList = {"password", "passwort", "password1",

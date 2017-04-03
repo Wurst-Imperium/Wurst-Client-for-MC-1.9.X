@@ -15,15 +15,13 @@ import net.minecraft.util.math.RayTraceResult.Type;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.utils.BlockUtils;
 
-@Info(description = "Places random blocks around you.",
+@Mod.Info(description = "Places random blocks around you.",
 	name = "BuildRandom",
 	tags = "build random",
 	help = "Mods/BuildRandom")
-@Bypasses(ghostMode = false)
+@Mod.Bypasses(ghostMode = false)
 public class BuildRandomMod extends Mod implements UpdateListener
 {
 	private float range = 6;

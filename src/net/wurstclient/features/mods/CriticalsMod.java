@@ -15,15 +15,13 @@ import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.LeftClickEvent;
 import net.wurstclient.events.listeners.LeftClickListener;
 import net.wurstclient.features.Feature;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.settings.ModeSetting;
 
-@Info(description = "Changes all your hits to critical hits.",
+@Mod.Info(description = "Changes all your hits to critical hits.",
 	name = "Criticals",
 	tags = "Crits",
 	help = "Mods/Criticals")
-@Bypasses(ghostMode = false)
+@Mod.Bypasses(ghostMode = false)
 public class CriticalsMod extends Mod implements LeftClickListener
 {
 	private int mode = 1;

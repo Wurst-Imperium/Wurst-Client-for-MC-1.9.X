@@ -9,7 +9,6 @@ package net.wurstclient.features.mods;
 
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
-import net.wurstclient.features.mods.Mod.Bypasses;
 
 @Mod.Info(
 	description = "Allows you to run roughly 2.5x faster than you would by\n"
@@ -20,7 +19,7 @@ import net.wurstclient.features.mods.Mod.Bypasses;
 	name = "SpeedHack",
 	tags = "speed hack",
 	help = "Mods/SpeedHack")
-@Bypasses(ghostMode = false, latestNCP = false)
+@Mod.Bypasses(ghostMode = false, latestNCP = false)
 public class SpeedHackMod extends Mod implements UpdateListener
 {
 	@Override

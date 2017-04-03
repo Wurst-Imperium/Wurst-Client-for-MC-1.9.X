@@ -13,17 +13,15 @@ import net.minecraft.util.math.RayTraceResult;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.events.listeners.UpdateListener;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.features.special_features.YesCheatSpf.BypassLevel;
 import net.wurstclient.utils.BuildUtils;
 import net.wurstclient.utils.RenderUtils;
 
-@Info(description = "Instantly builds a small bunker around you.",
+@Mod.Info(description = "Instantly builds a small bunker around you.",
 	name = "InstantBunker",
 	tags = "instant bunker",
 	help = "Mods/InstantBunker")
-@Bypasses(ghostMode = false)
+@Mod.Bypasses(ghostMode = false)
 public class InstantBunkerMod extends Mod
 	implements UpdateListener, RenderListener
 {

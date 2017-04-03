@@ -10,14 +10,12 @@ package net.wurstclient.features.mods;
 import net.minecraft.client.gui.GuiScreen;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.DeathListener;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 
-@Info(description = "Automatically respawns you whenever you die.",
+@Mod.Info(description = "Automatically respawns you whenever you die.",
 	name = "AutoRespawn",
 	tags = "auto respawn",
 	help = "Mods/AutoRespawn")
-@Bypasses
+@Mod.Bypasses
 public class AutoRespawnMod extends Mod implements DeathListener
 {
 	@Override

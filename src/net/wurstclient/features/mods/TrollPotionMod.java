@@ -13,7 +13,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
 import net.wurstclient.compatibility.WMinecraft;
-import net.wurstclient.features.mods.Mod.Bypasses;
 import net.wurstclient.utils.ChatUtils;
 
 @Mod.Info(
@@ -22,7 +21,7 @@ import net.wurstclient.utils.ChatUtils;
 	name = "TrollPotion",
 	tags = "troll potion",
 	help = "Mods/TrollPotion")
-@Bypasses
+@Mod.Bypasses
 public class TrollPotionMod extends Mod
 {
 	@Override

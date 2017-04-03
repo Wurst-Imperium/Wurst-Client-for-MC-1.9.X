@@ -17,21 +17,19 @@ import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.features.special_features.YesCheatSpf.BypassLevel;
 import net.wurstclient.settings.ModeSetting;
 import net.wurstclient.utils.BuildUtils;
 import net.wurstclient.utils.RenderUtils;
 
-@Info(
+@Mod.Info(
 	description = "Automatically builds the selected template whenever\n"
 		+ "you place a block.\n"
 		+ "This mod can bypass NoCheat+ while YesCheat+ is\n" + "enabled.",
 	name = "AutoBuild",
 	tags = "AutoBridge, AutoFloor, AutoNazi, AutoPenis, AutoPillar, AutoWall, AutoWurst, auto build",
 	help = "Mods/AutoBuild")
-@Bypasses(ghostMode = false)
+@Mod.Bypasses(ghostMode = false)
 public class AutoBuildMod extends Mod implements UpdateListener, RenderListener
 {
 	public static ArrayList<String> names = new ArrayList<>();

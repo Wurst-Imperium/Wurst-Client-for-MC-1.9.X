@@ -9,7 +9,6 @@ package net.wurstclient.features.mods;
 
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
-import net.wurstclient.features.mods.Mod.Bypasses;
 
 @Mod.Info(
 	description = "Allows you to fly with boats and rideable entities.\n"
@@ -17,7 +16,7 @@ import net.wurstclient.features.mods.Mod.Bypasses;
 	name = "BoatFly",
 	tags = "BoatFlight, boat fly, boat flight",
 	help = "Mods/BoatFly")
-@Bypasses(ghostMode = false, latestNCP = false)
+@Mod.Bypasses(ghostMode = false, latestNCP = false)
 public class BoatFlyMod extends Mod implements UpdateListener
 {
 	@Override

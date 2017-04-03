@@ -12,15 +12,13 @@ import net.minecraft.network.play.client.CPacketEntityAction;
 import net.minecraft.network.play.client.CPacketEntityAction.Action;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.features.special_features.YesCheatSpf.BypassLevel;
 
-@Info(description = "Automatically sneaks all the time.",
+@Mod.Info(description = "Automatically sneaks all the time.",
 	name = "Sneak",
 	tags = "AutoSneaking",
 	help = "Mods/Sneak")
-@Bypasses(ghostMode = false)
+@Mod.Bypasses(ghostMode = false)
 public class SneakMod extends Mod implements UpdateListener
 {
 	@Override

@@ -15,18 +15,16 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.EntityLivingBase;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.utils.ChatUtils;
 import net.wurstclient.utils.EntityUtils;
 
-@Info(
+@Mod.Info(
 	description = "Allows you to see the world as someone else.\n"
 		+ "Use the .rv command to make it target a specific entity.",
 	name = "RemoteView",
 	tags = "remote view",
 	help = "Mods/RemoteView")
-@Bypasses
+@Mod.Bypasses
 public class RemoteViewMod extends Mod implements UpdateListener
 {
 	private EntityPlayerSP newView = null;

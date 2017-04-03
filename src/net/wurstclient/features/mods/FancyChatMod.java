@@ -9,17 +9,15 @@ package net.wurstclient.features.mods;
 
 import net.wurstclient.events.ChatOutputEvent;
 import net.wurstclient.events.listeners.ChatOutputListener;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 
-@Info(
+@Mod.Info(
 	description = "Replaces ASCII characters in sent chat messages with fancier unicode characters. Can be\n"
 		+ "used to bypass curse word filters on some servers. Does not work on servers that block\n"
 		+ "unicode characters.",
 	name = "FancyChat",
 	tags = "fancy chat",
 	help = "Mods/FancyChat")
-@Bypasses(ghostMode = false, mineplexAntiCheat = false)
+@Mod.Bypasses(ghostMode = false, mineplexAntiCheat = false)
 public class FancyChatMod extends Mod implements ChatOutputListener
 {
 	private final String blacklist = "(){}[]|";

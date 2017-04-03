@@ -22,17 +22,15 @@ import net.minecraft.util.EnumHand;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 
-@Info(
+@Mod.Info(
 	description = "Automatically eats soup if your health is below the set value.",
 	name = "AutoSoup",
 	tags = "auto soup",
 	help = "Mods/AutoSoup")
-@Bypasses
+@Mod.Bypasses
 public class AutoSoupMod extends Mod implements UpdateListener
 {
 	public float health = 20F;

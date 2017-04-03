@@ -9,14 +9,12 @@ package net.wurstclient.features.mods;
 
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 
-@Info(description = "Makes you sprint whenever you walk.",
+@Mod.Info(description = "Makes you sprint whenever you walk.",
 	name = "AutoSprint",
 	tags = "auto sprint",
 	help = "Mods/AutoSprint")
-@Bypasses
+@Mod.Bypasses
 public class AutoSprintMod extends Mod implements UpdateListener
 {
 	@Override

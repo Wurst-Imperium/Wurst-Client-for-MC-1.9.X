@@ -10,17 +10,15 @@ package net.wurstclient.features.mods;
 import net.minecraft.network.play.client.CPacketPlayer.C05PacketPlayerLook;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 
-@Info(
+@Mod.Info(
 	description = "While this is active, other people will think you are\n"
 		+ "derping around.",
 	name = "Derp",
 	noCheatCompatible = false,
 	tags = "Retarded",
 	help = "Mods/Derp")
-@Bypasses(ghostMode = false, latestNCP = false, olderNCP = false)
+@Mod.Bypasses(ghostMode = false, latestNCP = false, olderNCP = false)
 public class DerpMod extends Mod implements UpdateListener
 {
 	@Override

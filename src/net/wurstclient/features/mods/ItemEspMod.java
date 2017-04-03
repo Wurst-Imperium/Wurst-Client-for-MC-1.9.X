@@ -12,15 +12,13 @@ import net.minecraft.entity.item.EntityItem;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.features.Feature;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.utils.RenderUtils;
 
-@Info(description = "Allows you to see items through walls.",
+@Mod.Info(description = "Allows you to see items through walls.",
 	name = "ItemESP",
 	tags = "item esp",
 	help = "Mods/ItemESP")
-@Bypasses
+@Mod.Bypasses
 public class ItemEspMod extends Mod implements RenderListener
 {
 	@Override

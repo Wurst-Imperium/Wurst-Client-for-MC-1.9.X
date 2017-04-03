@@ -12,7 +12,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.wurstclient.compatibility.WMinecraft;
-import net.wurstclient.features.mods.Mod.Bypasses;
 import net.wurstclient.utils.ChatUtils;
 
 @Mod.Info(
@@ -22,7 +21,7 @@ import net.wurstclient.utils.ChatUtils;
 	name = "CrashChest",
 	tags = "crash chest",
 	help = "Mods/CrashChest")
-@Bypasses
+@Mod.Bypasses
 public class CrashChestMod extends Mod
 {
 	@Override

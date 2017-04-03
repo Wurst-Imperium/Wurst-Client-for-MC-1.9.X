@@ -10,14 +10,13 @@ package net.wurstclient.features.mods;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 
-@Info(description = "Protects you from fall damage.\n" + "Bypasses AntiCheat.",
+@Mod.Info(
+	description = "Protects you from fall damage.\n" + "Bypasses AntiCheat.",
 	name = "NoFall",
 	tags = "no fall",
 	help = "Mods/NoFall")
-@Bypasses(ghostMode = false, latestNCP = false, olderNCP = false)
+@Mod.Bypasses(ghostMode = false, latestNCP = false, olderNCP = false)
 public class NoFallMod extends Mod implements UpdateListener
 {
 	@Override

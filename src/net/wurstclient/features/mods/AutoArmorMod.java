@@ -14,14 +14,12 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 
-@Info(description = "Manages your armor automatically.",
+@Mod.Info(description = "Manages your armor automatically.",
 	name = "AutoArmor",
 	tags = "auto armor",
 	help = "Mods/AutoArmor")
-@Bypasses(ghostMode = false, latestNCP = false)
+@Mod.Bypasses(ghostMode = false, latestNCP = false)
 public class AutoArmorMod extends Mod implements UpdateListener
 {
 	private int[] bestArmor;

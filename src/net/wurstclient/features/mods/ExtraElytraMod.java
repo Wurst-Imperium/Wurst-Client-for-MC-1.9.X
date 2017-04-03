@@ -15,16 +15,14 @@ import net.minecraft.network.play.client.CPacketEntityAction;
 import net.minecraft.util.math.MathHelper;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.features.special_features.YesCheatSpf.BypassLevel;
 import net.wurstclient.settings.CheckboxSetting;
 
-@Info(description = "Eases the use of the Elytra.",
+@Mod.Info(description = "Eases the use of the Elytra.",
 	name = "ExtraElytra",
 	tags = "EasyElytra, extra elytra, easy elytra",
 	help = "Mods/ExtraElytra")
-@Bypasses
+@Mod.Bypasses
 public class ExtraElytraMod extends Mod implements UpdateListener
 {
 	private CheckboxSetting instantFly =

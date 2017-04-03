@@ -11,7 +11,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
-import net.wurstclient.features.mods.Mod.Bypasses;
 import net.wurstclient.utils.EntityUtils;
 
 @Mod.Info(
@@ -20,7 +19,7 @@ import net.wurstclient.utils.EntityUtils;
 	name = "ForcePush",
 	tags = "force push",
 	help = "Mods/ForcePush")
-@Bypasses
+@Mod.Bypasses
 public class ForcePushMod extends Mod implements UpdateListener
 {
 	@Override

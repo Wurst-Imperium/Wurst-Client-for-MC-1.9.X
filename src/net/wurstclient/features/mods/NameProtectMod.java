@@ -7,16 +7,13 @@
  */
 package net.wurstclient.features.mods;
 
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
-
-@Info(
+@Mod.Info(
 	description = "Hides all player names.\n"
 		+ "Some YouTubers like to censor out all names in their\n" + "videos.",
 	name = "NameProtect",
 	tags = "name protect",
 	help = "Mods/NameProtect")
-@Bypasses
+@Mod.Bypasses
 public class NameProtectMod extends Mod
 {
 	

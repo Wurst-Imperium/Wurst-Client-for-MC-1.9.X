@@ -8,14 +8,12 @@
 package net.wurstclient.features.mods;
 
 import net.wurstclient.events.listeners.UpdateListener;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 
-@Info(description = "Allows you to see in the dark.",
+@Mod.Info(description = "Allows you to see in the dark.",
 	name = "Fullbright",
 	tags = "NightVision, full bright, brightness, night vision",
 	help = "Mods/Fullbright")
-@Bypasses
+@Mod.Bypasses
 public class FullbrightMod extends Mod implements UpdateListener
 {
 	public FullbrightMod()

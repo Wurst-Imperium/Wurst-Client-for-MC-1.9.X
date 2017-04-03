@@ -11,15 +11,14 @@ import net.minecraft.item.ItemFood;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 
-@Info(description = "Allows you to eat food much faster.\n" + "OM! NOM! NOM!",
+@Mod.Info(
+	description = "Allows you to eat food much faster.\n" + "OM! NOM! NOM!",
 	name = "FastEat",
 	noCheatCompatible = false,
 	tags = "FastNom, fast eat, fast nom",
 	help = "Mods/FastEat")
-@Bypasses(ghostMode = false, latestNCP = false, olderNCP = false)
+@Mod.Bypasses(ghostMode = false, latestNCP = false, olderNCP = false)
 public class FastEatMod extends Mod implements UpdateListener
 {
 	@Override

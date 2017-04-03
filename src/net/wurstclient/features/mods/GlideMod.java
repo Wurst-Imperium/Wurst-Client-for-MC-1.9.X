@@ -10,13 +10,11 @@ package net.wurstclient.features.mods;
 import net.minecraft.block.material.Material;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 
-@Info(description = "Makes you fall like if you had a hang glider.",
+@Mod.Info(description = "Makes you fall like if you had a hang glider.",
 	name = "Glide",
 	help = "Mods/Glide")
-@Bypasses(ghostMode = false, latestNCP = false, olderNCP = false)
+@Mod.Bypasses(ghostMode = false, latestNCP = false, olderNCP = false)
 public class GlideMod extends Mod implements UpdateListener
 {
 	@Override

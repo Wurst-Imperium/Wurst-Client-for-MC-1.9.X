@@ -13,7 +13,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
 import net.wurstclient.compatibility.WMinecraft;
-import net.wurstclient.features.mods.Mod.Bypasses;
 import net.wurstclient.utils.ChatUtils;
 
 @Mod.Info(
@@ -22,7 +21,7 @@ import net.wurstclient.utils.ChatUtils;
 	name = "KillerPotion",
 	tags = "killer potion",
 	help = "Mods/KillerPotion")
-@Bypasses
+@Mod.Bypasses
 public class KillerPotionMod extends Mod
 {
 	@Override

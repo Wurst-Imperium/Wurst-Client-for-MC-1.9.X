@@ -17,14 +17,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.utils.BlockUtils;
 import net.wurstclient.utils.ChatUtils;
 
-@Info(
+@Mod.Info(
 	description = "Breaks blocks around you like an explosion.\n"
 		+ "This can be a lot faster than Nuker if the server\n"
 		+ "doesn't have NoCheat+. It works best with fast tools\n"
@@ -32,7 +30,7 @@ import net.wurstclient.utils.ChatUtils;
 	name = "Kaboom",
 	noCheatCompatible = false,
 	help = "Mods/Kaboom")
-@Bypasses(ghostMode = false,
+@Mod.Bypasses(ghostMode = false,
 	latestNCP = false,
 	olderNCP = false,
 	antiCheat = false)

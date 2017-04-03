@@ -9,17 +9,15 @@ package net.wurstclient.features.mods;
 
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 
-@Info(
+@Mod.Info(
 	description = "Cancels slowness effects caused by water, soul sand and\n"
 		+ "using items.",
 	name = "NoSlowdown",
 	noCheatCompatible = false,
 	tags = "no slowdown, no slow down",
 	help = "Mods/NoSlowdown")
-@Bypasses(ghostMode = false,
+@Mod.Bypasses(ghostMode = false,
 	latestNCP = false,
 	olderNCP = false,
 	antiCheat = false)

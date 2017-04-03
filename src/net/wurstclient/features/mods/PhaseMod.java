@@ -9,16 +9,14 @@ package net.wurstclient.features.mods;
 
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
-import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Info;
 
-@Info(
+@Mod.Info(
 	description = "Exploits a bug in NoCheat+ that allows you to glitch\n"
 		+ "through blocks.",
 	name = "Phase",
 	tags = "Phaze",
 	help = "Mods/Phase")
-@Bypasses(ghostMode = false,
+@Mod.Bypasses(ghostMode = false,
 	latestNCP = false,
 	antiCheat = false,
 	mineplexAntiCheat = false)
