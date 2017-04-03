@@ -5,7 +5,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package net.wurstclient.gui.alts;
+package net.wurstclient.altmanager;
 
 import org.lwjgl.opengl.GL11;
 
@@ -17,7 +17,7 @@ import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ChatAllowedCharacters;
 
-public class GuiPasswordField extends Gui
+public final class PasswordField extends Gui
 {
 	private final FontRenderer field_146211_a;
 	private final int field_146209_f;
@@ -38,7 +38,7 @@ public class GuiPasswordField extends Gui
 	private int field_146221_u = 7368816;
 	private boolean field_146220_v = true;
 	
-	public GuiPasswordField(FontRenderer par1FontRenderer, int par2, int par3,
+	public PasswordField(FontRenderer par1FontRenderer, int par2, int par3,
 		int par4, int par5)
 	{
 		field_146211_a = par1FontRenderer;

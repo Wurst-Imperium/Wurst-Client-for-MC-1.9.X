@@ -20,6 +20,7 @@ import java.net.HttpURLConnection;
 import java.net.Proxy;
 import java.net.URI;
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -79,6 +80,11 @@ public class MiscUtils
 			logger.error("Failed to open link", e);
 			return false;
 		}
+	}
+	
+	public static void openFile(Path path)
+	{
+		openFile(path.toString());
 	}
 	
 	public static void openFile(File file)

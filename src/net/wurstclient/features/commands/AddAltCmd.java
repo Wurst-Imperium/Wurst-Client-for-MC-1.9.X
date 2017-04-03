@@ -11,9 +11,10 @@ import java.util.Iterator;
 
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.util.StringUtils;
-import net.wurstclient.alts.Alt;
+import net.wurstclient.altmanager.Alt;
+import net.wurstclient.altmanager.screens.GuiAltList;
 import net.wurstclient.compatibility.WMinecraft;
-import net.wurstclient.gui.alts.GuiAltList;
+import net.wurstclient.files.ConfigFiles;
 import net.wurstclient.utils.ChatUtils;
 
 @Cmd.Info(
@@ -49,12 +50,12 @@ public final class AddAltCmd extends Cmd
 			else
 				ChatUtils.message("Added " + alts + " alts to the alt list.");
 			GuiAltList.sortAlts();
-			wurst.files.saveAlts();
+			ConfigFiles.ALTS.save();
 		}else if(!args[0].equals("Alexander01998"))
 		{
 			GuiAltList.alts.add(new Alt(args[0], null, null));
 			GuiAltList.sortAlts();
-			wurst.files.saveAlts();
+			ConfigFiles.ALTS.save();
 			ChatUtils.message("Added \"" + args[0] + "\" to the alt list.");
 		}
 	}

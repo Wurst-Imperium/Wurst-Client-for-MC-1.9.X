@@ -34,10 +34,10 @@ import net.minecraft.client.gui.GuiYesNo;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import net.wurstclient.WurstClient;
+import net.wurstclient.altmanager.screens.AltManagerScreen;
 import net.wurstclient.compatibility.WMath;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.files.ConfigFiles;
-import net.wurstclient.gui.alts.GuiAlts;
 import net.wurstclient.utils.JsonUtils;
 import net.wurstclient.utils.MiscUtils;
 
@@ -163,7 +163,7 @@ public class GuiWurstMainMenu extends GuiMainMenu
 		switch(button.id)
 		{
 			case 3:
-			mc.displayGuiScreen(new GuiAlts(this));
+			mc.displayGuiScreen(new AltManagerScreen(this));
 			break;
 		}
 	}

@@ -5,7 +5,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package net.wurstclient.alts;
+package net.wurstclient.altmanager;
 
 import java.net.Proxy;
 
@@ -18,7 +18,7 @@ import com.mojang.authlib.yggdrasil.YggdrasilUserAuthentication;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Session;
 
-public class LoginManager
+public final class LoginManager
 {
 	public static String login(String email, String password)
 	{

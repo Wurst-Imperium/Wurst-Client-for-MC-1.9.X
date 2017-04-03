@@ -5,12 +5,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package net.wurstclient.gui.alts;
+package net.wurstclient.altmanager;
 
-import static org.lwjgl.opengl.GL11.GL_BLEND;
-import static org.lwjgl.opengl.GL11.glColor4f;
-import static org.lwjgl.opengl.GL11.glDisable;
-import static org.lwjgl.opengl.GL11.glEnable;
+import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -18,7 +15,7 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.entity.player.EntityPlayer;
 
-public class AltRenderer
+public final class AltRenderer
 {
 	public static void drawAltFace(String name, int x, int y, int w, int h,
 		boolean selected)
@@ -31,24 +28,30 @@ public class AltRenderer
 				.loadTexture(Minecraft.getMinecraft().getResourceManager());
 			Minecraft.getMinecraft().getTextureManager()
 				.bindTexture(AbstractClientPlayer.getLocationSkin(name));
-			glEnable(GL_BLEND);
+			
+			GL11.glEnable(GL11.GL_BLEND);
+			
 			if(selected)
-				glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+				GL11.glColor4f(1, 1, 1, 1);
 			else
-				glColor4f(0.9F, 0.9F, 0.9F, 1.0F);
+				GL11.glColor4f(0.9F, 0.9F, 0.9F, 1);
+			
 			// Face
 			float fw = 192;
 			float fh = 192;
 			float u = 24;
 			float v = 24;
 			Gui.drawModalRectWithCustomSizedTexture(x, y, u, v, w, h, fw, fh);
+			
 			// Hat
 			fw = 192;
 			fh = 192;
 			u = 120;
 			v = 24;
 			Gui.drawModalRectWithCustomSizedTexture(x, y, u, v, w, h, fw, fh);
-			glDisable(GL_BLEND);
+			
+			GL11.glDisable(GL11.GL_BLEND);
+			
 		}catch(Exception e)
 		{
 			e.printStackTrace();
@@ -66,10 +69,12 @@ public class AltRenderer
 				.loadTexture(Minecraft.getMinecraft().getResourceManager());
 			Minecraft.getMinecraft().getTextureManager()
 				.bindTexture(AbstractClientPlayer.getLocationSkin(name));
+			
 			boolean slim = DefaultPlayerSkin
 				.getSkinType(EntityPlayer.getOfflineUUID(name)).equals("slim");
-			glEnable(GL_BLEND);
-			glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+			
+			GL11.glEnable(GL11.GL_BLEND);
+			GL11.glColor4f(1, 1, 1, 1);
 			
 			// Face
 			x = x + width / 4;
@@ -181,7 +186,8 @@ public class AltRenderer
 			v = height / 4 * 4.5F;
 			Gui.drawModalRectWithCustomSizedTexture(x, y, u, v, w, h, fw, fh);
 			
-			glDisable(GL_BLEND);
+			GL11.glDisable(GL11.GL_BLEND);
+			
 		}catch(Exception e)
 		{
 			e.printStackTrace();
@@ -199,10 +205,12 @@ public class AltRenderer
 				.loadTexture(Minecraft.getMinecraft().getResourceManager());
 			Minecraft.getMinecraft().getTextureManager()
 				.bindTexture(AbstractClientPlayer.getLocationSkin(name));
+			
 			boolean slim = DefaultPlayerSkin
 				.getSkinType(EntityPlayer.getOfflineUUID(name)).equals("slim");
-			glEnable(GL_BLEND);
-			glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+			
+			GL11.glEnable(GL11.GL_BLEND);
+			GL11.glColor4f(1, 1, 1, 1);
 			
 			// Face
 			x = x + width / 4;
@@ -314,7 +322,8 @@ public class AltRenderer
 			v = height / 4 * 4.5F;
 			Gui.drawModalRectWithCustomSizedTexture(x, y, u, v, w, h, fw, fh);
 			
-			glDisable(GL_BLEND);
+			GL11.glDisable(GL11.GL_BLEND);
+			
 		}catch(Exception e)
 		{
 			e.printStackTrace();

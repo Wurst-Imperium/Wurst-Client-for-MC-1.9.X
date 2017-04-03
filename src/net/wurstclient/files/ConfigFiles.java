@@ -18,7 +18,7 @@ public final class ConfigFiles
 	public static final ModsConfig MODS = new ModsConfig();
 	public static final KeybindsConfig KEYBINDS = new KeybindsConfig();
 	public static final NavigatorConfig NAVIGATOR = new NavigatorConfig();
-	// public static final AltsConfig ALTS = new AltsConfig();
+	public static final AltsConfig ALTS = new AltsConfig();
 	public static final FriendsConfig FRIENDS = new FriendsConfig();
 	// public static final XRayConfig XRAY = new XRayConfig();
 	
