@@ -15,7 +15,6 @@ import net.wurstclient.events.listeners.UpdateListener;
 	description = "While this is active, other people will think you are\n"
 		+ "derping around.",
 	name = "Derp",
-	noCheatCompatible = false,
 	tags = "Retarded",
 	help = "Mods/Derp")
 @Mod.Bypasses(ghostMode = false, latestNCP = false, olderNCP = false)

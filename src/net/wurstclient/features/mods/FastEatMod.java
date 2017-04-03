@@ -15,7 +15,6 @@ import net.wurstclient.events.listeners.UpdateListener;
 @Mod.Info(
 	description = "Allows you to eat food much faster.\n" + "OM! NOM! NOM!",
 	name = "FastEat",
-	noCheatCompatible = false,
 	tags = "FastNom, fast eat, fast nom",
 	help = "Mods/FastEat")
 @Mod.Bypasses(ghostMode = false, latestNCP = false, olderNCP = false)

@@ -49,8 +49,6 @@ public abstract class Mod implements Feature
 		
 		String description();
 		
-		boolean noCheatCompatible() default true;
-		
 		String tags() default "";
 		
 		String help() default "";
