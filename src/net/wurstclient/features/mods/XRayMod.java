@@ -16,7 +16,7 @@ import net.minecraft.block.Block;
 	tags = "xray, x ray",
 	help = "Mods/X-Ray")
 @Mod.Bypasses
-public class XRayMod extends Mod
+public final class XRayMod extends Mod
 {
 	public static ArrayList<Block> xrayBlocks = new ArrayList<>();
 	

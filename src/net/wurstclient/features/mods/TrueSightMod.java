@@ -12,7 +12,7 @@ package net.wurstclient.features.mods;
 	tags = "true sight",
 	help = "Mods/TrueSight")
 @Mod.Bypasses
-public class TrueSightMod extends Mod
+public final class TrueSightMod extends Mod
 {
 	
 }

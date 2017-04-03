@@ -15,7 +15,7 @@ import net.wurstclient.settings.SliderSetting.ValueDisplay;
 	name = "Timer",
 	help = "Mods/Timer")
 @Mod.Bypasses(ghostMode = false)
-public class TimerMod extends Mod
+public final class TimerMod extends Mod
 {
 	public float speed = 2.0F;
 	

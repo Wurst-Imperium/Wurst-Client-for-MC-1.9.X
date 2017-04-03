@@ -15,7 +15,7 @@ import net.wurstclient.events.listeners.UpdateListener;
 	name = "Glide",
 	help = "Mods/Glide")
 @Mod.Bypasses(ghostMode = false, latestNCP = false, olderNCP = false)
-public class GlideMod extends Mod implements UpdateListener
+public final class GlideMod extends Mod implements UpdateListener
 {
 	@Override
 	public void onEnable()

@@ -24,7 +24,7 @@ import net.wurstclient.utils.EntityUtils;
 	tags = "trigger bot",
 	help = "Mods/TriggerBot")
 @Mod.Bypasses
-public class TriggerBotMod extends Mod implements UpdateListener
+public final class TriggerBotMod extends Mod implements UpdateListener
 {
 	public CheckboxSetting useKillaura =
 		new CheckboxSetting("Use Killaura settings", true)

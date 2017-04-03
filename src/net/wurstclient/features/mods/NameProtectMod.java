@@ -14,7 +14,7 @@ package net.wurstclient.features.mods;
 	tags = "name protect",
 	help = "Mods/NameProtect")
 @Mod.Bypasses
-public class NameProtectMod extends Mod
+public final class NameProtectMod extends Mod
 {
 	
 }

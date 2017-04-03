@@ -31,7 +31,7 @@ import net.wurstclient.settings.SliderSetting.ValueDisplay;
 	tags = "AutoPotion,auto potion,auto splash potion",
 	help = "Mods/AutoSplashPot")
 @Mod.Bypasses
-public class AutoSplashPotMod extends Mod implements UpdateListener
+public final class AutoSplashPotMod extends Mod implements UpdateListener
 {
 	public float health = 18F;
 	

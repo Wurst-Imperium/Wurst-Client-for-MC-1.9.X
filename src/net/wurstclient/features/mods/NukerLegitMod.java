@@ -38,7 +38,7 @@ import net.wurstclient.utils.RenderUtils;
 	tags = "LegitNuker, nuker legit, legit nuker",
 	help = "Mods/NukerLegit")
 @Mod.Bypasses
-public class NukerLegitMod extends Mod
+public final class NukerLegitMod extends Mod
 	implements LeftClickListener, RenderListener, UpdateListener
 {
 	private static Block currentBlock;

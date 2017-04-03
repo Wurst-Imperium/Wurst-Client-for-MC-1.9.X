@@ -17,7 +17,7 @@ import net.wurstclient.utils.BlockUtils;
 
 @Mod.Info(description = "", name = "GoTo")
 @Mod.Bypasses
-public class GoToCmdMod extends Mod implements UpdateListener
+public final class GoToCmdMod extends Mod implements UpdateListener
 {
 	private static ArrayList<BlockPos> path;
 	private static BlockPos goal;

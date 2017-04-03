@@ -29,7 +29,7 @@ import net.wurstclient.utils.EntityUtils;
 	latestNCP = false,
 	olderNCP = false,
 	antiCheat = false)
-public class MultiAuraMod extends Mod implements UpdateListener
+public final class MultiAuraMod extends Mod implements UpdateListener
 {
 	public CheckboxSetting useKillaura =
 		new CheckboxSetting("Use Killaura settings", false)

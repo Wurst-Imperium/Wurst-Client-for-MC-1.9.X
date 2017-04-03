@@ -20,7 +20,7 @@ import net.wurstclient.events.listeners.UpdateListener;
 	tags = "auto armor",
 	help = "Mods/AutoArmor")
 @Mod.Bypasses(ghostMode = false, latestNCP = false)
-public class AutoArmorMod extends Mod implements UpdateListener
+public final class AutoArmorMod extends Mod implements UpdateListener
 {
 	private int[] bestArmor;
 	

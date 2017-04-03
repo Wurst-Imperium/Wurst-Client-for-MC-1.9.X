@@ -21,7 +21,7 @@ import net.wurstclient.utils.RenderUtils;
 	+ "Use .search id <block id> or .search name <block name>\n"
 	+ "to specify it.", name = "Search", help = "Mods/Search")
 @Mod.Bypasses
-public class SearchMod extends Mod implements UpdateListener, RenderListener
+public final class SearchMod extends Mod implements UpdateListener, RenderListener
 {
 	private ArrayList<BlockPos> matchingBlocks = new ArrayList<>();
 	private int range = 50;

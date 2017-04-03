@@ -14,7 +14,7 @@ import net.wurstclient.events.listeners.UpdateListener;
 	tags = "auto walk",
 	help = "Mods/AutoWalk")
 @Mod.Bypasses
-public class AutoWalkMod extends Mod implements UpdateListener
+public final class AutoWalkMod extends Mod implements UpdateListener
 {
 	@Override
 	public void onEnable()

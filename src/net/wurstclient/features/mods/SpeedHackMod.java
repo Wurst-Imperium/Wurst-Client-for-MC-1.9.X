@@ -20,7 +20,7 @@ import net.wurstclient.events.listeners.UpdateListener;
 	tags = "speed hack",
 	help = "Mods/SpeedHack")
 @Mod.Bypasses(ghostMode = false, latestNCP = false)
-public class SpeedHackMod extends Mod implements UpdateListener
+public final class SpeedHackMod extends Mod implements UpdateListener
 {
 	@Override
 	public void onEnable()

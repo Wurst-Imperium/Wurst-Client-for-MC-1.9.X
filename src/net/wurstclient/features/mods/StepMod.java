@@ -19,7 +19,7 @@ import net.wurstclient.settings.SliderSetting.ValueDisplay;
 	name = "Step",
 	help = "Mods/Step")
 @Mod.Bypasses
-public class StepMod extends Mod implements UpdateListener
+public final class StepMod extends Mod implements UpdateListener
 {
 	
 	public SliderSetting height =

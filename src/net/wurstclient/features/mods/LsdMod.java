@@ -17,7 +17,7 @@ import net.wurstclient.events.listeners.UpdateListener;
 
 @Mod.Info(description = "Thousands of colors!", name = "LSD", help = "Mods/LSD")
 @Mod.Bypasses
-public class LsdMod extends Mod implements UpdateListener
+public final class LsdMod extends Mod implements UpdateListener
 {
 	@Override
 	public void onToggle()

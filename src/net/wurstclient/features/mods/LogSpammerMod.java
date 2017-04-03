@@ -20,7 +20,7 @@ import net.wurstclient.events.listeners.UpdateListener;
 	name = "LogSpammer",
 	help = "Mods/LogSpammer")
 @Mod.Bypasses(ghostMode = false)
-public class LogSpammerMod extends Mod implements UpdateListener
+public final class LogSpammerMod extends Mod implements UpdateListener
 {
 	private PacketBuffer payload;
 	private Random random;

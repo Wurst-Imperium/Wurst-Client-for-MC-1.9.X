@@ -17,7 +17,7 @@ import net.wurstclient.events.listeners.UpdateListener;
 	tags = "BoatFlight, boat fly, boat flight",
 	help = "Mods/BoatFly")
 @Mod.Bypasses(ghostMode = false, latestNCP = false)
-public class BoatFlyMod extends Mod implements UpdateListener
+public final class BoatFlyMod extends Mod implements UpdateListener
 {
 	@Override
 	public void onEnable()

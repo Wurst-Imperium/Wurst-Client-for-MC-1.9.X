@@ -23,7 +23,7 @@ import net.wurstclient.settings.CheckboxSetting;
 	tags = "EasyElytra, extra elytra, easy elytra",
 	help = "Mods/ExtraElytra")
 @Mod.Bypasses
-public class ExtraElytraMod extends Mod implements UpdateListener
+public final class ExtraElytraMod extends Mod implements UpdateListener
 {
 	private CheckboxSetting instantFly =
 		new CheckboxSetting("Instant fly", true);

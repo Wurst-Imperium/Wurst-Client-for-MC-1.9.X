@@ -26,7 +26,7 @@ import net.wurstclient.utils.RenderUtils;
 	name = "Tunneller",
 	help = "Mods/Tunneller")
 @Mod.Bypasses
-public class TunnellerMod extends Mod implements RenderListener, UpdateListener
+public final class TunnellerMod extends Mod implements RenderListener, UpdateListener
 {
 	private static Block currentBlock;
 	private float currentDamage;

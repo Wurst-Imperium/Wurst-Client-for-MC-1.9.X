@@ -16,7 +16,7 @@ import net.wurstclient.events.listeners.UpdateListener;
 	tags = "legit, disable",
 	help = "Mods/Panic")
 @Mod.Bypasses
-public class PanicMod extends Mod implements UpdateListener
+public final class PanicMod extends Mod implements UpdateListener
 {
 	@Override
 	public void onEnable()

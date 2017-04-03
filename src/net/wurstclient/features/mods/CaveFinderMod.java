@@ -12,7 +12,7 @@ package net.wurstclient.features.mods;
 	tags = "cave finder",
 	help = "Mods/CaveFinder")
 @Mod.Bypasses
-public class CaveFinderMod extends Mod
+public final class CaveFinderMod extends Mod
 {
 	
 }

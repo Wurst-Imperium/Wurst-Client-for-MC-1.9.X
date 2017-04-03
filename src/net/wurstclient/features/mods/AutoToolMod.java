@@ -24,7 +24,7 @@ import net.wurstclient.features.Feature;
 	tags = "auto tool",
 	help = "Mods/AutoTool")
 @Mod.Bypasses
-public class AutoToolMod extends Mod
+public final class AutoToolMod extends Mod
 	implements LeftClickListener, UpdateListener
 {
 	private boolean isActive = false;

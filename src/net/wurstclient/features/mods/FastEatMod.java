@@ -19,7 +19,7 @@ import net.wurstclient.events.listeners.UpdateListener;
 	tags = "FastNom, fast eat, fast nom",
 	help = "Mods/FastEat")
 @Mod.Bypasses(ghostMode = false, latestNCP = false, olderNCP = false)
-public class FastEatMod extends Mod implements UpdateListener
+public final class FastEatMod extends Mod implements UpdateListener
 {
 	@Override
 	public void onEnable()

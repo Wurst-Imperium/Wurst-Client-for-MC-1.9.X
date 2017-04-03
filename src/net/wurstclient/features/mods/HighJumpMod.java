@@ -20,7 +20,7 @@ import net.wurstclient.settings.SliderSetting.ValueDisplay;
 	olderNCP = false,
 	antiCheat = false,
 	mineplexAntiCheat = false)
-public class HighJumpMod extends Mod
+public final class HighJumpMod extends Mod
 {
 	public int jumpHeight = 6;
 	

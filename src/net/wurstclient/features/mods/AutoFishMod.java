@@ -16,7 +16,7 @@ import net.wurstclient.events.listeners.UpdateListener;
 	tags = "FishBot, auto fish, fish bot, fishing",
 	help = "Mods/AutoFish")
 @Mod.Bypasses
-public class AutoFishMod extends Mod implements UpdateListener
+public final class AutoFishMod extends Mod implements UpdateListener
 {
 	private boolean catching = false;
 	

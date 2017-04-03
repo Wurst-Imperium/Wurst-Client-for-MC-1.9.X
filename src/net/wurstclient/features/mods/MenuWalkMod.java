@@ -22,7 +22,7 @@ import net.wurstclient.navigator.gui.NavigatorScreen;
 	tags = "InventoryWalk, menu walk, inventory walk",
 	help = "Mods/MenuWalk")
 @Mod.Bypasses
-public class MenuWalkMod extends Mod
+public final class MenuWalkMod extends Mod
 {
 	public boolean shouldAllowWalking()
 	{

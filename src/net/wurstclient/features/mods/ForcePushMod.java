@@ -20,7 +20,7 @@ import net.wurstclient.utils.EntityUtils;
 	tags = "force push",
 	help = "Mods/ForcePush")
 @Mod.Bypasses
-public class ForcePushMod extends Mod implements UpdateListener
+public final class ForcePushMod extends Mod implements UpdateListener
 {
 	@Override
 	public void onEnable()

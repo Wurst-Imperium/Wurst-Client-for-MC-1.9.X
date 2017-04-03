@@ -21,7 +21,7 @@ import net.wurstclient.utils.RenderUtils;
 	tags = "ChestFinder, chest esp, chest finder",
 	help = "Mods/ChestESP")
 @Mod.Bypasses
-public class ChestEspMod extends Mod implements RenderListener
+public final class ChestEspMod extends Mod implements RenderListener
 {
 	private int maxChests = 1000;
 	public boolean shouldInform = true;

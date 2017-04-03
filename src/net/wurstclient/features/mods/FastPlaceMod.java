@@ -17,7 +17,7 @@ import net.wurstclient.features.Feature;
 	tags = "fast place",
 	help = "Mods/FastPlace")
 @Mod.Bypasses
-public class FastPlaceMod extends Mod implements UpdateListener
+public final class FastPlaceMod extends Mod implements UpdateListener
 {
 	@Override
 	public Feature[] getSeeAlso()

@@ -15,7 +15,7 @@ package net.wurstclient.features.mods;
 	tags = "ghost hand",
 	help = "Mods/GhostHand")
 @Mod.Bypasses(ghostMode = false)
-public class GhostHandMod extends Mod
+public final class GhostHandMod extends Mod
 {
 	@Override
 	public String getRenderName()

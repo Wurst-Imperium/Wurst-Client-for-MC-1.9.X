@@ -21,7 +21,7 @@ import net.minecraft.util.text.ITextComponent;
 	latestNCP = false,
 	olderNCP = false,
 	antiCheat = false)
-public class AutoSignMod extends Mod
+public final class AutoSignMod extends Mod
 {
 	public ITextComponent[] signText;
 	

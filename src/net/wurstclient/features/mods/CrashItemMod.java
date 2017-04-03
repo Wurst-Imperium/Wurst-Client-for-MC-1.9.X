@@ -19,7 +19,7 @@ import net.wurstclient.utils.ChatUtils;
 	tags = "CrashNametag, CrashTag, crash item, crash nametag, crash tag",
 	help = "Mods/CrashItem")
 @Mod.Bypasses
-public class CrashItemMod extends Mod
+public final class CrashItemMod extends Mod
 {
 	@Override
 	public void onEnable()

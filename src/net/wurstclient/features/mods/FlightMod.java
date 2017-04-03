@@ -23,7 +23,7 @@ import net.wurstclient.settings.SliderSetting.ValueDisplay;
 	tags = "FlyHack,fly hack,flying",
 	help = "Mods/Flight")
 @Mod.Bypasses(ghostMode = false, latestNCP = false)
-public class FlightMod extends Mod implements UpdateListener
+public final class FlightMod extends Mod implements UpdateListener
 {
 	public float speed = 1F;
 	private double startY;

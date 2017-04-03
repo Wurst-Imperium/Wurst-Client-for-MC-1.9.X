@@ -19,7 +19,7 @@ import net.wurstclient.events.listeners.UpdateListener;
 	tags = "SpookySkin, skin blinker, spooky skin",
 	help = "Mods/SkinBlinker")
 @Mod.Bypasses(ghostMode = false)
-public class SkinBlinkerMod extends Mod implements UpdateListener
+public final class SkinBlinkerMod extends Mod implements UpdateListener
 {
 	@Override
 	public void onEnable()

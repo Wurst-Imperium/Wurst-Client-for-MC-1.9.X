@@ -17,7 +17,7 @@ import net.wurstclient.events.listeners.UpdateListener;
 	tags = "no web",
 	help = "Mods/NoWeb")
 @Mod.Bypasses(ghostMode = false)
-public class NoWebMod extends Mod implements UpdateListener
+public final class NoWebMod extends Mod implements UpdateListener
 {
 	@Override
 	public void onEnable()

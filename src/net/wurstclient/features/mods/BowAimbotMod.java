@@ -29,7 +29,7 @@ import net.wurstclient.utils.RenderUtils;
 	tags = "bow aimbot",
 	help = "Mods/BowAimbot")
 @Mod.Bypasses
-public class BowAimbotMod extends Mod
+public final class BowAimbotMod extends Mod
 	implements UpdateListener, RenderListener, GUIRenderListener
 {
 	private Entity target;

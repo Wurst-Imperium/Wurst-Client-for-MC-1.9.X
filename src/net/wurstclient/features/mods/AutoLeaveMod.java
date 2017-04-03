@@ -23,7 +23,7 @@ import net.wurstclient.settings.ModeSetting;
 	tags = "AutoDisconnect, auto leave, auto disconnect",
 	help = "Mods/AutoLeave")
 @Mod.Bypasses
-public class AutoLeaveMod extends Mod implements UpdateListener
+public final class AutoLeaveMod extends Mod implements UpdateListener
 {
 	private int mode = 0;
 	private String[] modes = new String[]{"Quit", "Chars", "TP", "SelfHurt"};

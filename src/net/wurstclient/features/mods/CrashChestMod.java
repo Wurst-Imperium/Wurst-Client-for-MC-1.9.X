@@ -22,7 +22,7 @@ import net.wurstclient.utils.ChatUtils;
 	tags = "crash chest",
 	help = "Mods/CrashChest")
 @Mod.Bypasses
-public class CrashChestMod extends Mod
+public final class CrashChestMod extends Mod
 {
 	@Override
 	public void onEnable()

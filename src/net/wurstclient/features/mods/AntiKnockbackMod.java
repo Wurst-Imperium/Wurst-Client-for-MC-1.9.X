@@ -17,7 +17,7 @@ import net.wurstclient.settings.SliderSetting.ValueDisplay;
 	tags = "AntiVelocity, NoKnockback, AntiKB, anti knockback, anti velocity, no knockback, anti kb",
 	help = "Mods/AntiKnockback")
 @Mod.Bypasses(ghostMode = false)
-public class AntiKnockbackMod extends Mod
+public final class AntiKnockbackMod extends Mod
 {
 	public float strength = 1F;
 	

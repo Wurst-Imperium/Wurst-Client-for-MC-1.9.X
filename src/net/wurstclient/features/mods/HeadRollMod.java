@@ -18,7 +18,7 @@ import net.wurstclient.events.listeners.UpdateListener;
 	tags = "head roll",
 	help = "Mods/HeadRoll")
 @Mod.Bypasses(ghostMode = false, latestNCP = false, olderNCP = false)
-public class HeadRollMod extends Mod implements UpdateListener
+public final class HeadRollMod extends Mod implements UpdateListener
 {
 	@Override
 	public void onEnable()

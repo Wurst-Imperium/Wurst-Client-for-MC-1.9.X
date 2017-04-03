@@ -22,7 +22,7 @@ import net.wurstclient.utils.ChatUtils;
 	tags = "troll potion",
 	help = "Mods/TrollPotion")
 @Mod.Bypasses
-public class TrollPotionMod extends Mod
+public final class TrollPotionMod extends Mod
 {
 	@Override
 	public void onEnable()

@@ -40,7 +40,7 @@ import net.wurstclient.utils.MiscUtils;
 	+ ">Variables\n" + ">HTML-like tags & comments\n"
 	+ ">Integrated help system", name = "Spammer", help = "Mods/Spammer")
 @Mod.Bypasses
-public class SpammerMod extends Mod
+public final class SpammerMod extends Mod
 {
 	private JDialog dialog;
 	private static JSpinner delaySpinner;

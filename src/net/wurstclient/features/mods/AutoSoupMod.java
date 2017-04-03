@@ -31,7 +31,7 @@ import net.wurstclient.settings.SliderSetting.ValueDisplay;
 	tags = "auto soup",
 	help = "Mods/AutoSoup")
 @Mod.Bypasses
-public class AutoSoupMod extends Mod implements UpdateListener
+public final class AutoSoupMod extends Mod implements UpdateListener
 {
 	public float health = 20F;
 	

@@ -22,7 +22,7 @@ import net.wurstclient.utils.BlockUtils;
 	tags = "build random",
 	help = "Mods/BuildRandom")
 @Mod.Bypasses(ghostMode = false)
-public class BuildRandomMod extends Mod implements UpdateListener
+public final class BuildRandomMod extends Mod implements UpdateListener
 {
 	private float range = 6;
 	

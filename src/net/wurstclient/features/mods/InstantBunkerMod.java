@@ -22,7 +22,7 @@ import net.wurstclient.utils.RenderUtils;
 	tags = "instant bunker",
 	help = "Mods/InstantBunker")
 @Mod.Bypasses(ghostMode = false)
-public class InstantBunkerMod extends Mod
+public final class InstantBunkerMod extends Mod
 	implements UpdateListener, RenderListener
 {
 	private float speed = 5;

@@ -17,7 +17,7 @@ import net.wurstclient.events.listeners.UpdateListener;
 	name = "Tired",
 	help = "Mods/Tired")
 @Mod.Bypasses(ghostMode = false, latestNCP = false, olderNCP = false)
-public class TiredMod extends Mod implements UpdateListener
+public final class TiredMod extends Mod implements UpdateListener
 {
 	@Override
 	public void onEnable()

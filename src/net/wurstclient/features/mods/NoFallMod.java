@@ -17,7 +17,7 @@ import net.wurstclient.events.listeners.UpdateListener;
 	tags = "no fall",
 	help = "Mods/NoFall")
 @Mod.Bypasses(ghostMode = false, latestNCP = false, olderNCP = false)
-public class NoFallMod extends Mod implements UpdateListener
+public final class NoFallMod extends Mod implements UpdateListener
 {
 	@Override
 	public void onEnable()

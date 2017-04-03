@@ -11,7 +11,7 @@ package net.wurstclient.features.mods;
 	name = "Liquids",
 	help = "Mods/Liquids")
 @Mod.Bypasses(ghostMode = false, latestNCP = false, olderNCP = false)
-public class LiquidsMod extends Mod
+public final class LiquidsMod extends Mod
 {
 	
 }

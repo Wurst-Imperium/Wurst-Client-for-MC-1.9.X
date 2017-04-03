@@ -21,7 +21,7 @@ import net.wurstclient.events.listeners.UpdateListener;
 	latestNCP = false,
 	olderNCP = false,
 	antiCheat = false)
-public class NoSlowdownMod extends Mod implements UpdateListener
+public final class NoSlowdownMod extends Mod implements UpdateListener
 {
 	@Override
 	public void onEnable()

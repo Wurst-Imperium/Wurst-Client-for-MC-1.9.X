@@ -23,7 +23,7 @@ import net.wurstclient.utils.EntityUtils;
 	tags = "kill aura",
 	help = "Mods/Killaura")
 @Mod.Bypasses
-public class KillauraMod extends Mod implements UpdateListener
+public final class KillauraMod extends Mod implements UpdateListener
 {
 	public CheckboxSetting useCooldown =
 		new CheckboxSetting("Use Attack Cooldown as Speed", true)

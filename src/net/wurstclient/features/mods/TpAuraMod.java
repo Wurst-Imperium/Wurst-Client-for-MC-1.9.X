@@ -28,7 +28,7 @@ import net.wurstclient.utils.EntityUtils;
 	latestNCP = false,
 	olderNCP = false,
 	antiCheat = false)
-public class TpAuraMod extends Mod implements UpdateListener
+public final class TpAuraMod extends Mod implements UpdateListener
 {
 	private Random random = new Random();
 	

@@ -13,7 +13,7 @@ package net.wurstclient.features.mods;
 	tags = "safe walk",
 	help = "Mods/SafeWalk")
 @Mod.Bypasses
-public class SafeWalkMod extends Mod
+public final class SafeWalkMod extends Mod
 {
 	
 }

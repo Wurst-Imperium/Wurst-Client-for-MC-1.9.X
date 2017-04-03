@@ -34,7 +34,7 @@ import net.wurstclient.utils.ChatUtils;
 	latestNCP = false,
 	olderNCP = false,
 	antiCheat = false)
-public class KaboomMod extends Mod implements UpdateListener
+public final class KaboomMod extends Mod implements UpdateListener
 {
 	private int range = 6;
 	public int power = 128;

@@ -27,7 +27,7 @@ import net.wurstclient.features.Feature;
 	latestNCP = false,
 	olderNCP = false,
 	antiCheat = false)
-public class AutoSwordMod extends Mod
+public final class AutoSwordMod extends Mod
 	implements LeftClickListener, UpdateListener
 {
 	private int oldSlot;

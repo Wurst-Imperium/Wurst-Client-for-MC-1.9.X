@@ -15,7 +15,7 @@ import net.wurstclient.events.listeners.UpdateListener;
 	tags = "FastClimb, fast ladder, fast climb",
 	help = "Mods/FastLadder")
 @Mod.Bypasses(ghostMode = false)
-public class FastLadderMod extends Mod implements UpdateListener
+public final class FastLadderMod extends Mod implements UpdateListener
 {
 	@Override
 	public void onEnable()

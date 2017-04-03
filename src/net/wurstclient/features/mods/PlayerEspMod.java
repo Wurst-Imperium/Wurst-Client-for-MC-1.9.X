@@ -19,7 +19,7 @@ import net.wurstclient.utils.RenderUtils;
 	tags = "player esp",
 	help = "Mods/PlayerESP")
 @Mod.Bypasses
-public class PlayerEspMod extends Mod implements RenderListener
+public final class PlayerEspMod extends Mod implements RenderListener
 {
 	@Override
 	public Feature[] getSeeAlso()

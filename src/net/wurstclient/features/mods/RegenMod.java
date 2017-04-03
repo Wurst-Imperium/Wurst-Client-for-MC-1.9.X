@@ -18,7 +18,7 @@ import net.wurstclient.events.listeners.UpdateListener;
 	tags = "GodMode, god mode",
 	help = "Mods/Regen")
 @Mod.Bypasses(ghostMode = false, latestNCP = false, olderNCP = false)
-public class RegenMod extends Mod implements UpdateListener
+public final class RegenMod extends Mod implements UpdateListener
 {
 	@Override
 	public void onEnable()

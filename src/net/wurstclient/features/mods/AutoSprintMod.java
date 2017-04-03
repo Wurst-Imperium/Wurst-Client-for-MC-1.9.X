@@ -15,7 +15,7 @@ import net.wurstclient.events.listeners.UpdateListener;
 	tags = "auto sprint",
 	help = "Mods/AutoSprint")
 @Mod.Bypasses
-public class AutoSprintMod extends Mod implements UpdateListener
+public final class AutoSprintMod extends Mod implements UpdateListener
 {
 	@Override
 	public void onEnable()

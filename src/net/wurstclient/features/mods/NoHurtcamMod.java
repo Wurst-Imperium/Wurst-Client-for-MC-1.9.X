@@ -12,7 +12,7 @@ package net.wurstclient.features.mods;
 	tags = "no hurtcam, no hurt cam",
 	help = "Mods/NoHurtcam")
 @Mod.Bypasses
-public class NoHurtcamMod extends Mod
+public final class NoHurtcamMod extends Mod
 {
 	
 }

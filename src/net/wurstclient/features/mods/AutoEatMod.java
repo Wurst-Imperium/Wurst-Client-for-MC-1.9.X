@@ -19,7 +19,7 @@ import net.wurstclient.features.Feature;
 	tags = "AutoSoup,auto eat,auto soup",
 	help = "Mods/AutoEat")
 @Mod.Bypasses
-public class AutoEatMod extends Mod implements UpdateListener
+public final class AutoEatMod extends Mod implements UpdateListener
 {
 	private int oldSlot;
 	private int bestSlot;

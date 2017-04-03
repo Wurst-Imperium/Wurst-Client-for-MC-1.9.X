@@ -20,7 +20,7 @@ import net.wurstclient.utils.RenderUtils;
 	name = "Overlay",
 	help = "Mods/Overlay")
 @Mod.Bypasses
-public class OverlayMod extends Mod implements RenderListener
+public final class OverlayMod extends Mod implements RenderListener
 {
 	@Override
 	public Feature[] getSeeAlso()

@@ -36,7 +36,7 @@ import net.wurstclient.utils.BlockUtils;
 	tags = "bonemeal aura, bone meal aura, AutoBone, auto bone",
 	help = "Mods/BonemealAura")
 @Mod.Bypasses(ghostMode = false)
-public class BonemealAuraMod extends Mod implements UpdateListener
+public final class BonemealAuraMod extends Mod implements UpdateListener
 {
 	public float normalRange = 5F;
 	public float yesCheatRange = 4.25F;

@@ -19,7 +19,7 @@ import net.wurstclient.settings.SliderSetting.ValueDisplay;
 	tags = "SpeedyGonzales, fast break, speedy gonzales",
 	help = "Mods/FastBreak")
 @Mod.Bypasses
-public class FastBreakMod extends Mod
+public final class FastBreakMod extends Mod
 {
 	public float speed = 2;
 	private int mode = 0;

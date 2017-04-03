@@ -14,7 +14,7 @@ import net.wurstclient.navigator.gui.NavigatorMainScreen;
 	tags = "ClickGUI",
 	help = "Mods/Navigator")
 @Mod.Bypasses
-public class NavigatorMod extends Mod
+public final class NavigatorMod extends Mod
 {
 	@Override
 	public void onEnable()

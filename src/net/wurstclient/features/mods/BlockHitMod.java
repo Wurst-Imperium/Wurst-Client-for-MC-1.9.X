@@ -22,7 +22,7 @@ import net.wurstclient.events.listeners.LeftClickListener;
 	tags = "AutoBlock, BlockHitting, auto block, block hitting",
 	help = "Mods/BlockHit")
 @Mod.Bypasses
-public class BlockHitMod extends Mod implements LeftClickListener
+public final class BlockHitMod extends Mod implements LeftClickListener
 {
 	@Override
 	public void onEnable()

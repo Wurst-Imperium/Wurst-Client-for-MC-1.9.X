@@ -20,7 +20,7 @@ import net.wurstclient.utils.EntityUtils;
 	tags = "fight bot",
 	help = "Mods/FightBot")
 @Mod.Bypasses(ghostMode = false)
-public class FightBotMod extends Mod implements UpdateListener
+public final class FightBotMod extends Mod implements UpdateListener
 {
 	private float range = 6F;
 	private double distance = 3D;

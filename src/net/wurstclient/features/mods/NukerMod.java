@@ -37,7 +37,7 @@ import net.wurstclient.utils.RenderUtils;
 	name = "Nuker",
 	help = "Mods/Nuker")
 @Mod.Bypasses
-public class NukerMod extends Mod
+public final class NukerMod extends Mod
 	implements LeftClickListener, RenderListener, UpdateListener
 {
 	private static Block currentBlock;

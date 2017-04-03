@@ -33,7 +33,7 @@ import net.wurstclient.utils.ChatUtils;
 	latestNCP = false,
 	olderNCP = false,
 	antiCheat = false)
-public class SpeedNukerMod extends Mod
+public final class SpeedNukerMod extends Mod
 	implements LeftClickListener, UpdateListener
 {
 	private static Block currentBlock;

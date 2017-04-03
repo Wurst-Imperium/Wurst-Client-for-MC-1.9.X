@@ -21,7 +21,7 @@ import net.wurstclient.utils.RenderUtils;
 	tags = "prophunt esp",
 	help = "Mods/ProphuntESP")
 @Mod.Bypasses
-public class ProphuntEspMod extends Mod implements RenderListener
+public final class ProphuntEspMod extends Mod implements RenderListener
 {
 	@Override
 	public Feature[] getSeeAlso()

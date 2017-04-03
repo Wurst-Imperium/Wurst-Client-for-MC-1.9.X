@@ -17,7 +17,7 @@ import net.wurstclient.events.listeners.UpdateListener;
 	tags = "AutoBreak, auto mine, auto break",
 	help = "Mods/AutoMine")
 @Mod.Bypasses
-public class AutoMineMod extends Mod implements UpdateListener
+public final class AutoMineMod extends Mod implements UpdateListener
 {
 	@Override
 	public void onEnable()
