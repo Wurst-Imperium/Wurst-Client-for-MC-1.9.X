@@ -15,11 +15,10 @@ import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.settings.ModeSetting;
 
-@Info(category = Category.COMBAT,
+@Info(
 	description = "Automatically leaves the server when your health is low.\n"
 		+ "The Chars, TP and SelfHurt modes can bypass CombatLog and similar plugins.",
 	name = "AutoLeave",

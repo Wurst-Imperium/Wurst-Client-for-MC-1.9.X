@@ -12,12 +12,10 @@ import net.wurstclient.events.ChatInputEvent;
 import net.wurstclient.events.listeners.ChatInputListener;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.utils.ChatUtils;
 
-@Info(category = Category.CHAT,
-	description = "Types \"/home\" instantly.",
+@Info(description = "Types \"/home\" instantly.",
 	name = "/home",
 	help = "Mods/home")
 @Bypasses

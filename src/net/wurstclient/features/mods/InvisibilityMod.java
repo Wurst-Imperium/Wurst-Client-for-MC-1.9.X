@@ -10,11 +10,10 @@ package net.wurstclient.features.mods;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.utils.ChatUtils;
 
-@Info(category = Category.EXPLOITS,
+@Info(
 	description = "Makes you invisible and invincible.\n"
 		+ "If you die and respawn near a certain player while\n"
 		+ "this mod is enabled, that player will be unable to see\n"

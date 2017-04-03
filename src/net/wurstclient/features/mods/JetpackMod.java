@@ -10,10 +10,9 @@ package net.wurstclient.features.mods;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 
-@Info(category = Category.MOVEMENT,
+@Info(
 	description = "Allows you to jump in mid-air.\n"
 		+ "Looks as if you had a jetpack.",
 	name = "Jetpack",

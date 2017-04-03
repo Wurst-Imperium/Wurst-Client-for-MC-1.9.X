@@ -26,7 +26,6 @@ import net.wurstclient.utils.RenderUtils;
 
 @Mod.Info(name = "Trajectories",
 	description = "Predicts the flight path of arrows and throwable items.",
-	category = Mod.Category.RENDER,
 	tags = "AimAssist, ArrowPrediction, aim assist, arrow prediction",
 	help = "Mods/Trajectories")
 @Bypasses

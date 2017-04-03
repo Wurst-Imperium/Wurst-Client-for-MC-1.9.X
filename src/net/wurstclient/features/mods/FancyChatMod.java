@@ -10,10 +10,9 @@ package net.wurstclient.features.mods;
 import net.wurstclient.events.ChatOutputEvent;
 import net.wurstclient.events.listeners.ChatOutputListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 
-@Info(category = Category.CHAT,
+@Info(
 	description = "Replaces ASCII characters in sent chat messages with fancier unicode characters. Can be\n"
 		+ "used to bypass curse word filters on some servers. Does not work on servers that block\n"
 		+ "unicode characters.",

@@ -10,11 +10,9 @@ package net.wurstclient.features.mods;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 
-@Info(category = Category.MOVEMENT,
-	description = "Automatically swims like a dolphin.",
+@Info(description = "Automatically swims like a dolphin.",
 	name = "Dolphin",
 	tags = "AutoSwim, auto swim",
 	help = "Mods/Dolphin")

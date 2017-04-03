@@ -10,10 +10,9 @@ package net.wurstclient.features.mods;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 
-@Info(category = Category.MISC,
+@Info(
 	description = "Uses an item multiple times.\n"
 		+ "This can cause a lot of lag and even crash a server.\n"
 		+ "Works best with snowballs or eggs.\n"

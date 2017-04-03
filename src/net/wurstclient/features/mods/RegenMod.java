@@ -11,10 +11,9 @@ import net.minecraft.network.play.client.CPacketPlayer;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 
-@Info(category = Category.COMBAT,
+@Info(
 	description = "Regenerates your health 1000 times faster.\n"
 		+ "Can cause unwanted \"Flying is not enabled!\" kicks.",
 	name = "Regen",

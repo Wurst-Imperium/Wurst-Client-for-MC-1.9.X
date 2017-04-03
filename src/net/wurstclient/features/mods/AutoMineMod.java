@@ -11,11 +11,9 @@ import net.minecraft.block.Block;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 
-@Info(category = Category.BLOCKS,
-	description = "Automatically mines a block as soon as you look at it.",
+@Info(description = "Automatically mines a block as soon as you look at it.",
 	name = "AutoMine",
 	tags = "AutoBreak, auto mine, auto break",
 	help = "Mods/AutoMine")

@@ -11,11 +11,9 @@ import net.minecraft.block.material.Material;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 
-@Info(category = Category.MOVEMENT,
-	description = "Makes you fall like if you had a hang glider.",
+@Info(description = "Makes you fall like if you had a hang glider.",
 	name = "Glide",
 	help = "Mods/Glide")
 @Bypasses(ghostMode = false, latestNCP = false, olderNCP = false)

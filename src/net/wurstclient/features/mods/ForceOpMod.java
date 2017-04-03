@@ -33,11 +33,10 @@ import net.wurstclient.events.ChatInputEvent;
 import net.wurstclient.events.listeners.ChatInputListener;
 import net.wurstclient.features.Feature;
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.utils.ChatUtils;
 
-@Info(category = Category.CHAT,
+@Info(
 	description = "Cracks AuthMe passwords. Can be used to get OP.\n"
 		+ "If you want to know how to use this, press the\n"
 		+ "\"How to use\" button. That will open an online\n"

@@ -16,7 +16,7 @@ import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.features.mods.Mod.Bypasses;
 import net.wurstclient.utils.ChatUtils;
 
-@Mod.Info(category = Mod.Category.FUN,
+@Mod.Info(
 	description = "Generates an incredibly annoying potion.\n"
 		+ "Tip: AntiBlind makes you partially immune to it.",
 	name = "TrollPotion",

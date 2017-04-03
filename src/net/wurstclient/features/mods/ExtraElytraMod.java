@@ -16,13 +16,11 @@ import net.minecraft.util.math.MathHelper;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.features.special_features.YesCheatSpf.BypassLevel;
 import net.wurstclient.settings.CheckboxSetting;
 
-@Info(category = Category.MOVEMENT,
-	description = "Eases the use of the Elytra.",
+@Info(description = "Eases the use of the Elytra.",
 	name = "ExtraElytra",
 	tags = "EasyElytra, extra elytra, easy elytra",
 	help = "Mods/ExtraElytra")

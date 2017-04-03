@@ -10,10 +10,9 @@ package net.wurstclient.features.mods;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 
-@Info(category = Category.BLOCKS,
+@Info(
 	description = "Allows you to place blocks 5 times faster.\n"
 		+ "Tip: This can speed up AutoBuild.",
 	name = "FastPlace",

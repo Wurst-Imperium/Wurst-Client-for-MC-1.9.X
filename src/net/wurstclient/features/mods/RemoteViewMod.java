@@ -16,12 +16,11 @@ import net.minecraft.entity.EntityLivingBase;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.utils.ChatUtils;
 import net.wurstclient.utils.EntityUtils;
 
-@Info(category = Category.RENDER,
+@Info(
 	description = "Allows you to see the world as someone else.\n"
 		+ "Use the .rv command to make it target a specific entity.",
 	name = "RemoteView",

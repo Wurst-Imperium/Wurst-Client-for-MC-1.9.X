@@ -9,11 +9,9 @@ package net.wurstclient.features.mods;
 
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 
-@Info(category = Category.FUN,
-	description = "Makes you twerk like Miley Cyrus!",
+@Info(description = "Makes you twerk like Miley Cyrus!",
 	name = "MileyCyrus",
 	tags = "miley cyrus, twerk",
 	help = "Mods/MileyCyrus")

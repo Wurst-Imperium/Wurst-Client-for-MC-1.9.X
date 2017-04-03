@@ -14,7 +14,7 @@ import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
 import net.wurstclient.utils.EntityUtils;
 
-@Mod.Info(category = Mod.Category.FUN,
+@Mod.Info(
 	description = "Pushes mobs like crazy.\n" + "They'll literally fly away!\n"
 		+ "Can sometimes get you kicked for \"Flying is not enabled\".",
 	name = "ForcePush",

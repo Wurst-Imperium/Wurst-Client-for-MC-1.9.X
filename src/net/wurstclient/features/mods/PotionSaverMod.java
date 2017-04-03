@@ -9,7 +9,7 @@ package net.wurstclient.features.mods;
 
 import net.wurstclient.features.mods.Mod.Bypasses;
 
-@Mod.Info(category = Mod.Category.COMBAT,
+@Mod.Info(
 	description = "Freezes all potion effects while you are standing still.",
 	name = "PotionSaver",
 	tags = "potion saver",

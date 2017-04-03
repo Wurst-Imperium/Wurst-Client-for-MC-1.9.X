@@ -17,10 +17,9 @@ import net.wurstclient.events.listeners.LeftClickListener;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 
-@Info(category = Category.BLOCKS,
+@Info(
 	description = "Automatically uses the best tool in your hotbar to\n"
 		+ "mine blocks. Tip: This works with Nuker.",
 	name = "AutoTool",

@@ -11,11 +11,9 @@ import net.minecraft.entity.projectile.EntityFishHook;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 
-@Info(category = Category.MISC,
-	description = "Automatically catches fish.",
+@Info(description = "Automatically catches fish.",
 	name = "AutoFish",
 	tags = "FishBot, auto fish, fish bot, fishing",
 	help = "Mods/AutoFish")

@@ -11,11 +11,9 @@ import net.minecraft.client.gui.GuiScreen;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.DeathListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 
-@Info(category = Category.COMBAT,
-	description = "Automatically respawns you whenever you die.",
+@Info(description = "Automatically respawns you whenever you die.",
 	name = "AutoRespawn",
 	tags = "auto respawn",
 	help = "Mods/AutoRespawn")

@@ -13,10 +13,9 @@ import net.minecraft.client.gui.ChatLine;
 import net.wurstclient.events.ChatInputEvent;
 import net.wurstclient.events.listeners.ChatInputListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 
-@Info(category = Category.CHAT,
+@Info(
 	description = "Blocks chat spam.\n" + "Example:\n" + "Spam!\n" + "Spam!\n"
 		+ "Spam!\n" + "Will be changed to:\n" + "Spam! [x3]",
 	name = "AntiSpam",

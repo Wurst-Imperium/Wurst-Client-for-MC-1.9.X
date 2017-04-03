@@ -8,10 +8,9 @@
 package net.wurstclient.features.mods;
 
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 
-@Info(category = Category.MISC,
+@Info(
 	description = "Automatically steals everything from all chests you\n"
 		+ "open.",
 	name = "AutoSteal",

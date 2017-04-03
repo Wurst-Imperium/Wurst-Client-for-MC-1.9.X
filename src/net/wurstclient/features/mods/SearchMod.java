@@ -15,17 +15,13 @@ import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.utils.ChatUtils;
 import net.wurstclient.utils.RenderUtils;
 
-@Info(category = Category.RENDER,
-	description = "Helps you to find specific blocks.\n"
-		+ "Use .search id <block id> or .search name <block name>\n"
-		+ "to specify it.",
-	name = "Search",
-	help = "Mods/Search")
+@Info(description = "Helps you to find specific blocks.\n"
+	+ "Use .search id <block id> or .search name <block name>\n"
+	+ "to specify it.", name = "Search", help = "Mods/Search")
 @Bypasses
 public class SearchMod extends Mod implements UpdateListener, RenderListener
 {

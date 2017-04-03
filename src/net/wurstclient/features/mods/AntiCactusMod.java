@@ -7,8 +7,7 @@
  */
 package net.wurstclient.features.mods;
 
-@Mod.Info(category = Mod.Category.BLOCKS,
-	description = "Protects you from cactus damage.",
+@Mod.Info(description = "Protects you from cactus damage.",
 	name = "AntiCactus",
 	tags = "anti cactus",
 	help = "Mods/AntiCactus")

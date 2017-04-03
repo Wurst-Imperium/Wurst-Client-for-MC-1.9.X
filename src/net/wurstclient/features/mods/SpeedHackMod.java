@@ -11,7 +11,7 @@ import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
 
-@Mod.Info(category = Mod.Category.MOVEMENT,
+@Mod.Info(
 	description = "Allows you to run roughly 2.5x faster than you would by\n"
 		+ "sprinting and jumping.\n"
 		+ "Notice: This mod was patched in NoCheat+ version 3.13.2. It will\n"

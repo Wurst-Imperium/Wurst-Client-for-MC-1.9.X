@@ -18,14 +18,13 @@ import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.features.special_features.YesCheatSpf.BypassLevel;
 import net.wurstclient.settings.ModeSetting;
 import net.wurstclient.utils.BuildUtils;
 import net.wurstclient.utils.RenderUtils;
 
-@Info(category = Category.AUTOBUILD,
+@Info(
 	description = "Automatically builds the selected template whenever\n"
 		+ "you place a block.\n"
 		+ "This mod can bypass NoCheat+ while YesCheat+ is\n" + "enabled.",

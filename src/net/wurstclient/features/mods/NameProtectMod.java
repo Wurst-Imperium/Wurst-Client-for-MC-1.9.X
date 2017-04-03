@@ -8,10 +8,9 @@
 package net.wurstclient.features.mods;
 
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 
-@Info(category = Category.RENDER,
+@Info(
 	description = "Hides all player names.\n"
 		+ "Some YouTubers like to censor out all names in their\n" + "videos.",
 	name = "NameProtect",

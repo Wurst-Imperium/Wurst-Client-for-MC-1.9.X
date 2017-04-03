@@ -10,9 +10,8 @@ package net.wurstclient.features.mods;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
-import net.wurstclient.features.mods.Mod.Category;
 
-@Mod.Info(category = Category.MISC,
+@Mod.Info(
 	description = "Blocks damage from catching on fire.\n"
 		+ "Does NOT block damage from standing inside of fire.\n"
 		+ "Requires a full hunger bar.",

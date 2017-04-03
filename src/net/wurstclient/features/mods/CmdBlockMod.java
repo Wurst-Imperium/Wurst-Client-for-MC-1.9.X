@@ -17,7 +17,7 @@ import net.wurstclient.features.mods.Mod.Bypasses;
 import net.wurstclient.gui.mods.GuiCmdBlock;
 import net.wurstclient.utils.ChatUtils;
 
-@Mod.Info(category = Mod.Category.EXPLOITS,
+@Mod.Info(
 	description = "Allows you to make a Command Block without having OP.\n"
 		+ "Appears to be patched on Spigot.",
 	name = "CMD-Block",

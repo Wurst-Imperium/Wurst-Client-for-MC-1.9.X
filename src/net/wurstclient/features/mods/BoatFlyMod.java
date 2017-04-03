@@ -11,7 +11,7 @@ import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
 
-@Mod.Info(category = Mod.Category.MOVEMENT,
+@Mod.Info(
 	description = "Allows you to fly with boats and rideable entities.\n"
 		+ "Bypasses NoCheat+, at least for now.",
 	name = "BoatFly",

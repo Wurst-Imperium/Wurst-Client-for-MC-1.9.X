@@ -9,7 +9,7 @@ package net.wurstclient.features.mods;
 
 import net.wurstclient.features.mods.Mod.Bypasses;
 
-@Mod.Info(category = Mod.Category.MOVEMENT,
+@Mod.Info(
 	description = "Protects you from falling down as if you were sneaking.",
 	name = "SafeWalk",
 	tags = "safe walk",

@@ -11,7 +11,7 @@ import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
 
-@Mod.Info(category = Mod.Category.MISC,
+@Mod.Info(
 	description = "Switches the item in your hand all the time.\n"
 		+ "Tip: Use this in combination with BuildRandom while\n"
 		+ "having a lot of different colored wool blocks in your\n" + "hotbar.",

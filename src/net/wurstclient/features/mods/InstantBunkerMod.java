@@ -14,14 +14,12 @@ import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.features.special_features.YesCheatSpf.BypassLevel;
 import net.wurstclient.utils.BuildUtils;
 import net.wurstclient.utils.RenderUtils;
 
-@Info(category = Category.BLOCKS,
-	description = "Instantly builds a small bunker around you.",
+@Info(description = "Instantly builds a small bunker around you.",
 	name = "InstantBunker",
 	tags = "instant bunker",
 	help = "Mods/InstantBunker")

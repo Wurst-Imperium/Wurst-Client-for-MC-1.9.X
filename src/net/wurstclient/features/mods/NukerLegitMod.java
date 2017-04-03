@@ -25,7 +25,6 @@ import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.ModeSetting;
@@ -34,7 +33,7 @@ import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.utils.BlockUtils;
 import net.wurstclient.utils.RenderUtils;
 
-@Info(category = Category.BLOCKS,
+@Info(
 	description = "Slower Nuker that bypasses any cheat prevention\n"
 		+ "PlugIn. Not required on most NoCheat+ servers!",
 	name = "NukerLegit",

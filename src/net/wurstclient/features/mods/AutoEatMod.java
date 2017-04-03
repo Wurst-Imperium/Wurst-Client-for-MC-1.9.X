@@ -14,11 +14,9 @@ import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 
-@Info(category = Category.MISC,
-	description = "Automatically eats food when necessary.",
+@Info(description = "Automatically eats food when necessary.",
 	name = "AutoEat",
 	tags = "AutoSoup,auto eat,auto soup",
 	help = "Mods/AutoEat")

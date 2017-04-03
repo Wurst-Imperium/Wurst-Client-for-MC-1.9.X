@@ -14,13 +14,11 @@ import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.features.Feature;
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.utils.ChatUtils;
 import net.wurstclient.utils.RenderUtils;
 
-@Info(category = Category.RENDER,
-	description = "Allows you to see chests through walls.",
+@Info(description = "Allows you to see chests through walls.",
 	name = "ChestESP",
 	tags = "ChestFinder, chest esp, chest finder",
 	help = "Mods/ChestESP")

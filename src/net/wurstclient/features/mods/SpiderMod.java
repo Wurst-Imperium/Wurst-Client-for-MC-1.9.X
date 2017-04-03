@@ -10,11 +10,9 @@ package net.wurstclient.features.mods;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 
-@Info(category = Category.MOVEMENT,
-	description = "Allows you to climb up walls like a spider.",
+@Info(description = "Allows you to climb up walls like a spider.",
 	name = "Spider",
 	help = "Mods/Spider")
 @Bypasses(ghostMode = false,

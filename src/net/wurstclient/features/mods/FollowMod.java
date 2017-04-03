@@ -11,11 +11,10 @@ import net.minecraft.entity.EntityLivingBase;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.utils.EntityUtils;
 
-@Info(category = Category.COMBAT,
+@Info(
 	description = "A bot that follows the closest entity.\n" + "Very annoying.",
 	name = "Follow",
 	help = "Mods/Follow")

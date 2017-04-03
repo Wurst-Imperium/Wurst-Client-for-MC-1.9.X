@@ -11,11 +11,9 @@ import net.minecraft.network.play.client.CPacketPlayer;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 
-@Info(category = Category.MOVEMENT,
-	description = "Protects you from fall damage.\n" + "Bypasses AntiCheat.",
+@Info(description = "Protects you from fall damage.\n" + "Bypasses AntiCheat.",
 	name = "NoFall",
 	tags = "no fall",
 	help = "Mods/NoFall")

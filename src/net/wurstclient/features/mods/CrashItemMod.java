@@ -13,7 +13,7 @@ import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.features.mods.Mod.Bypasses;
 import net.wurstclient.utils.ChatUtils;
 
-@Mod.Info(category = Mod.Category.EXPLOITS,
+@Mod.Info(
 	description = "Generates a CrashItem.\n"
 		+ "Right click a mob with it to kick nearby players from the server.",
 	name = "CrashItem",

@@ -8,10 +8,9 @@
 package net.wurstclient.features.mods;
 
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 
-@Info(category = Category.RENDER,
+@Info(
 	description = "Changes the scale of the nametags so you can always read them.\n"
 		+ "Also allows you to see the nametags of sneaking players.",
 	name = "NameTags",

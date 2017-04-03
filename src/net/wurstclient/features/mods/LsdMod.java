@@ -15,13 +15,9 @@ import net.minecraft.potion.PotionEffect;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 
-@Info(category = Category.FUN,
-	description = "Thousands of colors!",
-	name = "LSD",
-	help = "Mods/LSD")
+@Info(description = "Thousands of colors!", name = "LSD", help = "Mods/LSD")
 @Bypasses
 public class LsdMod extends Mod implements UpdateListener
 {

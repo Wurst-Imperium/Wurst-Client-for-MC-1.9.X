@@ -20,13 +20,11 @@ import net.wurstclient.events.listeners.PacketInputListener;
 import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.features.Feature;
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.utils.BlockUtils;
 import net.wurstclient.utils.RenderUtils;
 
-@Info(category = Category.RENDER,
-	description = "Finds far players during thunderstorms.",
+@Info(description = "Finds far players during thunderstorms.",
 	name = "PlayerFinder",
 	tags = "player finder",
 	help = "Mods/PlayerFinder")

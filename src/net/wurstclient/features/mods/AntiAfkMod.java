@@ -12,13 +12,11 @@ import java.util.Random;
 import net.minecraft.util.math.BlockPos;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.utils.BlockUtils;
 
 @Mod.Info(name = "AntiAFK",
 	description = "Walks around randomly to hide you from AFK detectors.\n"
 		+ "Needs 3x3 blocks of free space.",
-	category = Category.MISC,
 	tags = "AFKBot,anti afk,afk bot",
 	help = "Mods/AntiAFK")
 @Mod.Bypasses(ghostMode = false)

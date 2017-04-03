@@ -15,15 +15,13 @@ import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.utils.EntityUtils;
 
-@Info(category = Category.COMBAT,
-	description = "Faster Killaura that attacks multiple entities at once.",
+@Info(description = "Faster Killaura that attacks multiple entities at once.",
 	name = "MultiAura",
 	noCheatCompatible = false,
 	tags = "ForceField, multi aura, force field",

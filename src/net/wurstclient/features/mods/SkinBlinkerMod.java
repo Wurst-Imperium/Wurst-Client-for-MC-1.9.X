@@ -13,7 +13,7 @@ import net.minecraft.entity.player.EnumPlayerModelParts;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
 
-@Mod.Info(category = Mod.Category.FUN,
+@Mod.Info(
 	description = "Makes your skin blink.\n"
 		+ "Requires a skin with a jacket, a hat or something similar.",
 	name = "SkinBlinker",

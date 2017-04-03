@@ -16,10 +16,9 @@ import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.PacketOutputEvent;
 import net.wurstclient.events.listeners.PacketOutputListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 
-@Info(category = Category.MOVEMENT,
+@Info(
 	description = "Suspends all motion updates while enabled.\n"
 		+ "Can be used for teleportation, instant picking up of items and more.",
 	name = "Blink",

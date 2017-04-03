@@ -11,10 +11,9 @@ import net.minecraft.network.play.client.CPacketPlayer.C05PacketPlayerLook;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 
-@Info(category = Category.FUN,
+@Info(
 	description = "While this is active, other people will think you are\n"
 		+ "extremely tired and about to fall asleep!",
 	name = "Tired",

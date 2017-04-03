@@ -8,11 +8,9 @@
 package net.wurstclient.features.mods;
 
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 
-@Info(category = Category.RENDER,
-	description = "Disables the annoying effect when you get hurt.",
+@Info(description = "Disables the annoying effect when you get hurt.",
 	name = "NoHurtcam",
 	tags = "no hurtcam, no hurt cam",
 	help = "Mods/NoHurtcam")

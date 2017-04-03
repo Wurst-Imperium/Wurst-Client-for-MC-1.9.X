@@ -10,7 +10,7 @@ package net.wurstclient.features.mods;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 
-@Mod.Info(category = Mod.Category.COMBAT,
+@Mod.Info(
 	description = "Protects you from getting pushed by players, mobs and\n"
 		+ "fluids.",
 	name = "AntiKnockback",

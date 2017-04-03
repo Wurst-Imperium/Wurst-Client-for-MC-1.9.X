@@ -11,11 +11,9 @@ import java.util.ArrayList;
 
 import net.minecraft.block.Block;
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 
-@Info(category = Category.RENDER,
-	description = "Allows you to see ores through walls.",
+@Info(description = "Allows you to see ores through walls.",
 	name = "X-Ray",
 	tags = "xray, x ray",
 	help = "Mods/X-Ray")

@@ -13,12 +13,10 @@ import net.minecraft.network.play.client.CPacketEntityAction.Action;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.features.special_features.YesCheatSpf.BypassLevel;
 
-@Info(category = Category.MOVEMENT,
-	description = "Automatically sneaks all the time.",
+@Info(description = "Automatically sneaks all the time.",
 	name = "Sneak",
 	tags = "AutoSneaking",
 	help = "Mods/Sneak")

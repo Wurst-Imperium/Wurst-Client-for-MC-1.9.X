@@ -9,11 +9,9 @@ package net.wurstclient.features.mods;
 
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 
-@Info(category = Category.RENDER,
-	description = "Allows you to see in the dark.",
+@Info(description = "Allows you to see in the dark.",
 	name = "Fullbright",
 	tags = "NightVision, full bright, brightness, night vision",
 	help = "Mods/Fullbright")

@@ -9,10 +9,9 @@ package net.wurstclient.features.mods;
 
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 
-@Info(category = Category.MISC,
+@Info(
 	description = "Instantly turns off all enabled mods.\n"
 		+ "Be careful with this!",
 	name = "Panic",
@@ -28,16 +27,17 @@ public class PanicMod extends Mod implements UpdateListener
 	}
 	
 	@Override
-	public void onUpdate()
-	{
-		for(Mod mod : wurst.mods.getAllMods())
-			if(mod.getCategory() != Category.HIDDEN && mod.isEnabled())
-				mod.setEnabled(false);
-	}
-	
-	@Override
 	public void onDisable()
 	{
 		wurst.events.remove(UpdateListener.class, this);
+	}
+	
+	@Override
+	public void onUpdate()
+	{
+		for(Mod mod : wurst.mods.getAllMods())
+			if(mod.isEnabled() && mod != this)
+				mod.setEnabled(false);
+		setEnabled(false);
 	}
 }

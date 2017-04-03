@@ -16,7 +16,7 @@ import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.features.mods.Mod.Bypasses;
 import net.wurstclient.utils.ChatUtils;
 
-@Mod.Info(category = Mod.Category.EXPLOITS,
+@Mod.Info(
 	description = "Generates a potion that can kill players in Creative mode.\n"
 		+ "Requires Creative mode.",
 	name = "KillerPotion",

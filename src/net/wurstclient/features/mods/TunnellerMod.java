@@ -23,8 +23,7 @@ import net.wurstclient.features.special_features.YesCheatSpf.BypassLevel;
 import net.wurstclient.utils.BlockUtils;
 import net.wurstclient.utils.RenderUtils;
 
-@Mod.Info(category = Mod.Category.BLOCKS,
-	description = "Digs a 3x3 tunnel around you.",
+@Mod.Info(description = "Digs a 3x3 tunnel around you.",
 	name = "Tunneller",
 	help = "Mods/Tunneller")
 @Bypasses

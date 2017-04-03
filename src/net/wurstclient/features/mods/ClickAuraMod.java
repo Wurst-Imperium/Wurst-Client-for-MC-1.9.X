@@ -19,7 +19,7 @@ import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.utils.EntityUtils;
 
-@Mod.Info(category = Mod.Category.COMBAT,
+@Mod.Info(
 	description = "Automatically attacks the closest valid entity whenever you\n"
 		+ "click.\n"
 		+ "Warning: ClickAuras generally look more suspicious than Killauras\n"

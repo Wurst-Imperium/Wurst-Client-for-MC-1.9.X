@@ -14,10 +14,9 @@ import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.LeftClickEvent;
 import net.wurstclient.events.listeners.LeftClickListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 
-@Info(category = Category.COMBAT,
+@Info(
 	description = "Automatically blocks whenever you hit something with a\n"
 		+ "sword. Some say that you will receive less damage in PVP when doing\n"
 		+ "this.",

@@ -15,12 +15,10 @@ import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.features.Feature;
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.utils.RenderUtils;
 
-@Info(category = Category.RENDER,
-	description = "Renders the Nuker animation when you mine a block.",
+@Info(description = "Renders the Nuker animation when you mine a block.",
 	name = "Overlay",
 	help = "Mods/Overlay")
 @Bypasses

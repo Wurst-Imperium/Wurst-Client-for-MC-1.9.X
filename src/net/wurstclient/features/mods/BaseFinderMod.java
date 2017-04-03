@@ -15,12 +15,11 @@ import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.utils.ChatUtils;
 import net.wurstclient.utils.RenderUtils;
 
-@Info(category = Category.RENDER,
+@Info(
 	description = "Finds player bases by searching for man-made blocks.\n"
 		+ "Good for finding faction bases.",
 	name = "BaseFinder",

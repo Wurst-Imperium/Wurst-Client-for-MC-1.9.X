@@ -12,11 +12,10 @@ import net.minecraft.util.EnumHand;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.utils.EntityUtils;
 
-@Info(category = Category.COMBAT,
+@Info(
 	description = "A bot that automatically fights for you.\n"
 		+ "It walks around and kills everything.\n" + "Good for MobArena.",
 	name = "FightBot",

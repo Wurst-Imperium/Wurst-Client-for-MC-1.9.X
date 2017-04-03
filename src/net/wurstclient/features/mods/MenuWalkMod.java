@@ -16,7 +16,7 @@ import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.features.mods.Mod.Bypasses;
 import net.wurstclient.navigator.gui.NavigatorScreen;
 
-@Mod.Info(category = Mod.Category.MOVEMENT,
+@Mod.Info(
 	description = "Allows you to walk while viewing a menu (e.g. the inventory\n"
 		+ "menu).",
 	name = "MenuWalk",

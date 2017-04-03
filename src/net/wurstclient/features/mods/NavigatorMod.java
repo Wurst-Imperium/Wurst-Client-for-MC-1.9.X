@@ -8,12 +8,10 @@
 package net.wurstclient.features.mods;
 
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 import net.wurstclient.navigator.gui.NavigatorMainScreen;
 
-@Info(category = Category.HIDDEN,
-	description = "",
+@Info(description = "",
 	name = "Navigator",
 	tags = "ClickGUI",
 	help = "Mods/Navigator")

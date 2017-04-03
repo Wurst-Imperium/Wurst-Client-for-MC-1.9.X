@@ -20,7 +20,7 @@ import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.utils.EntityUtils;
 
-@Mod.Info(category = Mod.Category.COMBAT,
+@Mod.Info(
 	description = "Automatically attacks the closest valid entity while teleporting around it.",
 	name = "TP-Aura",
 	tags = "TpAura, EnderAura, tp aura, ender aura",

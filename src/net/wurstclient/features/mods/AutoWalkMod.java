@@ -9,11 +9,9 @@ package net.wurstclient.features.mods;
 
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.mods.Mod.Bypasses;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.features.mods.Mod.Info;
 
-@Info(category = Category.MOVEMENT,
-	description = "Automatically walks all the time.",
+@Info(description = "Automatically walks all the time.",
 	name = "AutoWalk",
 	tags = "auto walk",
 	help = "Mods/AutoWalk")

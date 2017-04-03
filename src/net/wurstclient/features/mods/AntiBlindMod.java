@@ -7,10 +7,7 @@
  */
 package net.wurstclient.features.mods;
 
-import net.wurstclient.features.mods.Mod.Category;
-
-@Mod.Info(category = Category.RENDER,
-	description = "Blocks blindness and nausea.",
+@Mod.Info(description = "Blocks blindness and nausea.",
 	name = "AntiBlind",
 	tags = "AntiBlindness, anti blindness",
 	help = "Mods/AntiBlind")

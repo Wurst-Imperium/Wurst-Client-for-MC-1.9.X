@@ -32,7 +32,6 @@ import net.wurstclient.alts.Alt;
 import net.wurstclient.alts.Encryption;
 import net.wurstclient.features.Feature;
 import net.wurstclient.features.mods.*;
-import net.wurstclient.features.mods.Mod.Category;
 import net.wurstclient.gui.alts.GuiAltList;
 import net.wurstclient.navigator.Navigator;
 import net.wurstclient.options.FriendsList;
@@ -144,8 +143,9 @@ public class FileManager
 			FightBotMod.class.getName(), FollowMod.class.getName(),
 			ForceOpMod.class.getName(), FreecamMod.class.getName(),
 			InvisibilityMod.class.getName(), LsdMod.class.getName(),
-			MassTpaMod.class.getName(), ProtectMod.class.getName(),
-			RemoteViewMod.class.getName(), SpammerMod.class.getName());
+			MassTpaMod.class.getName(), NavigatorMod.class.getName(),
+			ProtectMod.class.getName(), RemoteViewMod.class.getName(),
+			SpammerMod.class.getName());
 	
 	public boolean isModBlacklisted(Mod mod)
 	{
@@ -166,7 +166,7 @@ public class FileManager
 				Entry<String, JsonElement> entry = itr.next();
 				Mod mod =
 					WurstClient.INSTANCE.mods.getModByName(entry.getKey());
-				if(mod != null && mod.getCategory() != Category.HIDDEN
+				if(mod != null
 					&& !modBlacklist.contains(mod.getClass().getName()))
 				{
 					JsonObject jsonModule = (JsonObject)entry.getValue();
