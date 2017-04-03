@@ -19,7 +19,7 @@ import net.wurstclient.events.listeners.UpdateListener;
 @Mod.Bypasses(ghostMode = false,
 	latestNCP = false,
 	antiCheat = false,
-	mineplexAntiCheat = false)
+	mineplex = false)
 public final class PhaseMod extends Mod implements UpdateListener
 {
 	@Override

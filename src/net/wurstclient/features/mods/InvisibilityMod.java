@@ -23,7 +23,7 @@ import net.wurstclient.utils.ChatUtils;
 	latestNCP = false,
 	olderNCP = false,
 	antiCheat = false,
-	mineplexAntiCheat = false)
+	mineplex = false)
 public final class InvisibilityMod extends Mod implements UpdateListener
 {
 	@Override

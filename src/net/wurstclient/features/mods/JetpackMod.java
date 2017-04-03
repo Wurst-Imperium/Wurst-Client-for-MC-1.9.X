@@ -20,7 +20,7 @@ import net.wurstclient.events.listeners.UpdateListener;
 	latestNCP = false,
 	olderNCP = false,
 	antiCheat = false,
-	mineplexAntiCheat = false)
+	mineplex = false)
 public final class JetpackMod extends Mod implements UpdateListener
 {
 	@Override

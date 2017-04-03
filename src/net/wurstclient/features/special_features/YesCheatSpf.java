@@ -64,7 +64,7 @@ public final class YesCheatSpf extends Spf
 		OFF("Off", (b) -> {
 			return true;
 		}),
-		MINEPLEX_ANTICHEAT("Mineplex AntiCheat", (b) -> b.mineplexAntiCheat()),
+		MINEPLEX_ANTICHEAT("Mineplex AntiCheat", (b) -> b.mineplex()),
 		ANTICHEAT("AntiCheat", (b) -> b.antiCheat()),
 		OLDER_NCP("Older NoCheat+", (b) -> b.olderNCP()),
 		LATEST_NCP("Latest NoCheat+", (b) -> b.latestNCP()),
