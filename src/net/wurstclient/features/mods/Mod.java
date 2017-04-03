@@ -24,7 +24,7 @@ import net.wurstclient.navigator.PossibleKeybind;
 import net.wurstclient.settings.Setting;
 import net.wurstclient.utils.ChatUtils;
 
-public class Mod implements Feature
+public abstract class Mod implements Feature
 {
 	private final String name = getClass().getAnnotation(Info.class).name();
 	private final String description =
