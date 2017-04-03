@@ -10,7 +10,7 @@ package net.wurstclient.features.mods;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.util.math.MathHelper;
+import net.wurstclient.compatibility.WMath;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.features.Feature;
@@ -49,9 +49,9 @@ public final class ProphuntEspMod extends Mod implements RenderListener
 				if(WMinecraft.getPlayer()
 					.getDistanceToEntity((Entity)entity) >= 0.5)
 					alpha =
-						0.5F - MathHelper
+						0.5F - Math
 							.abs(
-								MathHelper
+								WMath
 									.sin(Minecraft.getSystemTime() % 1000L
 										/ 1000.0F * (float)Math.PI * 1.0F)
 									* 0.3F);

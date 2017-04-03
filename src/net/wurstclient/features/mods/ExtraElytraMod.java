@@ -12,7 +12,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemElytra;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketEntityAction;
-import net.minecraft.util.math.MathHelper;
+import net.wurstclient.compatibility.WMath;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.special_features.YesCheatSpf.BypassLevel;
@@ -77,19 +77,15 @@ public final class ExtraElytraMod extends Mod implements UpdateListener
 				{
 					float yaw = (float)Math
 						.toRadians(WMinecraft.getPlayer().rotationYaw);
-					WMinecraft.getPlayer().motionX -=
-						MathHelper.sin(yaw) * 0.05F;
-					WMinecraft.getPlayer().motionZ +=
-						MathHelper.cos(yaw) * 0.05F;
+					WMinecraft.getPlayer().motionX -= WMath.sin(yaw) * 0.05F;
+					WMinecraft.getPlayer().motionZ += WMath.cos(yaw) * 0.05F;
 				}else if(mc.gameSettings.keyBindBack.pressed
 					&& WMinecraft.getPlayer().getPosition().getY() < 256)
 				{
 					float yaw = (float)Math
 						.toRadians(WMinecraft.getPlayer().rotationYaw);
-					WMinecraft.getPlayer().motionX +=
-						MathHelper.sin(yaw) * 0.05F;
-					WMinecraft.getPlayer().motionZ -=
-						MathHelper.cos(yaw) * 0.05F;
+					WMinecraft.getPlayer().motionX += WMath.sin(yaw) * 0.05F;
+					WMinecraft.getPlayer().motionZ -= WMath.cos(yaw) * 0.05F;
 				}
 			}
 		}else if(instantFly.isChecked() && ItemElytra.isBroken(chest)

@@ -23,8 +23,8 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.wurstclient.compatibility.WMath;
 import net.wurstclient.compatibility.WMinecraft;
 
 public class RenderUtils
@@ -273,9 +273,8 @@ public class RenderUtils
 		GL11.glBlendFunc(770, 771);
 		GL11.glEnable(GL_BLEND);
 		GL11.glLineWidth(1.0F);
-		float sinus =
-			1F - MathHelper.abs(MathHelper.sin(Minecraft.getSystemTime()
-				% 10000L / 10000.0F * (float)Math.PI * 4.0F) * 1F);
+		float sinus = 1F - Math.abs(WMath.sin(Minecraft.getSystemTime() % 10000L
+			/ 10000.0F * (float)Math.PI * 4.0F) * 1F);
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL11.glDisable(GL_DEPTH_TEST);
 		GL11.glDepthMask(false);

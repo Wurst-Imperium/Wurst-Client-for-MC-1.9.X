@@ -33,8 +33,8 @@ import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiYesNo;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
 import net.wurstclient.WurstClient;
+import net.wurstclient.compatibility.WMath;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.gui.alts.GuiAlts;
 import net.wurstclient.utils.JsonUtils;
@@ -301,7 +301,7 @@ public class GuiWurstMainMenu extends GuiMainMenu
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(width / 2 + 90, 72.0F, 0.0F);
 		GlStateManager.rotate(-20.0F, 0.0F, 0.0F, 1.0F);
-		float splashScale = 1.8F - MathHelper.abs(MathHelper.sin(
+		float splashScale = 1.8F - Math.abs(WMath.sin(
 			Minecraft.getSystemTime() % 1000L / 1000.0F * (float)Math.PI * 2.0F)
 			* 0.1F);
 		splashScale = splashScale * 100.0F
