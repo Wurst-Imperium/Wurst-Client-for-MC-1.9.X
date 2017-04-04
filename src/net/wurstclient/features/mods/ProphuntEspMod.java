@@ -7,9 +7,11 @@
  */
 package net.wurstclient.features.mods;
 
-import net.minecraft.client.Minecraft;
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.wurstclient.compatibility.WMath;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.RenderListener;
@@ -23,6 +25,9 @@ import net.wurstclient.utils.RenderUtils;
 @Mod.Bypasses
 public final class ProphuntEspMod extends Mod implements RenderListener
 {
+	private static final AxisAlignedBB FAKE_BLOCK_BOX =
+		new AxisAlignedBB(-0.5, 0, -0.5, 0.5, 1, 0.5);
+	
 	@Override
 	public Feature[] getSeeAlso()
 	{
@@ -37,34 +42,60 @@ public final class ProphuntEspMod extends Mod implements RenderListener
 	}
 	
 	@Override
-	public void onRender(float partialTicks)
-	{
-		for(Object entity : WMinecraft.getWorld().loadedEntityList)
-			if(entity instanceof EntityLiving && ((Entity)entity).isInvisible())
-			{
-				double x = ((Entity)entity).posX;
-				double y = ((Entity)entity).posY;
-				double z = ((Entity)entity).posZ;
-				float alpha;
-				if(WMinecraft.getPlayer()
-					.getDistanceToEntity((Entity)entity) >= 0.5)
-					alpha =
-						0.5F - Math
-							.abs(
-								WMath
-									.sin(Minecraft.getSystemTime() % 1000L
-										/ 1000.0F * (float)Math.PI * 1.0F)
-									* 0.3F);
-				else
-					alpha = 0;
-				RenderUtils.box(x - 0.5, y - 0.1, z - 0.5, x + 0.5, y + 0.9,
-					z + 0.5, 1F, 0F, 0F, alpha);
-			}
-	}
-	
-	@Override
 	public void onDisable()
 	{
 		wurst.events.remove(RenderListener.class, this);
+	}
+	
+	@Override
+	public void onRender(float partialTicks)
+	{
+		// GL settings
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GL11.glEnable(GL11.GL_LINE_SMOOTH);
+		GL11.glLineWidth(2);
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		GL11.glEnable(GL11.GL_CULL_FACE);
+		GL11.glDisable(GL11.GL_DEPTH_TEST);
+		
+		GL11.glPushMatrix();
+		GL11.glTranslated(-mc.getRenderManager().renderPosX,
+			-mc.getRenderManager().renderPosY,
+			-mc.getRenderManager().renderPosZ);
+		
+		// set color
+		float alpha = 0.5F + 0.25F * WMath
+			.sin(System.currentTimeMillis() % 1000 / 500F * (float)Math.PI);
+		GL11.glColor4f(1, 0, 0, alpha);
+		
+		// draw boxes
+		for(Entity entity : WMinecraft.getWorld().loadedEntityList)
+		{
+			if(!(entity instanceof EntityLiving))
+				continue;
+			
+			if(!entity.isInvisible())
+				continue;
+			
+			if(WMinecraft.getPlayer().getDistanceSqToEntity(entity) < 0.25)
+				continue;
+			
+			GL11.glPushMatrix();
+			GL11.glTranslated(entity.posX, entity.posY, entity.posZ);
+			
+			RenderUtils.drawOutlinedBox(FAKE_BLOCK_BOX);
+			RenderUtils.drawSolidBox(FAKE_BLOCK_BOX);
+			
+			GL11.glPopMatrix();
+		}
+		
+		GL11.glPopMatrix();
+		
+		// GL resets
+		GL11.glEnable(GL11.GL_DEPTH_TEST);
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		GL11.glDisable(GL11.GL_BLEND);
+		GL11.glDisable(GL11.GL_LINE_SMOOTH);
 	}
 }

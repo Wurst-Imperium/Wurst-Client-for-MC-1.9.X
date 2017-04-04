@@ -7,86 +7,513 @@
  */
 package net.wurstclient.utils;
 
-import net.minecraft.network.play.client.CPacketPlayer.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.wurstclient.compatibility.WConnection;
-import net.wurstclient.compatibility.WMath;
-import net.wurstclient.compatibility.WMinecraft;
+import java.util.ArrayDeque;
+import java.util.Arrays;
+import java.util.HashSet;
 
-public class BlockUtils
+import com.google.common.collect.AbstractIterator;
+
+import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.play.client.CPacketPlayerDigging;
+import net.minecraft.network.play.client.CPacketPlayerDigging.Action;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
+import net.wurstclient.compatibility.WBlock;
+import net.wurstclient.compatibility.WConnection;
+import net.wurstclient.compatibility.WMinecraft;
+import net.wurstclient.compatibility.WPlayer;
+import net.wurstclient.compatibility.WPlayerController;
+import net.wurstclient.features.mods.AutoToolMod;
+
+public final class BlockUtils
 {
-	public static void faceBlockClient(BlockPos blockPos)
+	private static final Minecraft mc = Minecraft.getMinecraft();
+	
+	public static boolean placeBlockLegit(BlockPos pos)
 	{
-		double diffX = blockPos.getX() + 0.5 - WMinecraft.getPlayer().posX;
-		double diffY = blockPos.getY() + 0.5 - (WMinecraft.getPlayer().posY
-			+ WMinecraft.getPlayer().getEyeHeight());
-		double diffZ = blockPos.getZ() + 0.5 - WMinecraft.getPlayer().posZ;
-		double dist = Math.sqrt(diffX * diffX + diffZ * diffZ);
-		float yaw =
-			(float)(Math.atan2(diffZ, diffX) * 180.0D / Math.PI) - 90.0F;
-		float pitch = (float)-(Math.atan2(diffY, dist) * 180.0D / Math.PI);
-		WMinecraft.getPlayer().rotationYaw = WMinecraft.getPlayer().rotationYaw
-			+ WMath.wrapDegrees(yaw - WMinecraft.getPlayer().rotationYaw);
-		WMinecraft.getPlayer().rotationPitch =
-			WMinecraft.getPlayer().rotationPitch + WMath
-				.wrapDegrees(pitch - WMinecraft.getPlayer().rotationPitch);
+		Vec3d eyesPos = RotationUtils.getEyesPos();
+		Vec3d posVec = new Vec3d(pos).addVector(0.5, 0.5, 0.5);
+		double distanceSqPosVec = eyesPos.squareDistanceTo(posVec);
+		
+		for(EnumFacing side : EnumFacing.values())
+		{
+			BlockPos neighbor = pos.offset(side);
+			
+			// check if neighbor can be right clicked
+			if(!WBlock.canBeClicked(neighbor))
+				continue;
+			
+			Vec3d dirVec = new Vec3d(side.getDirectionVec());
+			Vec3d hitVec = posVec.add(dirVec.scale(0.5));
+			
+			// check if hitVec is within range (4.25 blocks)
+			if(eyesPos.squareDistanceTo(hitVec) > 18.0625)
+				continue;
+			
+			// check if side is visible (facing away from player)
+			if(distanceSqPosVec > eyesPos.squareDistanceTo(posVec.add(dirVec)))
+				continue;
+			
+			// check line of sight
+			if(WMinecraft.getWorld().rayTraceBlocks(eyesPos, hitVec, false,
+				true, false) != null)
+				continue;
+			
+			// face block
+			RotationUtils.faceVectorPacketInstant(hitVec);
+			
+			// place block
+			WPlayerController.processRightClickBlock(neighbor,
+				side.getOpposite(), hitVec);
+			WPlayer.swingArmClient();
+			mc.rightClickDelayTimer = 4;
+			
+			return true;
+		}
+		
+		return false;
 	}
 	
-	public static void faceBlockPacket(BlockPos blockPos)
+	public static boolean placeBlockSimple(BlockPos pos)
 	{
-		double diffX = blockPos.getX() + 0.5 - WMinecraft.getPlayer().posX;
-		double diffY = blockPos.getY() + 0.5 - (WMinecraft.getPlayer().posY
-			+ WMinecraft.getPlayer().getEyeHeight());
-		double diffZ = blockPos.getZ() + 0.5 - WMinecraft.getPlayer().posZ;
-		double dist = Math.sqrt(diffX * diffX + diffZ * diffZ);
-		float yaw =
-			(float)(Math.atan2(diffZ, diffX) * 180.0D / Math.PI) - 90.0F;
-		float pitch = (float)-(Math.atan2(diffY, dist) * 180.0D / Math.PI);
-		WConnection.sendPacket(new Rotation(
-			WMinecraft.getPlayer().rotationYaw
-				+ WMath.wrapDegrees(yaw - WMinecraft.getPlayer().rotationYaw),
-			WMinecraft.getPlayer().rotationPitch + WMath
-				.wrapDegrees(pitch - WMinecraft.getPlayer().rotationPitch),
-			WMinecraft.getPlayer().onGround));
+		Vec3d eyesPos = RotationUtils.getEyesPos();
+		Vec3d posVec = new Vec3d(pos).addVector(0.5, 0.5, 0.5);
+		
+		for(EnumFacing side : EnumFacing.values())
+		{
+			BlockPos neighbor = pos.offset(side);
+			
+			// check if neighbor can be right clicked
+			if(!WBlock.canBeClicked(neighbor))
+				continue;
+			
+			Vec3d hitVec =
+				posVec.add(new Vec3d(side.getDirectionVec()).scale(0.5));
+			
+			// check if hitVec is within range (6 blocks)
+			if(eyesPos.squareDistanceTo(hitVec) > 36)
+				continue;
+			
+			// place block
+			WPlayerController.processRightClickBlock(neighbor,
+				side.getOpposite(), hitVec);
+			
+			return true;
+		}
+		
+		return false;
 	}
 	
-	public static void faceBlockClientHorizontally(BlockPos blockPos)
+	public static boolean prepareToBreakBlockLegit(BlockPos pos)
 	{
-		double diffX = blockPos.getX() + 0.5 - WMinecraft.getPlayer().posX;
-		double diffZ = blockPos.getZ() + 0.5 - WMinecraft.getPlayer().posZ;
-		float yaw =
-			(float)(Math.atan2(diffZ, diffX) * 180.0D / Math.PI) - 90.0F;
-		WMinecraft.getPlayer().rotationYaw = WMinecraft.getPlayer().rotationYaw
-			+ WMath.wrapDegrees(yaw - WMinecraft.getPlayer().rotationYaw);
+		Vec3d eyesPos = RotationUtils.getEyesPos();
+		Vec3d posVec = new Vec3d(pos).addVector(0.5, 0.5, 0.5);
+		double distanceSqPosVec = eyesPos.squareDistanceTo(posVec);
+		
+		for(EnumFacing side : EnumFacing.values())
+		{
+			Vec3d hitVec =
+				posVec.add(new Vec3d(side.getDirectionVec()).scale(0.5));
+			double distanceSqHitVec = eyesPos.squareDistanceTo(hitVec);
+			
+			// check if hitVec is within range (4.25 blocks)
+			if(distanceSqHitVec > 18.0625)
+				continue;
+			
+			// check if side is facing towards player
+			if(distanceSqHitVec >= distanceSqPosVec)
+				continue;
+			
+			// check line of sight
+			if(WMinecraft.getWorld().rayTraceBlocks(eyesPos, hitVec, false,
+				true, false) != null)
+				continue;
+			
+			// AutoTool
+			AutoToolMod.setSlot(pos);
+			
+			// face block
+			if(!RotationUtils.faceVectorPacket(hitVec))
+				return true;
+			
+			return true;
+		}
+		
+		return false;
 	}
 	
-	public static float getPlayerBlockDistance(BlockPos blockPos)
+	public static boolean breakBlockLegit(BlockPos pos)
 	{
-		return getPlayerBlockDistance(blockPos.getX(), blockPos.getY(),
-			blockPos.getZ());
+		Vec3d eyesPos = RotationUtils.getEyesPos();
+		Vec3d posVec = new Vec3d(pos).addVector(0.5, 0.5, 0.5);
+		double distanceSqPosVec = eyesPos.squareDistanceTo(posVec);
+		
+		for(EnumFacing side : EnumFacing.values())
+		{
+			Vec3d hitVec =
+				posVec.add(new Vec3d(side.getDirectionVec()).scale(0.5));
+			double distanceSqHitVec = eyesPos.squareDistanceTo(hitVec);
+			
+			// check if hitVec is within range (4.25 blocks)
+			if(distanceSqHitVec > 18.0625)
+				continue;
+			
+			// check if side is facing towards player
+			if(distanceSqHitVec >= distanceSqPosVec)
+				continue;
+			
+			// check line of sight
+			if(WMinecraft.getWorld().rayTraceBlocks(eyesPos, hitVec, false,
+				true, false) != null)
+				continue;
+			
+			// damage block
+			if(!mc.playerController.onPlayerDamageBlock(pos, side))
+				return false;
+			
+			// swing arm
+			WPlayer.swingArmPacket();
+			
+			return true;
+		}
+		
+		return false;
 	}
 	
-	public static float getPlayerBlockDistance(double posX, double posY,
-		double posZ)
+	public static boolean breakBlockExtraLegit(BlockPos pos)
 	{
-		float xDiff = (float)(WMinecraft.getPlayer().posX - posX);
-		float yDiff = (float)(WMinecraft.getPlayer().posY - posY);
-		float zDiff = (float)(WMinecraft.getPlayer().posZ - posZ);
-		return getBlockDistance(xDiff, yDiff, zDiff);
+		Vec3d eyesPos = RotationUtils.getEyesPos();
+		Vec3d posVec = new Vec3d(pos).addVector(0.5, 0.5, 0.5);
+		double distanceSqPosVec = eyesPos.squareDistanceTo(posVec);
+		
+		for(EnumFacing side : EnumFacing.values())
+		{
+			Vec3d hitVec =
+				posVec.add(new Vec3d(side.getDirectionVec()).scale(0.5));
+			double distanceSqHitVec = eyesPos.squareDistanceTo(hitVec);
+			
+			// check if hitVec is within range (4.25 blocks)
+			if(distanceSqHitVec > 18.0625)
+				continue;
+			
+			// check if side is facing towards player
+			if(distanceSqHitVec >= distanceSqPosVec)
+				continue;
+			
+			// check line of sight
+			if(WMinecraft.getWorld().rayTraceBlocks(eyesPos, hitVec, false,
+				true, false) != null)
+				continue;
+			
+			// AutoTool
+			AutoToolMod.setSlot(pos);
+			
+			// face block
+			if(!RotationUtils.faceVectorClient(hitVec))
+				return true;
+				
+			// if attack key is down but nothing happens, release it for one
+			// tick
+			if(mc.gameSettings.keyBindAttack.pressed
+				&& !mc.playerController.getIsHittingBlock())
+			{
+				mc.gameSettings.keyBindAttack.pressed = false;
+				return true;
+			}
+			
+			// damage block
+			mc.gameSettings.keyBindAttack.pressed = true;
+			
+			return true;
+		}
+		
+		return false;
 	}
 	
-	public static float getBlockDistance(float xDiff, float yDiff, float zDiff)
+	public static boolean breakBlockSimple(BlockPos pos)
 	{
-		return (float)Math.sqrt(
-			(xDiff - 0.5F) * (xDiff - 0.5F) + (yDiff - 0.5F) * (yDiff - 0.5F)
-				+ (zDiff - 0.5F) * (zDiff - 0.5F));
+		Vec3d eyesPos = RotationUtils.getEyesPos();
+		Vec3d posVec = new Vec3d(pos).addVector(0.5, 0.5, 0.5);
+		double distanceSqPosVec = eyesPos.squareDistanceTo(posVec);
+		
+		for(EnumFacing side : EnumFacing.values())
+		{
+			Vec3d hitVec =
+				posVec.add(new Vec3d(side.getDirectionVec()).scale(0.5));
+			double distanceSqHitVec = eyesPos.squareDistanceTo(hitVec);
+			
+			// check if hitVec is within range (6 blocks)
+			if(distanceSqHitVec > 36)
+				continue;
+			
+			// check if side is facing towards player
+			if(distanceSqHitVec >= distanceSqPosVec)
+				continue;
+			
+			// AutoTool
+			AutoToolMod.setSlot(pos);
+			
+			// face block
+			RotationUtils.faceVectorPacket(hitVec);
+			
+			// damage block
+			if(!mc.playerController.onPlayerDamageBlock(pos, side))
+				return false;
+			
+			// swing arm
+			WPlayer.swingArmPacket();
+			
+			return true;
+		}
+		
+		return false;
 	}
 	
-	public static float getHorizontalPlayerBlockDistance(BlockPos blockPos)
+	public static void breakBlockPacketSpam(BlockPos pos)
 	{
-		float xDiff = (float)(WMinecraft.getPlayer().posX - blockPos.getX());
-		float zDiff = (float)(WMinecraft.getPlayer().posZ - blockPos.getZ());
-		return (float)Math.sqrt(
-			(xDiff - 0.5F) * (xDiff - 0.5F) + (zDiff - 0.5F) * (zDiff - 0.5F));
+		Vec3d eyesPos = RotationUtils.getEyesPos();
+		Vec3d posVec = new Vec3d(pos).addVector(0.5, 0.5, 0.5);
+		double distanceSqPosVec = eyesPos.squareDistanceTo(posVec);
+		
+		for(EnumFacing side : EnumFacing.values())
+		{
+			Vec3d hitVec =
+				posVec.add(new Vec3d(side.getDirectionVec()).scale(0.5));
+			
+			// check if side is facing towards player
+			if(eyesPos.squareDistanceTo(hitVec) >= distanceSqPosVec)
+				continue;
+			
+			// break block
+			WConnection.sendPacket(new CPacketPlayerDigging(
+				Action.START_DESTROY_BLOCK, pos, side));
+			WConnection.sendPacket(
+				new CPacketPlayerDigging(Action.STOP_DESTROY_BLOCK, pos, side));
+			
+			return;
+		}
+	}
+	
+	public static boolean rightClickBlockLegit(BlockPos pos)
+	{
+		Vec3d eyesPos = RotationUtils.getEyesPos();
+		Vec3d posVec = new Vec3d(pos).addVector(0.5, 0.5, 0.5);
+		double distanceSqPosVec = eyesPos.squareDistanceTo(posVec);
+		
+		for(EnumFacing side : EnumFacing.values())
+		{
+			Vec3d hitVec =
+				posVec.add(new Vec3d(side.getDirectionVec()).scale(0.5));
+			double distanceSqHitVec = eyesPos.squareDistanceTo(hitVec);
+			
+			// check if hitVec is within range (4.25 blocks)
+			if(distanceSqHitVec > 18.0625)
+				continue;
+			
+			// check if side is facing towards player
+			if(distanceSqHitVec >= distanceSqPosVec)
+				continue;
+			
+			// check line of sight
+			if(WMinecraft.getWorld().rayTraceBlocks(eyesPos, hitVec, false,
+				true, false) != null)
+				continue;
+			
+			// face block
+			if(!RotationUtils.faceVectorPacket(hitVec))
+				return true;
+			
+			// place block
+			WPlayerController.processRightClickBlock(pos, side, hitVec);
+			WPlayer.swingArmClient();
+			mc.rightClickDelayTimer = 4;
+			
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public static boolean rightClickBlockSimple(BlockPos pos)
+	{
+		Vec3d eyesPos = RotationUtils.getEyesPos();
+		Vec3d posVec = new Vec3d(pos).addVector(0.5, 0.5, 0.5);
+		double distanceSqPosVec = eyesPos.squareDistanceTo(posVec);
+		
+		for(EnumFacing side : EnumFacing.values())
+		{
+			Vec3d hitVec =
+				posVec.add(new Vec3d(side.getDirectionVec()).scale(0.5));
+			double distanceSqHitVec = eyesPos.squareDistanceTo(hitVec);
+			
+			// check if hitVec is within range (6 blocks)
+			if(distanceSqHitVec > 36)
+				continue;
+			
+			// check if side is facing towards player
+			if(distanceSqHitVec >= distanceSqPosVec)
+				continue;
+			
+			// place block
+			WPlayerController.processRightClickBlock(pos, side, hitVec);
+			
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public static Iterable<BlockPos> getValidBlocksByDistance(double range,
+		boolean ignoreVisibility, BlockValidator validator)
+	{
+		// prepare range check
+		Vec3d eyesPos = RotationUtils.getEyesPos().subtract(0.5, 0.5, 0.5);
+		double rangeSq = Math.pow(range + 0.5, 2);
+		
+		// set start pos
+		BlockPos startPos = new BlockPos(RotationUtils.getEyesPos());
+		
+		return () -> new AbstractIterator<BlockPos>()
+		{
+			// initialize queue
+			private ArrayDeque<BlockPos> queue =
+				new ArrayDeque<>(Arrays.asList(startPos));
+			private HashSet<BlockPos> visited = new HashSet<>();
+			
+			@Override
+			protected BlockPos computeNext()
+			{
+				// find block using breadth first search
+				while(!queue.isEmpty())
+				{
+					BlockPos current = queue.pop();
+					
+					// check range
+					if(eyesPos.squareDistanceTo(new Vec3d(current)) > rangeSq)
+						continue;
+					
+					boolean canBeClicked = WBlock.canBeClicked(current);
+					
+					if(ignoreVisibility || !canBeClicked)
+						// add neighbors
+						for(EnumFacing facing : EnumFacing.values())
+						{
+							BlockPos next = current.offset(facing);
+							
+							if(visited.contains(next))
+								continue;
+							
+							queue.add(next);
+							visited.add(next);
+						}
+					
+					// check if block is valid
+					if(canBeClicked && validator.isValid(current))
+						return current;
+				}
+				
+				return endOfData();
+			}
+		};
+	}
+	
+	public static Iterable<BlockPos> getValidBlocksByDistanceReversed(
+		double range, boolean ignoreVisibility, BlockValidator validator)
+	{
+		ArrayDeque<BlockPos> validBlocks = new ArrayDeque<>();
+		
+		BlockUtils.getValidBlocksByDistance(range, ignoreVisibility, validator)
+			.forEach((p) -> validBlocks.push(p));
+		
+		return validBlocks;
+	}
+	
+	public static Iterable<BlockPos> getValidBlocks(double range,
+		BlockValidator validator)
+	{
+		// prepare range check
+		Vec3d eyesPos = RotationUtils.getEyesPos().subtract(0.5, 0.5, 0.5);
+		double rangeSq = Math.pow(range + 0.5, 2);
+		
+		return getValidBlocks((int)Math.ceil(range), (pos) -> {
+			
+			// check range
+			if(eyesPos.squareDistanceTo(new Vec3d(pos)) > rangeSq)
+				return false;
+			
+			// check if block is valid
+			return validator.isValid(pos);
+		});
+	}
+	
+	public static Iterable<BlockPos> getValidBlocks(int blockRange,
+		BlockValidator validator)
+	{
+		BlockPos playerPos = new BlockPos(RotationUtils.getEyesPos());
+		
+		BlockPos min = playerPos.add(-blockRange, -blockRange, -blockRange);
+		BlockPos max = playerPos.add(blockRange, blockRange, blockRange);
+		
+		return () -> new AbstractIterator<BlockPos>()
+		{
+			private BlockPos last;
+			
+			private BlockPos computeNextUnchecked()
+			{
+				if(last == null)
+				{
+					last = min;
+					return last;
+				}
+				
+				int x = last.getX();
+				int y = last.getY();
+				int z = last.getZ();
+				
+				if(z < max.getZ())
+					z++;
+				else if(x < max.getX())
+				{
+					z = min.getZ();
+					x++;
+				}else if(y < max.getY())
+				{
+					z = min.getZ();
+					x = min.getX();
+					y++;
+				}else
+					return null;
+				
+				last = new BlockPos(x, y, z);
+				return last;
+			}
+			
+			@Override
+			protected BlockPos computeNext()
+			{
+				BlockPos pos;
+				while((pos = computeNextUnchecked()) != null)
+				{
+					// skip air blocks
+					if(WBlock.getMaterial(pos) == Material.air)
+						continue;
+					
+					// check if block is valid
+					if(!validator.isValid(pos))
+						continue;
+					
+					return pos;
+				}
+				
+				return endOfData();
+			}
+		};
+	}
+	
+	public static interface BlockValidator
+	{
+		public boolean isValid(BlockPos pos);
 	}
 }

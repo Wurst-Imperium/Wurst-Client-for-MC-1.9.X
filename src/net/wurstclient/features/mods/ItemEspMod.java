@@ -7,8 +7,11 @@
  */
 package net.wurstclient.features.mods;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.features.Feature;
@@ -21,6 +24,9 @@ import net.wurstclient.utils.RenderUtils;
 @Mod.Bypasses
 public final class ItemEspMod extends Mod implements RenderListener
 {
+	private static final AxisAlignedBB ITEM_BOX =
+		new AxisAlignedBB(-0.175, 0, -0.175, 0.175, 0.35, 0.175);
+	
 	@Override
 	public Feature[] getSeeAlso()
 	{
@@ -34,16 +40,58 @@ public final class ItemEspMod extends Mod implements RenderListener
 	}
 	
 	@Override
-	public void onRender(float partialTicks)
-	{
-		for(Object entity : WMinecraft.getWorld().loadedEntityList)
-			if(entity instanceof EntityItem)
-				RenderUtils.entityESPBox((Entity)entity, 2);
-	}
-	
-	@Override
 	public void onDisable()
 	{
 		wurst.events.remove(RenderListener.class, this);
+	}
+	
+	@Override
+	public void onRender(float partialTicks)
+	{
+		// GL settings
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GL11.glEnable(GL11.GL_LINE_SMOOTH);
+		GL11.glLineWidth(2);
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		GL11.glEnable(GL11.GL_CULL_FACE);
+		GL11.glDisable(GL11.GL_DEPTH_TEST);
+		
+		GL11.glPushMatrix();
+		GL11.glTranslated(-mc.getRenderManager().renderPosX,
+			-mc.getRenderManager().renderPosY,
+			-mc.getRenderManager().renderPosZ);
+		
+		GL11.glColor4d(1, 1, 0, 0.5F);
+		
+		// draw boxes
+		for(Entity entity : WMinecraft.getWorld().loadedEntityList)
+		{
+			if(!(entity instanceof EntityItem))
+				continue;
+			
+			GL11.glPushMatrix();
+			
+			// set position
+			GL11.glTranslated(
+				entity.prevPosX
+					+ (entity.posX - entity.prevPosX) * partialTicks,
+				entity.prevPosY
+					+ (entity.posY - entity.prevPosY) * partialTicks,
+				entity.prevPosZ
+					+ (entity.posZ - entity.prevPosZ) * partialTicks);
+			
+			RenderUtils.drawOutlinedBox(ITEM_BOX);
+			
+			GL11.glPopMatrix();
+		}
+		
+		GL11.glPopMatrix();
+		
+		// GL resets
+		GL11.glEnable(GL11.GL_DEPTH_TEST);
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		GL11.glDisable(GL11.GL_BLEND);
+		GL11.glDisable(GL11.GL_LINE_SMOOTH);
 	}
 }

@@ -13,6 +13,7 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.GUIRenderListener;
 import net.wurstclient.events.listeners.RenderListener;
@@ -34,6 +35,9 @@ import net.wurstclient.utils.RotationUtils;
 public final class BowAimbotMod extends Mod
 	implements UpdateListener, RenderListener, GUIRenderListener
 {
+	private static final AxisAlignedBB TARGET_BOX =
+		new AxisAlignedBB(-0.5, -0.5, -0.5, 0.5, 0.5, 0.5);
+	
 	private Entity target;
 	private float velocity;
 	
@@ -54,59 +58,11 @@ public final class BowAimbotMod extends Mod
 	}
 	
 	@Override
-	public void onRender(float partialTicks)
+	public void onDisable()
 	{
-		if(target == null)
-			return;
-		RenderUtils.entityESPBox(target, 3);
-	}
-	
-	@Override
-	public void onRenderGUI()
-	{
-		if(target == null)
-			return;
-		
-		// GL settings
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		GL11.glDisable(GL11.GL_CULL_FACE);
-		
-		GL11.glPushMatrix();
-		
-		String message;
-		if(velocity < 1)
-			message = "Charging: " + (int)(velocity * 100) + "%";
-		else
-			message = "Ready To Shoot";
-		
-		// translate to center
-		ScaledResolution sr = new ScaledResolution(mc);
-		int msgWidth = Fonts.segoe15.getStringWidth(message);
-		GL11.glTranslated(sr.getScaledWidth() / 2 - msgWidth / 2,
-			sr.getScaledHeight() / 2 + 1, 0);
-		
-		// background
-		GL11.glColor4f(0, 0, 0, 0.5F);
-		GL11.glBegin(GL11.GL_QUADS);
-		{
-			GL11.glVertex2d(0, 0);
-			GL11.glVertex2d(msgWidth + 3, 0);
-			GL11.glVertex2d(msgWidth + 3, 10);
-			GL11.glVertex2d(0, 10);
-		}
-		GL11.glEnd();
-		
-		// text
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
-		Fonts.segoe15.drawString(message, 2, -1, 0xffffffff);
-		
-		GL11.glPopMatrix();
-		
-		// GL resets
-		GL11.glEnable(GL11.GL_CULL_FACE);
-		GL11.glDisable(GL11.GL_BLEND);
+		wurst.events.remove(GUIRenderListener.class, this);
+		wurst.events.remove(RenderListener.class, this);
+		wurst.events.remove(UpdateListener.class, this);
 	}
 	
 	@Override
@@ -116,9 +72,8 @@ public final class BowAimbotMod extends Mod
 		target = null;
 		
 		// check if using item
-		if(!mc.gameSettings.keyBindUseItem.pressed)
-			return;
-		if(!wurst.mods.fastBowMod.isActive())
+		if(!mc.gameSettings.keyBindUseItem.pressed
+			&& !wurst.mods.fastBowMod.isActive())
 			return;
 		
 		// check if item is bow
@@ -174,10 +129,100 @@ public final class BowAimbotMod extends Mod
 	}
 	
 	@Override
-	public void onDisable()
+	public void onRender(float partialTicks)
 	{
-		wurst.events.remove(GUIRenderListener.class, this);
-		wurst.events.remove(RenderListener.class, this);
-		wurst.events.remove(UpdateListener.class, this);
+		if(target == null)
+			return;
+		
+		// GL settings
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GL11.glEnable(GL11.GL_LINE_SMOOTH);
+		GL11.glLineWidth(2);
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		GL11.glDisable(GL11.GL_DEPTH_TEST);
+		
+		GL11.glPushMatrix();
+		GL11.glTranslated(-mc.getRenderManager().renderPosX,
+			-mc.getRenderManager().renderPosY,
+			-mc.getRenderManager().renderPosZ);
+		
+		// set position
+		GL11.glTranslated(target.posX, target.posY, target.posZ);
+		
+		// set size
+		double boxWidth = target.width + 0.1;
+		double boxHeight = target.height + 0.1;
+		GL11.glScaled(boxWidth, boxHeight, boxWidth);
+		
+		// move to center
+		GL11.glTranslated(0, 0.5, 0);
+		
+		double v = 1 / velocity;
+		GL11.glScaled(v, v, v);
+		
+		// draw outline
+		GL11.glColor4d(1, 0, 0, 0.5F * velocity);
+		RenderUtils.drawOutlinedBox(TARGET_BOX);
+		
+		// draw box
+		GL11.glColor4d(1, 0, 0, 0.25F * velocity);
+		RenderUtils.drawSolidBox(TARGET_BOX);
+		
+		GL11.glPopMatrix();
+		
+		// GL resets
+		GL11.glEnable(GL11.GL_DEPTH_TEST);
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		GL11.glDisable(GL11.GL_BLEND);
+		GL11.glDisable(GL11.GL_LINE_SMOOTH);
+	}
+	
+	@Override
+	public void onRenderGUI()
+	{
+		if(target == null)
+			return;
+		
+		// GL settings
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		GL11.glDisable(GL11.GL_CULL_FACE);
+		
+		GL11.glPushMatrix();
+		
+		String message;
+		if(velocity < 1)
+			message = "Charging: " + (int)(velocity * 100) + "%";
+		else
+			message = "Ready To Shoot";
+		
+		// translate to center
+		ScaledResolution sr = new ScaledResolution(mc);
+		int msgWidth = Fonts.segoe15.getStringWidth(message);
+		GL11.glTranslated(sr.getScaledWidth() / 2 - msgWidth / 2,
+			sr.getScaledHeight() / 2 + 1, 0);
+		
+		// background
+		GL11.glColor4f(0, 0, 0, 0.5F);
+		GL11.glBegin(GL11.GL_QUADS);
+		{
+			GL11.glVertex2d(0, 0);
+			GL11.glVertex2d(msgWidth + 3, 0);
+			GL11.glVertex2d(msgWidth + 3, 10);
+			GL11.glVertex2d(0, 10);
+		}
+		GL11.glEnd();
+		
+		// text
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		Fonts.segoe15.drawString(message, 2, -1, 0xffffffff);
+		
+		GL11.glPopMatrix();
+		
+		// GL resets
+		GL11.glEnable(GL11.GL_CULL_FACE);
+		GL11.glDisable(GL11.GL_BLEND);
 	}
 }

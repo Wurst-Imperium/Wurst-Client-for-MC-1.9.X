@@ -1,6 +1,6 @@
-From 721465e8426d97b1d4a4e93c475cab86ede28f00 Mon Sep 17 00:00:00 2001
+From 906b902a3ee1ea71520688be3f558e22d142762a Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Tue, 4 Apr 2017 20:07:26 +0200
+Date: Tue, 4 Apr 2017 21:34:31 +0200
 Subject: [PATCH] mod
 
 ---
@@ -2624,7 +2624,7 @@ index 74c8ca7..7ff3577 100644
                  }
                  catch (UnknownHostException unknownhostexception)
 diff --git a/net/minecraft/client/multiplayer/PlayerControllerMP.java b/net/minecraft/client/multiplayer/PlayerControllerMP.java
-index a54fc8f..970ff5b 100644
+index a54fc8f..27064cf 100644
 --- a/net/minecraft/client/multiplayer/PlayerControllerMP.java
 +++ b/net/minecraft/client/multiplayer/PlayerControllerMP.java
 @@ -19,15 +19,7 @@ import net.minecraft.item.ItemBlock;
@@ -2658,7 +2658,7 @@ index a54fc8f..970ff5b 100644
  
      /** Current block damage (MP) */
 -    private float curBlockDamageMP;
-+    public static float curBlockDamageMP;
++    public float curBlockDamageMP;
  
      /**
       * Tick counter, when it hits 4 it resets back to 0 and plays the step sound

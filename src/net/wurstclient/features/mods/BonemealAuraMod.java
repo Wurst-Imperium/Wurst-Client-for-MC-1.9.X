@@ -14,21 +14,19 @@ import net.minecraft.block.BlockGrass;
 import net.minecraft.block.BlockSapling;
 import net.minecraft.block.BlockStem;
 import net.minecraft.block.IGrowable;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.play.client.CPacketPlayerTryUseItem;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.wurstclient.compatibility.WConnection;
+import net.wurstclient.compatibility.WBlock;
 import net.wurstclient.compatibility.WMinecraft;
+import net.wurstclient.compatibility.WPlayer;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.special_features.YesCheatSpf.BypassLevel;
 import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.utils.BlockUtils;
+import net.wurstclient.utils.InventoryUtils;
 
 @Mod.Info(
 	description = "Automatically uses bone meal on specific types of plants.\n"
@@ -36,34 +34,23 @@ import net.wurstclient.utils.BlockUtils;
 	name = "BonemealAura",
 	tags = "bonemeal aura, bone meal aura, AutoBone, auto bone",
 	help = "Mods/BonemealAura")
-@Mod.Bypasses(ghostMode = false)
+@Mod.Bypasses
 public final class BonemealAuraMod extends Mod implements UpdateListener
 {
-	public float normalRange = 5F;
-	public float yesCheatRange = 4.25F;
+	public final SliderSetting range =
+		new SliderSetting("Range", 4.25, 1, 6, 0.05, ValueDisplay.DECIMAL);
+	
 	private final CheckboxSetting saplings =
 		new CheckboxSetting("Saplings", true);
-	private final CheckboxSetting crops =
-		new CheckboxSetting("Carrots, Potatoes & Wheat", true);
-	private final CheckboxSetting stems =
-		new CheckboxSetting("Melons & Pumpkins", true);
+	private final CheckboxSetting crops = new CheckboxSetting("Crops", true);
+	private final CheckboxSetting stems = new CheckboxSetting("Stems", true);
 	private final CheckboxSetting cocoa = new CheckboxSetting("Cocoa", true);
 	private final CheckboxSetting other = new CheckboxSetting("Other", false);
 	
 	@Override
 	public void initSettings()
 	{
-		settings.add(new SliderSetting("Range", normalRange, 1, 6, 0.05,
-			ValueDisplay.DECIMAL)
-		{
-			@Override
-			public void update()
-			{
-				normalRange = (float)getValue();
-				yesCheatRange = Math.min(normalRange, 4.25F);
-			}
-		});
-		
+		settings.add(range);
 		settings.add(saplings);
 		settings.add(crops);
 		settings.add(stems);
@@ -78,42 +65,79 @@ public final class BonemealAuraMod extends Mod implements UpdateListener
 	}
 	
 	@Override
+	public void onDisable()
+	{
+		wurst.events.remove(UpdateListener.class, this);
+	}
+	
+	@Override
 	public void onUpdate()
 	{
-		ItemStack item = WMinecraft.getPlayer().inventory
-			.getStackInSlot(WMinecraft.getPlayer().inventory.currentItem);
-		if(item == null || !(item.getItem() instanceof ItemDye)
-			|| item.getMetadata() != 15)
+		// wait for right click timer
+		if(mc.rightClickDelayTimer > 0)
 			return;
 		
-		float range = wurst.special.yesCheatSpf.getBypassLevel()
-			.ordinal() >= BypassLevel.ANTICHEAT.ordinal() ? yesCheatRange
-				: normalRange;
-		BlockPos pos = WMinecraft.getPlayer().getPosition();
-		for(int y = (int)-range - 1; y < (int)range + 1; y++)
-			for(int x = (int)-range - 1; x < (int)range + 1; x++)
-				for(int z = (int)-range - 1; z < (int)range + 1; z++)
-				{
-					BlockPos currentPos = pos.add(x, y, z);
-					if(BlockUtils.getPlayerBlockDistance(currentPos) > range
-						|| !isCorrectBlock(currentPos))
-						continue;
-					
-					BlockUtils.faceBlockPacket(currentPos);
-					WConnection
-						.sendPacket(new CPacketPlayerTryUseItem(currentPos,
-							EnumFacing.UP, EnumHand.MAIN_HAND, 0.5F, 1F, 0.5F));
-				}
+		// check held item
+		ItemStack stack = WMinecraft.getPlayer().inventory.getCurrentItem();
+		if(InventoryUtils.isEmptySlot(stack)
+			|| !(stack.getItem() instanceof ItemDye)
+			|| stack.getMetadata() != 15)
+			return;
+		
+		// get valid blocks
+		Iterable<BlockPos> validBlocks = BlockUtils
+			.getValidBlocks(range.getValue(), (p) -> isCorrectBlock(p));
+		
+		// check bypass level
+		if(wurst.special.yesCheatSpf.getBypassLevel()
+			.ordinal() > BypassLevel.MINEPLEX.ordinal())
+		{
+			// use bone meal on next valid block
+			for(BlockPos pos : validBlocks)
+				if(BlockUtils.rightClickBlockLegit(pos))
+					break;
+				
+		}else
+		{
+			boolean shouldSwing = false;
+			
+			// use bone meal on all valid blocks
+			for(BlockPos pos : validBlocks)
+				if(BlockUtils.rightClickBlockSimple(pos))
+					shouldSwing = true;
+				
+			// swing arm
+			if(shouldSwing)
+				WPlayer.swingArmClient();
+		}
+	}
+	
+	@Override
+	public void onYesCheatUpdate(BypassLevel bypassLevel)
+	{
+		switch(bypassLevel)
+		{
+			default:
+			case OFF:
+			case MINEPLEX:
+			range.resetUsableMax();
+			break;
+			case ANTICHEAT:
+			case OLDER_NCP:
+			case LATEST_NCP:
+			case GHOST_MODE:
+			range.setUsableMax(4.25);
+			break;
+		}
 	}
 	
 	private boolean isCorrectBlock(BlockPos pos)
 	{
-		IBlockState state = WMinecraft.getWorld().getBlockState(pos);
-		Block block = state.getBlock();
+		Block block = WBlock.getBlock(pos);
 		
 		if(!(block instanceof IGrowable) || block instanceof BlockGrass
-			|| !((IGrowable)block).canGrow(WMinecraft.getWorld(), pos, state,
-				false))
+			|| !((IGrowable)block).canGrow(WMinecraft.getWorld(), pos,
+				WBlock.getState(pos), false))
 			return false;
 		
 		if(block instanceof BlockSapling)
@@ -126,11 +150,5 @@ public final class BonemealAuraMod extends Mod implements UpdateListener
 			return cocoa.isChecked();
 		else
 			return other.isChecked();
-	}
-	
-	@Override
-	public void onDisable()
-	{
-		wurst.events.remove(UpdateListener.class, this);
 	}
 }

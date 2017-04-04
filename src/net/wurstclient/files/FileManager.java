@@ -14,32 +14,23 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 
 import net.minecraft.client.Minecraft;
 import net.wurstclient.WurstClient;
-import net.wurstclient.features.mods.AutoBuildMod;
 import net.wurstclient.utils.JsonUtils;
 
 public class FileManager
 {
-	public final File autoMaximize = new File(
-		Minecraft.getMinecraft().mcDataDir + "/wurst/automaximize.json");
+	public final File autoMaximize =
+		new File(WurstFolders.MAIN.toFile(), "automaximize.json");
 	
 	public void init()
 	{
-		File[] autobuildFiles = WurstFolders.AUTOBUILD.toFile().listFiles();
-		if(autobuildFiles != null && autobuildFiles.length == 0)
-			createDefaultAutoBuildTemplates();
 		loadAutoBuildTemplates();
-		AutoBuildMod autoBuildMod = WurstClient.INSTANCE.mods.autoBuildMod;
-		autoBuildMod.initTemplateSetting();
-		if(autoBuildMod.getTemplate() >= AutoBuildMod.names.size())
-		{
-			autoBuildMod.setTemplate(0);
-			ConfigFiles.NAVIGATOR.save();
-		}
 	}
 	
 	public boolean loadAutoMaximize()
@@ -109,24 +100,55 @@ public class FileManager
 	
 	public void loadAutoBuildTemplates()
 	{
-		try
-		{
-			File[] files = WurstFolders.AUTOBUILD.toFile().listFiles();
-			if(files == null)
-				return;
-			for(File file : files)
+		File[] files = WurstFolders.AUTOBUILD.toFile().listFiles();
+		
+		boolean foundOldTemplates = false;
+		TreeMap<String, int[][]> templates = new TreeMap<>();
+		for(File file : files)
+			try
 			{
-				BufferedReader load = new BufferedReader(new FileReader(file));
-				JsonObject json = (JsonObject)JsonUtils.jsonParser.parse(load);
-				load.close();
-				AutoBuildMod.templates.add(
-					JsonUtils.gson.fromJson(json.get("blocks"), int[][].class));
-				AutoBuildMod.names.add(file.getName().substring(0,
-					file.getName().indexOf(".json")));
+				// read file
+				FileReader reader = new FileReader(file);
+				JsonObject json =
+					JsonUtils.jsonParser.parse(reader).getAsJsonObject();
+				reader.close();
+				
+				// get blocks
+				int[][] blocks =
+					JsonUtils.gson.fromJson(json.get("blocks"), int[][].class);
+				
+				// delete file if old template is found
+				if(blocks[0].length == 4)
+				{
+					foundOldTemplates = true;
+					file.delete();
+					continue;
+				}
+				
+				// add template
+				templates.put(file.getName().substring(0,
+					file.getName().lastIndexOf(".json")), blocks);
+			}catch(Exception e)
+			{
+				System.err
+					.println("Failed to load template: " + file.getName());
+				e.printStackTrace();
 			}
-		}catch(Exception e)
+			
+		// if directory is empty or contains old templates,
+		// add default templates and try again
+		if(foundOldTemplates
+			|| WurstFolders.AUTOBUILD.toFile().listFiles().length == 0)
 		{
-			e.printStackTrace();
+			createDefaultAutoBuildTemplates();
+			loadAutoBuildTemplates();
+			return;
 		}
+		
+		if(templates.isEmpty())
+			throw new JsonParseException(
+				"Couldn't load any AutoBuild templates.");
+		
+		WurstClient.INSTANCE.mods.autoBuildMod.setTemplates(templates);
 	}
 }

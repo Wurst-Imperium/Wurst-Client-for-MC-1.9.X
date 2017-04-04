@@ -56,7 +56,7 @@ public final class NukerCmd extends Cmd
 				ChatUtils.message("Nuker mode set to \"" + args[0] + "\".");
 			}
 			
-			NukerMod.id = Integer.valueOf(args[1]);
+			nuker.id = Integer.valueOf(args[1]);
 			ChatUtils.message("Nuker ID set to \"" + args[1] + "\".");
 		}else if(args[0].equalsIgnoreCase("name"))
 		{
@@ -71,7 +71,7 @@ public final class NukerCmd extends Cmd
 			if(newId == -1)
 				error("The block \"" + args[1] + "\" could not be found.");
 			
-			NukerMod.id = newId;
+			nuker.id = newId;
 			ChatUtils
 				.message("Nuker ID set to " + newId + " (" + args[1] + ").");
 		}else

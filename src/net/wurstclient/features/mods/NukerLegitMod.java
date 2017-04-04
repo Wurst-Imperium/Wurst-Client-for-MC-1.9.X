@@ -7,34 +7,28 @@
  */
 package net.wurstclient.features.mods;
 
-import java.util.HashSet;
-import java.util.LinkedList;
+import org.lwjgl.opengl.GL11;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.network.play.client.CPacketPlayerDigging;
-import net.minecraft.network.play.client.CPacketPlayerDigging.Action;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.wurstclient.compatibility.WConnection;
+import net.wurstclient.compatibility.WBlock;
 import net.wurstclient.compatibility.WMinecraft;
-import net.wurstclient.compatibility.WPlayer;
 import net.wurstclient.events.LeftClickEvent;
 import net.wurstclient.events.listeners.LeftClickListener;
 import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
-import net.wurstclient.files.ConfigFiles;
 import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.ModeSetting;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.utils.BlockUtils;
+import net.wurstclient.utils.BlockUtils.BlockValidator;
 import net.wurstclient.utils.RenderUtils;
 
 @Mod.Info(
-	description = "Slower Nuker that bypasses any cheat prevention\n"
-		+ "PlugIn. Not required on most NoCheat+ servers!",
+	description = "Slower Nuker that bypasses all AntiCheat plugins.\n"
+		+ "Not required on normal NoCheat+ servers!",
 	name = "NukerLegit",
 	tags = "LegitNuker, nuker legit, legit nuker",
 	help = "Mods/NukerLegit")
@@ -42,13 +36,8 @@ import net.wurstclient.utils.RenderUtils;
 public final class NukerLegitMod extends Mod
 	implements LeftClickListener, RenderListener, UpdateListener
 {
-	private static Block currentBlock;
-	private float currentDamage;
-	private EnumFacing side = EnumFacing.UP;
-	private byte blockHitDelay = 0;
-	private BlockPos pos;
-	private boolean shouldRenderESP;
-	private int oldSlot = -1;
+	private BlockPos currentBlock;
+	private BlockValidator validator;
 	
 	public CheckboxSetting useNuker =
 		new CheckboxSetting("Use Nuker settings", true)
@@ -71,7 +60,37 @@ public final class NukerLegitMod extends Mod
 	public final SliderSetting range =
 		new SliderSetting("Range", 4.25, 1, 4.25, 0.05, ValueDisplay.DECIMAL);
 	public final ModeSetting mode = new ModeSetting("Mode",
-		new String[]{"Normal", "ID", "Flat", "Smash"}, 0);
+		new String[]{"Normal", "ID", "Flat", "Smash"}, 0)
+	{
+		@Override
+		public void update()
+		{
+			switch(getSelected())
+			{
+				default:
+				case 0:
+				// normal mode
+				validator = (pos) -> true;
+				break;
+				
+				case 1:
+				// id mode
+				validator =
+					(pos) -> wurst.mods.nukerMod.id == WBlock.getId(pos);
+				break;
+				
+				case 2:
+				// flat mode
+				validator = (pos) -> pos.getY() >= WMinecraft.getPlayer().posY;
+				break;
+				
+				case 3:
+				// smash mode
+				validator = (pos) -> WBlock.getHardness(pos) >= 1;
+				break;
+			}
+		}
+	};
 	
 	@Override
 	public void initSettings()
@@ -89,7 +108,7 @@ public final class NukerLegitMod extends Mod
 			case 0:
 			return "NukerLegit";
 			case 1:
-			return "IDNukerLegit [" + NukerMod.id + "]";
+			return "IDNukerLegit [" + wurst.mods.nukerMod.id + "]";
 			default:
 			return mode.getSelectedMode() + "NukerLegit";
 		}
@@ -106,176 +125,139 @@ public final class NukerLegitMod extends Mod
 	@Override
 	public void onEnable()
 	{
+		// disable other nukers
 		if(wurst.mods.nukerMod.isEnabled())
 			wurst.mods.nukerMod.setEnabled(false);
 		if(wurst.mods.speedNukerMod.isEnabled())
 			wurst.mods.speedNukerMod.setEnabled(false);
 		if(wurst.mods.tunnellerMod.isEnabled())
 			wurst.mods.tunnellerMod.setEnabled(false);
+		
+		// add listeners
 		wurst.events.add(LeftClickListener.class, this);
 		wurst.events.add(UpdateListener.class, this);
 		wurst.events.add(RenderListener.class, this);
 	}
 	
 	@Override
-	public void onRender(float partialTicks)
-	{
-		if(blockHitDelay == 0 && shouldRenderESP)
-			if(!WMinecraft.getPlayer().capabilities.isCreativeMode
-				&& currentBlock.getPlayerRelativeBlockHardness(
-					WMinecraft.getWorld().getBlockState(pos),
-					WMinecraft.getPlayer(), WMinecraft.getWorld(), pos) < 1)
-				RenderUtils.nukerBox(pos, currentDamage);
-			else
-				RenderUtils.nukerBox(pos, 1);
-	}
-	
-	@Override
-	public void onUpdate()
-	{
-		shouldRenderESP = false;
-		BlockPos newPos = find();
-		if(newPos == null)
-		{
-			if(oldSlot != -1)
-			{
-				WMinecraft.getPlayer().inventory.currentItem = oldSlot;
-				oldSlot = -1;
-			}
-			return;
-		}
-		if(pos == null || !pos.equals(newPos))
-			currentDamage = 0;
-		pos = newPos;
-		currentBlock = WMinecraft.getWorld().getBlockState(pos).getBlock();
-		if(blockHitDelay > 0)
-		{
-			blockHitDelay--;
-			return;
-		}
-		BlockUtils.faceBlockClient(pos);
-		if(currentDamage == 0)
-		{
-			WConnection.sendPacket(new CPacketPlayerDigging(
-				Action.START_DESTROY_BLOCK, pos, side));
-			if(wurst.mods.autoToolMod.isActive() && oldSlot == -1)
-				oldSlot = WMinecraft.getPlayer().inventory.currentItem;
-			if(WMinecraft.getPlayer().capabilities.isCreativeMode
-				|| currentBlock.getPlayerRelativeBlockHardness(
-					WMinecraft.getWorld().getBlockState(pos),
-					WMinecraft.getPlayer(), WMinecraft.getWorld(), pos) >= 1)
-			{
-				currentDamage = 0;
-				shouldRenderESP = true;
-				WPlayer.swingArmClient();
-				mc.playerController.onPlayerDestroyBlock(pos);
-				blockHitDelay = (byte)4;
-				return;
-			}
-		}
-		if(wurst.mods.autoToolMod.isActive())
-			AutoToolMod.setSlot(pos);
-		WPlayer.swingArmPacket();
-		shouldRenderESP = true;
-		currentDamage += currentBlock.getPlayerRelativeBlockHardness(
-			WMinecraft.getWorld().getBlockState(pos), WMinecraft.getPlayer(),
-			WMinecraft.getWorld(), pos);
-		WMinecraft.getWorld().sendBlockBreakProgress(
-			WMinecraft.getPlayer().getEntityId(), pos,
-			(int)(currentDamage * 10.0F) - 1);
-		if(currentDamage >= 1)
-		{
-			WConnection.sendPacket(
-				new CPacketPlayerDigging(Action.STOP_DESTROY_BLOCK, pos, side));
-			mc.playerController.onPlayerDestroyBlock(pos);
-			blockHitDelay = (byte)4;
-			currentDamage = 0;
-		}
-	}
-	
-	@Override
 	public void onDisable()
 	{
+		// remove listeners
 		wurst.events.remove(LeftClickListener.class, this);
 		wurst.events.remove(UpdateListener.class, this);
 		wurst.events.remove(RenderListener.class, this);
-		if(oldSlot != -1)
-		{
-			WMinecraft.getPlayer().inventory.currentItem = oldSlot;
-			oldSlot = -1;
-		}
-		currentDamage = 0;
-		shouldRenderESP = false;
-		NukerMod.id = 0;
-		ConfigFiles.OPTIONS.save();
+		
+		// resets
+		mc.gameSettings.keyBindAttack.pressed = false;
+		currentBlock = null;
+		wurst.mods.nukerMod.id = 0;
 	}
 	
 	@Override
 	public void onLeftClick(LeftClickEvent event)
 	{
+		// check hitResult
 		if(mc.objectMouseOver == null
 			|| mc.objectMouseOver.getBlockPos() == null)
 			return;
-		if(mode.getSelected() == 1 && WMinecraft.getWorld()
-			.getBlockState(mc.objectMouseOver.getBlockPos()).getBlock()
-			.getMaterial(null) != Material.air)
-		{
-			NukerMod.id = Block.getIdFromBlock(WMinecraft.getWorld()
-				.getBlockState(mc.objectMouseOver.getBlockPos()).getBlock());
-			ConfigFiles.OPTIONS.save();
-		}
+		
+		// check mode
+		if(mode.getSelected() != 1)
+			return;
+		
+		// check material
+		if(WBlock.getMaterial(mc.objectMouseOver.getBlockPos()) == Material.air)
+			return;
+		
+		// set id
+		wurst.mods.nukerMod.id = WBlock.getId(mc.objectMouseOver.getBlockPos());
 	}
 	
-	private BlockPos find()
+	@Override
+	public void onUpdate()
 	{
-		LinkedList<BlockPos> queue = new LinkedList<>();
-		HashSet<BlockPos> alreadyProcessed = new HashSet<>();
-		queue.add(new BlockPos(WMinecraft.getPlayer()));
-		while(!queue.isEmpty())
-		{
-			BlockPos currentPos = queue.poll();
-			if(alreadyProcessed.contains(currentPos))
-				continue;
-			alreadyProcessed.add(currentPos);
-			if(BlockUtils.getPlayerBlockDistance(currentPos) > Math
-				.min(range.getValueF(), 4.25F))
-				continue;
-			int currentID = Block.getIdFromBlock(
-				WMinecraft.getWorld().getBlockState(currentPos).getBlock());
-			if(currentID != 0)
-				switch(mode.getSelected())
-				{
-					case 1:
-					if(currentID == NukerMod.id)
-						return currentPos;
-					break;
-					case 2:
-					if(currentPos.getY() >= WMinecraft.getPlayer().posY)
-						return currentPos;
-					break;
-					case 3:
-					if(WMinecraft.getWorld().getBlockState(currentPos)
-						.getBlock().getPlayerRelativeBlockHardness(
-							WMinecraft.getWorld().getBlockState(pos),
-							WMinecraft.getPlayer(), WMinecraft.getWorld(),
-							currentPos) >= 1)
-						return currentPos;
-					break;
-					default:
-					return currentPos;
-				}
-			if(!WMinecraft.getWorld().getBlockState(currentPos).getBlock()
-				.getMaterial(null).blocksMovement())
-			{
-				queue.add(currentPos.add(0, 0, -1));// north
-				queue.add(currentPos.add(0, 0, 1));// south
-				queue.add(currentPos.add(-1, 0, 0));// west
-				queue.add(currentPos.add(1, 0, 0));// east
-				queue.add(currentPos.add(0, -1, 0));// down
-				queue.add(currentPos.add(0, 1, 0));// up
-			}
-		}
-		return null;
+		// abort if using IDNuker without an ID being set
+		if(mode.getSelected() == 1 && wurst.mods.nukerMod.id == 0)
+			return;
 		
+		currentBlock = null;
+		
+		// get valid blocks
+		Iterable<BlockPos> validBlocks = BlockUtils
+			.getValidBlocksByDistance(range.getValue(), false, validator);
+		
+		// find closest valid block
+		for(BlockPos pos : validBlocks)
+		{
+			// break block
+			if(!BlockUtils.breakBlockExtraLegit(pos))
+				continue;
+			
+			// set currentBlock if successful
+			currentBlock = pos;
+			break;
+		}
+		
+		// reset if no block was found
+		if(currentBlock == null)
+			mc.gameSettings.keyBindAttack.pressed = false;
+	}
+	
+	@Override
+	public void onRender(float partialTicks)
+	{
+		if(currentBlock == null)
+			return;
+		
+		// GL settings
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GL11.glEnable(GL11.GL_LINE_SMOOTH);
+		GL11.glLineWidth(2);
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		GL11.glEnable(GL11.GL_CULL_FACE);
+		GL11.glDisable(GL11.GL_DEPTH_TEST);
+		
+		GL11.glPushMatrix();
+		GL11.glTranslated(-mc.getRenderManager().renderPosX,
+			-mc.getRenderManager().renderPosY,
+			-mc.getRenderManager().renderPosZ);
+		
+		// set position
+		GL11.glTranslated(currentBlock.getX(), currentBlock.getY(),
+			currentBlock.getZ());
+		
+		// get progress
+		float progress;
+		if(WBlock.getHardness(currentBlock) < 1)
+			progress = mc.playerController.curBlockDamageMP;
+		else
+			progress = 1;
+		
+		// set size
+		if(progress < 1)
+		{
+			GL11.glTranslated(0.5, 0.5, 0.5);
+			GL11.glScaled(progress, progress, progress);
+			GL11.glTranslated(-0.5, -0.5, -0.5);
+		}
+		
+		// get color
+		float red = progress * 2F;
+		float green = 2 - red;
+		
+		// draw box
+		GL11.glColor4f(red, green, 0, 0.25F);
+		RenderUtils.drawSolidBox();
+		GL11.glColor4f(red, green, 0, 0.5F);
+		RenderUtils.drawOutlinedBox();
+		
+		GL11.glPopMatrix();
+		
+		// GL resets
+		GL11.glEnable(GL11.GL_DEPTH_TEST);
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		GL11.glDisable(GL11.GL_BLEND);
+		GL11.glDisable(GL11.GL_LINE_SMOOTH);
 	}
 }
