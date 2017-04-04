@@ -16,6 +16,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.wurstclient.compatibility.WMinecraft;
+import net.wurstclient.compatibility.WPlayerController;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
 
@@ -51,10 +52,7 @@ public final class FastBowMod extends Mod implements UpdateListener
 				.getItem() instanceof ItemBow
 			&& mc.gameSettings.keyBindUseItem.pressed)
 		{
-			mc.playerController.sendUseItem(WMinecraft.getPlayer(),
-				WMinecraft.getWorld(),
-				WMinecraft.getPlayer().inventory.getCurrentItem(),
-				EnumHand.MAIN_HAND);
+			WPlayerController.processRightClick();
 			WMinecraft.getPlayer().inventory.getCurrentItem().getItem()
 				.onItemRightClick(
 					WMinecraft.getPlayer().inventory.getCurrentItem(),

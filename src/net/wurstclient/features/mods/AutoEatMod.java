@@ -9,8 +9,8 @@ package net.wurstclient.features.mods;
 
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHand;
 import net.wurstclient.compatibility.WMinecraft;
+import net.wurstclient.compatibility.WPlayerController;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
 
@@ -84,8 +84,7 @@ public final class AutoEatMod extends Mod implements UpdateListener
 					return;
 				}
 				WMinecraft.getPlayer().inventory.currentItem = bestSlot;
-				mc.playerController.sendUseItem(WMinecraft.getPlayer(),
-					WMinecraft.getWorld(), item, EnumHand.MAIN_HAND);
+				WPlayerController.processRightClick();
 				mc.gameSettings.keyBindUseItem.pressed = true;
 			}
 			
