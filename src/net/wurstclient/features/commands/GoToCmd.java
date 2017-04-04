@@ -8,17 +8,20 @@
 package net.wurstclient.features.commands;
 
 import net.minecraft.util.math.BlockPos;
-import net.wurstclient.ai.PathFinder;
-import net.wurstclient.compatibility.WMinecraft;
+import net.wurstclient.ai.GotoAI;
+import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.utils.ChatUtils;
 import net.wurstclient.utils.EntityUtils.TargetSettings;
 
 @Cmd.Info(description = "Walks or flies you to a specific location.",
 	name = "goto",
-	syntax = {"<x> <y> <z>", "<entity>"},
+	syntax = {"<x> <y> <z>", "<entity>", "-path"},
 	help = "Commands/goto")
-public final class GoToCmd extends Cmd
+public final class GoToCmd extends Cmd implements UpdateListener
 {
+	private GotoAI ai;
+	private boolean enabled;
+	
 	private TargetSettings targetSettings = new TargetSettings()
 	{
 		@Override
@@ -31,43 +34,63 @@ public final class GoToCmd extends Cmd
 		public boolean targetBehindWalls()
 		{
 			return true;
-		}
+		};
 	};
 	
 	@Override
 	public void execute(String[] args) throws CmdError
 	{
-		int[] pos = argsToPos(targetSettings, args);
-		if(Math.abs(pos[0] - WMinecraft.getPlayer().posX) > 256
-			|| Math.abs(pos[2] - WMinecraft.getPlayer().posZ) > 256)
+		// disable if enabled
+		if(enabled)
 		{
-			ChatUtils.error("Goal is out of range!");
-			ChatUtils.message("Maximum range is 256 blocks.");
-			return;
+			disable();
+			
+			if(args.length == 0)
+				return;
 		}
-		net.wurstclient.features.mods.GoToCmdMod
-			.setGoal(new BlockPos(pos[0], pos[1], pos[2]));
-		Thread thread = new Thread(new Runnable()
+		
+		// set PathFinder
+		if(args.length == 1 && args[0].equals("-path"))
 		{
-			@Override
-			public void run()
-			{
-				System.out.println("Finding path");
-				long startTime = System.nanoTime();
-				PathFinder pathFinder = new PathFinder(
-					net.wurstclient.features.mods.GoToCmdMod.getGoal());
-				if(pathFinder.find())
-				{
-					net.wurstclient.features.mods.GoToCmdMod
-						.setPath(pathFinder.formatPath());
-					wurst.mods.goToCmdMod.setEnabled(true);
-				}else
-					ChatUtils.error("Could not find a path.");
-				System.out.println("Done after "
-					+ (System.nanoTime() - startTime) / 1e6 + "ms");
-			}
-		});
-		thread.setPriority(Thread.MIN_PRIORITY);
-		thread.start();
+			BlockPos goal = wurst.commands.pathCmd.getLastGoal();
+			if(goal != null)
+				ai = new GotoAI(goal);
+			else
+				error("No previous position on .path.");
+		}else
+		{
+			int[] goal = argsToPos(targetSettings, args);
+			ai = new GotoAI(new BlockPos(goal[0], goal[1], goal[2]));
+		}
+		
+		// start
+		enabled = true;
+		wurst.events.add(UpdateListener.class, this);
+	}
+	
+	@Override
+	public void onUpdate()
+	{
+		ai.update();
+		
+		if(ai.isDone() || ai.isFailed())
+		{
+			if(ai.isFailed())
+				ChatUtils.error("Could not find a path.");
+			
+			disable();
+		}
+	}
+	
+	private void disable()
+	{
+		wurst.events.remove(UpdateListener.class, this);
+		ai.stop();
+		enabled = false;
+	}
+	
+	public boolean isActive()
+	{
+		return enabled;
 	}
 }
