@@ -1,6 +1,6 @@
-From 0ecd8a293f92375eb02fe20b8c2c33d681765f20 Mon Sep 17 00:00:00 2001
+From 060ba74bc6de3f0643ad9a197df61ef3132a6052 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Tue, 4 Apr 2017 16:43:01 +0200
+Date: Tue, 4 Apr 2017 19:04:11 +0200
 Subject: [PATCH] mod
 
 ---
@@ -88,7 +88,9 @@ Subject: [PATCH] mod
  net/minecraft/tileentity/TileEntitySign.java       |   2 +-
  net/minecraft/util/ScreenShotHelper.java           |   7 +
  net/minecraft/util/Timer.java                      |   6 +
- 84 files changed, 1315 insertions(+), 410 deletions(-)
+ net/minecraft/util/math/AxisAlignedBB.java         |   8 +
+ net/minecraft/util/math/Vec3d.java                 |   6 +
+ 86 files changed, 1329 insertions(+), 410 deletions(-)
 
 diff --git a/Start.java b/Start.java
 index ae0025f..078afa5 100644
@@ -4793,6 +4795,42 @@ index 078063f..59dc9dd 100644
          long i = Minecraft.getSystemTime();
          long j = i - this.lastSyncSysClock;
          long k = System.nanoTime() / 1000000L;
+diff --git a/net/minecraft/util/math/AxisAlignedBB.java b/net/minecraft/util/math/AxisAlignedBB.java
+index 97f47dc..f1243cc 100644
+--- a/net/minecraft/util/math/AxisAlignedBB.java
++++ b/net/minecraft/util/math/AxisAlignedBB.java
+@@ -31,6 +31,14 @@ public class AxisAlignedBB
+         this((double)pos1.getX(), (double)pos1.getY(), (double)pos1.getZ(), (double)pos2.getX(), (double)pos2.getY(), (double)pos2.getZ());
+     }
+ 
++	// TODO: Client
++	public Vec3d getCenter()
++	{
++		return new Vec3d(this.minX + (this.maxX - this.minX) * 0.5D,
++			this.minY + (this.maxY - this.minY) * 0.5D,
++			this.minZ + (this.maxZ - this.minZ) * 0.5D);
++	}
++
+     public AxisAlignedBB func_186666_e(double y2)
+     {
+         return new AxisAlignedBB(this.minX, this.minY, this.minZ, this.maxX, y2, this.maxZ);
+diff --git a/net/minecraft/util/math/Vec3d.java b/net/minecraft/util/math/Vec3d.java
+index 23b0721..4953837 100644
+--- a/net/minecraft/util/math/Vec3d.java
++++ b/net/minecraft/util/math/Vec3d.java
+@@ -40,6 +40,12 @@ public class Vec3d
+         this((double)vector.getX(), (double)vector.getY(), (double)vector.getZ());
+     }
+ 
++	// TODO: Client
++	public Vec3d scale(double factor)
++	{
++		return func_186678_a(factor);
++	}
++
+     /**
+      * Returns a new vector with the result of the specified vector minus this.
+      */
 -- 
 2.0.0
 
