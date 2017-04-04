@@ -9,32 +9,37 @@ package net.wurstclient.features;
 
 import java.util.ArrayList;
 
+import net.minecraft.client.Minecraft;
+import net.wurstclient.WurstClient;
 import net.wurstclient.navigator.PossibleKeybind;
 import net.wurstclient.settings.Setting;
 
-public interface Feature
+public abstract class Feature
 {
-	public String getName();
+	protected static final WurstClient wurst = WurstClient.INSTANCE;
+	protected static final Minecraft mc = Minecraft.getMinecraft();
 	
-	public String getType();
+	public abstract String getName();
 	
-	public String getDescription();
+	public abstract String getType();
 	
-	public boolean isEnabled();
+	public abstract String getDescription();
 	
-	public boolean isBlocked();
+	public abstract boolean isEnabled();
 	
-	public String getTags();
+	public abstract boolean isBlocked();
 	
-	public ArrayList<Setting> getSettings();
+	public abstract String getTags();
 	
-	public ArrayList<PossibleKeybind> getPossibleKeybinds();
+	public abstract ArrayList<Setting> getSettings();
 	
-	public String getPrimaryAction();
+	public abstract ArrayList<PossibleKeybind> getPossibleKeybinds();
 	
-	public void doPrimaryAction();
+	public abstract String getPrimaryAction();
 	
-	public String getHelpPage();
+	public abstract void doPrimaryAction();
 	
-	public Feature[] getSeeAlso();
+	public abstract String getHelpPage();
+	
+	public abstract Feature[] getSeeAlso();
 }

@@ -14,22 +14,17 @@ import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.util.ReportedException;
-import net.wurstclient.WurstClient;
 import net.wurstclient.features.Feature;
 import net.wurstclient.features.special_features.YesCheatSpf.BypassLevel;
 import net.wurstclient.files.ConfigFiles;
 import net.wurstclient.navigator.PossibleKeybind;
 import net.wurstclient.settings.Setting;
 
-public abstract class Mod implements Feature
+public abstract class Mod extends Feature
 {
-	protected static final WurstClient wurst = WurstClient.INSTANCE;
-	protected static final Minecraft mc = Minecraft.getMinecraft();
-	
 	private final String name = getClass().getAnnotation(Info.class).name();
 	private final String description =
 		getClass().getAnnotation(Info.class).description();

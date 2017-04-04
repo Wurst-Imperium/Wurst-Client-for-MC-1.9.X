@@ -11,13 +11,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 
-import net.minecraft.client.Minecraft;
-import net.wurstclient.WurstClient;
 import net.wurstclient.features.Feature;
 import net.wurstclient.navigator.PossibleKeybind;
 import net.wurstclient.settings.Setting;
 
-public abstract class Spf implements Feature
+public abstract class Spf extends Feature
 {
 	private final String name = getClass().getAnnotation(Info.class).name();
 	private final String description =
@@ -25,9 +23,6 @@ public abstract class Spf implements Feature
 	private final String tags = getClass().getAnnotation(Info.class).tags();
 	private final String help = getClass().getAnnotation(Info.class).help();
 	protected ArrayList<Setting> settings = new ArrayList<>();
-	
-	protected static final WurstClient wurst = WurstClient.INSTANCE;
-	protected static final Minecraft mc = Minecraft.getMinecraft();
 	
 	@Retention(RetentionPolicy.RUNTIME)
 	public @interface Info
