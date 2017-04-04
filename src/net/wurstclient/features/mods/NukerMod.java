@@ -234,7 +234,7 @@ public final class NukerMod extends Mod
 			case OLDER_NCP:
 			case LATEST_NCP:
 			case GHOST_MODE:
-			range.lockToMax(4.25);
+			range.setUsableMax(4.25);
 			break;
 		}
 	}

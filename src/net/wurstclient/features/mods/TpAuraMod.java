@@ -24,7 +24,7 @@ import net.wurstclient.utils.RotationUtils;
 @Mod.Info(
 	description = "Automatically attacks the closest valid entity while teleporting around it.",
 	name = "TP-Aura",
-	tags = "TpAura, EnderAura, tp aura, ender aura",
+	tags = "TpAura, EnderAura, Ender-Aura, tp aura, ender aura",
 	help = "Mods/TP-Aura")
 @Mod.Bypasses(ghostMode = false,
 	latestNCP = false,
@@ -43,34 +43,40 @@ public final class TpAuraMod extends Mod implements UpdateListener
 				if(isChecked())
 				{
 					KillauraMod killaura = wurst.mods.killauraMod;
-					useCooldown.lock(killaura.useCooldown.isChecked());
-					speed.lockToValue(killaura.speed.getValue());
-					range.lockToValue(killaura.range.getValue());
-					fov.lockToValue(killaura.fov.getValue());
-					hitThroughWalls.lock(killaura.hitThroughWalls.isChecked());
+					
+					if(useCooldown != null)
+						useCooldown.lock(killaura.useCooldown);
+					
+					speed.lock(killaura.speed);
+					range.lock(killaura.range);
+					fov.lock(killaura.fov);
+					hitThroughWalls.lock(killaura.hitThroughWalls);
 				}else
 				{
-					useCooldown.unlock();
+					if(useCooldown != null)
+						useCooldown.unlock();
+					
 					speed.unlock();
 					range.unlock();
 					fov.unlock();
 					hitThroughWalls.unlock();
 				}
-			};
+			}
 		};
-	public CheckboxSetting useCooldown =
-		new CheckboxSetting("Use Attack Cooldown as Speed", true)
+	public CheckboxSetting useCooldown = !WMinecraft.COOLDOWN ? null
+		: new CheckboxSetting("Use Attack Cooldown as Speed", true)
 		{
 			@Override
 			public void update()
 			{
 				speed.setDisabled(isChecked());
-			};
+			}
 		};
 	public SliderSetting speed =
-		new SliderSetting("Speed", 20, 2, 20, 0.1, ValueDisplay.DECIMAL);
+		new SliderSetting("Speed", 20, 0.1, 20, 0.1, ValueDisplay.DECIMAL);
 	public SliderSetting range =
 		new SliderSetting("Range", 6, 1, 6, 0.05, ValueDisplay.DECIMAL);
+	// TODO: Does it even make sense to have an FOV setting for this?
 	public SliderSetting fov =
 		new SliderSetting("FOV", 360, 30, 360, 10, ValueDisplay.DEGREES);
 	public CheckboxSetting hitThroughWalls =
@@ -101,7 +107,10 @@ public final class TpAuraMod extends Mod implements UpdateListener
 	public void initSettings()
 	{
 		settings.add(useKillaura);
-		settings.add(useCooldown);
+		
+		if(useCooldown != null)
+			settings.add(useCooldown);
+		
 		settings.add(speed);
 		settings.add(range);
 		settings.add(fov);
@@ -119,18 +128,20 @@ public final class TpAuraMod extends Mod implements UpdateListener
 	@Override
 	public void onEnable()
 	{
-		// TODO: Clean up this mess!
-		if(wurst.mods.killauraMod.isEnabled())
-			wurst.mods.killauraMod.setEnabled(false);
-		if(wurst.mods.killauraLegitMod.isEnabled())
-			wurst.mods.killauraLegitMod.setEnabled(false);
-		if(wurst.mods.multiAuraMod.isEnabled())
-			wurst.mods.multiAuraMod.setEnabled(false);
-		if(wurst.mods.clickAuraMod.isEnabled())
-			wurst.mods.clickAuraMod.setEnabled(false);
-		if(wurst.mods.triggerBotMod.isEnabled())
-			wurst.mods.triggerBotMod.setEnabled(false);
+		// disable other killauras
+		wurst.mods.killauraMod.setEnabled(false);
+		wurst.mods.killauraLegitMod.setEnabled(false);
+		wurst.mods.multiAuraMod.setEnabled(false);
+		wurst.mods.clickAuraMod.setEnabled(false);
+		wurst.mods.triggerBotMod.setEnabled(false);
+		
 		wurst.events.add(UpdateListener.class, this);
+	}
+	
+	@Override
+	public void onDisable()
+	{
+		wurst.events.remove(UpdateListener.class, this);
 	}
 	
 	@Override
@@ -165,11 +176,5 @@ public final class TpAuraMod extends Mod implements UpdateListener
 		
 		// reset timer
 		updateLastMS();
-	}
-	
-	@Override
-	public void onDisable()
-	{
-		wurst.events.remove(UpdateListener.class, this);
 	}
 }

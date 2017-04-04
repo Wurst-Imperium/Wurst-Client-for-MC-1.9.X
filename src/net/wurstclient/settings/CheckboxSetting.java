@@ -15,12 +15,11 @@ import net.wurstclient.files.ConfigFiles;
 import net.wurstclient.navigator.PossibleKeybind;
 import net.wurstclient.navigator.gui.NavigatorFeatureScreen;
 
-public class CheckboxSetting implements Setting
+public class CheckboxSetting implements Setting, CheckboxLock
 {
 	private final String name;
 	private boolean checked;
-	private boolean locked;
-	private boolean lockChecked;
+	private CheckboxLock lock;
 	private int y;
 	
 	public CheckboxSetting(String name, boolean checked)
@@ -38,10 +37,9 @@ public class CheckboxSetting implements Setting
 	@Override
 	public final void addToFeatureScreen(NavigatorFeatureScreen featureScreen)
 	{
-		featureScreen.addText("\n\n");
-		y = 60 + featureScreen.getTextHeight() - 8;
-		update();
+		y = 60 + featureScreen.getTextHeight() + 4;
 		
+		featureScreen.addText("\n\n");
 		featureScreen.addCheckbox(this);
 	}
 	
@@ -63,19 +61,20 @@ public class CheckboxSetting implements Setting
 		return possibleKeybinds;
 	}
 	
+	@Override
 	public final boolean isChecked()
 	{
-		return locked ? lockChecked : checked;
+		return isLocked() ? lock.isChecked() : checked;
 	}
 	
 	public final void setChecked(boolean checked)
 	{
-		if(!locked)
-		{
-			this.checked = checked;
-			update();
-			ConfigFiles.NAVIGATOR.save();
-		}
+		if(isLocked())
+			return;
+		
+		this.checked = checked;
+		update();
+		ConfigFiles.NAVIGATOR.save();
 	}
 	
 	public final void toggle()
@@ -83,22 +82,25 @@ public class CheckboxSetting implements Setting
 		setChecked(!isChecked());
 	}
 	
-	public final void lock(boolean lockChecked)
+	public final void lock(CheckboxLock lock)
 	{
-		this.lockChecked = lockChecked;
-		locked = true;
+		if(lock == this)
+			throw new IllegalArgumentException(
+				"Infinite loop of locks within locks");
+		
+		this.lock = lock;
 		update();
 	}
 	
 	public final void unlock()
 	{
-		locked = false;
+		lock = null;
 		update();
 	}
 	
 	public final boolean isLocked()
 	{
-		return locked;
+		return lock != null;
 	}
 	
 	public final int getY()
@@ -116,6 +118,7 @@ public class CheckboxSetting implements Setting
 	public final void load(JsonObject json)
 	{
 		checked = json.get(name).getAsBoolean();
+		update();
 	}
 	
 	@Override

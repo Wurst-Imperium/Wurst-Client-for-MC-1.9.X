@@ -8,6 +8,7 @@
 package net.wurstclient.features.mods;
 
 import net.minecraft.entity.Entity;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.compatibility.WPlayer;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
@@ -20,9 +21,8 @@ import net.wurstclient.utils.EntityUtils.TargetSettings;
 import net.wurstclient.utils.RotationUtils;
 
 @Mod.Info(
-	description = "Automatically attacks the closest valid entity whenever you\n"
-		+ "click.\n"
-		+ "Warning: ClickAuras generally look more suspicious than Killauras\n"
+	description = "Automatically attacks the closest valid entity whenever you click.\n"
+		+ "§lWarning:§r ClickAuras generally look more suspicious than Killauras\n"
 		+ "and are easier to detect. It is recommended to use Killaura or\n"
 		+ "TriggerBot instead.",
 	name = "ClickAura",
@@ -31,7 +31,7 @@ import net.wurstclient.utils.RotationUtils;
 @Mod.Bypasses(ghostMode = false)
 public final class ClickAuraMod extends Mod implements UpdateListener
 {
-	public CheckboxSetting useKillaura =
+	public final CheckboxSetting useKillaura =
 		new CheckboxSetting("Use Killaura settings", true)
 		{
 			@Override
@@ -40,37 +40,42 @@ public final class ClickAuraMod extends Mod implements UpdateListener
 				if(isChecked())
 				{
 					KillauraMod killaura = wurst.mods.killauraMod;
-					useCooldown.lock(killaura.useCooldown.isChecked());
-					speed.lockToValue(killaura.speed.getValue());
-					range.lockToValue(killaura.range.getValue());
-					fov.lockToValue(killaura.fov.getValue());
-					hitThroughWalls.lock(killaura.hitThroughWalls.isChecked());
+					
+					if(useCooldown != null)
+						useCooldown.lock(killaura.useCooldown);
+					
+					speed.lock(killaura.speed);
+					range.lock(killaura.range);
+					fov.lock(killaura.fov);
+					hitThroughWalls.lock(killaura.hitThroughWalls);
 				}else
 				{
-					useCooldown.unlock();
+					if(useCooldown != null)
+						useCooldown.unlock();
+					
 					speed.unlock();
 					range.unlock();
 					fov.unlock();
 					hitThroughWalls.unlock();
 				}
-			};
+			}
 		};
-	public CheckboxSetting useCooldown =
-		new CheckboxSetting("Use Attack Cooldown as Speed", true)
+	public final CheckboxSetting useCooldown = !WMinecraft.COOLDOWN ? null
+		: new CheckboxSetting("Use Attack Cooldown as Speed", true)
 		{
 			@Override
 			public void update()
 			{
 				speed.setDisabled(isChecked());
-			};
+			}
 		};
-	public SliderSetting speed =
-		new SliderSetting("Speed", 20, 2, 20, 0.1, ValueDisplay.DECIMAL);
-	public SliderSetting range =
+	public final SliderSetting speed =
+		new SliderSetting("Speed", 20, 0.1, 20, 0.1, ValueDisplay.DECIMAL);
+	public final SliderSetting range =
 		new SliderSetting("Range", 6, 1, 6, 0.05, ValueDisplay.DECIMAL);
-	public SliderSetting fov =
+	public final SliderSetting fov =
 		new SliderSetting("FOV", 360, 30, 360, 10, ValueDisplay.DEGREES);
-	public CheckboxSetting hitThroughWalls =
+	public final CheckboxSetting hitThroughWalls =
 		new CheckboxSetting("Hit through walls", false);
 	
 	private TargetSettings targetSettings = new TargetSettings()
@@ -98,7 +103,10 @@ public final class ClickAuraMod extends Mod implements UpdateListener
 	public void initSettings()
 	{
 		settings.add(useKillaura);
-		settings.add(useCooldown);
+		
+		if(useCooldown != null)
+			settings.add(useCooldown);
+		
 		settings.add(speed);
 		settings.add(range);
 		settings.add(fov);
@@ -116,16 +124,21 @@ public final class ClickAuraMod extends Mod implements UpdateListener
 	@Override
 	public void onEnable()
 	{
-		// TODO: Clean up this mess!
-		if(wurst.mods.killauraMod.isEnabled())
-			wurst.mods.killauraMod.setEnabled(false);
-		if(wurst.mods.killauraLegitMod.isEnabled())
-			wurst.mods.killauraLegitMod.setEnabled(false);
-		if(wurst.mods.multiAuraMod.isEnabled())
-			wurst.mods.multiAuraMod.setEnabled(false);
-		if(wurst.mods.triggerBotMod.isEnabled())
-			wurst.mods.triggerBotMod.setEnabled(false);
+		// disable other killauras
+		wurst.mods.killauraMod.setEnabled(false);
+		wurst.mods.killauraLegitMod.setEnabled(false);
+		wurst.mods.multiAuraMod.setEnabled(false);
+		wurst.mods.triggerBotMod.setEnabled(false);
+		
+		// add listener
 		wurst.events.add(UpdateListener.class, this);
+	}
+	
+	@Override
+	public void onDisable()
+	{
+		// remove listener
+		wurst.events.remove(UpdateListener.class, this);
 	}
 	
 	@Override
@@ -163,12 +176,6 @@ public final class ClickAuraMod extends Mod implements UpdateListener
 	}
 	
 	@Override
-	public void onDisable()
-	{
-		wurst.events.remove(UpdateListener.class, this);
-	}
-	
-	@Override
 	public void onYesCheatUpdate(BypassLevel bypassLevel)
 	{
 		switch(bypassLevel)
@@ -176,21 +183,23 @@ public final class ClickAuraMod extends Mod implements UpdateListener
 			default:
 			case OFF:
 			case MINEPLEX:
-			speed.unlock();
-			range.unlock();
+			speed.resetUsableMax();
+			range.resetUsableMax();
 			hitThroughWalls.unlock();
 			break;
+			
 			case ANTICHEAT:
 			case OLDER_NCP:
 			case LATEST_NCP:
-			speed.lockToMax(12);
-			range.lockToMax(4.25);
+			speed.setUsableMax(12);
+			range.setUsableMax(4.25);
 			hitThroughWalls.unlock();
 			break;
+			
 			case GHOST_MODE:
-			speed.lockToMax(12);
-			range.lockToMax(4.25);
-			hitThroughWalls.lock(false);
+			speed.setUsableMax(12);
+			range.setUsableMax(4.25);
+			hitThroughWalls.lock(() -> false);
 			break;
 		}
 	}

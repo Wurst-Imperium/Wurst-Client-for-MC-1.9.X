@@ -11,27 +11,28 @@ import java.util.ArrayList;
 
 import com.google.gson.JsonObject;
 
+import net.wurstclient.compatibility.WMath;
 import net.wurstclient.navigator.PossibleKeybind;
 import net.wurstclient.navigator.gui.NavigatorFeatureScreen;
 
-public class SliderSetting implements Setting
+public class SliderSetting implements Setting, SliderLock
 {
 	private final String name;
 	private double value;
-	private String valueString;
+	
 	private final double minimum;
 	private final double maximum;
+	
+	private double usableMin;
+	private double usableMax;
+	
 	private final double increment;
-	private int x;
-	private int y;
-	private float percentage;
-	private final ValueDisplay valueDisplay;
+	private final ValueDisplay display;
 	
-	private boolean locked;
-	private double lockMinimum;
-	private double lockMaximum;
-	
+	private SliderLock lock;
 	private boolean disabled;
+	
+	private int y;
 	
 	public SliderSetting(String name, double value, double minimum,
 		double maximum, double increment, ValueDisplay display)
@@ -41,8 +42,12 @@ public class SliderSetting implements Setting
 		
 		this.minimum = minimum;
 		this.maximum = maximum;
+		
+		usableMin = minimum;
+		usableMax = maximum;
+		
 		this.increment = increment;
-		valueDisplay = display;
+		this.display = display;
 	}
 	
 	@Override
@@ -54,14 +59,9 @@ public class SliderSetting implements Setting
 	@Override
 	public final void addToFeatureScreen(NavigatorFeatureScreen featureScreen)
 	{
-		featureScreen.addText("\n" + name + ":\n");
+		featureScreen.addText("\n" + name + ":");
 		y = 60 + featureScreen.getTextHeight();
-		
-		double newValue = getValue();
-		valueString = valueDisplay.getValueString(newValue);
-		percentage = (float)((newValue - minimum) / (maximum - minimum));
-		x = (int)(percentage * 298) + 1;
-		update();
+		featureScreen.addText("\n");
 		
 		featureScreen.addSlider(this);
 	}
@@ -69,23 +69,23 @@ public class SliderSetting implements Setting
 	@Override
 	public ArrayList<PossibleKeybind> getPossibleKeybinds(String featureName)
 	{
-		ArrayList<PossibleKeybind> possibleKeybinds = new ArrayList<>();
+		ArrayList<PossibleKeybind> binds = new ArrayList<>();
+		
 		String fullName = featureName + " " + name;
-		String command = ".setslider " + featureName.toLowerCase() + " "
+		String cmd = ".setslider " + featureName.toLowerCase() + " "
 			+ name.toLowerCase().replace(" ", "_") + " ";
 		
-		possibleKeybinds
-			.add(new PossibleKeybind(command + "more", "Increase " + fullName));
-		possibleKeybinds
-			.add(new PossibleKeybind(command + "less", "Decrease " + fullName));
+		binds.add(new PossibleKeybind(cmd + "more", "Increase " + fullName));
+		binds.add(new PossibleKeybind(cmd + "less", "Decrease " + fullName));
 		
-		return possibleKeybinds;
+		return binds;
 	}
 	
+	@Override
 	public final double getValue()
 	{
-		return locked ? Math.min(Math.max(lockMinimum, value), lockMaximum)
-			: value;
+		return WMath.clamp(isLocked() ? lock.getValue() : value, usableMin,
+			usableMax);
 	}
 	
 	public final float getValueF()
@@ -93,19 +93,19 @@ public class SliderSetting implements Setting
 		return (float)getValue();
 	}
 	
+	public final int getValueI()
+	{
+		return (int)getValue();
+	}
+	
 	public final void setValue(double value)
 	{
-		if(!disabled)
-			if(locked)
-				this.value =
-					Math.min(Math.max(lockMinimum, value), lockMaximum);
-			else
-				this.value = Math.min(Math.max(minimum, value), maximum);
-			
-		double newValue = getValue();
-		valueString = valueDisplay.getValueString(newValue);
-		percentage = (float)((newValue - minimum) / (maximum - minimum));
-		x = (int)(percentage * 298) + 1;
+		if(disabled || isLocked())
+			return;
+		
+		value = (int)(value / increment) * increment;
+		value = WMath.clamp(value, usableMin, usableMax);
+		this.value = value;
 		
 		update();
 	}
@@ -120,9 +120,30 @@ public class SliderSetting implements Setting
 		setValue(getValue() - increment);
 	}
 	
+	public final void lock(SliderLock lock)
+	{
+		if(lock == this)
+			throw new IllegalArgumentException(
+				"Infinite loop of locks within locks");
+		
+		this.lock = lock;
+		update();
+	}
+	
+	public final void unlock()
+	{
+		lock = null;
+		update();
+	}
+	
+	public final boolean isLocked()
+	{
+		return lock != null;
+	}
+	
 	public final String getValueString()
 	{
-		return valueString;
+		return display.getValueString(getValue());
 	}
 	
 	public final double getMinimum()
@@ -135,75 +156,69 @@ public class SliderSetting implements Setting
 		return maximum;
 	}
 	
+	public final double getRange()
+	{
+		return maximum - minimum;
+	}
+	
 	public final double getIncrement()
 	{
 		return increment;
 	}
 	
-	public final void lockToMinMax(double lockMinimum, double lockMaximum)
+	public final double getUsableMin()
 	{
-		this.lockMinimum = Math.min(maximum, Math.max(lockMinimum, minimum));
-		this.lockMaximum = Math.min(maximum, Math.max(lockMaximum, minimum));
-		locked = true;
+		return usableMin;
+	}
+	
+	public final void setUsableMin(double usableMin)
+	{
+		if(usableMin < minimum)
+			throw new IllegalArgumentException("usableMin < minimum");
 		
-		double lockValue =
-			Math.min(Math.max(this.lockMinimum, value), this.lockMaximum);
-		valueString = valueDisplay.getValueString(lockValue);
-		percentage = (float)((lockValue - minimum) / (maximum - minimum));
-		x = (int)(percentage * 298) + 1;
-		
+		this.usableMin = usableMin;
 		update();
 	}
 	
-	public final void lockToMin(double lockMinimum)
+	public final void resetUsableMin()
 	{
-		lockToMinMax(lockMinimum, maximum);
+		usableMin = minimum;
+		update();
 	}
 	
-	public final void lockToMax(double lockMaximum)
+	public final double getUsableMax()
 	{
-		lockToMinMax(minimum, lockMaximum);
+		return usableMax;
 	}
 	
-	public final void lockToValue(double lockValue)
+	public final void setUsableMax(double usableMax)
 	{
-		lockToMinMax(lockValue, lockValue);
+		if(usableMax > maximum)
+			throw new IllegalArgumentException("usableMax > maximum");
+		
+		this.usableMax = usableMax;
+		update();
 	}
 	
-	public final void unlock()
+	public final void resetUsableMax()
 	{
-		locked = false;
-		setValue(value);
+		usableMax = maximum;
+		update();
 	}
 	
-	public boolean isLocked()
+	public final boolean isLimited()
 	{
-		return locked;
+		return usableMax != maximum || usableMin != minimum;
 	}
 	
-	public int getLockMinX()
-	{
-		return (int)((lockMinimum - minimum) / (maximum - minimum) * 298);
-	}
-	
-	public int getLockMaxX()
-	{
-		return (int)((lockMaximum - minimum) / (maximum - minimum) * 298);
-	}
-	
-	public boolean isDisabled()
+	public final boolean isDisabled()
 	{
 		return disabled;
 	}
 	
-	public void setDisabled(boolean disabled)
+	public final void setDisabled(boolean disabled)
 	{
 		this.disabled = disabled;
-	}
-	
-	public final int getX()
-	{
-		return x;
 	}
 	
 	public final int getY()
@@ -213,7 +228,18 @@ public class SliderSetting implements Setting
 	
 	public final float getPercentage()
 	{
-		return percentage;
+		return (float)((getValue() - minimum) / getRange());
+	}
+	
+	@Override
+	public final void load(JsonObject json)
+	{
+		double newValue = json.get(name).getAsDouble();
+		
+		if(newValue > maximum || newValue < minimum)
+			return;
+		
+		setValue(newValue);
 	}
 	
 	@Override
@@ -223,42 +249,21 @@ public class SliderSetting implements Setting
 	}
 	
 	@Override
-	public final void load(JsonObject json)
-	{
-		value = json.get(name).getAsDouble();
-	}
-	
-	@Override
 	public void update()
 	{
 		
 	}
 	
-	public static enum ValueDisplay
+	public static interface ValueDisplay
 	{
-		DECIMAL((v) -> Double.toString(v)),
-		INTEGER((v) -> Integer.toString((int)v)),
-		PERCENTAGE((v) -> v * 1e6 * 100D * 1e6 / 1e12 + "%"),
-		DEGREES((v) -> (int)v + "°"),
-		NONE((v) -> {
-			return "";
-		});
+		public static final ValueDisplay DECIMAL =
+			(v) -> Math.round(v * 1e6) / 1e6 + "";
+		public static final ValueDisplay INTEGER = (v) -> (int)v + "";
+		public static final ValueDisplay PERCENTAGE =
+			(v) -> (int)(Math.round(v * 1e8) / 1e6) + "%";
+		public static final ValueDisplay DEGREES = (v) -> (int)v + "°";
+		public static final ValueDisplay NONE = (v) -> "";
 		
-		private ValueProcessor processor;
-		
-		private ValueDisplay(ValueProcessor processor)
-		{
-			this.processor = processor;
-		}
-		
-		public String getValueString(double value)
-		{
-			return processor.getValueString(value);
-		}
-		
-		private interface ValueProcessor
-		{
-			public String getValueString(double value);
-		}
+		public String getValueString(double value);
 	}
 }

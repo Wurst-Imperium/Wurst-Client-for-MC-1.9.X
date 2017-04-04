@@ -47,6 +47,12 @@ public final class ExtraElytraMod extends Mod implements UpdateListener
 	}
 	
 	@Override
+	public void onDisable()
+	{
+		wurst.events.remove(UpdateListener.class, this);
+	}
+	
+	@Override
 	public void onUpdate()
 	{
 		updateMS();
@@ -106,12 +112,6 @@ public final class ExtraElytraMod extends Mod implements UpdateListener
 	}
 	
 	@Override
-	public void onDisable()
-	{
-		wurst.events.remove(UpdateListener.class, this);
-	}
-	
-	@Override
 	public void onYesCheatUpdate(BypassLevel bypassLevel)
 	{
 		switch(bypassLevel)
@@ -125,7 +125,7 @@ public final class ExtraElytraMod extends Mod implements UpdateListener
 			easyFly.unlock();
 			break;
 			case GHOST_MODE:
-			easyFly.lock(false);
+			easyFly.lock(() -> false);
 			break;
 		}
 	}

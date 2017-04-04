@@ -17,10 +17,11 @@ import net.wurstclient.navigator.PossibleKeybind;
 import net.wurstclient.navigator.gui.NavigatorFeatureScreen;
 import net.wurstclient.utils.JsonUtils;
 
-public class ColorsSetting implements Setting
+public class ColorsSetting implements Setting, ColorsLock
 {
 	private String name;
 	private boolean[] selected;
+	private ColorsLock lock;
 	
 	public ColorsSetting(String name, boolean[] selected)
 	{
@@ -66,6 +67,12 @@ public class ColorsSetting implements Setting
 			{
 				setSelected(index, !selected[index]);
 				updateColor();
+			}
+			
+			@Override
+			public boolean isLocked()
+			{
+				return ColorsSetting.this.isLocked();
 			}
 			
 			public void updateColor()
@@ -117,6 +124,12 @@ public class ColorsSetting implements Setting
 					}
 					update();
 				}
+				
+				@Override
+				public boolean isLocked()
+				{
+					return ColorsSetting.this.isLocked();
+				}
 			});
 		
 		// all off button
@@ -134,6 +147,12 @@ public class ColorsSetting implements Setting
 					}
 					update();
 				}
+				
+				@Override
+				public boolean isLocked()
+				{
+					return ColorsSetting.this.isLocked();
+				}
 			});
 	}
 	
@@ -143,15 +162,40 @@ public class ColorsSetting implements Setting
 		return new ArrayList<>();
 	}
 	
+	@Override
 	public boolean[] getSelected()
 	{
-		return selected;
+		return isLocked() ? lock.getSelected() : selected;
 	}
 	
 	public void setSelected(int index, boolean selected)
 	{
+		if(isLocked())
+			return;
+		
 		this.selected[index] = selected;
 		update();
+	}
+	
+	public final void lock(ColorsLock lock)
+	{
+		if(lock == this)
+			throw new IllegalArgumentException(
+				"Infinite loop of locks within locks");
+		
+		this.lock = lock;
+		update();
+	}
+	
+	public final void unlock()
+	{
+		lock = null;
+		update();
+	}
+	
+	public final boolean isLocked()
+	{
+		return lock != null;
 	}
 	
 	@Override
@@ -166,6 +210,7 @@ public class ColorsSetting implements Setting
 		JsonArray jsonColors = json.get(name).getAsJsonArray();
 		for(int i = 0; i < selected.length; i++)
 			selected[i] = jsonColors.get(i).getAsBoolean();
+		update();
 	}
 	
 	@Override

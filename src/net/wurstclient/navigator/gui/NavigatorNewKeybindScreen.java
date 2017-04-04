@@ -65,7 +65,7 @@ public class NavigatorNewKeybindScreen extends NavigatorScreen
 						possibleKeybinds.get(selectedCommand).getCommand());
 				ConfigFiles.KEYBINDS.save();
 				mc.displayGuiScreen(parent);
-				wurst.navigator.addPreference(parent.getItem().getName());
+				wurst.navigator.addPreference(parent.getFeature().getName());
 				ConfigFiles.NAVIGATOR.save();
 			}else
 			{
@@ -191,7 +191,8 @@ public class NavigatorNewKeybindScreen extends NavigatorScreen
 				int y2 = y1 + 20;
 				
 				// color
-				if(mouseX >= x1 && mouseX <= x2 && mouseY >= y1 && mouseY <= y2)
+				if(mouseX >= x1 && mouseX <= x2 && mouseY >= y1 && mouseY <= y2
+					&& mouseY <= bgy2 - 24)
 				{
 					hoveredCommand = i;
 					if(i == selectedCommand)

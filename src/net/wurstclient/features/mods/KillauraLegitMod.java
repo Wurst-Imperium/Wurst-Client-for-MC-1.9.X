@@ -20,8 +20,8 @@ import net.wurstclient.utils.EntityUtils.TargetSettings;
 import net.wurstclient.utils.RotationUtils;
 
 @Mod.Info(
-	description = "Slower Killaura that bypasses any cheat prevention\n"
-		+ "PlugIn. Not required on most NoCheat+ servers!",
+	description = "Slower Killaura that bypasses any AntiCheat plugins.\n"
+		+ "Not required on normal NoCheat+ servers!",
 	name = "KillauraLegit",
 	tags = "LegitAura, killaura legit, kill aura legit, legit aura",
 	help = "Mods/KillauraLegit")
@@ -37,21 +37,26 @@ public final class KillauraLegitMod extends Mod implements UpdateListener
 				if(isChecked())
 				{
 					KillauraMod killaura = wurst.mods.killauraMod;
-					useCooldown.lock(killaura.useCooldown.isChecked());
-					speed.lockToValue(killaura.speed.getValue());
-					range.lockToValue(killaura.range.getValue());
-					fov.lockToValue(killaura.fov.getValue());
+					
+					if(useCooldown != null)
+						useCooldown.lock(killaura.useCooldown);
+					
+					speed.lock(killaura.speed);
+					range.lock(killaura.range);
+					fov.lock(killaura.fov);
 				}else
 				{
-					useCooldown.unlock();
+					if(useCooldown != null)
+						useCooldown.unlock();
+					
 					speed.unlock();
 					range.unlock();
 					fov.unlock();
 				}
 			}
 		};
-	public CheckboxSetting useCooldown =
-		new CheckboxSetting("Use Attack Cooldown as Speed", true)
+	public CheckboxSetting useCooldown = !WMinecraft.COOLDOWN ? null
+		: new CheckboxSetting("Use Attack Cooldown as Speed", true)
 		{
 			@Override
 			public void update()
@@ -60,7 +65,7 @@ public final class KillauraLegitMod extends Mod implements UpdateListener
 			}
 		};
 	public SliderSetting speed =
-		new SliderSetting("Speed", 12, 2, 12, 0.1, ValueDisplay.DECIMAL);
+		new SliderSetting("Speed", 12, 0.1, 12, 0.1, ValueDisplay.DECIMAL);
 	public SliderSetting range =
 		new SliderSetting("Range", 4.25, 1, 4.25, 0.05, ValueDisplay.DECIMAL);
 	public SliderSetting fov =
@@ -85,7 +90,10 @@ public final class KillauraLegitMod extends Mod implements UpdateListener
 	public void initSettings()
 	{
 		settings.add(useKillaura);
-		settings.add(useCooldown);
+		
+		if(useCooldown != null)
+			settings.add(useCooldown);
+		
 		settings.add(speed);
 		settings.add(range);
 		settings.add(fov);
@@ -102,18 +110,20 @@ public final class KillauraLegitMod extends Mod implements UpdateListener
 	@Override
 	public void onEnable()
 	{
-		// TODO: Clean up this mess!
-		if(wurst.mods.killauraMod.isEnabled())
-			wurst.mods.killauraMod.setEnabled(false);
-		if(wurst.mods.multiAuraMod.isEnabled())
-			wurst.mods.multiAuraMod.setEnabled(false);
-		if(wurst.mods.clickAuraMod.isEnabled())
-			wurst.mods.clickAuraMod.setEnabled(false);
-		if(wurst.mods.tpAuraMod.isEnabled())
-			wurst.mods.tpAuraMod.setEnabled(false);
-		if(wurst.mods.triggerBotMod.isEnabled())
-			wurst.mods.triggerBotMod.setEnabled(false);
+		// disable other killauras
+		wurst.mods.killauraMod.setEnabled(false);
+		wurst.mods.multiAuraMod.setEnabled(false);
+		wurst.mods.clickAuraMod.setEnabled(false);
+		wurst.mods.tpAuraMod.setEnabled(false);
+		wurst.mods.triggerBotMod.setEnabled(false);
+		
 		wurst.events.add(UpdateListener.class, this);
+	}
+	
+	@Override
+	public void onDisable()
+	{
+		wurst.events.remove(UpdateListener.class, this);
 	}
 	
 	@Override
@@ -146,11 +156,5 @@ public final class KillauraLegitMod extends Mod implements UpdateListener
 		
 		// reset timer
 		updateLastMS();
-	}
-	
-	@Override
-	public void onDisable()
-	{
-		wurst.events.remove(UpdateListener.class, this);
 	}
 }
