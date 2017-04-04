@@ -236,8 +236,8 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 		if(activeButton != null)
 		{
 			mc.getSoundHandler()
-			.playSound(PositionedSoundRecord.createPositionedSoundRecord(
-				SoundEvents.ui_button_click, 1.0F));
+				.playSound(PositionedSoundRecord.createPositionedSoundRecord(
+					SoundEvents.ui_button_click, 1.0F));
 			activeButton.press();
 			WurstClient wurst = WurstClient.INSTANCE;
 			wurst.navigator.addPreference(feature.getName());

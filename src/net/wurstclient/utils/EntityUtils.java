@@ -30,6 +30,7 @@ import net.wurstclient.WurstClient;
 import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.compatibility.WPlayer;
+import net.wurstclient.features.mods.AutoSwordMod;
 
 public class EntityUtils
 {
@@ -41,7 +42,7 @@ public class EntityUtils
 	public static void prepareAttack()
 	{
 		// AutoSword
-		wurst.mods.autoSwordMod.setSlot();
+		AutoSwordMod.setSlot();
 		
 		// Criticals
 		wurst.mods.criticalsMod.doCritical();

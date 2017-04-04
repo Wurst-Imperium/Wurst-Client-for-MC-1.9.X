@@ -7,7 +7,6 @@
  */
 package net.wurstclient.navigator;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -17,57 +16,19 @@ import java.util.function.Consumer;
 import net.wurstclient.WurstClient;
 import net.wurstclient.analytics.AnalyticsManager;
 import net.wurstclient.features.Feature;
-import net.wurstclient.features.commands.CmdManager;
-import net.wurstclient.features.mods.ModManager;
-import net.wurstclient.features.special_features.SpfManager;
 
-public class Navigator
+public final class Navigator
 {
-	private ArrayList<Feature> navigatorList = new ArrayList<>();
+	private final ArrayList<Feature> navigatorList = new ArrayList<>();
 	private final HashMap<String, Long> preferences = new HashMap<>();
 	public AnalyticsManager analytics = new AnalyticsManager("UA-52838431-7",
 		"navigator.client.wurstclient.net");
 	
 	public Navigator()
 	{
-		// add mods
-		Field[] modFields = ModManager.class.getFields();
-		try
-		{
-			for(Field field : modFields)
-				if(field.getName().endsWith("Mod"))
-					navigatorList
-						.add((Feature)field.get(WurstClient.INSTANCE.mods));
-		}catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		
-		// add commands
-		Field[] cmdFields = CmdManager.class.getFields();
-		try
-		{
-			for(Field field : cmdFields)
-				if(field.getName().endsWith("Cmd"))
-					navigatorList
-						.add((Feature)field.get(WurstClient.INSTANCE.commands));
-		}catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		
-		// add special features
-		Field[] specialFields = SpfManager.class.getFields();
-		try
-		{
-			for(Field field : specialFields)
-				if(field.getName().endsWith("Spf"))
-					navigatorList
-						.add((Feature)field.get(WurstClient.INSTANCE.special));
-		}catch(Exception e)
-		{
-			e.printStackTrace();
-		}
+		navigatorList.addAll(WurstClient.INSTANCE.mods.getAllMods());
+		navigatorList.addAll(WurstClient.INSTANCE.commands.getAllCommands());
+		navigatorList.addAll(WurstClient.INSTANCE.special.getAllFeatures());
 	}
 	
 	public void copyNavigatorList(ArrayList<Feature> list)
@@ -163,20 +124,16 @@ public class Navigator
 	
 	public void sortFeatures()
 	{
-		navigatorList.sort(new Comparator<Feature>()
-		{
-			@Override
-			public int compare(Feature o1, Feature o2)
-			{
-				long preference1 = getPreference(o1.getName());
-				long preference2 = getPreference(o2.getName());
-				if(preference1 < preference2)
-					return 1;
-				else if(preference1 > preference2)
-					return -1;
-				else
-					return 0;
-			}
+		navigatorList.sort((o1, o2) -> {
+			long preference1 = getPreference(o1.getName());
+			long preference2 = getPreference(o2.getName());
+			
+			if(preference1 < preference2)
+				return 1;
+			else if(preference1 > preference2)
+				return -1;
+			else
+				return 0;
 		});
 	}
 	

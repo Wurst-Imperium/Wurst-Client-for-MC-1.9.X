@@ -12,8 +12,8 @@ import net.wurstclient.ai.PathFinder;
 import net.wurstclient.ai.PathPoint;
 import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.utils.ChatUtils;
-import net.wurstclient.utils.RenderUtils;
 import net.wurstclient.utils.EntityUtils.TargetSettings;
+import net.wurstclient.utils.RenderUtils;
 
 @Cmd.Info(
 	description = "Shows the shortest path to a specific point. Useful for labyrinths and caves.",

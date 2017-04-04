@@ -26,9 +26,10 @@ import net.wurstclient.utils.RenderUtils;
 
 public class NavigatorMainScreen extends NavigatorScreen
 {
-	private static ArrayList<Feature> navigatorDisplayList = new ArrayList<>();
+	private static final ArrayList<Feature> navigatorDisplayList =
+		new ArrayList<>();
 	private GuiTextField searchBar;
-	private int hoveredItem = -1;
+	private int hoveredFeature = -1;
 	private boolean hoveringArrow;
 	private int clickTimer = -1;
 	private boolean expanding = false;
@@ -82,7 +83,7 @@ public class NavigatorMainScreen extends NavigatorScreen
 	@Override
 	protected void onMouseClick(int x, int y, int button)
 	{
-		if(clickTimer == -1 && hoveredItem != -1)
+		if(clickTimer == -1 && hoveredFeature != -1)
 			if(button == 0
 				&& (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || hoveringArrow)
 				|| button == 2)
@@ -91,29 +92,29 @@ public class NavigatorMainScreen extends NavigatorScreen
 			else if(button == 0)
 			{
 				// left click
-				Feature item = navigatorDisplayList.get(hoveredItem);
-				if(item.getPrimaryAction().isEmpty())
+				Feature feature = navigatorDisplayList.get(hoveredFeature);
+				if(feature.getPrimaryAction().isEmpty())
 					expanding = true;
 				else
 				{
-					item.doPrimaryAction();
+					feature.doPrimaryAction();
 					WurstClient wurst = WurstClient.INSTANCE;
-					wurst.navigator.addPreference(item.getName());
+					wurst.navigator.addPreference(feature.getName());
 					ConfigFiles.NAVIGATOR.save();
 				}
 			}else if(button == 1)
 			{
 				// right click
-				Feature item = navigatorDisplayList.get(hoveredItem);
-				if(item.getHelpPage().isEmpty())
+				Feature feature = navigatorDisplayList.get(hoveredFeature);
+				if(feature.getHelpPage().isEmpty())
 					return;
 				MiscUtils.openLink("https://www.wurstclient.net/wiki/"
-					+ item.getHelpPage() + "/");
+					+ feature.getHelpPage() + "/");
 				WurstClient wurst = WurstClient.INSTANCE;
-				wurst.navigator.addPreference(item.getName());
+				wurst.navigator.addPreference(feature.getName());
 				ConfigFiles.NAVIGATOR.save();
 				wurst.navigator.analytics.trackEvent("help", "open",
-					item.getName());
+					feature.getName());
 			}
 	}
 	
@@ -139,19 +140,19 @@ public class NavigatorMainScreen extends NavigatorScreen
 				clickTimer++;
 			else
 			{
-				Feature item = navigatorDisplayList.get(hoveredItem);
-				mc.displayGuiScreen(new NavigatorFeatureScreen(item, this));
+				Feature feature = navigatorDisplayList.get(hoveredFeature);
+				mc.displayGuiScreen(new NavigatorFeatureScreen(feature, this));
 				
 				String query = searchBar.getText();
 				if(query.isEmpty())
 					WurstClient.INSTANCE.navigator.analytics.trackPageView(
-						"/" + item.getType() + "/" + item.getName(),
-						item.getName());
+						"/" + feature.getType() + "/" + feature.getName(),
+						feature.getName());
 				else
 					WurstClient.INSTANCE.navigator.analytics
 						.trackPageViewFromSearch(
-							item.getType() + item.getName(), item.getName(),
-							"/", query);
+							feature.getType() + feature.getName(),
+							feature.getName(), "/", query);
 			}
 		else if(!expanding && clickTimer > -1)
 			clickTimer--;
@@ -174,7 +175,7 @@ public class NavigatorMainScreen extends NavigatorScreen
 		// feature list
 		int x = middleX - 50;
 		if(clickTimerNotRunning)
-			hoveredItem = -1;
+			hoveredFeature = -1;
 		RenderUtils.scissorBox(0, 59, width, height - 42);
 		glEnable(GL_SCISSOR_TEST);
 		for(int i = Math.max(-scroll * 3 / 20 - 3, 0); i < navigatorDisplayList
@@ -202,14 +203,14 @@ public class NavigatorMainScreen extends NavigatorScreen
 				break;
 			}
 			
-			// item & area
-			Feature item = navigatorDisplayList.get(i);
+			// feature & area
+			Feature feature = navigatorDisplayList.get(i);
 			Rectangle area = new Rectangle(xi, y, 100, 16);
 			
 			// click animation
 			if(!clickTimerNotRunning)
 			{
-				if(i != hoveredItem)
+				if(i != hoveredFeature)
 					continue;
 				
 				float factor;
@@ -237,9 +238,9 @@ public class NavigatorMainScreen extends NavigatorScreen
 				// color
 				boolean hovering = area.contains(mouseX, mouseY);
 				if(hovering)
-					hoveredItem = i;
-				if(item.isEnabled())
-					if(item.isBlocked())
+					hoveredFeature = i;
+				if(feature.isEnabled())
+					if(feature.isBlocked())
 						glColor4f(hovering ? 1F : 0.875F, 0F, 0F, 0.5F);
 					else
 						glColor4f(0F, hovering ? 1F : 0.875F, 0F, 0.5F);
@@ -300,7 +301,7 @@ public class NavigatorMainScreen extends NavigatorScreen
 				// text
 				if(clickTimerNotRunning)
 				{
-					String buttonText = item.getName();
+					String buttonText = feature.getName();
 					Fonts.segoe15.drawString(buttonText, area.x + 4, area.y + 2,
 						0xffffff);
 					glDisable(GL_TEXTURE_2D);
