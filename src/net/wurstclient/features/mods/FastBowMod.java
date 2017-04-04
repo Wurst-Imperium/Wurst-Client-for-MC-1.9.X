@@ -7,7 +7,6 @@
  */
 package net.wurstclient.features.mods;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemBow;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.network.play.client.CPacketPlayerDigging;
@@ -15,6 +14,7 @@ import net.minecraft.network.play.client.CPacketPlayerDigging.Action;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.compatibility.WPlayerController;
 import net.wurstclient.events.listeners.UpdateListener;
@@ -59,10 +59,9 @@ public final class FastBowMod extends Mod implements UpdateListener
 					WMinecraft.getWorld(), WMinecraft.getPlayer(),
 					EnumHand.MAIN_HAND);
 			for(int i = 0; i < 20; i++)
-				WMinecraft.getPlayer().sendQueue
-					.addToSendQueue(new CPacketPlayer(false));
-			Minecraft.getMinecraft().getNetHandler().addToSendQueue(
-				new CPacketPlayerDigging(Action.RELEASE_USE_ITEM,
+				WConnection.sendPacket(new CPacketPlayer(false));
+			WConnection
+				.sendPacket(new CPacketPlayerDigging(Action.RELEASE_USE_ITEM,
 					new BlockPos(0, 0, 0), EnumFacing.DOWN));
 			WMinecraft.getPlayer().inventory.getCurrentItem().getItem()
 				.onPlayerStoppedUsing(

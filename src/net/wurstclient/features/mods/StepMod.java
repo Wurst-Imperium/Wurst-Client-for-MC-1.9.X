@@ -8,6 +8,7 @@
 package net.wurstclient.features.mods;
 
 import net.minecraft.network.play.client.CPacketPlayer;
+import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.special_features.YesCheatSpf.BypassLevel;
@@ -67,14 +68,14 @@ public final class StepMod extends Mod implements UpdateListener
 			if(WMinecraft.getPlayer().isCollidedHorizontally
 				&& WMinecraft.getPlayer().onGround)
 			{
-				mc.getNetHandler()
-					.addToSendQueue(new CPacketPlayer.C04PacketPlayerPosition(
+				WConnection
+					.sendPacket(new CPacketPlayer.C04PacketPlayerPosition(
 						WMinecraft.getPlayer().posX,
 						WMinecraft.getPlayer().posY + 0.42D,
 						WMinecraft.getPlayer().posZ,
 						WMinecraft.getPlayer().onGround));
-				mc.getNetHandler()
-					.addToSendQueue(new CPacketPlayer.C04PacketPlayerPosition(
+				WConnection
+					.sendPacket(new CPacketPlayer.C04PacketPlayerPosition(
 						WMinecraft.getPlayer().posX,
 						WMinecraft.getPlayer().posY + 0.753D,
 						WMinecraft.getPlayer().posZ,

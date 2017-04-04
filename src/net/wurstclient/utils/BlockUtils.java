@@ -9,6 +9,7 @@ package net.wurstclient.utils;
 
 import net.minecraft.network.play.client.CPacketPlayer.C05PacketPlayerLook;
 import net.minecraft.util.math.BlockPos;
+import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMath;
 import net.wurstclient.compatibility.WMinecraft;
 
@@ -41,7 +42,7 @@ public class BlockUtils
 		float yaw =
 			(float)(Math.atan2(diffZ, diffX) * 180.0D / Math.PI) - 90.0F;
 		float pitch = (float)-(Math.atan2(diffY, dist) * 180.0D / Math.PI);
-		WMinecraft.getPlayer().sendQueue.addToSendQueue(new C05PacketPlayerLook(
+		WConnection.sendPacket(new C05PacketPlayerLook(
 			WMinecraft.getPlayer().rotationYaw
 				+ WMath.wrapDegrees(yaw - WMinecraft.getPlayer().rotationYaw),
 			WMinecraft.getPlayer().rotationPitch + WMath

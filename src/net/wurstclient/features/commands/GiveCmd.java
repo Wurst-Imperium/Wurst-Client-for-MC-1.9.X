@@ -14,6 +14,7 @@ import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTException;
 import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
 import net.minecraft.util.ResourceLocation;
+import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.utils.ChatUtils;
 import net.wurstclient.utils.MiscUtils;
@@ -186,7 +187,7 @@ public final class GiveCmd extends Cmd
 		for(int i = 0; i < 9; i++)
 			if(WMinecraft.getPlayer().inventory.getStackInSlot(i) == null)
 			{
-				WMinecraft.getPlayer().sendQueue.addToSendQueue(
+				WConnection.sendPacket(
 					new CPacketCreativeInventoryAction(36 + i, stack));
 				ChatUtils
 					.message("Item" + (amount > 1 ? "s" : "") + " created.");

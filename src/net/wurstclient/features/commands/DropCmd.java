@@ -13,6 +13,7 @@ import net.minecraft.inventory.ClickType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
+import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.special_features.YesCheatSpf.BypassLevel;
@@ -52,9 +53,8 @@ public final class DropCmd extends Cmd implements UpdateListener
 			Item item = null;
 			while(item == null)
 				item = Item.getItemById(new Random().nextInt(431));
-			WMinecraft.getPlayer().sendQueue
-				.addToSendQueue(new CPacketCreativeInventoryAction(-1,
-					new ItemStack(item, 64)));
+			WConnection.sendPacket(new CPacketCreativeInventoryAction(-1,
+				new ItemStack(item, 64)));
 			return;
 		}
 		if(wurst.special.yesCheatSpf.getBypassLevel()

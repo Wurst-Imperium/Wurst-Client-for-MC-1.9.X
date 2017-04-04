@@ -13,6 +13,7 @@ import net.minecraft.network.play.client.CPacketPlayerDigging.Action;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
+import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.compatibility.WPlayer;
 import net.wurstclient.events.listeners.UpdateListener;
@@ -111,15 +112,13 @@ public final class KaboomMod extends Mod implements UpdateListener
 								EnumFacing side = mc.objectMouseOver.sideHit;
 								BlockUtils.faceBlockPacket(pos);
 								WPlayer.swingArmPacket();
-								WMinecraft.getPlayer().sendQueue
-									.addToSendQueue(new CPacketPlayerDigging(
-										Action.START_DESTROY_BLOCK, pos, side));
+								WConnection.sendPacket(new CPacketPlayerDigging(
+									Action.START_DESTROY_BLOCK, pos, side));
 								for(int i = 0; i < power; i++)
-									WMinecraft.getPlayer().sendQueue
-										.addToSendQueue(
-											new CPacketPlayerDigging(
-												Action.STOP_DESTROY_BLOCK, pos,
-												side));
+									WConnection
+										.sendPacket(new CPacketPlayerDigging(
+											Action.STOP_DESTROY_BLOCK, pos,
+											side));
 								block.onBlockDestroyedByPlayer(
 									WMinecraft.getWorld(), pos,
 									WMinecraft.getWorld().getBlockState(pos));

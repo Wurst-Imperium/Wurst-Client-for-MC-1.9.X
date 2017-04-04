@@ -11,7 +11,6 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
-import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Container;
@@ -19,6 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketHeldItemChange;
 import net.minecraft.network.play.client.CPacketPlayerBlockPlacement;
 import net.minecraft.util.EnumHand;
+import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
@@ -100,10 +100,9 @@ public final class AutoSoupMod extends Mod implements UpdateListener
 		if(soupInHotbar != -1)
 		{
 			// eat soup in hotbar
-			NetHandlerPlayClient sendQueue = player.sendQueue;
-			sendQueue
-				.addToSendQueue(new CPacketHeldItemChange(soupInHotbar - 36));
-			sendQueue.addToSendQueue(
+			WConnection
+				.sendPacket(new CPacketHeldItemChange(soupInHotbar - 36));
+			WConnection.sendPacket(
 				new CPacketPlayerBlockPlacement(EnumHand.MAIN_HAND));
 			playerController.updateController();
 		}else

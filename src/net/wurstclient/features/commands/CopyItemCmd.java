@@ -10,6 +10,7 @@ package net.wurstclient.features.commands;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
+import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.utils.ChatUtils;
 
@@ -68,7 +69,7 @@ public final class CopyItemCmd extends Cmd
 		for(int i = 0; i < 9; i++)
 			if(WMinecraft.getPlayer().inventory.getStackInSlot(i) == null)
 			{
-				WMinecraft.getPlayer().sendQueue.addToSendQueue(
+				WConnection.sendPacket(
 					new CPacketCreativeInventoryAction(36 + i, item));
 				ChatUtils.message("Item copied.");
 				return;

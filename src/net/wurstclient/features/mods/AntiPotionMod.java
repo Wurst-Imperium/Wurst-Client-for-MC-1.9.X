@@ -10,6 +10,7 @@ package net.wurstclient.features.mods;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.init.MobEffects;
 import net.minecraft.network.play.client.CPacketPlayer;
+import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 
@@ -42,7 +43,7 @@ public final class AntiPotionMod extends Mod implements UpdateListener
 				|| player.isPotionActive(MobEffects.wither)
 				|| player.isPotionActive(MobEffects.poison))
 				for(int i = 0; i < 1000; i++)
-					player.sendQueue.addToSendQueue(new CPacketPlayer());
+					WConnection.sendPacket(new CPacketPlayer());
 	}
 	
 	@Override

@@ -11,6 +11,7 @@ import net.minecraft.network.play.client.CPacketChatMessage;
 import net.minecraft.network.play.client.CPacketPlayer.C04PacketPlayerPosition;
 import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.util.EnumHand;
+import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
@@ -75,17 +76,15 @@ public final class AutoLeaveMod extends Mod implements UpdateListener
 				WMinecraft.getWorld().sendQuittingDisconnectingPacket();
 				break;
 				case 1:
-				WMinecraft.getPlayer().sendQueue
-					.addToSendQueue(new CPacketChatMessage("§"));
+				WConnection.sendPacket(new CPacketChatMessage("§"));
 				break;
 				case 2:
-				WMinecraft.getPlayer().sendQueue.addToSendQueue(
+				WConnection.sendPacket(
 					new C04PacketPlayerPosition(3.1e7d, 100, 3.1e7d, false));
 				break;
 				case 3:
-				WMinecraft.getPlayer().sendQueue
-					.addToSendQueue(new CPacketUseEntity(WMinecraft.getPlayer(),
-						EnumHand.MAIN_HAND));
+				WConnection.sendPacket(new CPacketUseEntity(
+					WMinecraft.getPlayer(), EnumHand.MAIN_HAND));
 				break;
 				default:
 				break;

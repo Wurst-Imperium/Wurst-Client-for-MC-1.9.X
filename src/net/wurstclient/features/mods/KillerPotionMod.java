@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
+import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.utils.ChatUtils;
 
@@ -49,8 +50,7 @@ public final class KillerPotionMod extends Mod
 		stack.setTagInfo("CustomPotionEffects", effects);
 		stack.setStackDisplayName("§c§lKiller§6§lPotion");
 		
-		WMinecraft.getPlayer().sendQueue
-			.addToSendQueue(new CPacketCreativeInventoryAction(36, stack));
+		WConnection.sendPacket(new CPacketCreativeInventoryAction(36, stack));
 		ChatUtils.message("Potion created.");
 		setEnabled(false);
 	}

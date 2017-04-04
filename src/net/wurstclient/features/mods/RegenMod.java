@@ -8,6 +8,7 @@
 package net.wurstclient.features.mods;
 
 import net.minecraft.network.play.client.CPacketPlayer;
+import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 
@@ -35,8 +36,7 @@ public final class RegenMod extends Mod implements UpdateListener
 			&& WMinecraft.getPlayer().getHealth() != 0
 			&& WMinecraft.getPlayer().onGround)
 			for(int i = 0; i < 1000; i++)
-				WMinecraft.getPlayer().sendQueue
-					.addToSendQueue(new CPacketPlayer());
+				WConnection.sendPacket(new CPacketPlayer());
 	}
 	
 	@Override

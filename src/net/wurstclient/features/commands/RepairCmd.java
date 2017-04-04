@@ -10,6 +10,7 @@ package net.wurstclient.features.commands;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
+import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.ChatOutputEvent;
 
@@ -41,7 +42,7 @@ public final class RepairCmd extends Cmd
 		
 		// repair item
 		item.setItemDamage(0);
-		player.sendQueue.addToSendQueue(new CPacketCreativeInventoryAction(
+		WConnection.sendPacket(new CPacketCreativeInventoryAction(
 			36 + player.inventory.currentItem, item));
 	}
 	

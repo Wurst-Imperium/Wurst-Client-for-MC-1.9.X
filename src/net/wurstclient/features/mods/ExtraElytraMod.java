@@ -12,6 +12,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemElytra;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketEntityAction;
+import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMath;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
@@ -59,8 +60,8 @@ public final class ExtraElytraMod extends Mod implements UpdateListener
 		{
 			if(stopInWater.isChecked() && WMinecraft.getPlayer().isInWater())
 			{
-				WMinecraft.getPlayer().sendQueue.addToSendQueue(
-					new CPacketEntityAction(WMinecraft.getPlayer(),
+				WConnection
+					.sendPacket(new CPacketEntityAction(WMinecraft.getPlayer(),
 						CPacketEntityAction.Action.START_FALL_FLYING));
 				return;
 			}
@@ -98,8 +99,8 @@ public final class ExtraElytraMod extends Mod implements UpdateListener
 				WMinecraft.getPlayer().setSprinting(true);
 				WMinecraft.getPlayer().jump();
 			}
-			WMinecraft.getPlayer().sendQueue
-				.addToSendQueue(new CPacketEntityAction(WMinecraft.getPlayer(),
+			WConnection
+				.sendPacket(new CPacketEntityAction(WMinecraft.getPlayer(),
 					CPacketEntityAction.Action.START_FALL_FLYING));
 		}
 	}

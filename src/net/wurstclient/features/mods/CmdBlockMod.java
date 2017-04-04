@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
+import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.gui.mods.GuiCmdBlock;
 import net.wurstclient.utils.ChatUtils;
@@ -50,8 +51,7 @@ public final class CmdBlockMod extends Mod
 		nbtTagCompound.setTag("Command", new NBTTagString(cmd));
 		stack.writeToNBT(nbtTagCompound);
 		stack.setTagInfo("BlockEntityTag", nbtTagCompound);
-		WMinecraft.getPlayer().sendQueue
-			.addToSendQueue(new CPacketCreativeInventoryAction(36, stack));
+		WConnection.sendPacket(new CPacketCreativeInventoryAction(36, stack));
 		ChatUtils.message("Command Block created.");
 	}
 }

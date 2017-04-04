@@ -8,6 +8,7 @@
 package net.wurstclient.features.mods;
 
 import net.minecraft.network.play.client.CPacketPlayer.C04PacketPlayerPosition;
+import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
@@ -64,10 +65,9 @@ public final class FlightMod extends Mod implements UpdateListener
 			double startZ = WMinecraft.getPlayer().posZ;
 			for(int i = 0; i < 4; i++)
 			{
-				WMinecraft.getPlayer().sendQueue
-					.addToSendQueue(new C04PacketPlayerPosition(startX,
-						startY + 1.01, startZ, false));
-				WMinecraft.getPlayer().sendQueue.addToSendQueue(
+				WConnection.sendPacket(new C04PacketPlayerPosition(startX,
+					startY + 1.01, startZ, false));
+				WConnection.sendPacket(
 					new C04PacketPlayerPosition(startX, startY, startZ, false));
 			}
 			WMinecraft.getPlayer().jump();

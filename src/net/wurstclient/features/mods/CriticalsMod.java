@@ -8,9 +8,9 @@
 package net.wurstclient.features.mods;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.network.play.client.CPacketPlayer.C04PacketPlayerPosition;
+import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.LeftClickEvent;
 import net.wurstclient.events.listeners.LeftClickListener;
@@ -84,16 +84,14 @@ public final class CriticalsMod extends Mod implements LeftClickListener
 				double posX = WMinecraft.getPlayer().posX;
 				double posY = WMinecraft.getPlayer().posY;
 				double posZ = WMinecraft.getPlayer().posZ;
-				NetHandlerPlayClient sendQueue =
-					WMinecraft.getPlayer().sendQueue;
 				
-				sendQueue.addToSendQueue(new C04PacketPlayerPosition(posX,
+				WConnection.sendPacket(new C04PacketPlayerPosition(posX,
 					posY + 0.0625D, posZ, true));
-				sendQueue.addToSendQueue(
+				WConnection.sendPacket(
 					new C04PacketPlayerPosition(posX, posY, posZ, false));
-				sendQueue.addToSendQueue(new C04PacketPlayerPosition(posX,
+				WConnection.sendPacket(new C04PacketPlayerPosition(posX,
 					posY + 1.1E-5D, posZ, false));
-				sendQueue.addToSendQueue(
+				WConnection.sendPacket(
 					new C04PacketPlayerPosition(posX, posY, posZ, false));
 				break;
 			}

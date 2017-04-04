@@ -9,6 +9,7 @@ package net.wurstclient.features.mods;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.network.play.client.CPacketPlayer;
+import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.utils.EntityUtils;
@@ -35,8 +36,7 @@ public final class ForcePushMod extends Mod implements UpdateListener
 		if(WMinecraft.getPlayer().onGround && en != null
 			&& en.getDistanceToEntity(WMinecraft.getPlayer()) < 1)
 			for(int i = 0; i < 1000; i++)
-				WMinecraft.getPlayer().sendQueue
-					.addToSendQueue(new CPacketPlayer(true));
+				WConnection.sendPacket(new CPacketPlayer(true));
 	}
 	
 	@Override
