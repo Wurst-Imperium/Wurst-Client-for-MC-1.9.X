@@ -49,7 +49,6 @@ public class ModManager
 	public final AutoWalkMod autoWalkMod = new AutoWalkMod();
 	public final BaseFinderMod baseFinderMod = new BaseFinderMod();
 	public final BlinkMod blinkMod = new BlinkMod();
-	public final BlockHitMod blockHitMod = new BlockHitMod();
 	public final BoatFlyMod boatFlyMod = new BoatFlyMod();
 	public final BonemealAuraMod bonemealAuraMod = new BonemealAuraMod();
 	public final BowAimbotMod bowAimbotMod = new BowAimbotMod();

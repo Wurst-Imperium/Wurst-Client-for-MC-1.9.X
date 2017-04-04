@@ -98,7 +98,6 @@ public final class KillauraMod extends Mod implements UpdateListener
 			if(wurst.mods.autoSwordMod.isActive())
 				AutoSwordMod.setSlot();
 			wurst.mods.criticalsMod.doCritical();
-			wurst.mods.blockHitMod.doBlock();
 			
 			if(EntityUtils.faceEntityPacket(en))
 			{

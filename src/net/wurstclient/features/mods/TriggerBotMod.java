@@ -114,7 +114,6 @@ public final class TriggerBotMod extends Mod implements UpdateListener
 			if(wurst.mods.autoSwordMod.isActive())
 				AutoSwordMod.setSlot();
 			wurst.mods.criticalsMod.doCritical();
-			wurst.mods.blockHitMod.doBlock();
 			
 			mc.playerController.attackEntity(WMinecraft.getPlayer(), en);
 			WPlayer.swingArmClient();

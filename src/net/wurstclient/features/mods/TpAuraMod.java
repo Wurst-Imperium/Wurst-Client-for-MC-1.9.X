@@ -134,7 +134,6 @@ public final class TpAuraMod extends Mod implements UpdateListener
 				if(wurst.mods.autoSwordMod.isActive())
 					AutoSwordMod.setSlot();
 				wurst.mods.criticalsMod.doCritical();
-				wurst.mods.blockHitMod.doBlock();
 				EntityUtils.faceEntityPacket(en);
 				
 				mc.playerController.attackEntity(WMinecraft.getPlayer(), en);
