@@ -117,7 +117,7 @@ public final class ExtraElytraMod extends Mod implements UpdateListener
 		{
 			default:
 			case OFF:
-			case MINEPLEX_ANTICHEAT:
+			case MINEPLEX:
 			case ANTICHEAT:
 			case OLDER_NCP:
 			case LATEST_NCP:

@@ -154,7 +154,7 @@ public final class ClickAuraMod extends Mod implements UpdateListener
 		{
 			default:
 			case OFF:
-			case MINEPLEX_ANTICHEAT:
+			case MINEPLEX:
 			speed.unlock();
 			range.unlock();
 			hitThroughWalls.unlock();

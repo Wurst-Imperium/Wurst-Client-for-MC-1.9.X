@@ -11,6 +11,7 @@ import java.util.HashSet;
 
 import net.wurstclient.features.mods.Mod;
 import net.wurstclient.features.mods.Mod.Bypasses;
+import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.ModeSetting;
 
 @Spf.Info(
@@ -22,6 +23,9 @@ public final class YesCheatSpf extends Spf
 {
 	private final HashSet<Mod> blockedMods = new HashSet<>();
 	private BypassLevel bypassLevel = BypassLevel.OFF;
+	
+	public CheckboxSetting modeIndicator =
+		new CheckboxSetting("Mode Indicator", true);
 	
 	public YesCheatSpf()
 	{
@@ -47,6 +51,7 @@ public final class YesCheatSpf extends Spf
 					.forEach((mod) -> mod.onYesCheatUpdate(bypassLevel));
 			}
 		});
+		settings.add(modeIndicator);
 	}
 	
 	public BypassLevel getBypassLevel()
@@ -61,10 +66,8 @@ public final class YesCheatSpf extends Spf
 	
 	public static enum BypassLevel
 	{
-		OFF("Off", (b) -> {
-			return true;
-		}),
-		MINEPLEX_ANTICHEAT("Mineplex AntiCheat", (b) -> b.mineplex()),
+		OFF("Off", (b) -> true),
+		MINEPLEX("Mineplex", (b) -> b.mineplex()),
 		ANTICHEAT("AntiCheat", (b) -> b.antiCheat()),
 		OLDER_NCP("Older NoCheat+", (b) -> b.olderNCP()),
 		LATEST_NCP("Latest NoCheat+", (b) -> b.latestNCP()),
@@ -79,17 +82,22 @@ public final class YesCheatSpf extends Spf
 			this.test = test;
 		}
 		
+		public boolean doesBypass(Bypasses bypasses)
+		{
+			return test.doesBypass(bypasses);
+		}
+		
+		public String getName()
+		{
+			return name;
+		}
+		
 		public static String[] getNames()
 		{
 			String[] names = new String[values().length];
 			for(int i = 0; i < names.length; i++)
 				names[i] = values()[i].name;
 			return names;
-		}
-		
-		public boolean doesBypass(Bypasses bypasses)
-		{
-			return test.doesBypass(bypasses);
 		}
 	}
 }
