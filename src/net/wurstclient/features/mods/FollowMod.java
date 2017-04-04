@@ -11,6 +11,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.utils.EntityUtils;
+import net.wurstclient.utils.RotationUtils;
 
 @Mod.Info(
 	description = "A bot that follows the closest entity.\n" + "Very annoying.",
@@ -59,7 +60,7 @@ public final class FollowMod extends Mod implements UpdateListener
 		}
 		double xDist = Math.abs(WMinecraft.getPlayer().posX - entity.posX);
 		double zDist = Math.abs(WMinecraft.getPlayer().posZ - entity.posZ);
-		EntityUtils.faceEntityClient(entity);
+		RotationUtils.faceEntityClient(entity);
 		if(xDist > 1D || zDist > 1D)
 			mc.gameSettings.keyBindForward.pressed = true;
 		else

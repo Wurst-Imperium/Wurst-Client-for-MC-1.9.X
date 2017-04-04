@@ -17,6 +17,7 @@ import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.utils.EntityUtils;
+import net.wurstclient.utils.RotationUtils;
 
 @Mod.Info(description = "Automatically attacks everything in your range.",
 	name = "Killaura",
@@ -87,11 +88,8 @@ public final class KillauraMod extends Mod implements UpdateListener
 			fov.getValueF(), hitThroughWalls.isChecked());
 		if(en == null || WMinecraft.getPlayer().getDistanceToEntity(en) > range
 			.getValueF())
-		{
-			EntityUtils.lookChanged = false;
 			return;
-		}
-		EntityUtils.lookChanged = true;
+		
 		if(useCooldown.isChecked() ? WPlayer.getCooldown() >= 1F
 			: hasTimePassedS(speed.getValueF()))
 		{
@@ -99,7 +97,7 @@ public final class KillauraMod extends Mod implements UpdateListener
 				AutoSwordMod.setSlot();
 			wurst.mods.criticalsMod.doCritical();
 			
-			if(EntityUtils.faceEntityPacket(en))
+			if(RotationUtils.faceEntityPacket(en))
 			{
 				mc.playerController.attackEntity(WMinecraft.getPlayer(), en);
 				WPlayer.swingArmClient();
@@ -113,7 +111,6 @@ public final class KillauraMod extends Mod implements UpdateListener
 	public void onDisable()
 	{
 		wurst.events.remove(UpdateListener.class, this);
-		EntityUtils.lookChanged = false;
 	}
 	
 	@Override

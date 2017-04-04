@@ -17,6 +17,7 @@ import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.utils.EntityUtils;
+import net.wurstclient.utils.RotationUtils;
 
 @Mod.Info(
 	description = "Automatically attacks the closest valid entity whenever you\n"
@@ -115,11 +116,8 @@ public final class ClickAuraMod extends Mod implements UpdateListener
 			wurst.mods.killauraMod.hitThroughWalls.isChecked());
 		if(en == null || WMinecraft.getPlayer()
 			.getDistanceToEntity(en) > wurst.mods.killauraMod.range.getValueF())
-		{
-			EntityUtils.lookChanged = false;
 			return;
-		}
-		EntityUtils.lookChanged = true;
+		
 		if(mc.gameSettings.keyBindAttack.pressed
 			&& (wurst.mods.killauraMod.useCooldown.isChecked()
 				? WPlayer.getCooldown() >= 1F
@@ -129,7 +127,7 @@ public final class ClickAuraMod extends Mod implements UpdateListener
 				AutoSwordMod.setSlot();
 			wurst.mods.criticalsMod.doCritical();
 			
-			if(EntityUtils.faceEntityPacket(en))
+			if(RotationUtils.faceEntityPacket(en))
 			{
 				mc.playerController.attackEntity(WMinecraft.getPlayer(), en);
 				WPlayer.swingArmClient();
@@ -143,7 +141,6 @@ public final class ClickAuraMod extends Mod implements UpdateListener
 	public void onDisable()
 	{
 		wurst.events.remove(UpdateListener.class, this);
-		EntityUtils.lookChanged = false;
 	}
 	
 	@Override

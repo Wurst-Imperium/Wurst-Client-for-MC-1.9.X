@@ -18,6 +18,7 @@ import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.utils.EntityUtils;
+import net.wurstclient.utils.RotationUtils;
 
 @Mod.Info(
 	description = "Faster Killaura that attacks multiple entities at once.",
@@ -116,11 +117,8 @@ public final class MultiAuraMod extends Mod implements UpdateListener
 			hitThroughWalls.isChecked());
 		if(closestEntity == null || WMinecraft.getPlayer()
 			.getDistanceToEntity(closestEntity) > range.getValueF())
-		{
-			EntityUtils.lookChanged = false;
 			return;
-		}
-		EntityUtils.lookChanged = true;
+		
 		if(useCooldown.isChecked() ? WPlayer.getCooldown() >= 1F : true)
 		{
 			if(wurst.mods.autoSwordMod.isActive())
@@ -131,7 +129,7 @@ public final class MultiAuraMod extends Mod implements UpdateListener
 			for(int i = 0; i < Math.min(entities.size(), 64); i++)
 			{
 				EntityLivingBase en = entities.get(i);
-				EntityUtils.faceEntityPacket(en);
+				RotationUtils.faceEntityPacket(en);
 				
 				mc.playerController.attackEntity(WMinecraft.getPlayer(), en);
 				WPlayer.swingArmClient();
@@ -144,6 +142,5 @@ public final class MultiAuraMod extends Mod implements UpdateListener
 	public void onDisable()
 	{
 		wurst.events.remove(UpdateListener.class, this);
-		EntityUtils.lookChanged = false;
 	}
 }

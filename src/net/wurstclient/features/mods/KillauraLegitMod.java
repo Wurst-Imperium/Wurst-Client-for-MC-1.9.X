@@ -16,6 +16,7 @@ import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.utils.EntityUtils;
+import net.wurstclient.utils.RotationUtils;
 
 @Mod.Info(
 	description = "Slower Killaura that bypasses any cheat prevention\n"
@@ -113,12 +114,8 @@ public final class KillauraLegitMod extends Mod implements UpdateListener
 				WMinecraft.getPlayer().jump();
 			if(useCooldown.isChecked() ? WPlayer.getCooldown() >= 1F
 				: hasTimePassedS(speed.getValueF()))
-				if(EntityUtils.getDistanceFromMouse(en) > 55)
-					EntityUtils.faceEntityClient(en);
-				else
+				if(RotationUtils.faceEntityClient(en))
 				{
-					EntityUtils.faceEntityClient(en);
-					
 					mc.playerController.attackEntity(WMinecraft.getPlayer(),
 						en);
 					WPlayer.swingArmClient();

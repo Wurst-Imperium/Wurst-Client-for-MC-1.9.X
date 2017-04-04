@@ -18,6 +18,7 @@ import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.utils.EntityUtils;
+import net.wurstclient.utils.RotationUtils;
 
 @Mod.Info(
 	description = "Automatically attacks the closest valid entity while teleporting around it.",
@@ -118,11 +119,8 @@ public final class TpAuraMod extends Mod implements UpdateListener
 			fov.getValueF(), hitThroughWalls.isChecked());
 		if(en == null || WMinecraft.getPlayer().getDistanceToEntity(en) > range
 			.getValueF())
-		{
-			EntityUtils.lookChanged = false;
 			return;
-		}
-		EntityUtils.lookChanged = true;
+		
 		if(hasTimePassedS(speed.getValueF()))
 		{
 			WMinecraft.getPlayer().setPosition(
@@ -134,7 +132,7 @@ public final class TpAuraMod extends Mod implements UpdateListener
 				if(wurst.mods.autoSwordMod.isActive())
 					AutoSwordMod.setSlot();
 				wurst.mods.criticalsMod.doCritical();
-				EntityUtils.faceEntityPacket(en);
+				RotationUtils.faceEntityPacket(en);
 				
 				mc.playerController.attackEntity(WMinecraft.getPlayer(), en);
 				WPlayer.swingArmClient();
@@ -149,6 +147,5 @@ public final class TpAuraMod extends Mod implements UpdateListener
 	public void onDisable()
 	{
 		wurst.events.remove(UpdateListener.class, this);
-		EntityUtils.lookChanged = false;
 	}
 }

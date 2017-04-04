@@ -12,6 +12,7 @@ import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.compatibility.WPlayer;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.utils.EntityUtils;
+import net.wurstclient.utils.RotationUtils;
 
 @Mod.Info(
 	description = "A bot that automatically fights for you.\n"
@@ -48,7 +49,7 @@ public final class FightBotMod extends Mod implements UpdateListener
 		}
 		double xDist = Math.abs(WMinecraft.getPlayer().posX - entity.posX);
 		double zDist = Math.abs(WMinecraft.getPlayer().posZ - entity.posZ);
-		EntityUtils.faceEntityClient(entity);
+		RotationUtils.faceEntityClient(entity);
 		if(xDist > distance || zDist > distance)
 			mc.gameSettings.keyBindForward.pressed = true;
 		else
@@ -66,11 +67,12 @@ public final class FightBotMod extends Mod implements UpdateListener
 				if(wurst.mods.autoSwordMod.isActive())
 					AutoSwordMod.setSlot();
 				wurst.mods.criticalsMod.doCritical();
-				if(EntityUtils.getDistanceFromMouse(entity) > 55)
-					EntityUtils.faceEntityClient(entity);
+				if(RotationUtils.getAngleToClientRotation(
+					entity.boundingBox.getCenter()) > 55)
+					RotationUtils.faceEntityClient(entity);
 				else
 				{
-					EntityUtils.faceEntityClient(entity);
+					RotationUtils.faceEntityClient(entity);
 					WPlayer.swingArmClient();
 					mc.playerController.attackEntity(WMinecraft.getPlayer(),
 						entity);

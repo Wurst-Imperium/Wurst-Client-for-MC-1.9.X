@@ -12,6 +12,7 @@ import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.compatibility.WPlayer;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.utils.EntityUtils;
+import net.wurstclient.utils.RotationUtils;
 
 @Mod.Info(
 	description = "A bot that follows the closest entity and protects it.",
@@ -70,7 +71,7 @@ public final class ProtectMod extends Mod implements UpdateListener
 			xDistE = Math.abs(WMinecraft.getPlayer().posX - enemy.posX);
 			zDistE = Math.abs(WMinecraft.getPlayer().posZ - enemy.posZ);
 		}else
-			EntityUtils.faceEntityClient(friend);
+			RotationUtils.faceEntityClient(friend);
 		if((xDistF > distanceF || zDistF > distanceF)
 			&& (enemy == null
 				|| WMinecraft.getPlayer().getDistanceToEntity(enemy) > range)
@@ -94,7 +95,7 @@ public final class ProtectMod extends Mod implements UpdateListener
 				if(wurst.mods.autoSwordMod.isActive())
 					AutoSwordMod.setSlot();
 				wurst.mods.criticalsMod.doCritical();
-				EntityUtils.faceEntityClient(enemy);
+				RotationUtils.faceEntityClient(enemy);
 				WPlayer.swingArmClient();
 				mc.playerController.attackEntity(WMinecraft.getPlayer(), enemy);
 				updateLastMS();
