@@ -13,6 +13,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.wurstclient.compatibility.WMinecraft;
+import net.wurstclient.compatibility.WPlayer;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
 import net.wurstclient.utils.BlockUtils;
@@ -93,7 +94,7 @@ public final class BuildRandomMod extends Mod implements UpdateListener
 			randomPos = new BlockPos(randomPosX, randomPosY, randomPosZ);
 		}
 		BlockUtils.faceBlockPacket(randomPos);
-		WMinecraft.getPlayer().swingArm(EnumHand.MAIN_HAND);
+		WPlayer.swingArmClient();
 		WMinecraft.getPlayer().sendQueue
 			.addToSendQueue(new CPacketPlayerTryUseItem(randomPos,
 				mc.objectMouseOver.sideHit, EnumHand.MAIN_HAND,

@@ -10,8 +10,8 @@ package net.wurstclient.features.mods;
 import java.util.ArrayList;
 
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.EnumHand;
 import net.wurstclient.compatibility.WMinecraft;
+import net.wurstclient.compatibility.WPlayer;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
 import net.wurstclient.settings.CheckboxSetting;
@@ -121,8 +121,7 @@ public final class MultiAuraMod extends Mod implements UpdateListener
 			return;
 		}
 		EntityUtils.lookChanged = true;
-		if(useCooldown.isChecked()
-			? WMinecraft.getPlayer().getSwordCooldown(0F) >= 1F : true)
+		if(useCooldown.isChecked() ? WPlayer.getCooldown() >= 1F : true)
 		{
 			if(wurst.mods.autoSwordMod.isActive())
 				AutoSwordMod.setSlot();
@@ -136,7 +135,7 @@ public final class MultiAuraMod extends Mod implements UpdateListener
 				EntityUtils.faceEntityPacket(en);
 				
 				mc.playerController.attackEntity(WMinecraft.getPlayer(), en);
-				WMinecraft.getPlayer().swingArm(EnumHand.MAIN_HAND);
+				WPlayer.swingArmClient();
 			}
 			updateLastMS();
 		}

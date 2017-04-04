@@ -14,6 +14,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.wurstclient.compatibility.WMinecraft;
+import net.wurstclient.compatibility.WPlayer;
 
 public class BuildUtils
 {
@@ -137,7 +138,7 @@ public class BuildUtils
 				new BlockPos(mouseOver.getBlockPos().getX() + building[i][0],
 					mouseOver.getBlockPos().getY() + building[i][1],
 					mouseOver.getBlockPos().getZ() + building[i][2]));
-			WMinecraft.getPlayer().swingArm(EnumHand.MAIN_HAND);
+			WPlayer.swingArmClient();
 			WMinecraft.getPlayer().sendQueue
 				.addToSendQueue(new CPacketPlayerTryUseItem(
 					new BlockPos(
@@ -157,7 +158,7 @@ public class BuildUtils
 				new BlockPos(mouseOver.getBlockPos().getX() - building[i][2],
 					mouseOver.getBlockPos().getY() + building[i][1],
 					mouseOver.getBlockPos().getZ() + building[i][0]));
-			WMinecraft.getPlayer().swingArm(EnumHand.MAIN_HAND);
+			WPlayer.swingArmClient();
 			WMinecraft.getPlayer().sendQueue
 				.addToSendQueue(new CPacketPlayerTryUseItem(
 					new BlockPos(
@@ -177,7 +178,7 @@ public class BuildUtils
 				new BlockPos(mouseOver.getBlockPos().getX() - building[i][0],
 					mouseOver.getBlockPos().getY() + building[i][1],
 					mouseOver.getBlockPos().getZ() - building[i][2]));
-			WMinecraft.getPlayer().swingArm(EnumHand.MAIN_HAND);
+			WPlayer.swingArmClient();
 			WMinecraft.getPlayer().sendQueue
 				.addToSendQueue(new CPacketPlayerTryUseItem(
 					new BlockPos(
@@ -197,7 +198,7 @@ public class BuildUtils
 				new BlockPos(mouseOver.getBlockPos().getX() + building[i][2],
 					mouseOver.getBlockPos().getY() + building[i][1],
 					mouseOver.getBlockPos().getZ() - building[i][0]));
-			WMinecraft.getPlayer().swingArm(EnumHand.MAIN_HAND);
+			WPlayer.swingArmClient();
 			WMinecraft.getPlayer().sendQueue
 				.addToSendQueue(new CPacketPlayerTryUseItem(
 					new BlockPos(
@@ -372,7 +373,7 @@ public class BuildUtils
 				new BlockPos(convertPosNext(1, mouseOver) + building[i][0],
 					convertPosNext(2, mouseOver) + building[i][1],
 					convertPosNext(3, mouseOver) + building[i][2]));
-			WMinecraft.getPlayer().swingArm(EnumHand.MAIN_HAND);
+			WPlayer.swingArmClient();
 			WMinecraft.getPlayer().sendQueue
 				.addToSendQueue(new CPacketPlayerTryUseItem(
 					new BlockPos(convertPosNext(1, mouseOver) + building[i][0],
@@ -391,7 +392,7 @@ public class BuildUtils
 				new BlockPos(convertPosNext(1, mouseOver) - building[i][2],
 					convertPosNext(2, mouseOver) + building[i][1],
 					convertPosNext(3, mouseOver) + building[i][0]));
-			WMinecraft.getPlayer().swingArm(EnumHand.MAIN_HAND);
+			WPlayer.swingArmClient();
 			WMinecraft.getPlayer().sendQueue
 				.addToSendQueue(new CPacketPlayerTryUseItem(
 					new BlockPos(convertPosNext(1, mouseOver) - building[i][2],
@@ -410,7 +411,7 @@ public class BuildUtils
 				new BlockPos(convertPosNext(1, mouseOver) - building[i][0],
 					convertPosNext(2, mouseOver) + building[i][1],
 					convertPosNext(3, mouseOver) - building[i][2]));
-			WMinecraft.getPlayer().swingArm(EnumHand.MAIN_HAND);
+			WPlayer.swingArmClient();
 			WMinecraft.getPlayer().sendQueue
 				.addToSendQueue(new CPacketPlayerTryUseItem(
 					new BlockPos(convertPosNext(1, mouseOver) - building[i][0],
@@ -429,7 +430,7 @@ public class BuildUtils
 				new BlockPos(convertPosNext(1, mouseOver) + building[i][2],
 					convertPosNext(2, mouseOver) + building[i][1],
 					convertPosNext(3, mouseOver) - building[i][0]));
-			WMinecraft.getPlayer().swingArm(EnumHand.MAIN_HAND);
+			WPlayer.swingArmClient();
 			WMinecraft.getPlayer().sendQueue
 				.addToSendQueue(new CPacketPlayerTryUseItem(
 					new BlockPos(convertPosNext(1, mouseOver) + building[i][2],
@@ -835,7 +836,7 @@ public class BuildUtils
 			BlockUtils.faceBlockPacket(new BlockPos(
 				(int)posX - 1 + building[i][0], (int)posY - 2 + building[i][1],
 				(int)posZ + building[i][2]));
-			WMinecraft.getPlayer().swingArm(EnumHand.MAIN_HAND);
+			WPlayer.swingArmClient();
 			WMinecraft.getPlayer().sendQueue
 				.addToSendQueue(new CPacketPlayerTryUseItem(
 					new BlockPos((int)posX - 1 + building[i][0],
@@ -853,7 +854,7 @@ public class BuildUtils
 			BlockUtils.faceBlockPacket(new BlockPos(
 				(int)(posX - 1 - building[i][2]),
 				(int)posY - 2 + building[i][1], (int)posZ + building[i][0]));
-			WMinecraft.getPlayer().swingArm(EnumHand.MAIN_HAND);
+			WPlayer.swingArmClient();
 			WMinecraft.getPlayer().sendQueue
 				.addToSendQueue(new CPacketPlayerTryUseItem(
 					new BlockPos((int)(posX - 1 - building[i][2]),
@@ -871,7 +872,7 @@ public class BuildUtils
 			BlockUtils.faceBlockPacket(new BlockPos(
 				(int)posX - 1 - building[i][0], (int)posY - 2 + building[i][1],
 				(int)posZ - building[i][2]));
-			WMinecraft.getPlayer().swingArm(EnumHand.MAIN_HAND);
+			WPlayer.swingArmClient();
 			WMinecraft.getPlayer().sendQueue
 				.addToSendQueue(new CPacketPlayerTryUseItem(
 					new BlockPos((int)posX - 1 - building[i][0],
@@ -889,7 +890,7 @@ public class BuildUtils
 			BlockUtils.faceBlockPacket(new BlockPos(
 				(int)posX - 1 + building[i][2], (int)posY - 2 + building[i][1],
 				(int)posZ - building[i][0]));
-			WMinecraft.getPlayer().swingArm(EnumHand.MAIN_HAND);
+			WPlayer.swingArmClient();
 			WMinecraft.getPlayer().sendQueue
 				.addToSendQueue(new CPacketPlayerTryUseItem(
 					new BlockPos((int)posX - 1 + building[i][2],

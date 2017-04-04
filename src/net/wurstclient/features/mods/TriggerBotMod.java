@@ -8,9 +8,9 @@
 package net.wurstclient.features.mods;
 
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.wurstclient.compatibility.WMinecraft;
+import net.wurstclient.compatibility.WPlayer;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
 import net.wurstclient.features.special_features.YesCheatSpf.BypassLevel;
@@ -105,8 +105,7 @@ public final class TriggerBotMod extends Mod implements UpdateListener
 			return;
 		EntityLivingBase en = (EntityLivingBase)mc.objectMouseOver.entityHit;
 		
-		if((useCooldown.isChecked()
-			? WMinecraft.getPlayer().getSwordCooldown(0F) >= 1F
+		if((useCooldown.isChecked() ? WPlayer.getCooldown() >= 1F
 			: hasTimePassedS(speed.getValueF()))
 			&& WMinecraft.getPlayer().getDistanceToEntity(en) <= range
 				.getValueF()
@@ -118,7 +117,7 @@ public final class TriggerBotMod extends Mod implements UpdateListener
 			wurst.mods.blockHitMod.doBlock();
 			
 			mc.playerController.attackEntity(WMinecraft.getPlayer(), en);
-			WMinecraft.getPlayer().swingArm(EnumHand.MAIN_HAND);
+			WPlayer.swingArmClient();
 			
 			updateLastMS();
 		}

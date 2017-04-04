@@ -10,8 +10,8 @@ package net.wurstclient.features.mods;
 import java.util.Random;
 
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.EnumHand;
 import net.wurstclient.compatibility.WMinecraft;
+import net.wurstclient.compatibility.WPlayer;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
 import net.wurstclient.settings.CheckboxSetting;
@@ -129,8 +129,7 @@ public final class TpAuraMod extends Mod implements UpdateListener
 				en.posX + random.nextInt(3) * 2 - 2, en.posY,
 				en.posZ + random.nextInt(3) * 2 - 2);
 			
-			if(!useCooldown.isChecked()
-				|| WMinecraft.getPlayer().getSwordCooldown(0F) >= 1F)
+			if(!useCooldown.isChecked() || WPlayer.getCooldown() >= 1F)
 			{
 				if(wurst.mods.autoSwordMod.isActive())
 					AutoSwordMod.setSlot();
@@ -139,7 +138,7 @@ public final class TpAuraMod extends Mod implements UpdateListener
 				EntityUtils.faceEntityPacket(en);
 				
 				mc.playerController.attackEntity(WMinecraft.getPlayer(), en);
-				WMinecraft.getPlayer().swingArm(EnumHand.MAIN_HAND);
+				WPlayer.swingArmClient();
 				
 				WMinecraft.getPlayer().resetSwordCooldown();
 			}

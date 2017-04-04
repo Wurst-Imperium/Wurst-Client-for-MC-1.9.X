@@ -8,8 +8,8 @@
 package net.wurstclient.features.mods;
 
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.EnumHand;
 import net.wurstclient.compatibility.WMinecraft;
+import net.wurstclient.compatibility.WPlayer;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.utils.EntityUtils;
 
@@ -72,7 +72,7 @@ public final class FightBotMod extends Mod implements UpdateListener
 				else
 				{
 					EntityUtils.faceEntityClient(entity);
-					WMinecraft.getPlayer().swingArm(EnumHand.MAIN_HAND);
+					WPlayer.swingArmClient();
 					mc.playerController.attackEntity(WMinecraft.getPlayer(),
 						entity);
 				}

@@ -11,8 +11,7 @@ import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
-import net.minecraft.potion.PotionEffect;
-import net.wurstclient.compatibility.WMinecraft;
+import net.wurstclient.compatibility.WPlayer;
 import net.wurstclient.events.listeners.UpdateListener;
 
 @Mod.Info(description = "Thousands of colors!", name = "LSD", help = "Mods/LSD")
@@ -51,8 +50,7 @@ public final class LsdMod extends Mod implements UpdateListener
 	public void onUpdate()
 	{
 		if(!OpenGlHelper.shadersSupported)
-			WMinecraft.getPlayer().addPotionEffect(
-				new PotionEffect(MobEffects.confusion, 10801220));
+			WPlayer.addPotionEffect(MobEffects.confusion);
 		mc.gameSettings.smoothCamera = isEnabled();
 	}
 	
@@ -60,7 +58,7 @@ public final class LsdMod extends Mod implements UpdateListener
 	public void onDisable()
 	{
 		wurst.events.remove(UpdateListener.class, this);
-		WMinecraft.getPlayer().removePotionEffect(MobEffects.confusion);
+		WPlayer.removePotionEffect(MobEffects.confusion);
 		if(mc.entityRenderer.theShaderGroup != null)
 		{
 			mc.entityRenderer.theShaderGroup.deleteShaderGroup();

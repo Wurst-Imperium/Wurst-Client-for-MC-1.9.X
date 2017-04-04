@@ -8,8 +8,8 @@
 package net.wurstclient.features.mods;
 
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.EnumHand;
 import net.wurstclient.compatibility.WMinecraft;
+import net.wurstclient.compatibility.WPlayer;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
 import net.wurstclient.features.special_features.YesCheatSpf.BypassLevel;
@@ -92,8 +92,7 @@ public final class KillauraMod extends Mod implements UpdateListener
 			return;
 		}
 		EntityUtils.lookChanged = true;
-		if(useCooldown.isChecked()
-			? WMinecraft.getPlayer().getSwordCooldown(0F) >= 1F
+		if(useCooldown.isChecked() ? WPlayer.getCooldown() >= 1F
 			: hasTimePassedS(speed.getValueF()))
 		{
 			if(wurst.mods.autoSwordMod.isActive())
@@ -104,7 +103,7 @@ public final class KillauraMod extends Mod implements UpdateListener
 			if(EntityUtils.faceEntityPacket(en))
 			{
 				mc.playerController.attackEntity(WMinecraft.getPlayer(), en);
-				WMinecraft.getPlayer().swingArm(EnumHand.MAIN_HAND);
+				WPlayer.swingArmClient();
 			}
 			
 			updateLastMS();

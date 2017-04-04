@@ -8,14 +8,13 @@
 package net.wurstclient.features.mods;
 
 import net.minecraft.block.Block;
-import net.minecraft.network.play.client.CPacketAnimation;
 import net.minecraft.network.play.client.CPacketPlayerDigging;
 import net.minecraft.network.play.client.CPacketPlayerDigging.Action;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.wurstclient.compatibility.WMinecraft;
+import net.wurstclient.compatibility.WPlayer;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
@@ -111,8 +110,7 @@ public final class KaboomMod extends Mod implements UpdateListener
 									continue;
 								EnumFacing side = mc.objectMouseOver.sideHit;
 								BlockUtils.faceBlockPacket(pos);
-								WMinecraft.getPlayer().sendQueue.addToSendQueue(
-									new CPacketAnimation(EnumHand.MAIN_HAND));
+								WPlayer.swingArmPacket();
 								WMinecraft.getPlayer().sendQueue
 									.addToSendQueue(new CPacketPlayerDigging(
 										Action.START_DESTROY_BLOCK, pos, side));

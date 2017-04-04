@@ -8,13 +8,12 @@
 package net.wurstclient.features.mods;
 
 import net.minecraft.block.Block;
-import net.minecraft.network.play.client.CPacketAnimation;
 import net.minecraft.network.play.client.CPacketPlayerDigging;
 import net.minecraft.network.play.client.CPacketPlayerDigging.Action;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.wurstclient.compatibility.WMinecraft;
+import net.wurstclient.compatibility.WPlayer;
 import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
@@ -115,7 +114,7 @@ public final class TunnellerMod extends Mod
 				else
 				{
 					shouldRenderESP = true;
-					WMinecraft.getPlayer().swingArm(EnumHand.MAIN_HAND);
+					WPlayer.swingArmClient();
 					mc.playerController.onPlayerDestroyBlock(pos);
 				}
 				return;
@@ -123,8 +122,7 @@ public final class TunnellerMod extends Mod
 		}
 		if(wurst.mods.autoToolMod.isActive())
 			AutoToolMod.setSlot(pos);
-		WMinecraft.getPlayer().sendQueue
-			.addToSendQueue(new CPacketAnimation(EnumHand.MAIN_HAND));
+		WPlayer.swingArmPacket();
 		shouldRenderESP = true;
 		BlockUtils.faceBlockPacket(pos);
 		currentDamage += currentBlock.getPlayerRelativeBlockHardness(
