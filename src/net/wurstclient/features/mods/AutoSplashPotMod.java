@@ -14,7 +14,7 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketHeldItemChange;
-import net.minecraft.network.play.client.CPacketPlayer.C05PacketPlayerLook;
+import net.minecraft.network.play.client.CPacketPlayer.Rotation;
 import net.minecraft.network.play.client.CPacketPlayerBlockPlacement;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionUtils;
@@ -83,8 +83,8 @@ public final class AutoSplashPotMod extends Mod implements UpdateListener
 			{
 				// throw potion in hotbar
 				int oldSlot = WMinecraft.getPlayer().inventory.currentItem;
-				WConnection.sendPacket(
-					new C05PacketPlayerLook(WMinecraft.getPlayer().rotationYaw,
+				WConnection
+					.sendPacket(new Rotation(WMinecraft.getPlayer().rotationYaw,
 						90.0F, WMinecraft.getPlayer().onGround));
 				WConnection
 					.sendPacket(new CPacketHeldItemChange(potionInHotbar - 36));
@@ -92,8 +92,8 @@ public final class AutoSplashPotMod extends Mod implements UpdateListener
 				WConnection.sendPacket(
 					new CPacketPlayerBlockPlacement(EnumHand.MAIN_HAND));
 				WConnection.sendPacket(new CPacketHeldItemChange(oldSlot));
-				WConnection.sendPacket(
-					new C05PacketPlayerLook(WMinecraft.getPlayer().rotationYaw,
+				WConnection
+					.sendPacket(new Rotation(WMinecraft.getPlayer().rotationYaw,
 						WMinecraft.getPlayer().rotationPitch,
 						WMinecraft.getPlayer().onGround));
 				

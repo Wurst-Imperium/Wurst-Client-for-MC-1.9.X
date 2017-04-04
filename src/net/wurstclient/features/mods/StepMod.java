@@ -68,15 +68,13 @@ public final class StepMod extends Mod implements UpdateListener
 			if(WMinecraft.getPlayer().isCollidedHorizontally
 				&& WMinecraft.getPlayer().onGround)
 			{
-				WConnection
-					.sendPacket(new CPacketPlayer.C04PacketPlayerPosition(
-						WMinecraft.getPlayer().posX,
+				WConnection.sendPacket(
+					new CPacketPlayer.Position(WMinecraft.getPlayer().posX,
 						WMinecraft.getPlayer().posY + 0.42D,
 						WMinecraft.getPlayer().posZ,
 						WMinecraft.getPlayer().onGround));
-				WConnection
-					.sendPacket(new CPacketPlayer.C04PacketPlayerPosition(
-						WMinecraft.getPlayer().posX,
+				WConnection.sendPacket(
+					new CPacketPlayer.Position(WMinecraft.getPlayer().posX,
 						WMinecraft.getPlayer().posY + 0.753D,
 						WMinecraft.getPlayer().posZ,
 						WMinecraft.getPlayer().onGround));

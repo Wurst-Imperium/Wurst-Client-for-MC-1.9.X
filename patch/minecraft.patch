@@ -1,6 +1,6 @@
-From 060ba74bc6de3f0643ad9a197df61ef3132a6052 Mon Sep 17 00:00:00 2001
+From c006db3e0943f96de09aeadab7e78e098c935cab Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Tue, 4 Apr 2017 19:04:11 +0200
+Date: Tue, 4 Apr 2017 19:28:37 +0200
 Subject: [PATCH] mod
 
 ---
@@ -15,7 +15,7 @@ Subject: [PATCH] mod
  net/minecraft/client/Minecraft.java                | 208 +++++++++++----------
  .../client/audio/PositionedSoundRecord.java        |   2 +-
  .../client/entity/AbstractClientPlayer.java        |   4 +-
- net/minecraft/client/entity/EntityPlayerSP.java    | 153 +++++++++++----
+ net/minecraft/client/entity/EntityPlayerSP.java    | 157 ++++++++++++----
  net/minecraft/client/gui/FontRenderer.java         |   2 +-
  net/minecraft/client/gui/GuiButton.java            |  16 +-
  net/minecraft/client/gui/GuiDisconnected.java      |  88 +++++++++
@@ -41,7 +41,7 @@ Subject: [PATCH] mod
  .../client/multiplayer/GuiConnecting.java          |   8 +-
  .../client/multiplayer/PlayerControllerMP.java     |  65 ++++---
  net/minecraft/client/multiplayer/ServerList.java   |   6 +
- .../client/network/NetHandlerPlayClient.java       |  25 ++-
+ .../client/network/NetHandlerPlayClient.java       |  27 ++-
  .../client/network/NetworkPlayerInfo.java          |  10 +
  .../client/renderer/BlockModelRenderer.java        |   8 +-
  net/minecraft/client/renderer/EntityRenderer.java  |  49 ++++-
@@ -76,8 +76,10 @@ Subject: [PATCH] mod
  net/minecraft/item/ItemChorusFruit.java            |   2 +-
  net/minecraft/item/ItemEnderPearl.java             |   2 +-
  net/minecraft/item/ItemShield.java                 |   2 +-
+ net/minecraft/network/EnumConnectionState.java     |   6 +-
  net/minecraft/network/NetHandlerPlayServer.java    |   8 +-
  net/minecraft/network/NetworkManager.java          |  26 +++
+ .../network/play/client/CPacketPlayer.java         |  18 +-
  .../network/play/server/SPacketEntityEffect.java   |   2 +-
  .../network/play/server/SPacketJoinGame.java       |   5 +
  net/minecraft/potion/PotionEffect.java             |  26 +--
@@ -90,7 +92,7 @@ Subject: [PATCH] mod
  net/minecraft/util/Timer.java                      |   6 +
  net/minecraft/util/math/AxisAlignedBB.java         |   8 +
  net/minecraft/util/math/Vec3d.java                 |   6 +
- 86 files changed, 1329 insertions(+), 410 deletions(-)
+ 88 files changed, 1344 insertions(+), 425 deletions(-)
 
 diff --git a/Start.java b/Start.java
 index ae0025f..078afa5 100644
@@ -805,7 +807,7 @@ index c30247b..1fd170a 100644
  
              if (f1 > 1.0F)
 diff --git a/net/minecraft/client/entity/EntityPlayerSP.java b/net/minecraft/client/entity/EntityPlayerSP.java
-index 61b85c2..644cb8e 100644
+index 61b85c2..f3ee158 100644
 --- a/net/minecraft/client/entity/EntityPlayerSP.java
 +++ b/net/minecraft/client/entity/EntityPlayerSP.java
 @@ -1,5 +1,6 @@
@@ -865,7 +867,7 @@ index 61b85c2..644cb8e 100644
  
  public class EntityPlayerSP extends AbstractClientPlayer
  {
-@@ -205,6 +197,9 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -205,11 +197,14 @@ public class EntityPlayerSP extends AbstractClientPlayer
      {
          if (this.worldObj.isBlockLoaded(new BlockPos(this.posX, 0.0D, this.posZ)))
          {
@@ -875,6 +877,12 @@ index 61b85c2..644cb8e 100644
              super.onUpdate();
  
              if (this.isRiding())
+             {
+-                this.sendQueue.addToSendQueue(new CPacketPlayer.C05PacketPlayerLook(this.rotationYaw, this.rotationPitch, this.onGround));
++                this.sendQueue.addToSendQueue(new CPacketPlayer.Rotation(this.rotationYaw, this.rotationPitch, this.onGround));
+                 this.sendQueue.addToSendQueue(new CPacketInput(this.moveStrafing, this.moveForward, this.movementInput.jump, this.movementInput.sneak));
+                 Entity entity = this.getLowestRidingEntity();
+ 
 @@ -222,6 +217,19 @@ public class EntityPlayerSP extends AbstractClientPlayer
              {
                  this.onUpdateWalkingPlayer();
@@ -895,7 +903,7 @@ index 61b85c2..644cb8e 100644
          }
      }
  
-@@ -264,24 +272,75 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -264,32 +272,83 @@ public class EntityPlayerSP extends AbstractClientPlayer
  
          if (this.isCurrentViewEntity())
          {
@@ -944,12 +952,12 @@ index 61b85c2..644cb8e 100644
 +				&& Minecraft.getMinecraft().theWorld
 +					.getBlockState(new BlockPos(this).add(0, -1, 0)).getBlock()
 +					.getMaterial(null) == Material.water)
-+			{
-+				if(flag2)
-             {
+ 			{
 -                this.sendQueue.addToSendQueue(new CPacketPlayer.C06PacketPlayerPosLook(this.motionX, -999.0D, this.motionZ, this.rotationYaw, this.rotationPitch, this.onGround));
++				if(flag2)
++            {
 +					this.sendQueue
-+						.addToSendQueue(new CPacketPlayer.C06PacketPlayerPosLook(
++						.addToSendQueue(new CPacketPlayer.PositionRotation(
 +							this.posX, this.getEntityBoundingBox().minY
 +								+ (ticksExisted % 2 == 0 ? 0.05 : -0.05),
 +							this.posZ, yaw, pitch,
@@ -957,7 +965,7 @@ index 61b85c2..644cb8e 100644
 +				}else if(flag3)
 +				{
 +					this.sendQueue
-+						.addToSendQueue(new CPacketPlayer.C05PacketPlayerLook(
++						.addToSendQueue(new CPacketPlayer.Rotation(
 +							yaw, pitch, this.onGround));
 +				}else
 +				{
@@ -966,22 +974,23 @@ index 61b85c2..644cb8e 100644
 +				}
 +			}else if (this.isRiding())
 +            {
-+                this.sendQueue.addToSendQueue(new CPacketPlayer.C06PacketPlayerPosLook(this.motionX, -999.0D, this.motionZ, yaw, pitch, this.onGround));
++                this.sendQueue.addToSendQueue(new CPacketPlayer.PositionRotation(this.motionX, -999.0D, this.motionZ, yaw, pitch, this.onGround));
                  flag2 = false;
              }
              else if (flag2 && flag3)
              {
 -                this.sendQueue.addToSendQueue(new CPacketPlayer.C06PacketPlayerPosLook(this.posX, axisalignedbb.minY, this.posZ, this.rotationYaw, this.rotationPitch, this.onGround));
-+                this.sendQueue.addToSendQueue(new CPacketPlayer.C06PacketPlayerPosLook(this.posX, axisalignedbb.minY, this.posZ, yaw, pitch, this.onGround));
++                this.sendQueue.addToSendQueue(new CPacketPlayer.PositionRotation(this.posX, axisalignedbb.minY, this.posZ, yaw, pitch, this.onGround));
              }
              else if (flag2)
              {
-@@ -289,7 +348,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+-                this.sendQueue.addToSendQueue(new CPacketPlayer.C04PacketPlayerPosition(this.posX, axisalignedbb.minY, this.posZ, this.onGround));
++                this.sendQueue.addToSendQueue(new CPacketPlayer.Position(this.posX, axisalignedbb.minY, this.posZ, this.onGround));
              }
              else if (flag3)
              {
 -                this.sendQueue.addToSendQueue(new CPacketPlayer.C05PacketPlayerLook(this.rotationYaw, this.rotationPitch, this.onGround));
-+                this.sendQueue.addToSendQueue(new CPacketPlayer.C05PacketPlayerLook(yaw, pitch, this.onGround));
++                this.sendQueue.addToSendQueue(new CPacketPlayer.Rotation(yaw, pitch, this.onGround));
              }
              else if (this.field_184841_cd != this.onGround)
              {
@@ -2817,7 +2826,7 @@ index 060ef17..d60ddd9 100644
       * Loads a list of servers from servers.dat, by running ServerData.getServerDataFromNBTCompound on each NBT compound
       * found in the "servers" tag list.
 diff --git a/net/minecraft/client/network/NetHandlerPlayClient.java b/net/minecraft/client/network/NetHandlerPlayClient.java
-index b7f7be5..7dd2aea 100644
+index b7f7be5..96b0879 100644
 --- a/net/minecraft/client/network/NetHandlerPlayClient.java
 +++ b/net/minecraft/client/network/NetHandlerPlayClient.java
 @@ -27,7 +27,6 @@ import net.minecraft.client.gui.GuiCommandBlock;
@@ -2839,6 +2848,15 @@ index b7f7be5..7dd2aea 100644
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;
  
+@@ -744,7 +747,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+ 
+         entityplayer.setPositionAndRotation(d0, d1, d2, f, f1);
+         this.netManager.sendPacket(new CPacketConfirmTeleport(packetIn.getTeleportId()));
+-        this.netManager.sendPacket(new CPacketPlayer.C06PacketPlayerPosLook(entityplayer.posX, entityplayer.getEntityBoundingBox().minY, entityplayer.posZ, entityplayer.rotationYaw, entityplayer.rotationPitch, false));
++        this.netManager.sendPacket(new CPacketPlayer.PositionRotation(entityplayer.posX, entityplayer.getEntityBoundingBox().minY, entityplayer.posZ, entityplayer.rotationYaw, entityplayer.rotationPitch, false));
+ 
+         if (!this.doneLoadingTerrain)
+         {
 @@ -837,12 +840,24 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
          }
          else
@@ -4385,6 +4403,23 @@ index b98ca23..f3e4bed 100644
              }
          });
      }
+diff --git a/net/minecraft/network/EnumConnectionState.java b/net/minecraft/network/EnumConnectionState.java
+index 2d2fc3a..6c6f59d 100644
+--- a/net/minecraft/network/EnumConnectionState.java
++++ b/net/minecraft/network/EnumConnectionState.java
+@@ -217,9 +217,9 @@ public enum EnumConnectionState
+             this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketCustomPayload.class);
+             this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketUseEntity.class);
+             this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketKeepAlive.class);
+-            this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketPlayer.C04PacketPlayerPosition.class);
+-            this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketPlayer.C06PacketPlayerPosLook.class);
+-            this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketPlayer.C05PacketPlayerLook.class);
++            this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketPlayer.Position.class);
++            this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketPlayer.PositionRotation.class);
++            this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketPlayer.Rotation.class);
+             this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketPlayer.class);
+             this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketVehicleMove.class);
+             this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketSteerBoat.class);
 diff --git a/net/minecraft/network/NetHandlerPlayServer.java b/net/minecraft/network/NetHandlerPlayServer.java
 index 4e7576e..36e9eb1 100644
 --- a/net/minecraft/network/NetHandlerPlayServer.java
@@ -4491,6 +4526,65 @@ index 0d831b0..eae1ee1 100644
              try
              {
                  ((Packet<INetHandler>)p_channelRead0_2_).processPacket(this.packetListener);
+diff --git a/net/minecraft/network/play/client/CPacketPlayer.java b/net/minecraft/network/play/client/CPacketPlayer.java
+index 52619c0..6e29711 100644
+--- a/net/minecraft/network/play/client/CPacketPlayer.java
++++ b/net/minecraft/network/play/client/CPacketPlayer.java
+@@ -79,14 +79,14 @@ public class CPacketPlayer implements Packet<INetHandlerPlayServer>
+         return this.onGround;
+     }
+ 
+-    public static class C04PacketPlayerPosition extends CPacketPlayer
++    public static class Position extends CPacketPlayer
+     {
+-        public C04PacketPlayerPosition()
++        public Position()
+         {
+             this.moving = true;
+         }
+ 
+-        public C04PacketPlayerPosition(double xIn, double yIn, double zIn, boolean onGroundIn)
++        public Position(double xIn, double yIn, double zIn, boolean onGroundIn)
+         {
+             this.x = xIn;
+             this.y = yIn;
+@@ -112,14 +112,14 @@ public class CPacketPlayer implements Packet<INetHandlerPlayServer>
+         }
+     }
+ 
+-    public static class C05PacketPlayerLook extends CPacketPlayer
++    public static class Rotation extends CPacketPlayer
+     {
+-        public C05PacketPlayerLook()
++        public Rotation()
+         {
+             this.rotating = true;
+         }
+ 
+-        public C05PacketPlayerLook(float yawIn, float pitchIn, boolean onGroundIn)
++        public Rotation(float yawIn, float pitchIn, boolean onGroundIn)
+         {
+             this.yaw = yawIn;
+             this.pitch = pitchIn;
+@@ -142,15 +142,15 @@ public class CPacketPlayer implements Packet<INetHandlerPlayServer>
+         }
+     }
+ 
+-    public static class C06PacketPlayerPosLook extends CPacketPlayer
++    public static class PositionRotation extends CPacketPlayer
+     {
+-        public C06PacketPlayerPosLook()
++        public PositionRotation()
+         {
+             this.moving = true;
+             this.rotating = true;
+         }
+ 
+-        public C06PacketPlayerPosLook(double xIn, double yIn, double zIn, float yawIn, float pitchIn, boolean onGroundIn)
++        public PositionRotation(double xIn, double yIn, double zIn, float yawIn, float pitchIn, boolean onGroundIn)
+         {
+             this.x = xIn;
+             this.y = yIn;
 diff --git a/net/minecraft/network/play/server/SPacketEntityEffect.java b/net/minecraft/network/play/server/SPacketEntityEffect.java
 index d15a596..bf98ab1 100644
 --- a/net/minecraft/network/play/server/SPacketEntityEffect.java

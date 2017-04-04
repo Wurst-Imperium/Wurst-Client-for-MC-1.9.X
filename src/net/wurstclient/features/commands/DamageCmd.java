@@ -7,7 +7,7 @@
  */
 package net.wurstclient.features.commands;
 
-import net.minecraft.network.play.client.CPacketPlayer.C04PacketPlayerPosition;
+import net.minecraft.network.play.client.CPacketPlayer.Position;
 import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.utils.MiscUtils;
@@ -44,12 +44,10 @@ public final class DamageCmd extends Cmd
 		// apply damage
 		for(int i = 0; i < 80 + 20 * (dmg - 1D); ++i)
 		{
-			WConnection.sendPacket(
-				new C04PacketPlayerPosition(posX, posY + 0.049D, posZ, false));
-			WConnection.sendPacket(
-				new C04PacketPlayerPosition(posX, posY, posZ, false));
+			WConnection
+				.sendPacket(new Position(posX, posY + 0.049D, posZ, false));
+			WConnection.sendPacket(new Position(posX, posY, posZ, false));
 		}
-		WConnection
-			.sendPacket(new C04PacketPlayerPosition(posX, posY, posZ, true));
+		WConnection.sendPacket(new Position(posX, posY, posZ, true));
 	}
 }

@@ -8,7 +8,7 @@
 package net.wurstclient.features.mods;
 
 import net.minecraft.network.play.client.CPacketChatMessage;
-import net.minecraft.network.play.client.CPacketPlayer.C04PacketPlayerPosition;
+import net.minecraft.network.play.client.CPacketPlayer.Position;
 import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.util.EnumHand;
 import net.wurstclient.compatibility.WConnection;
@@ -79,8 +79,8 @@ public final class AutoLeaveMod extends Mod implements UpdateListener
 				WConnection.sendPacket(new CPacketChatMessage("§"));
 				break;
 				case 2:
-				WConnection.sendPacket(
-					new C04PacketPlayerPosition(3.1e7d, 100, 3.1e7d, false));
+				WConnection
+					.sendPacket(new Position(3.1e7d, 100, 3.1e7d, false));
 				break;
 				case 3:
 				WConnection.sendPacket(new CPacketUseEntity(
