@@ -8,6 +8,7 @@
 package net.wurstclient.features.commands;
 
 import net.wurstclient.compatibility.WMinecraft;
+import net.wurstclient.utils.EntityUtils.TargetSettings;
 
 @Cmd.Info(
 	description = "Teleports you up to 100 blocks away.\nOnly works on vanilla servers!",
@@ -16,10 +17,25 @@ import net.wurstclient.compatibility.WMinecraft;
 	help = "Commands/tp")
 public final class TpCmd extends Cmd
 {
+	private TargetSettings targetSettings = new TargetSettings()
+	{
+		@Override
+		public boolean targetFriends()
+		{
+			return true;
+		}
+		
+		@Override
+		public boolean targetBehindWalls()
+		{
+			return true;
+		};
+	};
+	
 	@Override
 	public void execute(String[] args) throws CmdError
 	{
-		int[] pos = argsToPos(args);
+		int[] pos = argsToPos(targetSettings, args);
 		WMinecraft.getPlayer().setPosition(pos[0], pos[1], pos[2]);
 	}
 }

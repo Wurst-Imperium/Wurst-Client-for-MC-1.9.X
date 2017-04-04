@@ -11,6 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.wurstclient.ai.PathFinder;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.utils.ChatUtils;
+import net.wurstclient.utils.EntityUtils.TargetSettings;
 
 @Cmd.Info(description = "Walks or flies you to a specific location.",
 	name = "goto",
@@ -18,10 +19,25 @@ import net.wurstclient.utils.ChatUtils;
 	help = "Commands/goto")
 public final class GoToCmd extends Cmd
 {
+	private TargetSettings targetSettings = new TargetSettings()
+	{
+		@Override
+		public boolean targetFriends()
+		{
+			return true;
+		}
+		
+		@Override
+		public boolean targetBehindWalls()
+		{
+			return true;
+		}
+	};
+	
 	@Override
 	public void execute(String[] args) throws CmdError
 	{
-		int[] pos = argsToPos(args);
+		int[] pos = argsToPos(targetSettings, args);
 		if(Math.abs(pos[0] - WMinecraft.getPlayer().posX) > 256
 			|| Math.abs(pos[2] - WMinecraft.getPlayer().posZ) > 256)
 		{

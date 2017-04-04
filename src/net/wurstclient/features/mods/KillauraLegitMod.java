@@ -7,7 +7,7 @@
  */
 package net.wurstclient.features.mods;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.Entity;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.compatibility.WPlayer;
 import net.wurstclient.events.listeners.UpdateListener;
@@ -16,6 +16,7 @@ import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.utils.EntityUtils;
+import net.wurstclient.utils.EntityUtils.TargetSettings;
 import net.wurstclient.utils.RotationUtils;
 
 @Mod.Info(
@@ -47,7 +48,7 @@ public final class KillauraLegitMod extends Mod implements UpdateListener
 					range.unlock();
 					fov.unlock();
 				}
-			};
+			}
 		};
 	public CheckboxSetting useCooldown =
 		new CheckboxSetting("Use Attack Cooldown as Speed", true)
@@ -56,7 +57,7 @@ public final class KillauraLegitMod extends Mod implements UpdateListener
 			public void update()
 			{
 				speed.setDisabled(isChecked());
-			};
+			}
 		};
 	public SliderSetting speed =
 		new SliderSetting("Speed", 12, 2, 12, 0.1, ValueDisplay.DECIMAL);
@@ -64,6 +65,21 @@ public final class KillauraLegitMod extends Mod implements UpdateListener
 		new SliderSetting("Range", 4.25, 1, 4.25, 0.05, ValueDisplay.DECIMAL);
 	public SliderSetting fov =
 		new SliderSetting("FOV", 360, 30, 360, 10, ValueDisplay.DEGREES);
+	
+	private TargetSettings targetSettings = new TargetSettings()
+	{
+		@Override
+		public float getRange()
+		{
+			return range.getValueF();
+		}
+		
+		@Override
+		public float getFOV()
+		{
+			return fov.getValueF();
+		}
+	};
 	
 	@Override
 	public void initSettings()
@@ -103,26 +119,33 @@ public final class KillauraLegitMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
+		// update timer
 		updateMS();
-		EntityLivingBase en =
-			EntityUtils.getClosestEntity(true, fov.getValueF(), false);
-		if(en != null && WMinecraft.getPlayer().getDistanceToEntity(en) <= range
-			.getValueF())
-		{
-			if(wurst.mods.criticalsMod.isActive()
-				&& WMinecraft.getPlayer().onGround)
-				WMinecraft.getPlayer().jump();
-			if(useCooldown.isChecked() ? WPlayer.getCooldown() >= 1F
-				: hasTimePassedS(speed.getValueF()))
-				if(RotationUtils.faceEntityClient(en))
-				{
-					mc.playerController.attackEntity(WMinecraft.getPlayer(),
-						en);
-					WPlayer.swingArmClient();
-					
-					updateLastMS();
-				}
-		}
+		
+		// check timer / cooldown
+		if(useCooldown != null && useCooldown.isChecked()
+			? WPlayer.getCooldown() < 1 : !hasTimePassedS(speed.getValueF()))
+			return;
+		
+		// set entity
+		Entity entity = EntityUtils.getBestEntityToAttack(targetSettings);
+		if(entity == null)
+			return;
+		
+		// face entity
+		if(!RotationUtils.faceEntityClient(entity))
+			return;
+		
+		// Criticals
+		if(wurst.mods.criticalsMod.isActive()
+			&& WMinecraft.getPlayer().onGround)
+			WMinecraft.getPlayer().jump();
+		
+		// attack entity
+		EntityUtils.attackEntity(entity);
+		
+		// reset timer
+		updateLastMS();
 	}
 	
 	@Override

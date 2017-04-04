@@ -11,7 +11,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.features.Feature;
@@ -19,6 +19,7 @@ import net.wurstclient.navigator.PossibleKeybind;
 import net.wurstclient.settings.Setting;
 import net.wurstclient.utils.ChatUtils;
 import net.wurstclient.utils.EntityUtils;
+import net.wurstclient.utils.EntityUtils.TargetSettings;
 import net.wurstclient.utils.MiscUtils;
 
 public abstract class Cmd extends Feature
@@ -177,7 +178,8 @@ public abstract class Cmd extends Feature
 			ChatUtils.message(line);
 	}
 	
-	protected final int[] argsToPos(String... args) throws Cmd.CmdError
+	protected final int[] argsToPos(TargetSettings targetSettings,
+		String... args) throws Cmd.CmdError
 	{
 		int[] pos = new int[3];
 		if(args.length == 3)
@@ -200,8 +202,8 @@ public abstract class Cmd extends Feature
 					syntaxError("Invalid coordinates.");
 		}else if(args.length == 1)
 		{
-			EntityLivingBase entity =
-				EntityUtils.searchEntityByNameRaw(args[0]);
+			Entity entity =
+				EntityUtils.getEntityWithName(args[0], targetSettings);
 			if(entity == null)
 				error("Entity \"" + args[0] + "\" could not be found.");
 			BlockPos blockPos = new BlockPos(entity);

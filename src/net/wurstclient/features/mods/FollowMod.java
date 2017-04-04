@@ -7,10 +7,12 @@
  */
 package net.wurstclient.features.mods;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.Entity;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
+import net.wurstclient.utils.ChatUtils;
 import net.wurstclient.utils.EntityUtils;
+import net.wurstclient.utils.EntityUtils.TargetSettings;
 import net.wurstclient.utils.RotationUtils;
 
 @Mod.Info(
@@ -21,8 +23,23 @@ import net.wurstclient.utils.RotationUtils;
 @Mod.DontSaveState
 public final class FollowMod extends Mod implements UpdateListener
 {
-	private EntityLivingBase entity;
+	private Entity entity;
 	private float range = 12F;
+	
+	private TargetSettings targetSettingsFind = new TargetSettings()
+	{
+		@Override
+		public boolean targetFriends()
+		{
+			return true;
+		}
+		
+		@Override
+		public float getRange()
+		{
+			return range;
+		}
+	};
 	
 	@Override
 	public String getRenderName()
@@ -36,11 +53,16 @@ public final class FollowMod extends Mod implements UpdateListener
 	@Override
 	public void onEnable()
 	{
-		entity = null;
-		EntityLivingBase en = EntityUtils.getClosestEntity(false, 360, false);
-		if(en != null
-			&& WMinecraft.getPlayer().getDistanceToEntity(en) <= range)
-			entity = en;
+		if(entity == null)
+			entity = EntityUtils.getClosestEntity(targetSettingsFind);
+		
+		if(entity == null)
+		{
+			ChatUtils.error("Could not find a valid entity within 12 blocks.");
+			setEnabled(false);
+			return;
+		}
+		
 		wurst.events.add(UpdateListener.class, this);
 	}
 	
@@ -81,7 +103,7 @@ public final class FollowMod extends Mod implements UpdateListener
 			mc.gameSettings.keyBindForward.pressed = false;
 	}
 	
-	public void setEntity(EntityLivingBase entity)
+	public void setEntity(Entity entity)
 	{
 		this.entity = entity;
 	}

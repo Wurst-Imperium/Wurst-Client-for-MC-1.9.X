@@ -7,8 +7,7 @@
  */
 package net.wurstclient.features.mods;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.wurstclient.compatibility.WMinecraft;
+import net.minecraft.entity.Entity;
 import net.wurstclient.compatibility.WPlayer;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
@@ -17,6 +16,7 @@ import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.utils.EntityUtils;
+import net.wurstclient.utils.EntityUtils.TargetSettings;
 import net.wurstclient.utils.RotationUtils;
 
 @Mod.Info(description = "Automatically attacks everything in your range.",
@@ -43,6 +43,27 @@ public final class KillauraMod extends Mod implements UpdateListener
 		new SliderSetting("FOV", 360, 30, 360, 10, ValueDisplay.DEGREES);
 	public CheckboxSetting hitThroughWalls =
 		new CheckboxSetting("Hit through walls", false);
+	
+	private final TargetSettings targetSettings = new TargetSettings()
+	{
+		@Override
+		public boolean targetBehindWalls()
+		{
+			return hitThroughWalls.isChecked();
+		}
+		
+		@Override
+		public float getRange()
+		{
+			return range.getValueF();
+		}
+		
+		@Override
+		public float getFOV()
+		{
+			return fov.getValueF();
+		}
+	};
 	
 	@Override
 	public void initSettings()
@@ -83,28 +104,31 @@ public final class KillauraMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
+		// update timer
 		updateMS();
-		EntityLivingBase en = EntityUtils.getClosestEntity(true,
-			fov.getValueF(), hitThroughWalls.isChecked());
-		if(en == null || WMinecraft.getPlayer().getDistanceToEntity(en) > range
-			.getValueF())
+		
+		// check timer / cooldown
+		if(useCooldown != null && useCooldown.isChecked()
+			? WPlayer.getCooldown() < 1 : !hasTimePassedS(speed.getValueF()))
 			return;
 		
-		if(useCooldown.isChecked() ? WPlayer.getCooldown() >= 1F
-			: hasTimePassedS(speed.getValueF()))
-		{
-			if(wurst.mods.autoSwordMod.isActive())
-				AutoSwordMod.setSlot();
-			wurst.mods.criticalsMod.doCritical();
-			
-			if(RotationUtils.faceEntityPacket(en))
-			{
-				mc.playerController.attackEntity(WMinecraft.getPlayer(), en);
-				WPlayer.swingArmClient();
-			}
-			
-			updateLastMS();
-		}
+		// set entity
+		Entity entity = EntityUtils.getBestEntityToAttack(targetSettings);
+		if(entity == null)
+			return;
+		
+		// prepare attack
+		EntityUtils.prepareAttack();
+		
+		// face entity
+		if(!RotationUtils.faceEntityPacket(entity))
+			return;
+		
+		// attack entity
+		EntityUtils.attackEntity(entity);
+		
+		// reset timer
+		updateLastMS();
 	}
 	
 	@Override

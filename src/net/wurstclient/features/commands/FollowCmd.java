@@ -7,8 +7,9 @@
  */
 package net.wurstclient.features.commands;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.Entity;
 import net.wurstclient.utils.EntityUtils;
+import net.wurstclient.utils.EntityUtils.TargetSettings;
 
 @Cmd.Info(description = "Toggles Follow or makes it target a specific entity.",
 	name = "follow",
@@ -16,6 +17,21 @@ import net.wurstclient.utils.EntityUtils;
 	help = "Commands/follow")
 public final class FollowCmd extends Cmd
 {
+	private TargetSettings targetSettings = new TargetSettings()
+	{
+		@Override
+		public boolean targetFriends()
+		{
+			return true;
+		}
+		
+		@Override
+		public boolean targetBehindWalls()
+		{
+			return true;
+		};
+	};
+	
 	@Override
 	public void execute(String[] args) throws CmdError
 	{
@@ -27,11 +43,12 @@ public final class FollowCmd extends Cmd
 		{
 			if(wurst.mods.followMod.isEnabled())
 				wurst.mods.followMod.setEnabled(false);
-			EntityLivingBase entity = EntityUtils.searchEntityByName(args[0]);
+			Entity entity =
+				EntityUtils.getEntityWithName(args[0], targetSettings);
 			if(entity == null)
 				error("Entity \"" + args[0] + "\" could not be found.");
-			wurst.mods.followMod.setEnabled(true);
 			wurst.mods.followMod.setEntity(entity);
+			wurst.mods.followMod.setEnabled(true);
 		}
 	}
 }

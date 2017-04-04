@@ -7,12 +7,12 @@
  */
 package net.wurstclient.features.mods;
 
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.utils.EntityUtils;
+import net.wurstclient.utils.EntityUtils.TargetSettings;
 
 @Mod.Info(
 	description = "Pushes mobs like crazy.\n" + "They'll literally fly away!\n"
@@ -23,6 +23,21 @@ import net.wurstclient.utils.EntityUtils;
 @Mod.Bypasses
 public final class ForcePushMod extends Mod implements UpdateListener
 {
+	private TargetSettings targetSettings = new TargetSettings()
+	{
+		@Override
+		public boolean targetBehindWalls()
+		{
+			return true;
+		};
+		
+		@Override
+		public float getRange()
+		{
+			return 1F;
+		}
+	};
+	
 	@Override
 	public void onEnable()
 	{
@@ -30,18 +45,17 @@ public final class ForcePushMod extends Mod implements UpdateListener
 	}
 	
 	@Override
-	public void onUpdate()
-	{
-		EntityLivingBase en = EntityUtils.getClosestEntity(true, 360, false);
-		if(WMinecraft.getPlayer().onGround && en != null
-			&& en.getDistanceToEntity(WMinecraft.getPlayer()) < 1)
-			for(int i = 0; i < 1000; i++)
-				WConnection.sendPacket(new CPacketPlayer(true));
-	}
-	
-	@Override
 	public void onDisable()
 	{
 		wurst.events.remove(UpdateListener.class, this);
+	}
+	
+	@Override
+	public void onUpdate()
+	{
+		if(WMinecraft.getPlayer().onGround
+			&& EntityUtils.getClosestEntity(targetSettings) != null)
+			for(int i = 0; i < 1000; i++)
+				WConnection.sendPacket(new CPacketPlayer(true));
 	}
 }

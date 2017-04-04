@@ -7,7 +7,7 @@
  */
 package net.wurstclient.features.mods;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.Entity;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.compatibility.WPlayer;
 import net.wurstclient.events.listeners.UpdateListener;
@@ -26,7 +26,7 @@ public final class FightBotMod extends Mod implements UpdateListener
 {
 	private float range = 6F;
 	private double distance = 3D;
-	private EntityLivingBase entity;
+	private Entity entity;
 	
 	@Override
 	public void onEnable()
@@ -37,11 +37,10 @@ public final class FightBotMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		entity = EntityUtils.getClosestEntity(true, 360, false);
+		entity = EntityUtils.getClosestEntity(EntityUtils.DEFAULT_SETTINGS);
 		if(entity == null)
 			return;
-		if(entity.getHealth() <= 0 || entity.isDead
-			|| WMinecraft.getPlayer().getHealth() <= 0)
+		if(WMinecraft.getPlayer().getHealth() <= 0)
 		{
 			entity = null;
 			mc.gameSettings.keyBindForward.pressed = false;

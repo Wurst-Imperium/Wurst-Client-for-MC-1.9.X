@@ -7,9 +7,6 @@
  */
 package net.wurstclient.features.mods;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.math.RayTraceResult.Type;
-import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.compatibility.WPlayer;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
@@ -18,6 +15,7 @@ import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.utils.EntityUtils;
+import net.wurstclient.utils.EntityUtils.TargetSettings;
 
 @Mod.Info(description = "Automatically attacks the entity you're looking at.",
 	name = "TriggerBot",
@@ -60,6 +58,15 @@ public final class TriggerBotMod extends Mod implements UpdateListener
 	public SliderSetting range =
 		new SliderSetting("Range", 6, 1, 6, 0.05, ValueDisplay.DECIMAL);
 	
+	private TargetSettings targetSettings = new TargetSettings()
+	{
+		@Override
+		public float getRange()
+		{
+			return range.getValueF();
+		}
+	};
+	
 	@Override
 	public void initSettings()
 	{
@@ -97,29 +104,27 @@ public final class TriggerBotMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
+		// update timer
 		updateMS();
 		
-		if(mc.objectMouseOver == null
-			|| mc.objectMouseOver.typeOfHit != Type.ENTITY
-			|| !(mc.objectMouseOver.entityHit instanceof EntityLivingBase))
+		// check timer / cooldown
+		if(useCooldown != null && useCooldown.isChecked()
+			? WPlayer.getCooldown() < 1 : !hasTimePassedS(speed.getValueF()))
 			return;
-		EntityLivingBase en = (EntityLivingBase)mc.objectMouseOver.entityHit;
 		
-		if((useCooldown.isChecked() ? WPlayer.getCooldown() >= 1F
-			: hasTimePassedS(speed.getValueF()))
-			&& WMinecraft.getPlayer().getDistanceToEntity(en) <= range
-				.getValueF()
-			&& EntityUtils.isCorrectEntity(en, true))
-		{
-			if(wurst.mods.autoSwordMod.isActive())
-				AutoSwordMod.setSlot();
-			wurst.mods.criticalsMod.doCritical();
-			
-			mc.playerController.attackEntity(WMinecraft.getPlayer(), en);
-			WPlayer.swingArmClient();
-			
-			updateLastMS();
-		}
+		// check entity
+		if(mc.objectMouseOver == null || !EntityUtils
+			.isCorrectEntity(mc.objectMouseOver.entityHit, targetSettings))
+			return;
+		
+		// prepare attack
+		EntityUtils.prepareAttack();
+		
+		// attack entity
+		EntityUtils.attackEntity(mc.objectMouseOver.entityHit);
+		
+		// reset timer
+		updateLastMS();
 	}
 	
 	@Override

@@ -13,6 +13,7 @@ import net.wurstclient.ai.PathPoint;
 import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.utils.ChatUtils;
 import net.wurstclient.utils.RenderUtils;
+import net.wurstclient.utils.EntityUtils.TargetSettings;
 
 @Cmd.Info(
 	description = "Shows the shortest path to a specific point. Useful for labyrinths and caves.",
@@ -24,6 +25,21 @@ public final class PathCmd extends Cmd implements RenderListener
 	private PathPoint path;
 	private boolean enabled;
 	
+	private TargetSettings targetSettings = new TargetSettings()
+	{
+		@Override
+		public boolean targetFriends()
+		{
+			return true;
+		}
+		
+		@Override
+		public boolean targetBehindWalls()
+		{
+			return true;
+		}
+	};
+	
 	@Override
 	public void execute(String[] args) throws CmdError
 	{
@@ -34,7 +50,7 @@ public final class PathCmd extends Cmd implements RenderListener
 			enabled = false;
 			return;
 		}
-		int[] posArray = argsToPos(args);
+		int[] posArray = argsToPos(targetSettings, args);
 		final BlockPos pos =
 			new BlockPos(posArray[0], posArray[1], posArray[2]);
 		Thread thread = new Thread(new Runnable()

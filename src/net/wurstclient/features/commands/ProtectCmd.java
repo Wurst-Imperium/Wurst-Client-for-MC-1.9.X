@@ -7,8 +7,9 @@
  */
 package net.wurstclient.features.commands;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.Entity;
 import net.wurstclient.utils.EntityUtils;
+import net.wurstclient.utils.EntityUtils.TargetSettings;
 
 @Cmd.Info(
 	description = "Toggles Protect or makes it protect a specific entity.",
@@ -17,6 +18,21 @@ import net.wurstclient.utils.EntityUtils;
 	help = "Commands/protect")
 public final class ProtectCmd extends Cmd
 {
+	private TargetSettings targetSettings = new TargetSettings()
+	{
+		@Override
+		public boolean targetFriends()
+		{
+			return true;
+		}
+		
+		@Override
+		public boolean targetBehindWalls()
+		{
+			return true;
+		};
+	};
+	
 	@Override
 	public void execute(String[] args) throws CmdError
 	{
@@ -28,7 +44,8 @@ public final class ProtectCmd extends Cmd
 		{
 			if(wurst.mods.protectMod.isEnabled())
 				wurst.mods.protectMod.setEnabled(false);
-			EntityLivingBase entity = EntityUtils.searchEntityByName(args[0]);
+			Entity entity =
+				EntityUtils.getEntityWithName(args[0], targetSettings);
 			if(entity == null)
 				error("Entity \"" + args[0] + "\" could not be found.");
 			wurst.mods.protectMod.setEnabled(true);
