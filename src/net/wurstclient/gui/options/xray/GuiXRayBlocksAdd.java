@@ -22,6 +22,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.wurstclient.WurstClient;
 import net.wurstclient.features.mods.XRayMod;
+import net.wurstclient.files.ConfigFiles;
 
 public class GuiXRayBlocksAdd extends GuiScreen
 {
@@ -81,7 +82,7 @@ public class GuiXRayBlocksAdd extends GuiScreen
 				Block block = Block.getBlockFromName(nameBox.getText());
 				XRayMod.xrayBlocks.add(block);
 				GuiXRayBlocksList.sortBlocks();
-				WurstClient.INSTANCE.files.saveXRayBlocks();
+				ConfigFiles.XRAY.save();
 				mc.displayGuiScreen(prevMenu);
 				WurstClient.INSTANCE.analytics.trackEvent("x-ray blocks", "add",
 					Integer.toString(Block.getIdFromBlock(block)));

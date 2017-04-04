@@ -13,6 +13,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.wurstclient.features.mods.XRayMod;
+import net.wurstclient.files.ConfigFiles;
 import net.wurstclient.utils.ChatUtils;
 import net.wurstclient.utils.MiscUtils;
 
@@ -73,7 +74,7 @@ public final class XRayCmd extends Cmd
 				}
 				net.wurstclient.features.mods.XRayMod.xrayBlocks
 					.add(Block.getBlockById(Integer.valueOf(args[2])));
-				wurst.files.saveXRayBlocks();
+				ConfigFiles.XRAY.save();
 				ChatUtils.message("Added block " + args[2] + ".");
 				mc.renderGlobal.loadRenderers();
 			}else if(args[1].equalsIgnoreCase("name"))
@@ -88,7 +89,7 @@ public final class XRayCmd extends Cmd
 				}
 				net.wurstclient.features.mods.XRayMod.xrayBlocks
 					.add(Block.getBlockById(newID));
-				wurst.files.saveXRayBlocks();
+				ConfigFiles.XRAY.save();
 				ChatUtils.message(
 					"Added block " + newID + " (\"" + args[2] + "\").");
 				mc.renderGlobal.loadRenderers();
@@ -109,7 +110,7 @@ public final class XRayCmd extends Cmd
 					{
 						net.wurstclient.features.mods.XRayMod.xrayBlocks
 							.remove(i);
-						wurst.files.saveXRayBlocks();
+						ConfigFiles.XRAY.save();
 						ChatUtils.message("Removed block " + args[2] + ".");
 						mc.renderGlobal.loadRenderers();
 						return;
@@ -135,7 +136,7 @@ public final class XRayCmd extends Cmd
 					{
 						net.wurstclient.features.mods.XRayMod.xrayBlocks
 							.remove(i);
-						wurst.files.saveXRayBlocks();
+						ConfigFiles.XRAY.save();
 						ChatUtils.message("Removed block " + newID + " (\""
 							+ args[2] + "\").");
 						mc.renderGlobal.loadRenderers();

@@ -10,6 +10,7 @@ package net.wurstclient.features.mods;
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
+import net.wurstclient.utils.XRayUtils;
 
 @Mod.Info(description = "Allows you to see ores through walls.",
 	name = "X-Ray",
@@ -18,7 +19,13 @@ import net.minecraft.block.Block;
 @Mod.Bypasses
 public final class XRayMod extends Mod
 {
-	public static ArrayList<Block> xrayBlocks = new ArrayList<>();
+	public static ArrayList<Block> xrayBlocks;
+	
+	static
+	{
+		xrayBlocks = new ArrayList<>();
+		XRayUtils.initXRayBlocks();
+	}
 	
 	@Override
 	public String getRenderName()

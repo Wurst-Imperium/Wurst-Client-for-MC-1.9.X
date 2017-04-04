@@ -14,6 +14,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.wurstclient.WurstClient;
 import net.wurstclient.features.mods.XRayMod;
+import net.wurstclient.files.ConfigFiles;
 
 public class GuiXRayBlocksManager extends GuiScreen
 {
@@ -66,7 +67,7 @@ public class GuiXRayBlocksManager extends GuiScreen
 						XRayMod.xrayBlocks.get(blockList.getSelectedSlot()))));
 				XRayMod.xrayBlocks.remove(blockList.getSelectedSlot());
 				GuiXRayBlocksList.sortBlocks();
-				WurstClient.INSTANCE.files.saveXRayBlocks();
+				ConfigFiles.XRAY.save();
 			}else if(clickedButton.id == 2)
 				mc.displayGuiScreen(prevMenu);
 	}
