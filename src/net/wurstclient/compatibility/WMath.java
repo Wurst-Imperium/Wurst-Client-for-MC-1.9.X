@@ -38,11 +38,11 @@ public final class WMath
 	
 	public static float wrapDegrees(float value)
 	{
-		return WMath.wrapDegrees(value);
+		return MathHelper.wrapAngleTo180_float(value);
 	}
 	
 	public static double wrapDegrees(double value)
 	{
-		return WMath.wrapDegrees(value);
+		return MathHelper.wrapAngleTo180_double(value);
 	}
 }
