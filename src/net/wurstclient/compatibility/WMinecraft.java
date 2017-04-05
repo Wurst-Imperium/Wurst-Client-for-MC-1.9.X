@@ -21,4 +21,9 @@ public final class WMinecraft
 	{
 		return mc.theWorld;
 	}
+	
+	public static boolean isRunningOnMac()
+	{
+		return Minecraft.isRunningOnMac;
+	}
 }

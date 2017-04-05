@@ -19,8 +19,8 @@ import java.util.TreeMap;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-import net.minecraft.client.Minecraft;
 import net.wurstclient.WurstClient;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.utils.JsonUtils;
 
 public class FileManager
@@ -43,7 +43,7 @@ public class FileManager
 			BufferedReader load =
 				new BufferedReader(new FileReader(autoMaximize));
 			autoMaximizeEnabled = JsonUtils.gson.fromJson(load, Boolean.class)
-				&& !Minecraft.isRunningOnMac;
+				&& !WMinecraft.isRunningOnMac();
 			load.close();
 		}catch(Exception e)
 		{
