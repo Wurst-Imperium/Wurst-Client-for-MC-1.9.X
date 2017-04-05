@@ -1,6 +1,6 @@
-From 906b902a3ee1ea71520688be3f558e22d142762a Mon Sep 17 00:00:00 2001
+From 6e817fe2d8db2060ff8a243d50ed4b13c0bcbd68 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Tue, 4 Apr 2017 21:34:31 +0200
+Date: Wed, 5 Apr 2017 17:14:50 +0200
 Subject: [PATCH] mod
 
 ---
@@ -23,7 +23,7 @@ Subject: [PATCH] mod
  net/minecraft/client/gui/GuiIngame.java            |  24 ++-
  net/minecraft/client/gui/GuiIngameMenu.java        |  56 +++++-
  .../client/gui/GuiListWorldSelectionEntry.java     |   2 +-
- net/minecraft/client/gui/GuiMainMenu.java          |  34 +++-
+ net/minecraft/client/gui/GuiMainMenu.java          |  38 +++-
  net/minecraft/client/gui/GuiMemoryErrorScreen.java |   4 +-
  net/minecraft/client/gui/GuiMultiplayer.java       | 128 ++++++++++---
  net/minecraft/client/gui/GuiNewChat.java           |  12 ++
@@ -92,7 +92,7 @@ Subject: [PATCH] mod
  net/minecraft/util/Timer.java                      |   6 +
  net/minecraft/util/math/AxisAlignedBB.java         |   8 +
  net/minecraft/util/math/Vec3d.java                 |   6 +
- 88 files changed, 1343 insertions(+), 425 deletions(-)
+ 88 files changed, 1345 insertions(+), 427 deletions(-)
 
 diff --git a/Start.java b/Start.java
 index ae0025f..078afa5 100644
@@ -1542,7 +1542,7 @@ index cf5b504..cc18322 100644
          if (this.field_186784_e.getSaveLoader().canLoadWorld(this.field_186786_g.getFileName()))
          {
 diff --git a/net/minecraft/client/gui/GuiMainMenu.java b/net/minecraft/client/gui/GuiMainMenu.java
-index b8f0b51..9609665 100644
+index b8f0b51..4599e99 100644
 --- a/net/minecraft/client/gui/GuiMainMenu.java
 +++ b/net/minecraft/client/gui/GuiMainMenu.java
 @@ -1,6 +1,7 @@
@@ -1581,6 +1581,24 @@ index b8f0b51..9609665 100644
      private GuiButton buttonResetDemo;
  
      /** Timer used to rotate the panorama, increases every tick. */
+@@ -75,7 +81,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
+ 
+     /** An array of all the paths to the panorama pictures. */
+     private static final ResourceLocation[] titlePanoramaPaths = new ResourceLocation[] {new ResourceLocation("textures/gui/title/background/panorama_0.png"), new ResourceLocation("textures/gui/title/background/panorama_1.png"), new ResourceLocation("textures/gui/title/background/panorama_2.png"), new ResourceLocation("textures/gui/title/background/panorama_3.png"), new ResourceLocation("textures/gui/title/background/panorama_4.png"), new ResourceLocation("textures/gui/title/background/panorama_5.png")};
+-    public static final String field_96138_a = "Please click " + TextFormatting.UNDERLINE + "here" + TextFormatting.RESET + " for more information.";
++    public static final String MORE_INFO_TEXT = "Please click " + TextFormatting.UNDERLINE + "here" + TextFormatting.RESET + " for more information.";
+     private int field_92024_r;
+     private int field_92023_s;
+     private int field_92022_t;
+@@ -91,7 +97,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
+ 
+     public GuiMainMenu()
+     {
+-        this.openGLWarning2 = field_96138_a;
++        this.openGLWarning2 = MORE_INFO_TEXT;
+         this.field_183502_L = false;
+         this.splashText = "missingno";
+         IResource iresource = null;
 @@ -202,7 +208,13 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
          else if (calendar.get(2) + 1 == 10 && calendar.get(5) == 31)
          {
