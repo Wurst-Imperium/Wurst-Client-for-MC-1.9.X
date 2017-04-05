@@ -36,6 +36,18 @@ public class UIRenderer
 	{
 		if(WurstClient.INSTANCE.options.modListMode == 2)
 			return;
+		
+		int yCount = 19;
+		if(WurstClient.INSTANCE.special.yesCheatSpf.modeIndicator.isChecked())
+		{
+			String name =
+				"YesCheat+: " + WurstClient.INSTANCE.special.yesCheatSpf
+					.getBypassLevel().getName();
+			Fonts.segoe18.drawString(name, 3, yCount + 1, 0xFF000000);
+			Fonts.segoe18.drawString(name, 2, yCount, 0xFFFFFFFF);
+			yCount += 9;
+		}
+		
 		LinkedList<String> modList = new LinkedList<>();
 		for(Mod mod : WurstClient.INSTANCE.mods.getAllMods())
 		{
@@ -44,8 +56,8 @@ public class UIRenderer
 			if(mod.isActive())
 				modList.add(mod.getRenderName());
 		}
+		
 		ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
-		int yCount = 19;
 		if(yCount + modList.size() * 9 > sr.getScaledHeight()
 			|| WurstClient.INSTANCE.options.modListMode == 1)
 		{
@@ -100,7 +112,7 @@ public class UIRenderer
 		GL11.glDepthMask(false);
 		Fonts.segoe22.drawString(version, 74, 4, 0xFF000000);
 		
-		// mod list & pinned frames
+		// mod list
 		renderModList();
 		
 		// Wurst logo
