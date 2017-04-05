@@ -7,6 +7,8 @@
  */
 package net.wurstclient.features.commands;
 
+import net.wurstclient.compatibility.WChat;
+
 @Cmd.Info(description = "Clears the chat completely.",
 	name = "clear",
 	syntax = {},
@@ -17,7 +19,7 @@ public final class ClearCmd extends Cmd
 	public void execute(String[] args) throws CmdError
 	{
 		if(args.length == 0)
-			mc.ingameGUI.getChatGUI().clearChatMessages();
+			WChat.clearMessages();
 		else
 			syntaxError();
 	}
