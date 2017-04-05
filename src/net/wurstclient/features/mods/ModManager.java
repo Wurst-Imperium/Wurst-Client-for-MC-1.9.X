@@ -130,6 +130,7 @@ public class ModManager
 	public final SpeedNukerMod speedNukerMod = new SpeedNukerMod();
 	public final SpiderMod spiderMod = new SpiderMod();
 	public final StepMod stepMod = new StepMod();
+	public final TemplateToolMod templateToolMod = new TemplateToolMod();
 	public final ThrowMod throwMod = new ThrowMod();
 	public final TimerMod timerMod = new TimerMod();
 	public final TiredMod tiredMod = new TiredMod();
