@@ -29,18 +29,28 @@ public final class AntiFireMod extends Mod implements UpdateListener
 	}
 	
 	@Override
-	public void onUpdate()
-	{
-		if(!WMinecraft.getPlayer().capabilities.isCreativeMode
-			&& WMinecraft.getPlayer().onGround
-			&& WMinecraft.getPlayer().isBurning())
-			for(int i = 0; i < 100; i++)
-				WConnection.sendPacket(new CPacketPlayer());
-	}
-	
-	@Override
 	public void onDisable()
 	{
 		wurst.events.remove(UpdateListener.class, this);
+	}
+	
+	@Override
+	public void onUpdate()
+	{
+		// check gamemode
+		if(WMinecraft.getPlayer().capabilities.isCreativeMode)
+			return;
+		
+		// check onGround
+		if(!WMinecraft.getPlayer().onGround)
+			return;
+		
+		// check if burning
+		if(!WMinecraft.getPlayer().isBurning())
+			return;
+		
+		// send updates
+		for(int i = 0; i < 100; i++)
+			WConnection.sendPacket(new CPacketPlayer());
 	}
 }
