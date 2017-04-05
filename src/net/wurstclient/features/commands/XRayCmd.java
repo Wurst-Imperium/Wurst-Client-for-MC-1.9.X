@@ -65,14 +65,14 @@ public final class XRayCmd extends Cmd
 		{
 			if(args[1].equalsIgnoreCase("id") && MiscUtils.isInteger(args[2]))
 			{
-				if(net.wurstclient.features.mods.XRayMod.xrayBlocks
+				if(XRayMod.xrayBlocks
 					.contains(Block.getBlockById(Integer.valueOf(args[2]))))
 				{
 					ChatUtils.error("\"" + args[2]
 						+ "\" is already in your X-Ray blocks list.");
 					return;
 				}
-				net.wurstclient.features.mods.XRayMod.xrayBlocks
+				XRayMod.xrayBlocks
 					.add(Block.getBlockById(Integer.valueOf(args[2])));
 				ConfigFiles.XRAY.save();
 				ChatUtils.message("Added block " + args[2] + ".");
@@ -87,8 +87,7 @@ public final class XRayCmd extends Cmd
 						"The block \"" + args[1] + "\" could not be found.");
 					return;
 				}
-				net.wurstclient.features.mods.XRayMod.xrayBlocks
-					.add(Block.getBlockById(newID));
+				XRayMod.xrayBlocks.add(Block.getBlockById(newID));
 				ConfigFiles.XRAY.save();
 				ChatUtils.message(
 					"Added block " + newID + " (\"" + args[2] + "\").");
@@ -99,17 +98,13 @@ public final class XRayCmd extends Cmd
 		{
 			if(args[1].equalsIgnoreCase("id") && MiscUtils.isInteger(args[2]))
 			{
-				for(int i =
-					0; i < net.wurstclient.features.mods.XRayMod.xrayBlocks
-						.size(); i++)
+				for(int i = 0; i < XRayMod.xrayBlocks.size(); i++)
 					if(Integer
-						.toString(Block.getIdFromBlock(
-							net.wurstclient.features.mods.XRayMod.xrayBlocks
-								.get(i)))
+						.toString(
+							Block.getIdFromBlock(XRayMod.xrayBlocks.get(i)))
 						.toLowerCase().equals(args[2].toLowerCase()))
 					{
-						net.wurstclient.features.mods.XRayMod.xrayBlocks
-							.remove(i);
+						XRayMod.xrayBlocks.remove(i);
 						ConfigFiles.XRAY.save();
 						ChatUtils.message("Removed block " + args[2] + ".");
 						mc.renderGlobal.loadRenderers();
@@ -127,15 +122,10 @@ public final class XRayCmd extends Cmd
 						"The block \"" + args[2] + "\" could not be found.");
 					return;
 				}
-				for(int i =
-					0; i < net.wurstclient.features.mods.XRayMod.xrayBlocks
-						.size(); i++)
-					if(Block.getIdFromBlock(
-						net.wurstclient.features.mods.XRayMod.xrayBlocks
-							.get(i)) == newID)
+				for(int i = 0; i < XRayMod.xrayBlocks.size(); i++)
+					if(Block.getIdFromBlock(XRayMod.xrayBlocks.get(i)) == newID)
 					{
-						net.wurstclient.features.mods.XRayMod.xrayBlocks
-							.remove(i);
+						XRayMod.xrayBlocks.remove(i);
 						ConfigFiles.XRAY.save();
 						ChatUtils.message("Removed block " + newID + " (\""
 							+ args[2] + "\").");
