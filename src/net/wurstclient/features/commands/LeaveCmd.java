@@ -8,14 +8,13 @@
 package net.wurstclient.features.commands;
 
 import net.minecraft.network.play.client.CPacketChatMessage;
-import net.minecraft.network.play.client.CPacketPlayer.Position;
-import net.minecraft.network.play.client.CPacketUseEntity;
-import net.minecraft.util.EnumHand;
+import net.minecraft.network.play.client.CPacketPlayer;
 import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.ChatOutputEvent;
 import net.wurstclient.files.ConfigFiles;
 import net.wurstclient.utils.ChatUtils;
+import net.wurstclient.utils.EntityUtils;
 
 @Cmd.Info(
 	description = "Leaves the current server or changes the mode of AutoLeave.",
@@ -35,7 +34,7 @@ public final class LeaveCmd extends Cmd
 		switch(args.length)
 		{
 			case 0:
-			disconnectWithMode(wurst.mods.autoLeaveMod.getMode());
+			disconnectWithMode(wurst.mods.autoLeaveMod.mode.getSelected());
 			break;
 			case 1:
 			if(args[0].equalsIgnoreCase("taco"))
@@ -45,7 +44,7 @@ public final class LeaveCmd extends Cmd
 				disconnectWithMode(parseMode(args[0]));
 			break;
 			case 2:
-			wurst.mods.autoLeaveMod.setMode(parseMode(args[1]));
+			wurst.mods.autoLeaveMod.mode.setSelected(parseMode(args[1]));
 			ConfigFiles.OPTIONS.save();
 			ChatUtils.message("AutoLeave mode set to \"" + args[1] + "\".");
 			break;
@@ -73,15 +72,20 @@ public final class LeaveCmd extends Cmd
 			case 0:
 			WMinecraft.getWorld().sendQuittingDisconnectingPacket();
 			break;
+			
 			case 1:
 			WConnection.sendPacket(new CPacketChatMessage("§"));
 			break;
+			
 			case 2:
-			WConnection.sendPacket(new Position(3.1e7d, 100, 3.1e7d, false));
-			case 3:
-			WConnection.sendPacket(new CPacketUseEntity(WMinecraft.getPlayer(),
-				EnumHand.MAIN_HAND));
+			WConnection.sendPacket(
+				new CPacketPlayer.Position(3.1e7d, 100, 3.1e7d, false));
 			break;
+			
+			case 3:
+			EntityUtils.sendAttackPacket(WMinecraft.getPlayer());
+			break;
+			
 			default:
 			break;
 		}
@@ -90,7 +94,7 @@ public final class LeaveCmd extends Cmd
 	private int parseMode(String input) throws CmdSyntaxError
 	{
 		// search mode by name
-		String[] modeNames = wurst.mods.autoLeaveMod.getModes();
+		String[] modeNames = wurst.mods.autoLeaveMod.mode.getModes();
 		for(int i = 0; i < modeNames.length; i++)
 			if(input.equals(modeNames[i].toLowerCase()))
 				return i;

@@ -8,14 +8,15 @@
 package net.wurstclient.features.mods;
 
 import net.minecraft.network.play.client.CPacketChatMessage;
-import net.minecraft.network.play.client.CPacketPlayer.Position;
-import net.minecraft.network.play.client.CPacketUseEntity;
-import net.minecraft.util.EnumHand;
+import net.minecraft.network.play.client.CPacketPlayer;
 import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
 import net.wurstclient.settings.ModeSetting;
+import net.wurstclient.settings.SliderSetting;
+import net.wurstclient.settings.SliderSetting.ValueDisplay;
+import net.wurstclient.utils.EntityUtils;
 
 @Mod.Info(
 	description = "Automatically leaves the server when your health is low.\n"
@@ -26,8 +27,10 @@ import net.wurstclient.settings.ModeSetting;
 @Mod.Bypasses
 public final class AutoLeaveMod extends Mod implements UpdateListener
 {
-	private int mode = 0;
-	private String[] modes = new String[]{"Quit", "Chars", "TP", "SelfHurt"};
+	public SliderSetting health =
+		new SliderSetting("Health", 4, 0.5, 9.5, 0.5, ValueDisplay.DECIMAL);
+	public ModeSetting mode = new ModeSetting("Mode",
+		new String[]{"Quit", "Chars", "TP", "SelfHurt"}, 0);
 	
 	@Override
 	public Feature[] getSeeAlso()
@@ -38,21 +41,14 @@ public final class AutoLeaveMod extends Mod implements UpdateListener
 	@Override
 	public String getRenderName()
 	{
-		String name = getName() + "[" + modes[mode] + "]";
-		return name;
+		return getName() + " [" + mode.getSelectedMode() + "]";
 	}
 	
 	@Override
 	public void initSettings()
 	{
-		settings.add(new ModeSetting("Mode", modes, mode)
-		{
-			@Override
-			public void update()
-			{
-				mode = getSelected();
-			}
-		});
+		settings.add(health);
+		settings.add(mode);
 	}
 	
 	@Override
@@ -62,54 +58,49 @@ public final class AutoLeaveMod extends Mod implements UpdateListener
 	}
 	
 	@Override
-	public void onUpdate()
-	{
-		if(WMinecraft.getPlayer().getHealth() <= 8.0
-			&& !WMinecraft.getPlayer().capabilities.isCreativeMode
-			&& (!mc.isIntegratedServerRunning()
-				|| WMinecraft.getConnection().getPlayerInfoMap().size() > 1))
-		{
-			switch(mode)
-			{
-				case 0:
-				WMinecraft.getWorld().sendQuittingDisconnectingPacket();
-				break;
-				case 1:
-				WConnection.sendPacket(new CPacketChatMessage("§"));
-				break;
-				case 2:
-				WConnection
-					.sendPacket(new Position(3.1e7d, 100, 3.1e7d, false));
-				break;
-				case 3:
-				WConnection.sendPacket(new CPacketUseEntity(
-					WMinecraft.getPlayer(), EnumHand.MAIN_HAND));
-				break;
-				default:
-				break;
-			}
-			setEnabled(false);
-		}
-	}
-	
-	@Override
 	public void onDisable()
 	{
 		wurst.events.remove(UpdateListener.class, this);
 	}
 	
-	public int getMode()
+	@Override
+	public void onUpdate()
 	{
-		return mode;
-	}
-	
-	public void setMode(int mode)
-	{
-		((ModeSetting)settings.get(1)).setSelected(mode);
-	}
-	
-	public String[] getModes()
-	{
-		return modes;
+		// check gamemode
+		if(WMinecraft.getPlayer().capabilities.isCreativeMode)
+			return;
+		
+		// check for other players
+		if(mc.isSingleplayer()
+			|| WMinecraft.getConnection().getPlayerInfoMap().size() == 1)
+			return;
+		
+		// check health
+		if(WMinecraft.getPlayer().getHealth() > health.getValueF() * 2F)
+			return;
+		
+		// leave server
+		switch(mode.getSelected())
+		{
+			case 0:
+			WMinecraft.getWorld().sendQuittingDisconnectingPacket();
+			break;
+			
+			case 1:
+			WConnection.sendPacket(new CPacketChatMessage("§"));
+			break;
+			
+			case 2:
+			WConnection.sendPacket(
+				new CPacketPlayer.Position(3.1e7, 100, 3.1e7, false));
+			break;
+			
+			case 3:
+			EntityUtils.sendAttackPacket(WMinecraft.getPlayer());
+			break;
+		}
+		
+		// disable
+		setEnabled(false);
 	}
 }
