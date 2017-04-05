@@ -12,7 +12,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumHand;
 
-public class WPlayer
+public final class WPlayer
 {
 	public static void swingArmClient()
 	{
