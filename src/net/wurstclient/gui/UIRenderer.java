@@ -20,6 +20,7 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.util.ResourceLocation;
 import net.wurstclient.WurstClient;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.GUIRenderEvent;
 import net.wurstclient.features.mods.Mod;
 import net.wurstclient.features.mods.NavigatorMod;
@@ -79,7 +80,7 @@ public class UIRenderer
 		RenderUtils.setColor(new Color(255, 255, 255, 128));
 		
 		// get version string
-		String version = "v" + WurstClient.VERSION
+		String version = "v" + WurstClient.VERSION + " MC" + WMinecraft.VERSION
 			+ (WurstClient.INSTANCE.updater.isOutdated() ? " (outdated)" : "");
 		
 		// draw version background
