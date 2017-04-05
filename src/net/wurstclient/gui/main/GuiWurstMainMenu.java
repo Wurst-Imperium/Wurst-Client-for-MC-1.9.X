@@ -69,8 +69,6 @@ public class GuiWurstMainMenu extends GuiMainMenu
 		
 		if(WurstClient.INSTANCE.options.wurstNews)
 			downloadWurstNews();
-		
-		WurstClient.INSTANCE.analytics.trackPageView("/", "Main Menu");
 	}
 	
 	private void downloadWurstNews()
