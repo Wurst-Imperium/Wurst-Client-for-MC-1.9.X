@@ -67,8 +67,7 @@ public final class AutoLeaveMod extends Mod implements UpdateListener
 		if(WMinecraft.getPlayer().getHealth() <= 8.0
 			&& !WMinecraft.getPlayer().capabilities.isCreativeMode
 			&& (!mc.isIntegratedServerRunning()
-				|| WMinecraft.getPlayer().sendQueue.getPlayerInfoMap()
-					.size() > 1))
+				|| WMinecraft.getConnection().getPlayerInfoMap().size() > 1))
 		{
 			switch(mode)
 			{

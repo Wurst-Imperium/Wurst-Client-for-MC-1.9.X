@@ -13,11 +13,11 @@ public final class WConnection
 {
 	public static void sendPacket(Packet packet)
 	{
-		WMinecraft.getPlayer().sendQueue.addToSendQueue(packet);
+		WMinecraft.getConnection().addToSendQueue(packet);
 	}
 	
 	public static void sendPacketBypass(Packet packet)
 	{
-		WMinecraft.getPlayer().sendQueue.sendPacketBypass(packet);
+		WMinecraft.getConnection().sendPacketBypass(packet);
 	}
 }
