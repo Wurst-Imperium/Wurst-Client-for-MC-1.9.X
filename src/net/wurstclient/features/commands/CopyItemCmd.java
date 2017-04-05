@@ -9,10 +9,9 @@ package net.wurstclient.features.commands;
 
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
-import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.utils.ChatUtils;
+import net.wurstclient.utils.InventoryUtils;
 
 @Cmd.Info(
 	description = "Allows you to copy items that other people are holding\n"
@@ -65,15 +64,10 @@ public final class CopyItemCmd extends Cmd
 		if(item == null)
 			error("Player \"" + args[0] + "\" could not be found.");
 		
-		// copy item
-		for(int i = 0; i < 9; i++)
-			if(WMinecraft.getPlayer().inventory.getStackInSlot(i) == null)
-			{
-				WConnection.sendPacket(
-					new CPacketCreativeInventoryAction(36 + i, item));
-				ChatUtils.message("Item copied.");
-				return;
-			}
-		error("Please clear a slot in your hotbar.");
+		// give item
+		if(InventoryUtils.placeStackInHotbar(item))
+			ChatUtils.message("Item copied.");
+		else
+			error("Please clear a slot in your hotbar.");
 	}
 }
