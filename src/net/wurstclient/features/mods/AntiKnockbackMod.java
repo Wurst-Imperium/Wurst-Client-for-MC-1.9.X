@@ -11,27 +11,19 @@ import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 
 @Mod.Info(
-	description = "Protects you from getting pushed by players, mobs and\n"
-		+ "fluids.",
+	description = "Protects you from getting pushed by players, mobs and fluids.",
 	name = "AntiKnockback",
 	tags = "AntiVelocity, NoKnockback, AntiKB, anti knockback, anti velocity, no knockback, anti kb",
 	help = "Mods/AntiKnockback")
 @Mod.Bypasses(ghostMode = false)
 public final class AntiKnockbackMod extends Mod
 {
-	public float strength = 1F;
+	public final SliderSetting strength = new SliderSetting("Strength", 1, 0.01,
+		1, 0.01, ValueDisplay.PERCENTAGE);
 	
 	@Override
 	public void initSettings()
 	{
-		settings.add(new SliderSetting("Strength", strength, 0.01, 1, 0.01,
-			ValueDisplay.PERCENTAGE)
-		{
-			@Override
-			public void update()
-			{
-				strength = (float)getValue();
-			}
-		});
+		settings.add(strength);
 	}
 }
