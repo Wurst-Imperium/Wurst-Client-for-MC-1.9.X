@@ -7,12 +7,19 @@
  */
 package net.wurstclient.features.mods;
 
+import net.minecraft.block.BlockContainer;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.passive.EntityTameable;
+import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
+import net.wurstclient.compatibility.WBlock;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.compatibility.WPlayerController;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
+import net.wurstclient.features.special_features.YesCheatSpf.BypassLevel;
+import net.wurstclient.settings.CheckboxSetting;
 
 @Mod.Info(description = "Automatically eats food when necessary.",
 	name = "AutoEat",
@@ -21,8 +28,10 @@ import net.wurstclient.features.Feature;
 @Mod.Bypasses
 public final class AutoEatMod extends Mod implements UpdateListener
 {
-	private int oldSlot;
-	private int bestSlot;
+	public CheckboxSetting ignoreScreen =
+		new CheckboxSetting("Ignore screen", true);
+	
+	private int oldSlot = -1;
 	
 	@Override
 	public Feature[] getSeeAlso()
@@ -31,81 +40,132 @@ public final class AutoEatMod extends Mod implements UpdateListener
 	}
 	
 	@Override
-	public void onEnable()
+	public void initSettings()
 	{
-		oldSlot = -1;
-		wurst.events.add(UpdateListener.class, this);
+		settings.add(ignoreScreen);
 	}
 	
 	@Override
-	public void onUpdate()
+	public void onEnable()
 	{
-		if(oldSlot != -1 || WMinecraft.getPlayer().capabilities.isCreativeMode
-			|| WMinecraft.getPlayer().getFoodStats().getFoodLevel() >= 20)
-			return;
-		float bestSaturation = 0F;
-		bestSlot = -1;
-		for(int i = 0; i < 9; i++)
-		{
-			ItemStack item = WMinecraft.getPlayer().inventory.getStackInSlot(i);
-			if(item == null)
-				continue;
-			float saturation = 0;
-			if(item.getItem() instanceof ItemFood)
-				saturation =
-					((ItemFood)item.getItem()).getSaturationModifier(item);
-			if(saturation > bestSaturation)
-			{
-				bestSaturation = saturation;
-				bestSlot = i;
-			}
-		}
-		if(bestSlot == -1)
-			return;
-		oldSlot = WMinecraft.getPlayer().inventory.currentItem;
-		wurst.events.add(UpdateListener.class, new UpdateListener()
-		{
-			@Override
-			public void onUpdate()
-			{
-				if(!AutoEatMod.this.isActive()
-					|| WMinecraft.getPlayer().capabilities.isCreativeMode
-					|| WMinecraft.getPlayer().getFoodStats()
-						.getFoodLevel() >= 20)
-				{
-					stop();
-					return;
-				}
-				ItemStack item =
-					WMinecraft.getPlayer().inventory.getStackInSlot(bestSlot);
-				if(item == null || !(item.getItem() instanceof ItemFood))
-				{
-					stop();
-					return;
-				}
-				WMinecraft.getPlayer().inventory.currentItem = bestSlot;
-				WPlayerController.processRightClick();
-				mc.gameSettings.keyBindUseItem.pressed = true;
-			}
-			
-			private void stop()
-			{
-				mc.gameSettings.keyBindUseItem.pressed = false;
-				WMinecraft.getPlayer().inventory.currentItem = oldSlot;
-				oldSlot = -1;
-				wurst.events.remove(UpdateListener.class, this);
-			}
-		});
+		wurst.events.add(UpdateListener.class, this);
 	}
 	
 	@Override
 	public void onDisable()
 	{
 		wurst.events.remove(UpdateListener.class, this);
+		stopIfEating();
+	}
+	
+	@Override
+	public void onUpdate()
+	{
+		if(!shouldEat())
+		{
+			stopIfEating();
+			return;
+		}
+		
+		// search food in hotbar
+		int bestSlot = -1;
+		float bestSaturation = -1;
+		for(int i = 0; i < 9; i++)
+		{
+			// filter out non-food items
+			ItemStack stack =
+				WMinecraft.getPlayer().inventory.getStackInSlot(i);
+			if(stack == null || !(stack.getItem() instanceof ItemFood))
+				continue;
+			
+			// compare to previously found food
+			float saturation =
+				((ItemFood)stack.getItem()).getSaturationModifier(stack);
+			if(saturation > bestSaturation)
+			{
+				bestSaturation = saturation;
+				bestSlot = i;
+			}
+		}
+		
+		// check if any food was found
+		if(bestSlot == -1)
+		{
+			stopIfEating();
+			return;
+		}
+		
+		// save old slot
+		if(!isEating())
+			oldSlot = WMinecraft.getPlayer().inventory.currentItem;
+		
+		// set slot
+		WMinecraft.getPlayer().inventory.currentItem = bestSlot;
+		
+		// eat food
+		mc.gameSettings.keyBindUseItem.pressed = true;
+		WPlayerController.processRightClick();
+	}
+	
+	@Override
+	public void onYesCheatUpdate(BypassLevel bypassLevel)
+	{
+		switch(bypassLevel)
+		{
+			case GHOST_MODE:
+			ignoreScreen.lock(() -> false);
+			break;
+			
+			default:
+			ignoreScreen.unlock();
+			break;
+		}
+	}
+	
+	private boolean shouldEat()
+	{
+		// check hunger
+		if(!WMinecraft.getPlayer().canEat(false))
+			return false;
+		
+		// check screen
+		if(!ignoreScreen.isChecked() && mc.currentScreen != null)
+			return false;
+		
+		// check for clickable objects
+		if(mc.currentScreen == null && mc.objectMouseOver != null)
+		{
+			// clickable entities
+			Entity entity = mc.objectMouseOver.entityHit;
+			if(entity instanceof EntityVillager
+				|| entity instanceof EntityTameable)
+				return false;
+			
+			// clickable blocks
+			if(mc.objectMouseOver.getBlockPos() != null && WBlock.getBlock(
+				mc.objectMouseOver.getBlockPos()) instanceof BlockContainer)
+				return false;
+		}
+		
+		return true;
 	}
 	
 	public boolean isEating()
 	{
 		return oldSlot != -1;
+	}
+	
+	private void stopIfEating()
+	{
+		// check if eating
+		if(!isEating())
+			return;
+		
+		// stop eating
+		mc.gameSettings.keyBindUseItem.pressed = false;
+		
+		// reset slot
+		WMinecraft.getPlayer().inventory.currentItem = oldSlot;
+		oldSlot = -1;
 	}
 }
