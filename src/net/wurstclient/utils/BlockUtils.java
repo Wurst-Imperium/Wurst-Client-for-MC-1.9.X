@@ -497,7 +497,7 @@ public final class BlockUtils
 				while((pos = computeNextUnchecked()) != null)
 				{
 					// skip air blocks
-					if(WBlock.getMaterial(pos) == Material.air)
+					if(WBlock.getMaterial(pos) == Material.AIR)
 						continue;
 					
 					// check if block is valid

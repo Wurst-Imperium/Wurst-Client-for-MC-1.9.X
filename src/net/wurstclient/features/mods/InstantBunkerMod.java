@@ -90,7 +90,7 @@ public final class InstantBunkerMod extends Mod
 		if(!building)
 		{
 			for(BlockPos pos : positions)
-				if(WBlock.getMaterial(pos) == Material.air)
+				if(WBlock.getMaterial(pos) == Material.AIR)
 					BlockUtils.placeBlockSimple(pos);
 			WPlayer.swingArmClient();
 			setEnabled(false);
@@ -103,7 +103,7 @@ public final class InstantBunkerMod extends Mod
 		{
 			BlockPos pos = positions.get(blockIndex);
 			
-			if(WBlock.getMaterial(pos) == Material.air)
+			if(WBlock.getMaterial(pos) == Material.AIR)
 				BlockUtils.placeBlockLegit(pos);
 			else
 			{

@@ -147,7 +147,7 @@ public final class NukerMod extends Mod implements LeftClickListener,
 			return;
 		
 		// check material
-		if(WBlock.getMaterial(mc.objectMouseOver.getBlockPos()) == Material.air)
+		if(WBlock.getMaterial(mc.objectMouseOver.getBlockPos()) == Material.AIR)
 			return;
 		
 		// set id

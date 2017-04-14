@@ -137,7 +137,7 @@ public final class AutoBuildMod extends Mod
 		if(mc.objectMouseOver == null
 			|| mc.objectMouseOver.typeOfHit != RayTraceResult.Type.BLOCK
 			|| mc.objectMouseOver.getBlockPos() == null || WBlock
-				.getMaterial(mc.objectMouseOver.getBlockPos()) == Material.air)
+				.getMaterial(mc.objectMouseOver.getBlockPos()) == Material.AIR)
 			return;
 		
 		// get start pos and facings
@@ -156,7 +156,7 @@ public final class AutoBuildMod extends Mod
 		{
 			// build instantly
 			for(BlockPos pos : positions)
-				if(WBlock.getMaterial(pos) == Material.air)
+				if(WBlock.getMaterial(pos) == Material.AIR)
 					BlockUtils.placeBlockSimple(pos);
 				
 		}else
@@ -175,7 +175,7 @@ public final class AutoBuildMod extends Mod
 		BlockPos pos = positions.get(blockIndex);
 		
 		// skip already placed blocks
-		while(WBlock.getMaterial(pos) != Material.air)
+		while(WBlock.getMaterial(pos) != Material.AIR)
 		{
 			blockIndex++;
 			
@@ -234,7 +234,7 @@ public final class AutoBuildMod extends Mod
 				&& i < blockIndex + 64; i++)
 			{
 				pos = positions.get(i);
-				if(WBlock.getMaterial(pos) == Material.air)
+				if(WBlock.getMaterial(pos) == Material.AIR)
 					BlockUtils.placeBlockSimple(pos);
 			}
 		else if(mode.getSelected() == 1)

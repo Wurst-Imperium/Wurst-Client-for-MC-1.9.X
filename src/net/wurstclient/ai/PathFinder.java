@@ -230,7 +230,7 @@ public class PathFinder
 		Block block = WBlock.getBlock(pos);
 		return material.blocksMovement() && !(block instanceof BlockSign)
 			|| block instanceof BlockLadder || jesus
-				&& (material == Material.water || material == Material.lava);
+				&& (material == Material.WATER || material == Material.LAVA);
 	}
 	
 	private boolean canGoThrough(BlockPos pos)
@@ -252,7 +252,7 @@ public class PathFinder
 		
 		// check if safe
 		if(!invulnerable
-			&& (material == Material.lava || material == Material.fire))
+			&& (material == Material.LAVA || material == Material.FIRE))
 			return false;
 		
 		return true;
@@ -278,7 +278,7 @@ public class PathFinder
 		
 		// check if safe
 		if(!invulnerable
-			&& (material == Material.cactus || material == Material.lava))
+			&& (material == Material.CACTUS || material == Material.LAVA))
 			return false;
 		
 		return true;
@@ -335,7 +335,7 @@ public class PathFinder
 	private boolean canFlyAt(BlockPos pos)
 	{
 		return flying
-			|| !noSlowdownActive && WBlock.getMaterial(pos) == Material.water;
+			|| !noSlowdownActive && WBlock.getMaterial(pos) == Material.WATER;
 	}
 	
 	private boolean canClimbUpAt(BlockPos pos)
@@ -383,9 +383,9 @@ public class PathFinder
 		
 		// liquids
 		Material nextMaterial = WBlock.getMaterial(next);
-		if(nextMaterial == Material.water && !noSlowdownActive)
+		if(nextMaterial == Material.WATER && !noSlowdownActive)
 			cost *= 1.3164437838225804F;
-		else if(nextMaterial == Material.lava)
+		else if(nextMaterial == Material.LAVA)
 			cost *= 4.539515393656079F;
 		
 		// soul sand

@@ -30,7 +30,7 @@ public final class GlideMod extends Mod implements UpdateListener
 			&& WMinecraft.getPlayer().isAirBorne
 			&& !WMinecraft.getPlayer().isInWater()
 			&& !WMinecraft.getPlayer().isOnLadder()
-			&& !WMinecraft.getPlayer().isInsideOfMaterial(Material.lava))
+			&& !WMinecraft.getPlayer().isInsideOfMaterial(Material.LAVA))
 		{
 			WMinecraft.getPlayer().motionY = -0.125f;
 			WMinecraft.getPlayer().jumpMovementFactor *= 1.21337f;

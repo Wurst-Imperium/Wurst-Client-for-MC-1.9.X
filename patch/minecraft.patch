@@ -1,6 +1,6 @@
-From 385036385f880dbe4992dc5ac69b961692b32c22 Mon Sep 17 00:00:00 2001
+From d9bd4aaff347a14b1bf208dc8ba32bf0ec62aa80 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Thu, 6 Apr 2017 12:57:45 +0200
+Date: Fri, 14 Apr 2017 12:48:21 +0200
 Subject: [PATCH] mod
 
 ---
@@ -10,6 +10,7 @@ Subject: [PATCH] mod
  net/minecraft/block/BlockLiquid.java               |  14 +-
  net/minecraft/block/BlockSlab.java                 |   6 +-
  net/minecraft/block/BlockSoulSand.java             |   5 +
+ net/minecraft/block/material/Material.java         |   7 +
  net/minecraft/block/state/BlockStateContainer.java |   3 +-
  net/minecraft/block/state/IBlockState.java         |   2 +-
  net/minecraft/client/Minecraft.java                | 208 +++++++++++----------
@@ -92,7 +93,7 @@ Subject: [PATCH] mod
  net/minecraft/util/Timer.java                      |   6 +
  net/minecraft/util/math/AxisAlignedBB.java         |   8 +
  net/minecraft/util/math/Vec3d.java                 |   6 +
- 88 files changed, 1349 insertions(+), 443 deletions(-)
+ 89 files changed, 1356 insertions(+), 443 deletions(-)
 
 diff --git a/Start.java b/Start.java
 index ae0025f..078afa5 100644
@@ -307,6 +308,24 @@ index 4e9e618..4d9ffc7 100644
          entityIn.motionX *= 0.4D;
          entityIn.motionZ *= 0.4D;
      }
+diff --git a/net/minecraft/block/material/Material.java b/net/minecraft/block/material/Material.java
+index 2c822e3..2c3bc44 100644
+--- a/net/minecraft/block/material/Material.java
++++ b/net/minecraft/block/material/Material.java
+@@ -75,6 +75,13 @@ public class Material
+     private EnumPushReaction mobilityFlag = EnumPushReaction.NORMAL;
+     private boolean isAdventureModeExempt;
+ 	
++	// TODO: Client
++	public static final Material AIR = air;
++	public static final Material WATER = water;
++	public static final Material LAVA = lava;
++	public static final Material FIRE = fire;
++	public static final Material CACTUS = cactus;
++
+     public Material(MapColor color)
+     {
+         this.materialMapColor = color;
 diff --git a/net/minecraft/block/state/BlockStateContainer.java b/net/minecraft/block/state/BlockStateContainer.java
 index 72ab5aa..7148dae 100644
 --- a/net/minecraft/block/state/BlockStateContainer.java

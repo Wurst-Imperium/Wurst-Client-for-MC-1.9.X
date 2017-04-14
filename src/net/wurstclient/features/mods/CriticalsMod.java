@@ -71,7 +71,7 @@ public final class CriticalsMod extends Mod implements LeftClickListener
 		if(!wurst.mods.criticalsMod.isActive())
 			return;
 		if(!WMinecraft.getPlayer().isInWater()
-			&& !WMinecraft.getPlayer().isInsideOfMaterial(Material.lava)
+			&& !WMinecraft.getPlayer().isInsideOfMaterial(Material.LAVA)
 			&& WMinecraft.getPlayer().onGround)
 			switch(mode)
 			{

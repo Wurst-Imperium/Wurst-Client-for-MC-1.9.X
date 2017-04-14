@@ -54,7 +54,7 @@ public final class AutoToolMod extends Mod
 			&& mc.objectMouseOver.getBlockPos() != null
 			&& WMinecraft.getWorld()
 				.getBlockState(mc.objectMouseOver.getBlockPos()).getBlock()
-				.getMaterial(null) != Material.air)
+				.getMaterial(null) != Material.AIR)
 			setSlot(mc.objectMouseOver.getBlockPos());
 	}
 	
@@ -74,7 +74,7 @@ public final class AutoToolMod extends Mod
 			|| mc.objectMouseOver.getBlockPos() == null)
 			return;
 		if(WMinecraft.getWorld().getBlockState(mc.objectMouseOver.getBlockPos())
-			.getBlock().getMaterial(null) != Material.air)
+			.getBlock().getMaterial(null) != Material.AIR)
 		{
 			isActive = true;
 			oldSlot = WMinecraft.getPlayer().inventory.currentItem;

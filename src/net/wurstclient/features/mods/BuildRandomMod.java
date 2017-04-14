@@ -80,7 +80,7 @@ public final class BuildRandomMod extends Mod implements UpdateListener
 	
 	private boolean tryToPlaceBlock(boolean legitMode, BlockPos pos)
 	{
-		if(WBlock.getMaterial(pos) != Material.air)
+		if(WBlock.getMaterial(pos) != Material.AIR)
 			return false;
 		
 		if(legitMode)
