@@ -9,6 +9,7 @@ package net.wurstclient.features.mods;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.util.math.BlockPos;
+import net.wurstclient.WurstClient;
 import net.wurstclient.compatibility.WBlock;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.LeftClickEvent;
@@ -181,7 +182,7 @@ public final class SpeedNukerMod extends Mod
 		// AutoTool
 		for(BlockPos pos : validBlocks)
 		{
-			AutoToolMod.setSlot(pos);
+			WurstClient.INSTANCE.mods.autoToolMod.setSlot(pos);
 			break;
 		}
 		

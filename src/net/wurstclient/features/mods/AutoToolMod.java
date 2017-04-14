@@ -7,99 +7,152 @@
  */
 package net.wurstclient.features.mods;
 
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
 import net.minecraft.util.math.BlockPos;
+import net.wurstclient.compatibility.WBlock;
 import net.wurstclient.compatibility.WMinecraft;
-import net.wurstclient.events.LeftClickEvent;
-import net.wurstclient.events.listeners.LeftClickListener;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
+import net.wurstclient.settings.CheckboxSetting;
+import net.wurstclient.utils.InventoryUtils;
 
 @Mod.Info(
-	description = "Automatically uses the best tool in your hotbar to\n"
-		+ "mine blocks. Tip: This works with Nuker.",
+	description = "Automatically uses the best tool in your hotbar to mine blocks.\n"
+		+ "Tip: This works with Nuker.",
 	name = "AutoTool",
 	tags = "auto tool",
 	help = "Mods/AutoTool")
 @Mod.Bypasses
-public final class AutoToolMod extends Mod
-	implements LeftClickListener, UpdateListener
+public final class AutoToolMod extends Mod implements UpdateListener
 {
-	private boolean isActive = false;
-	private int oldSlot;
+	private int oldSlot = -1;
+	private BlockPos pos;
+	private int timer;
+	
+	public CheckboxSetting useSwords =
+		new CheckboxSetting("Use swords as tools", false);
+	
+	@Override
+	public void initSettings()
+	{
+		settings.add(useSwords);
+	}
 	
 	@Override
 	public Feature[] getSeeAlso()
 	{
-		return new Feature[]{wurst.mods.autoSwordMod};
+		return new Feature[]{wurst.mods.autoSwordMod, wurst.mods.nukerMod};
 	}
 	
 	@Override
 	public void onEnable()
 	{
-		wurst.events.add(LeftClickListener.class, this);
 		wurst.events.add(UpdateListener.class, this);
-	}
-	
-	@Override
-	public void onUpdate()
-	{
-		if(!mc.gameSettings.keyBindAttack.pressed && isActive)
-		{
-			isActive = false;
-			WMinecraft.getPlayer().inventory.currentItem = oldSlot;
-		}else if(isActive && mc.objectMouseOver != null
-			&& mc.objectMouseOver.getBlockPos() != null
-			&& WMinecraft.getWorld()
-				.getBlockState(mc.objectMouseOver.getBlockPos()).getBlock()
-				.getMaterial(null) != Material.AIR)
-			setSlot(mc.objectMouseOver.getBlockPos());
 	}
 	
 	@Override
 	public void onDisable()
 	{
-		wurst.events.remove(LeftClickListener.class, this);
 		wurst.events.remove(UpdateListener.class, this);
-		isActive = false;
-		WMinecraft.getPlayer().inventory.currentItem = oldSlot;
-	}
-	
-	@Override
-	public void onLeftClick(LeftClickEvent event)
-	{
-		if(mc.objectMouseOver == null
-			|| mc.objectMouseOver.getBlockPos() == null)
-			return;
-		if(WMinecraft.getWorld().getBlockState(mc.objectMouseOver.getBlockPos())
-			.getBlock().getMaterial(null) != Material.AIR)
+		
+		// reset slot
+		if(oldSlot != -1)
 		{
-			isActive = true;
-			oldSlot = WMinecraft.getPlayer().inventory.currentItem;
-			setSlot(mc.objectMouseOver.getBlockPos());
+			WMinecraft.getPlayer().inventory.currentItem = oldSlot;
+			oldSlot = -1;
 		}
 	}
 	
-	public static void setSlot(BlockPos blockPos)
+	@Override
+	public void onUpdate()
 	{
-		float bestSpeed = 1F;
+		// set slot if mining
+		if(mc.gameSettings.keyBindAttack.pressed && mc.objectMouseOver != null
+			&& mc.objectMouseOver.getBlockPos() != null)
+			setSlot(mc.objectMouseOver.getBlockPos());
+		
+		// check if slot is set
+		if(oldSlot == -1)
+			return;
+		
+		// reset slot
+		if(timer <= 0)
+		{
+			WMinecraft.getPlayer().inventory.currentItem = oldSlot;
+			oldSlot = -1;
+			return;
+		}
+		
+		// update timer
+		if(!mc.gameSettings.keyBindAttack.pressed
+			|| WMinecraft.getPlayer().capabilities.isCreativeMode
+			|| !WBlock.canBeClicked(pos))
+			timer--;
+	}
+	
+	public void setSlot(BlockPos pos)
+	{
+		// check if active
+		if(!isActive())
+			return;
+		
+		// check gamemode
+		if(WMinecraft.getPlayer().capabilities.isCreativeMode)
+			return;
+		
+		// check if block can be clicked
+		if(!WBlock.canBeClicked(pos))
+			return;
+		
+		// initialize speed & slot
+		float bestSpeed;
+		if(WMinecraft.getPlayer().inventory.getCurrentItem() != null)
+			bestSpeed = InventoryUtils.getStrVsBlock(
+				WMinecraft.getPlayer().inventory.getCurrentItem(), pos);
+		else
+			bestSpeed = 1;
 		int bestSlot = -1;
-		IBlockState blockState = WMinecraft.getWorld().getBlockState(blockPos);
+		
+		// find best tool
 		for(int i = 0; i < 9; i++)
 		{
-			ItemStack item = WMinecraft.getPlayer().inventory.getStackInSlot(i);
-			if(item == null)
+			// skip empty slots
+			ItemStack stack =
+				WMinecraft.getPlayer().inventory.getStackInSlot(i);
+			if(InventoryUtils.isEmptySlot(stack))
 				continue;
-			float speed = item.getStrVsBlock(blockState);
+			
+			// skip swords
+			if(!useSwords.isChecked() && stack.getItem() instanceof ItemSword)
+				continue;
+			
+			// get speed
+			float speed = InventoryUtils.getStrVsBlock(stack, pos);
+			
+			// compare with best tool
 			if(speed > bestSpeed)
 			{
 				bestSpeed = speed;
 				bestSlot = i;
 			}
 		}
-		if(bestSlot != -1)
-			WMinecraft.getPlayer().inventory.currentItem = bestSlot;
+		
+		// check if any tool was found
+		if(bestSlot == -1)
+			return;
+		
+		// save old slot
+		if(oldSlot == -1)
+			oldSlot = WMinecraft.getPlayer().inventory.currentItem;
+		
+		// set slot
+		WMinecraft.getPlayer().inventory.currentItem = bestSlot;
+		
+		// save position
+		this.pos = pos;
+		
+		// start timer
+		timer = 4;
 	}
 }

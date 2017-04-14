@@ -20,12 +20,12 @@ import net.minecraft.network.play.client.CPacketPlayerDigging.Action;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.wurstclient.WurstClient;
 import net.wurstclient.compatibility.WBlock;
 import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.compatibility.WPlayer;
 import net.wurstclient.compatibility.WPlayerController;
-import net.wurstclient.features.mods.AutoToolMod;
 
 public final class BlockUtils
 {
@@ -132,7 +132,7 @@ public final class BlockUtils
 				continue;
 			
 			// AutoTool
-			AutoToolMod.setSlot(pos);
+			WurstClient.INSTANCE.mods.autoToolMod.setSlot(pos);
 			
 			// face block
 			if(!RotationUtils.faceVectorPacket(hitVec))
@@ -208,7 +208,7 @@ public final class BlockUtils
 				continue;
 			
 			// AutoTool
-			AutoToolMod.setSlot(pos);
+			WurstClient.INSTANCE.mods.autoToolMod.setSlot(pos);
 			
 			// face block
 			if(!RotationUtils.faceVectorClient(hitVec))
@@ -253,7 +253,7 @@ public final class BlockUtils
 				continue;
 			
 			// AutoTool
-			AutoToolMod.setSlot(pos);
+			WurstClient.INSTANCE.mods.autoToolMod.setSlot(pos);
 			
 			// face block
 			RotationUtils.faceVectorPacket(hitVec);
