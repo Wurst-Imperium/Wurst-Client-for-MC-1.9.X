@@ -34,17 +34,17 @@ public final class AutoSwitchMod extends Mod implements UpdateListener
 	}
 	
 	@Override
+	public void onDisable()
+	{
+		wurst.events.remove(UpdateListener.class, this);
+	}
+	
+	@Override
 	public void onUpdate()
 	{
 		if(WMinecraft.getPlayer().inventory.currentItem == 8)
 			WMinecraft.getPlayer().inventory.currentItem = 0;
 		else
 			WMinecraft.getPlayer().inventory.currentItem++;
-	}
-	
-	@Override
-	public void onDisable()
-	{
-		wurst.events.remove(UpdateListener.class, this);
 	}
 }
