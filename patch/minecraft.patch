@@ -1,6 +1,6 @@
-From 8d56458f51df1cfce0621e0845f06f2231c420e0 Mon Sep 17 00:00:00 2001
+From c05570544bdcd50d3a8671674c3b2cb20ec0b5a2 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Fri, 14 Apr 2017 13:45:14 +0200
+Date: Fri, 14 Apr 2017 14:20:00 +0200
 Subject: [PATCH] mod
 
 ---
@@ -94,7 +94,9 @@ Subject: [PATCH] mod
  net/minecraft/util/Timer.java                      |   6 +
  net/minecraft/util/math/AxisAlignedBB.java         |   8 +
  net/minecraft/util/math/Vec3d.java                 |   6 +
- 90 files changed, 1365 insertions(+), 444 deletions(-)
+ net/minecraft/util/text/ITextComponent.java        |  12 ++
+ net/minecraft/util/text/Style.java                 |   6 +
+ 92 files changed, 1383 insertions(+), 444 deletions(-)
 
 diff --git a/Start.java b/Start.java
 index ae0025f..078afa5 100644
@@ -5016,6 +5018,48 @@ index 23b0721..4953837 100644
 +
      /**
       * Returns a new vector with the result of the specified vector minus this.
+      */
+diff --git a/net/minecraft/util/text/ITextComponent.java b/net/minecraft/util/text/ITextComponent.java
+index caae6bb..5e10612 100644
+--- a/net/minecraft/util/text/ITextComponent.java
++++ b/net/minecraft/util/text/ITextComponent.java
+@@ -19,8 +19,20 @@ import net.minecraft.util.JsonUtils;
+ 
+ public interface ITextComponent extends Iterable<ITextComponent>
+ {
++	// TODO: Client
++	default ITextComponent setStyle(Style var1)
++	{
++		return setChatStyle(var1);
++	}
++	
+     ITextComponent setChatStyle(Style style);
+ 	
++	// TODO: Client
++	default Style getStyle()
++	{
++		return getChatStyle();
++	}
++
+     Style getChatStyle();
+ 
+     /**
+diff --git a/net/minecraft/util/text/Style.java b/net/minecraft/util/text/Style.java
+index 246b592..2b752c9 100644
+--- a/net/minecraft/util/text/Style.java
++++ b/net/minecraft/util/text/Style.java
+@@ -263,6 +263,12 @@ public class Style
+         return this;
+     }
+     
++    // TODO: Client
++    public Style setClickEvent(ClickEvent event)
++    {
++    	return setChatClickEvent(event);
++    }
++    
+     /**
+      * Sets the event that should be run when text of this ChatStyle is clicked on.
       */
 -- 
 2.0.0

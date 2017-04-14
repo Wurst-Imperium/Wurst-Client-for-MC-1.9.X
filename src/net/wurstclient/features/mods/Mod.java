@@ -132,8 +132,7 @@ public abstract class Mod extends Feature
 			
 			CrashReportCategory category = report.makeCategory("Affected mod");
 			category.setDetail("Mod name", () -> name);
-			category.setDetail("Attempted action",
-				() -> "Enable on startup");
+			category.setDetail("Attempted action", () -> "Enable on startup");
 			
 			throw new ReportedException(report);
 		}
