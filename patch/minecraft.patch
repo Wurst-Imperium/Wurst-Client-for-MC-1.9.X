@@ -1,6 +1,6 @@
-From c05570544bdcd50d3a8671674c3b2cb20ec0b5a2 Mon Sep 17 00:00:00 2001
+From a6fe771f218dadd5d6cf857727e9021f2ef22aaf Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Fri, 14 Apr 2017 14:20:00 +0200
+Date: Fri, 14 Apr 2017 15:01:59 +0200
 Subject: [PATCH] mod
 
 ---
@@ -73,7 +73,8 @@ Subject: [PATCH] mod
  net/minecraft/entity/player/EntityPlayerMP.java    |   6 +-
  net/minecraft/entity/projectile/EntityPotion.java  |   4 +-
  .../entity/projectile/EntityTippedArrow.java       |   2 +-
- net/minecraft/item/Item.java                       |   2 +-
+ net/minecraft/init/Items.java                      |   7 +
+ net/minecraft/item/Item.java                       |   6 +-
  net/minecraft/item/ItemBow.java                    |   2 +-
  net/minecraft/item/ItemChorusFruit.java            |   2 +-
  net/minecraft/item/ItemEnderPearl.java             |   2 +-
@@ -96,7 +97,7 @@ Subject: [PATCH] mod
  net/minecraft/util/math/Vec3d.java                 |   6 +
  net/minecraft/util/text/ITextComponent.java        |  12 ++
  net/minecraft/util/text/Style.java                 |   6 +
- 92 files changed, 1383 insertions(+), 444 deletions(-)
+ 93 files changed, 1394 insertions(+), 444 deletions(-)
 
 diff --git a/Start.java b/Start.java
 index ae0025f..078afa5 100644
@@ -4432,11 +4433,38 @@ index cae123a..25014cd 100644
          }
  
          if (!this.field_184561_h.isEmpty())
+diff --git a/net/minecraft/init/Items.java b/net/minecraft/init/Items.java
+index 42d364e..5eb0efb 100644
+--- a/net/minecraft/init/Items.java
++++ b/net/minecraft/init/Items.java
+@@ -449,4 +449,11 @@ public class Items
+             beetroot_soup = getRegisteredItem("beetroot_soup");
+         }
+     }
++    
++    // TODO: Client
++	public static final Item BOW = bow;
++	public static final Item DIAMOND_SWORD = diamond_sword;
++	public static final Item STICK = stick;
++	public static final Item DIAMOND_CHESTPLATE = diamond_chestplate;
++	public static final Item POTIONITEM = potionitem;
+ }
 diff --git a/net/minecraft/item/Item.java b/net/minecraft/item/Item.java
-index 6c7c6a6..0611f1f 100644
+index 6c7c6a6..e6e8fb8 100644
 --- a/net/minecraft/item/Item.java
 +++ b/net/minecraft/item/Item.java
-@@ -83,7 +83,7 @@ public class Item
+@@ -57,6 +57,10 @@ import net.minecraft.world.World;
+ public class Item
+ {
+     public static final RegistryNamespaced<ResourceLocation, Item> itemRegistry = new RegistryNamespaced();
++    
++    // TODO: Client
++    public static final RegistryNamespaced<ResourceLocation, Item> REGISTRY = itemRegistry;
++    
+     private static final Map<Block, Item> BLOCK_TO_ITEM = Maps.<Block, Item>newHashMap();
+     private static final IItemPropertyGetter field_185046_b = new IItemPropertyGetter()
+     {
+@@ -83,7 +87,7 @@ public class Item
      {
          public float apply(ItemStack stack, World worldIn, EntityLivingBase entityIn)
          {

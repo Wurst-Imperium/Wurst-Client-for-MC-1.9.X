@@ -12,11 +12,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTException;
-import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
 import net.minecraft.util.ResourceLocation;
-import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.utils.ChatUtils;
+import net.wurstclient.utils.InventoryUtils;
 import net.wurstclient.utils.MiscUtils;
 
 @Cmd.Info(
@@ -27,39 +26,26 @@ import net.wurstclient.utils.MiscUtils;
 	help = "Commands/give")
 public final class GiveCmd extends Cmd
 {
-	private static class ItemTemplate
-	{
-		public Item item;
-		public String name, tag;
-		
-		public ItemTemplate(String name, Item item, String tag)
-		{
-			this.name = name;
-			this.item = item;
-			this.tag = tag;
-		}
-	}
-	
 	private ItemTemplate[] templates =
-		new ItemTemplate[]{new ItemTemplate("Knockback Stick", Items.stick,
+		new ItemTemplate[]{new ItemTemplate("Knockback Stick", Items.STICK,
 			"{ench:[{id:19, lvl:12}], display:{Name:§6Knockback Stick},"
 				+ "HideFlags:63}"),
 			
-			new ItemTemplate("One Hit Sword", Items.diamond_sword,
+			new ItemTemplate("One Hit Sword", Items.DIAMOND_SWORD,
 				"{AttributeModifiers:[" + "{AttributeName:generic.attackDamage,"
 					+ "Name:generic.attackDamage, Amount:2147483647,"
 					+ "Operation:0, UUIDMost:246216, UUIDLeast:24636}"
 					+ "], display:{Name:§6One Hitter}, Unbreakable:1,"
 					+ "HideFlags:63}"),
 			
-			new ItemTemplate("Super Bow", Items.bow,
+			new ItemTemplate("Super Bow", Items.BOW,
 				"{ench:["
 					+ "{id:48, lvl:32767}, {id:49, lvl:5}, {id:50, lvl:1},"
 					+ "{id:51, lvl:1}"
 					+ "], display:{Name:§6Super Bow}, HideFlags:63}"),
 			
 			new ItemTemplate("Super Thorns Chestplate",
-				Items.diamond_chestplate,
+				Items.DIAMOND_CHESTPLATE,
 				"{ench:[" + "{id:7, lvl:32767}," + "{id:0, lvl:32767}"
 					+ "], AttributeModifiers:["
 					+ "{AttributeName:generic.maxHealth, Name:generic.maxHealth,"
@@ -67,7 +53,7 @@ public final class GiveCmd extends Cmd
 					+ "], display:{Name:§6Super Thorns Chestplate}, HideFlags:63,"
 					+ "Unbreakable:1}"),
 			
-			new ItemTemplate("Super Potion", Items.potionitem,
+			new ItemTemplate("Super Potion", Items.POTIONITEM,
 				"{CustomPotionEffects: ["
 					+ "{Id:11, Amplifier:127, Duration:2147483647},"
 					+ "{Id:10, Amplifier:127, Duration:2147483647},"
@@ -78,22 +64,10 @@ public final class GiveCmd extends Cmd
 					+ "{Id:5, Amplifier:127, Duration:2147483647}],"
 					+ "display:{Name:§6Super Potion}, HideFlags:63}"),
 			
-			new ItemTemplate("Griefer Potion", Items.potionitem,
+			new ItemTemplate("Griefer Potion", Items.POTIONITEM,
 				"{CustomPotionEffects:["
 					+ "{Id:3, Amplifier:127, Duration:2147483647}"
 					+ "], display:{Name:§6Griefer Potion}, HideFlags:63}")};
-	
-	private int parseAmount(Item item, String input) throws CmdError
-	{
-		if(!MiscUtils.isInteger(input))
-			syntaxError("Amount must be a number.");
-		int amount = Integer.valueOf(input);
-		if(amount < 1)
-			error("Amount must be 1 or more.");
-		if(amount > item.getItemStackLimit())
-			error("Amount is larger than the maximum stack size.");
-		return amount;
-	}
 	
 	@Override
 	public void execute(String[] args) throws CmdError
@@ -144,7 +118,7 @@ public final class GiveCmd extends Cmd
 			// custom item
 			
 			// id/name
-			item = Item.itemRegistry.getObject(new ResourceLocation(args[0]));
+			item = Item.REGISTRY.getObject(new ResourceLocation(args[0]));
 			if(item == null && MiscUtils.isInteger(args[0]))
 				item = Item.getItemById(Integer.parseInt(args[0]));
 			if(item == null)
@@ -184,16 +158,36 @@ public final class GiveCmd extends Cmd
 			}
 		
 		// give item
-		for(int i = 0; i < 9; i++)
-			if(WMinecraft.getPlayer().inventory.getStackInSlot(i) == null)
-			{
-				WConnection.sendPacket(
-					new CPacketCreativeInventoryAction(36 + i, stack));
-				ChatUtils
-					.message("Item" + (amount > 1 ? "s" : "") + " created.");
-				return;
-			}
-		error("Please clear a slot of your hotbar.");
+		if(InventoryUtils.placeStackInHotbar(stack))
+			ChatUtils.message("Item" + (amount > 1 ? "s" : "") + " created.");
+		else
+			error("Please clear a slot in your hotbar.");
+	}
+	
+	private int parseAmount(Item item, String input) throws CmdError
+	{
+		if(!MiscUtils.isInteger(input))
+			syntaxError("Amount must be a number.");
+		int amount = Integer.valueOf(input);
+		if(amount < 1)
+			error("Amount must be 1 or more.");
+		if(amount > item.getItemStackLimit())
+			error("Amount is larger than the maximum stack size.");
+		return amount;
+	}
+	
+	private static class ItemTemplate
+	{
+		public String name;
+		public Item item;
+		public String tag;
+		
+		public ItemTemplate(String name, Item item, String tag)
+		{
+			this.name = name;
+			this.item = item;
+			this.tag = tag;
+		}
 	}
 	
 }
