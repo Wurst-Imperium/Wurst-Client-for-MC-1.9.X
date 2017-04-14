@@ -1,6 +1,6 @@
-From 9fc3f8157d34c92e5fb3570683874e5e6b130685 Mon Sep 17 00:00:00 2001
+From e1c65b6904bf9e30a483d6f81ab4fa8e7e6ab259 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Fri, 14 Apr 2017 20:35:28 +0200
+Date: Fri, 14 Apr 2017 21:08:32 +0200
 Subject: [PATCH] mod
 
 ---
@@ -73,6 +73,7 @@ Subject: [PATCH] mod
  net/minecraft/entity/player/EntityPlayerMP.java    |   6 +-
  net/minecraft/entity/projectile/EntityPotion.java  |   4 +-
  .../entity/projectile/EntityTippedArrow.java       |   2 +-
+ net/minecraft/init/Blocks.java                     |  84 +++++----
  net/minecraft/init/Items.java                      |   8 +
  net/minecraft/init/SoundEvents.java                |   3 +
  net/minecraft/item/Item.java                       |   6 +-
@@ -100,7 +101,7 @@ Subject: [PATCH] mod
  net/minecraft/util/math/Vec3d.java                 |   6 +
  net/minecraft/util/text/ITextComponent.java        |  12 ++
  net/minecraft/util/text/Style.java                 |   6 +
- 96 files changed, 1400 insertions(+), 446 deletions(-)
+ 97 files changed, 1451 insertions(+), 479 deletions(-)
 
 diff --git a/Start.java b/Start.java
 index ae0025f..078afa5 100644
@@ -4436,6 +4437,106 @@ index cae123a..25014cd 100644
          }
  
          if (!this.field_184561_h.isEmpty())
+diff --git a/net/minecraft/init/Blocks.java b/net/minecraft/init/Blocks.java
+index 72e11bf..612b526 100644
+--- a/net/minecraft/init/Blocks.java
++++ b/net/minecraft/init/Blocks.java
+@@ -1,39 +1,10 @@
+ package net.minecraft.init;
+ 
+-import com.google.common.collect.Sets;
+ import java.util.Set;
+-import net.minecraft.block.Block;
+-import net.minecraft.block.BlockBeacon;
+-import net.minecraft.block.BlockBush;
+-import net.minecraft.block.BlockCactus;
+-import net.minecraft.block.BlockCauldron;
+-import net.minecraft.block.BlockChest;
+-import net.minecraft.block.BlockDaylightDetector;
+-import net.minecraft.block.BlockDeadBush;
+-import net.minecraft.block.BlockDoublePlant;
+-import net.minecraft.block.BlockDynamicLiquid;
+-import net.minecraft.block.BlockFire;
+-import net.minecraft.block.BlockFlower;
+-import net.minecraft.block.BlockGrass;
+-import net.minecraft.block.BlockHopper;
+-import net.minecraft.block.BlockLeaves;
+-import net.minecraft.block.BlockMycelium;
+-import net.minecraft.block.BlockPistonBase;
+-import net.minecraft.block.BlockPistonExtension;
+-import net.minecraft.block.BlockPistonMoving;
+-import net.minecraft.block.BlockPortal;
+-import net.minecraft.block.BlockRedstoneComparator;
+-import net.minecraft.block.BlockRedstoneRepeater;
+-import net.minecraft.block.BlockRedstoneWire;
+-import net.minecraft.block.BlockReed;
+-import net.minecraft.block.BlockSand;
+-import net.minecraft.block.BlockSkull;
+-import net.minecraft.block.BlockSlab;
+-import net.minecraft.block.BlockStainedGlass;
+-import net.minecraft.block.BlockStainedGlassPane;
+-import net.minecraft.block.BlockStaticLiquid;
+-import net.minecraft.block.BlockTallGrass;
+-import net.minecraft.block.BlockTripWireHook;
++
++import com.google.common.collect.Sets;
++
++import net.minecraft.block.*;
+ import net.minecraft.util.ResourceLocation;
+ 
+ public class Blocks
+@@ -497,4 +468,51 @@ public class Blocks
+             CACHE.clear();
+         }
+     }
++    
++	// TODO: Client
++	public static final Block AIR = air;
++	public static final Block STONE = stone;
++	public static final BlockGrass GRASS = grass;
++	public static final Block DIRT = dirt;
++	public static final Block BEDROCK = bedrock;
++	public static final BlockDynamicLiquid FLOWING_WATER = flowing_water;
++	public static final BlockStaticLiquid WATER = water;
++	public static final BlockDynamicLiquid FLOWING_LAVA = flowing_lava;
++	public static final BlockStaticLiquid LAVA = lava;
++	public static final BlockSand SAND = sand;
++	public static final Block GRAVEL = gravel;
++	public static final Block GOLD_ORE = gold_ore;
++	public static final Block IRON_ORE = iron_ore;
++	public static final Block COAL_ORE = coal_ore;
++	public static final Block LOG = log;
++	public static final Block LOG2 = log2;
++	public static final BlockLeaves LEAVES = leaves;
++	public static final BlockLeaves LEAVES2 = leaves2;
++	public static final Block LAPIS_ORE = lapis_ore;
++	public static final Block SANDSTONE = sandstone;
++	public static final Block WEB = web;
++	public static final BlockTallGrass TALLGRASS = tallgrass;
++	public static final BlockDeadBush DEADBUSH = deadbush;
++	public static final BlockFlower YELLOW_FLOWER = yellow_flower;
++	public static final BlockFlower RED_FLOWER = red_flower;
++	public static final BlockBush BROWN_MUSHROOM = brown_mushroom;
++	public static final BlockBush RED_MUSHROOM = red_mushroom;
++	public static final Block MOSSY_COBBLESTONE = mossy_cobblestone;
++	public static final Block OBSIDIAN = obsidian;
++	public static final Block MOB_SPAWNER = mob_spawner;
++	public static final Block DIAMOND_ORE = diamond_ore;
++	public static final Block REDSTONE_ORE = redstone_ore;
++	public static final Block SNOW_LAYER = snow_layer;
++	public static final Block ICE = ice;
++	public static final Block CLAY = clay;
++	public static final Block MONSTER_EGG = monster_egg;
++	public static final Block BROWN_MUSHROOM_BLOCK = brown_mushroom_block;
++	public static final Block RED_MUSHROOM_BLOCK = red_mushroom_block;
++	public static final Block VINE = vine;
++	public static final Block WATERLILY = waterlily;
++	public static final Block EMERALD_ORE = emerald_ore;
++	public static final Block QUARTZ_ORE = quartz_ore;
++	public static final Block HARDENED_CLAY = hardened_clay;
++	public static final BlockDoublePlant DOUBLE_PLANT = double_plant;
++	public static final Block RED_SANDSTONE = red_sandstone;
+ }
 diff --git a/net/minecraft/init/Items.java b/net/minecraft/init/Items.java
 index 42d364e..a386939 100644
 --- a/net/minecraft/init/Items.java

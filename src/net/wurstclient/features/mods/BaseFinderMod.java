@@ -35,19 +35,19 @@ public final class BaseFinderMod extends Mod
 	implements UpdateListener, RenderListener
 {
 	private static final List<Block> NATURAL_BLOCKS = Arrays.<Block> asList(
-		Blocks.air, Blocks.stone, Blocks.dirt, Blocks.grass, Blocks.gravel,
-		Blocks.sand, Blocks.clay, Blocks.sandstone, Blocks.flowing_water,
-		Blocks.water, Blocks.flowing_lava, Blocks.lava, Blocks.log, Blocks.log2,
-		Blocks.leaves, Blocks.leaves2, Blocks.deadbush, Blocks.iron_ore,
-		Blocks.coal_ore, Blocks.gold_ore, Blocks.diamond_ore,
-		Blocks.emerald_ore, Blocks.redstone_ore, Blocks.lapis_ore,
-		Blocks.bedrock, Blocks.mob_spawner, Blocks.mossy_cobblestone,
-		Blocks.tallgrass, Blocks.yellow_flower, Blocks.red_flower, Blocks.web,
-		Blocks.red_mushroom, Blocks.brown_mushroom, Blocks.snow_layer,
-		Blocks.vine, Blocks.waterlily, Blocks.double_plant,
-		Blocks.hardened_clay, Blocks.red_sandstone, Blocks.ice,
-		Blocks.quartz_ore, Blocks.obsidian, Blocks.monster_egg,
-		Blocks.red_mushroom_block, Blocks.brown_mushroom_block);
+		Blocks.AIR, Blocks.STONE, Blocks.DIRT, Blocks.GRASS, Blocks.GRAVEL,
+		Blocks.SAND, Blocks.CLAY, Blocks.SANDSTONE, Blocks.FLOWING_WATER,
+		Blocks.WATER, Blocks.FLOWING_LAVA, Blocks.LAVA, Blocks.LOG, Blocks.LOG2,
+		Blocks.LEAVES, Blocks.LEAVES2, Blocks.DEADBUSH, Blocks.IRON_ORE,
+		Blocks.COAL_ORE, Blocks.GOLD_ORE, Blocks.DIAMOND_ORE,
+		Blocks.EMERALD_ORE, Blocks.REDSTONE_ORE, Blocks.LAPIS_ORE,
+		Blocks.BEDROCK, Blocks.MOB_SPAWNER, Blocks.MOSSY_COBBLESTONE,
+		Blocks.TALLGRASS, Blocks.YELLOW_FLOWER, Blocks.RED_FLOWER, Blocks.WEB,
+		Blocks.RED_MUSHROOM, Blocks.BROWN_MUSHROOM, Blocks.SNOW_LAYER,
+		Blocks.VINE, Blocks.WATERLILY, Blocks.DOUBLE_PLANT,
+		Blocks.HARDENED_CLAY, Blocks.RED_SANDSTONE, Blocks.ICE,
+		Blocks.QUARTZ_ORE, Blocks.OBSIDIAN, Blocks.MONSTER_EGG,
+		Blocks.RED_MUSHROOM_BLOCK, Blocks.BROWN_MUSHROOM_BLOCK);
 	
 	private final HashSet<BlockPos> matchingBlocks = new HashSet<>();
 	private final ArrayList<int[]> vertices = new ArrayList<>();
