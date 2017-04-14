@@ -64,7 +64,7 @@ public final class FightBotMod extends Mod implements UpdateListener
 			if(WMinecraft.getPlayer().getDistanceToEntity(entity) <= range)
 			{
 				if(wurst.mods.autoSwordMod.isActive())
-					AutoSwordMod.setSlot();
+					wurst.mods.autoSwordMod.setSlot();
 				wurst.mods.criticalsMod.doCritical();
 				if(RotationUtils.getAngleToClientRotation(
 					entity.boundingBox.getCenter()) > 55)

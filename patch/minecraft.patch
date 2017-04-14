@@ -1,6 +1,6 @@
-From 5c784206772c563b5b86549739ff398cde28c67b Mon Sep 17 00:00:00 2001
+From 9fc3f8157d34c92e5fb3570683874e5e6b130685 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Fri, 14 Apr 2017 18:56:53 +0200
+Date: Fri, 14 Apr 2017 20:35:28 +0200
 Subject: [PATCH] mod
 
 ---
@@ -80,6 +80,8 @@ Subject: [PATCH] mod
  net/minecraft/item/ItemChorusFruit.java            |   2 +-
  net/minecraft/item/ItemEnderPearl.java             |   2 +-
  net/minecraft/item/ItemShield.java                 |   2 +-
+ net/minecraft/item/ItemSword.java                  |   2 +-
+ net/minecraft/item/ItemTool.java                   |   2 +-
  net/minecraft/network/EnumConnectionState.java     |   6 +-
  net/minecraft/network/NetHandlerPlayServer.java    |   8 +-
  net/minecraft/network/NetworkManager.java          |  26 +++
@@ -98,7 +100,7 @@ Subject: [PATCH] mod
  net/minecraft/util/math/Vec3d.java                 |   6 +
  net/minecraft/util/text/ITextComponent.java        |  12 ++
  net/minecraft/util/text/Style.java                 |   6 +
- 94 files changed, 1398 insertions(+), 444 deletions(-)
+ 96 files changed, 1400 insertions(+), 446 deletions(-)
 
 diff --git a/Start.java b/Start.java
 index ae0025f..078afa5 100644
@@ -4539,6 +4541,32 @@ index b98ca23..f3e4bed 100644
              }
          });
      }
+diff --git a/net/minecraft/item/ItemSword.java b/net/minecraft/item/ItemSword.java
+index 2bcdc85..4d22b3a 100644
+--- a/net/minecraft/item/ItemSword.java
++++ b/net/minecraft/item/ItemSword.java
+@@ -15,7 +15,7 @@ import net.minecraft.world.World;
+ 
+ public class ItemSword extends Item
+ {
+-    private final float attackDamage;
++    public final float attackDamage;
+     private final Item.ToolMaterial material;
+ 
+     public ItemSword(Item.ToolMaterial material)
+diff --git a/net/minecraft/item/ItemTool.java b/net/minecraft/item/ItemTool.java
+index f71e39a..17cb1e9 100644
+--- a/net/minecraft/item/ItemTool.java
++++ b/net/minecraft/item/ItemTool.java
+@@ -18,7 +18,7 @@ public class ItemTool extends Item
+     protected float efficiencyOnProperMaterial;
+ 
+     /** Damage versus entities. */
+-    protected float damageVsEntity;
++    public float damageVsEntity;
+     protected float field_185065_c;
+ 
+     /** The material this tool is made from. */
 diff --git a/net/minecraft/network/EnumConnectionState.java b/net/minecraft/network/EnumConnectionState.java
 index 2d2fc3a..6c6f59d 100644
 --- a/net/minecraft/network/EnumConnectionState.java
