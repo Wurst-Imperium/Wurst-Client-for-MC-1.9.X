@@ -7,8 +7,8 @@
  */
 package net.wurstclient.features.mods;
 
-import net.minecraft.block.Block;
-import net.wurstclient.compatibility.WMinecraft;
+import net.minecraft.block.material.Material;
+import net.wurstclient.compatibility.WBlock;
 import net.wurstclient.events.listeners.UpdateListener;
 
 @Mod.Info(
@@ -22,28 +22,36 @@ public final class AutoMineMod extends Mod implements UpdateListener
 	@Override
 	public void onEnable()
 	{
-		mc.gameSettings.keyBindAttack.pressed = false;
 		wurst.events.add(UpdateListener.class, this);
-	}
-	
-	@Override
-	public void onUpdate()
-	{
-		if(mc.objectMouseOver == null
-			|| mc.objectMouseOver.getBlockPos() == null)
-			return;
-		if(Block.getIdFromBlock(WMinecraft.getWorld()
-			.getBlockState(mc.objectMouseOver.getBlockPos()).getBlock()) != 0)
-			mc.gameSettings.keyBindAttack.pressed = true;
-		else
-			mc.gameSettings.keyBindAttack.pressed = false;
-		
 	}
 	
 	@Override
 	public void onDisable()
 	{
 		wurst.events.remove(UpdateListener.class, this);
+		
+		// release attack key
 		mc.gameSettings.keyBindAttack.pressed = false;
+	}
+	
+	@Override
+	public void onUpdate()
+	{
+		// check hitResult
+		if(mc.objectMouseOver == null
+			|| mc.objectMouseOver.getBlockPos() == null)
+			return;
+		
+		// if attack key is down but nothing happens, release it for one tick
+		if(mc.gameSettings.keyBindAttack.pressed
+			&& !mc.playerController.getIsHittingBlock())
+		{
+			mc.gameSettings.keyBindAttack.pressed = false;
+			return;
+		}
+		
+		// press attack key if looking at block
+		mc.gameSettings.keyBindAttack.pressed = WBlock
+			.getMaterial(mc.objectMouseOver.getBlockPos()) != Material.AIR;
 	}
 }
