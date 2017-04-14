@@ -14,6 +14,9 @@ public class AnalyticsManager
 	
 	public AnalyticsManager(String analyticsCode, String hostName)
 	{
+		if(WurstClient.INSTANCE.options.google_analytics == null)
+			WurstClient.INSTANCE.options.google_analytics =
+				WurstClient.INSTANCE.options.new GoogleAnalytics();
 		tracker =
 			new JGoogleAnalyticsTracker(new AnalyticsConfigData(analyticsCode),
 				GoogleAnalyticsVersion.V_4_7_2);
