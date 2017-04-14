@@ -1,6 +1,6 @@
-From a6fe771f218dadd5d6cf857727e9021f2ef22aaf Mon Sep 17 00:00:00 2001
+From 004db653f0f8c1197bcc776c71fbf92a913dc235 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Fri, 14 Apr 2017 15:01:59 +0200
+Date: Fri, 14 Apr 2017 15:05:02 +0200
 Subject: [PATCH] mod
 
 ---
@@ -74,6 +74,7 @@ Subject: [PATCH] mod
  net/minecraft/entity/projectile/EntityPotion.java  |   4 +-
  .../entity/projectile/EntityTippedArrow.java       |   2 +-
  net/minecraft/init/Items.java                      |   7 +
+ net/minecraft/init/SoundEvents.java                |   3 +
  net/minecraft/item/Item.java                       |   6 +-
  net/minecraft/item/ItemBow.java                    |   2 +-
  net/minecraft/item/ItemChorusFruit.java            |   2 +-
@@ -97,7 +98,7 @@ Subject: [PATCH] mod
  net/minecraft/util/math/Vec3d.java                 |   6 +
  net/minecraft/util/text/ITextComponent.java        |  12 ++
  net/minecraft/util/text/Style.java                 |   6 +
- 93 files changed, 1394 insertions(+), 444 deletions(-)
+ 94 files changed, 1397 insertions(+), 444 deletions(-)
 
 diff --git a/Start.java b/Start.java
 index ae0025f..078afa5 100644
@@ -4448,6 +4449,18 @@ index 42d364e..5eb0efb 100644
 +	public static final Item STICK = stick;
 +	public static final Item DIAMOND_CHESTPLATE = diamond_chestplate;
 +	public static final Item POTIONITEM = potionitem;
+ }
+diff --git a/net/minecraft/init/SoundEvents.java b/net/minecraft/init/SoundEvents.java
+index b4c2227..be07ef7 100644
+--- a/net/minecraft/init/SoundEvents.java
++++ b/net/minecraft/init/SoundEvents.java
+@@ -916,4 +916,7 @@ public class SoundEvents
+             entity_zombie_villager_step = getRegisteredSoundEvent("entity.zombie_villager.step");
+         }
+     }
++    
++	// TODO: Client
++	public static final SoundEvent ENTITY_BOBBER_SPLASH = entity_bobber_splash;
  }
 diff --git a/net/minecraft/item/Item.java b/net/minecraft/item/Item.java
 index 6c7c6a6..e6e8fb8 100644
