@@ -9,10 +9,10 @@ package net.wurstclient.features.mods;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.InventoryEffectRenderer;
-import net.minecraft.inventory.ClickType;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.wurstclient.compatibility.WMinecraft;
+import net.wurstclient.compatibility.WPlayerController;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.utils.InventoryUtils;
 
@@ -110,10 +110,8 @@ public final class AutoArmorMod extends Mod implements UpdateListener
 					slot += 36;
 				
 				// swap armor
-				mc.playerController.windowClick(0, 8 - armorType, 0,
-					ClickType.QUICK_MOVE, WMinecraft.getPlayer());
-				mc.playerController.windowClick(0, slot, 0,
-					ClickType.QUICK_MOVE, WMinecraft.getPlayer());
+				WPlayerController.windowClick_QUICK_MOVE(8 - armorType);
+				WPlayerController.windowClick_QUICK_MOVE(slot);
 				
 				break;
 			}

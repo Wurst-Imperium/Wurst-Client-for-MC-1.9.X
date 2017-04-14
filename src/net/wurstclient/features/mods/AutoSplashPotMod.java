@@ -11,7 +11,6 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
-import net.minecraft.inventory.ClickType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketHeldItemChange;
 import net.minecraft.network.play.client.CPacketPlayer.Rotation;
@@ -21,6 +20,7 @@ import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.EnumHand;
 import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;
+import net.wurstclient.compatibility.WPlayerController;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
@@ -101,9 +101,7 @@ public final class AutoSplashPotMod extends Mod implements UpdateListener
 				updateLastMS();
 			}else
 				// move potion in inventory to hotbar
-				mc.playerController.windowClick(0, potionInInventory, 0,
-					ClickType.QUICK_MOVE, WMinecraft.getPlayer());
-			
+				WPlayerController.windowClick_QUICK_MOVE(potionInInventory);
 	}
 	
 	@Override

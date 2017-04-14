@@ -12,7 +12,6 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketHeldItemChange;
@@ -20,6 +19,7 @@ import net.minecraft.network.play.client.CPacketPlayerBlockPlacement;
 import net.minecraft.util.EnumHand;
 import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;
+import net.wurstclient.compatibility.WPlayerController;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
 import net.wurstclient.settings.SliderSetting;
@@ -92,8 +92,8 @@ public final class AutoSoupMod extends Mod implements UpdateListener
 			ItemStack stack = inventoryContainer.getSlot(i).getStack();
 			if(stack != null && stack.getItem() == Items.bowl)
 			{
-				playerController.windowClick(0, i, 0, ClickType.PICKUP, player);
-				playerController.windowClick(0, 9, 0, ClickType.PICKUP, player);
+				WPlayerController.windowClick_PICKUP(i);
+				WPlayerController.windowClick_PICKUP(9);
 			}
 		}
 		
@@ -107,8 +107,7 @@ public final class AutoSoupMod extends Mod implements UpdateListener
 			playerController.updateController();
 		}else
 			// move soup in inventory to hotbar
-			playerController.windowClick(0, soupInInventory, 0,
-				ClickType.QUICK_MOVE, player);
+			WPlayerController.windowClick_QUICK_MOVE(soupInInventory);
 	}
 	
 	@Override

@@ -9,6 +9,8 @@ package net.wurstclient.compatibility;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
+import net.minecraft.inventory.ClickType;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -19,6 +21,24 @@ public final class WPlayerController
 	private static PlayerControllerMP getPlayerController()
 	{
 		return Minecraft.getMinecraft().playerController;
+	}
+	
+	public static ItemStack windowClick_PICKUP(int slot)
+	{
+		return getPlayerController().windowClick(0, slot, 0, ClickType.PICKUP,
+			WMinecraft.getPlayer());
+	}
+	
+	public static ItemStack windowClick_QUICK_MOVE(int slot)
+	{
+		return getPlayerController().windowClick(0, slot, 0,
+			ClickType.QUICK_MOVE, WMinecraft.getPlayer());
+	}
+	
+	public static ItemStack windowClick_THROW(int slot)
+	{
+		return getPlayerController().windowClick(0, slot, 1, ClickType.THROW,
+			WMinecraft.getPlayer());
 	}
 	
 	public static void processRightClick()
