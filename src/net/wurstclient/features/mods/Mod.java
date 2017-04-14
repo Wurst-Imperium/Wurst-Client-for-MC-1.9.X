@@ -105,8 +105,8 @@ public abstract class Mod extends Feature
 				CrashReport.makeCrashReport(e, "Toggling Wurst mod");
 			
 			CrashReportCategory category = report.makeCategory("Affected mod");
-			category.addCrashSectionCallable("Mod name", () -> name);
-			category.addCrashSectionCallable("Attempted action",
+			category.setDetail("Mod name", () -> name);
+			category.setDetail("Attempted action",
 				() -> enabled ? "Enable" : "Disable");
 			
 			throw new ReportedException(report);
@@ -131,8 +131,8 @@ public abstract class Mod extends Feature
 				CrashReport.makeCrashReport(e, "Toggling Wurst mod");
 			
 			CrashReportCategory category = report.makeCategory("Affected mod");
-			category.addCrashSectionCallable("Mod name", () -> name);
-			category.addCrashSectionCallable("Attempted action",
+			category.setDetail("Mod name", () -> name);
+			category.setDetail("Attempted action",
 				() -> "Enable on startup");
 			
 			throw new ReportedException(report);
@@ -169,8 +169,8 @@ public abstract class Mod extends Feature
 				
 				CrashReportCategory category =
 					report.makeCategory("Affected mod");
-				category.addCrashSectionCallable("Mod name", () -> name);
-				category.addCrashSectionCallable("Attempted action",
+				category.setDetail("Mod name", () -> name);
+				category.setDetail("Attempted action",
 					() -> blocked ? "Block" : "Unblock");
 				
 				throw new ReportedException(report);

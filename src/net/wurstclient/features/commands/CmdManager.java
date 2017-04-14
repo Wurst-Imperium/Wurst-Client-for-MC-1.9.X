@@ -11,7 +11,6 @@ import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.TreeMap;
-import java.util.concurrent.Callable;
 
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
@@ -141,15 +140,8 @@ public class CmdManager implements ChatOutputListener
 						CrashReport.makeCrashReport(e, "Running Wurst command");
 					CrashReportCategory crashReportCategory =
 						crashReport.makeCategory("Affected command");
-					crashReportCategory.addCrashSectionCallable("Command input",
-						new Callable<String>()
-						{
-							@Override
-							public String call() throws Exception
-							{
-								return message;
-							}
-						});
+					crashReportCategory.setDetail("Command input",
+						() -> message);
 					throw new ReportedException(crashReport);
 				}
 			else

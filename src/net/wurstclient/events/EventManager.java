@@ -53,17 +53,18 @@ public final class EventManager
 		try
 		{
 			event.fire(listenerMap.get(event.getListenerType()));
+			
 		}catch(Throwable e)
 		{
 			e.printStackTrace();
-			CrashReport crashReport =
+			
+			CrashReport report =
 				CrashReport.makeCrashReport(e, "Firing Wurst event");
-			CrashReportCategory crashreportcategory =
-				crashReport.makeCategory("Affected event");
-			crashreportcategory.addCrashSectionCallable("Event class", () -> {
-				return event.getClass().getName();
-			});
-			throw new ReportedException(crashReport);
+			CrashReportCategory category =
+				report.makeCategory("Affected event");
+			category.setDetail("Event class", () -> event.getClass().getName());
+			
+			throw new ReportedException(report);
 		}
 	}
 	
@@ -73,21 +74,20 @@ public final class EventManager
 		try
 		{
 			((ArrayList<T>)listenerMap.get(type)).add(listener);
+			
 		}catch(Throwable e)
 		{
 			e.printStackTrace();
-			CrashReport crashReport =
+			
+			CrashReport report =
 				CrashReport.makeCrashReport(e, "Adding Wurst event listener");
-			CrashReportCategory crashreportcategory =
-				crashReport.makeCategory("Affected listener");
-			crashreportcategory.addCrashSectionCallable("Listener type", () -> {
-				return type.getName();
-			});
-			crashreportcategory.addCrashSectionCallable("Listener class",
-				() -> {
-					return listener.getClass().getName();
-				});
-			throw new ReportedException(crashReport);
+			CrashReportCategory category =
+				report.makeCategory("Affected listener");
+			category.setDetail("Listener type", () -> type.getName());
+			category.setDetail("Listener class",
+				() -> listener.getClass().getName());
+			
+			throw new ReportedException(report);
 		}
 	}
 	
@@ -97,21 +97,20 @@ public final class EventManager
 		try
 		{
 			((ArrayList<T>)listenerMap.get(type)).remove(listener);
+			
 		}catch(Throwable e)
 		{
 			e.printStackTrace();
-			CrashReport crashReport =
+			
+			CrashReport report =
 				CrashReport.makeCrashReport(e, "Removing Wurst event listener");
-			CrashReportCategory crashreportcategory =
-				crashReport.makeCategory("Affected listener");
-			crashreportcategory.addCrashSectionCallable("Listener type", () -> {
-				return type.getName();
-			});
-			crashreportcategory.addCrashSectionCallable("Listener class",
-				() -> {
-					return listener.getClass().getName();
-				});
-			throw new ReportedException(crashReport);
+			CrashReportCategory category =
+				report.makeCategory("Affected listener");
+			category.setDetail("Listener type", () -> type.getName());
+			category.setDetail("Listener class",
+				() -> listener.getClass().getName());
+			
+			throw new ReportedException(report);
 		}
 	}
 }
