@@ -1,6 +1,6 @@
-From 004db653f0f8c1197bcc776c71fbf92a913dc235 Mon Sep 17 00:00:00 2001
+From 5c784206772c563b5b86549739ff398cde28c67b Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Fri, 14 Apr 2017 15:05:02 +0200
+Date: Fri, 14 Apr 2017 18:56:53 +0200
 Subject: [PATCH] mod
 
 ---
@@ -73,7 +73,7 @@ Subject: [PATCH] mod
  net/minecraft/entity/player/EntityPlayerMP.java    |   6 +-
  net/minecraft/entity/projectile/EntityPotion.java  |   4 +-
  .../entity/projectile/EntityTippedArrow.java       |   2 +-
- net/minecraft/init/Items.java                      |   7 +
+ net/minecraft/init/Items.java                      |   8 +
  net/minecraft/init/SoundEvents.java                |   3 +
  net/minecraft/item/Item.java                       |   6 +-
  net/minecraft/item/ItemBow.java                    |   2 +-
@@ -98,7 +98,7 @@ Subject: [PATCH] mod
  net/minecraft/util/math/Vec3d.java                 |   6 +
  net/minecraft/util/text/ITextComponent.java        |  12 ++
  net/minecraft/util/text/Style.java                 |   6 +
- 94 files changed, 1397 insertions(+), 444 deletions(-)
+ 94 files changed, 1398 insertions(+), 444 deletions(-)
 
 diff --git a/Start.java b/Start.java
 index ae0025f..078afa5 100644
@@ -4435,18 +4435,19 @@ index cae123a..25014cd 100644
  
          if (!this.field_184561_h.isEmpty())
 diff --git a/net/minecraft/init/Items.java b/net/minecraft/init/Items.java
-index 42d364e..5eb0efb 100644
+index 42d364e..a386939 100644
 --- a/net/minecraft/init/Items.java
 +++ b/net/minecraft/init/Items.java
-@@ -449,4 +449,11 @@ public class Items
+@@ -449,4 +449,12 @@ public class Items
              beetroot_soup = getRegisteredItem("beetroot_soup");
          }
      }
 +    
-+    // TODO: Client
++	// TODO: Client
 +	public static final Item BOW = bow;
 +	public static final Item DIAMOND_SWORD = diamond_sword;
 +	public static final Item STICK = stick;
++	public static final Item BOWL = bowl;
 +	public static final Item DIAMOND_CHESTPLATE = diamond_chestplate;
 +	public static final Item POTIONITEM = potionitem;
  }

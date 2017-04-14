@@ -7,52 +7,53 @@
  */
 package net.wurstclient.features.mods;
 
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.gui.inventory.GuiInventory;
-import net.minecraft.client.multiplayer.PlayerControllerMP;
+import net.minecraft.block.BlockContainer;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.passive.EntityTameable;
+import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.Container;
+import net.minecraft.item.ItemSoup;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.play.client.CPacketHeldItemChange;
-import net.minecraft.network.play.client.CPacketPlayerBlockPlacement;
-import net.minecraft.util.EnumHand;
-import net.wurstclient.compatibility.WConnection;
+import net.wurstclient.compatibility.WBlock;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.compatibility.WPlayerController;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
+import net.wurstclient.features.special_features.YesCheatSpf.BypassLevel;
+import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
+import net.wurstclient.utils.InventoryUtils;
 
 @Mod.Info(
-	description = "Automatically eats soup if your health is below the set value.",
+	description = "Automatically eats soup if your health is lower than or equal to the set value.\n"
+		+ "Note: This mod ignores hunger and assumes that eating soup directly refills your health.\n"
+		+ "If the server you are playing on is not configured to do that, use AutoEat instead.",
 	name = "AutoSoup",
-	tags = "auto soup",
+	tags = "AutoStew, auto soup, auto stew",
 	help = "Mods/AutoSoup")
 @Mod.Bypasses
 public final class AutoSoupMod extends Mod implements UpdateListener
 {
-	public float health = 20F;
+	public final SliderSetting health =
+		new SliderSetting("Health", 6.5, 0.5, 9.5, 0.5, ValueDisplay.DECIMAL);
+	public CheckboxSetting ignoreScreen =
+		new CheckboxSetting("Ignore screen", true);
+	
+	private int oldSlot = -1;
 	
 	@Override
 	public void initSettings()
 	{
-		settings.add(
-			new SliderSetting("Health", health, 2, 20, 1, ValueDisplay.INTEGER)
-			{
-				@Override
-				public void update()
-				{
-					health = (float)getValue();
-				}
-			});
+		settings.add(health);
+		settings.add(ignoreScreen);
 	}
 	
 	@Override
 	public Feature[] getSeeAlso()
 	{
-		return new Feature[]{wurst.mods.autoEatMod};
+		return new Feature[]{wurst.mods.autoSplashPotMod,
+			wurst.mods.autoEatMod};
 	}
 	
 	@Override
@@ -62,58 +63,90 @@ public final class AutoSoupMod extends Mod implements UpdateListener
 	}
 	
 	@Override
+	public void onDisable()
+	{
+		wurst.events.remove(UpdateListener.class, this);
+		
+		stopIfEating();
+	}
+	
+	@Override
 	public void onUpdate()
 	{
-		// check if no container is open
-		if(mc.currentScreen instanceof GuiContainer
-			&& !(mc.currentScreen instanceof GuiInventory))
-			return;
-		
-		EntityPlayerSP player = WMinecraft.getPlayer();
-		
-		// check if health is low
-		if(player.getHealth() >= health)
-			return;
-		
-		// find soup
-		int soupInInventory = findSoup(9, 36);
-		int soupInHotbar = findSoup(36, 45);
-		
-		// check if any soup was found
-		if(soupInInventory == -1 && soupInHotbar == -1)
-			return;
-		
-		Container inventoryContainer = player.inventoryContainer;
-		PlayerControllerMP playerController = mc.playerController;
-		
 		// sort empty bowls
-		for(int i = 10; i < 45; i++)
+		for(int i = 0; i < 36; i++)
 		{
-			ItemStack stack = inventoryContainer.getSlot(i).getStack();
-			if(stack != null && stack.getItem() == Items.bowl)
-			{
-				WPlayerController.windowClick_PICKUP(i);
-				WPlayerController.windowClick_PICKUP(9);
-			}
+			// filter out non-bowl items and empty bowl slot
+			ItemStack stack =
+				WMinecraft.getPlayer().inventory.getStackInSlot(i);
+			if(stack == null || stack.getItem() != Items.BOWL || i == 9)
+				continue;
+			
+			// check if empty bowl slot contains a non-bowl item
+			ItemStack emptyBowlStack =
+				WMinecraft.getPlayer().inventory.getStackInSlot(9);
+			boolean swap = !InventoryUtils.isEmptySlot(emptyBowlStack)
+				&& emptyBowlStack.getItem() != Items.BOWL;
+			
+			// place bowl in empty bowl slot
+			WPlayerController.windowClick_PICKUP(i < 9 ? 36 + i : i);
+			WPlayerController.windowClick_PICKUP(9);
+			
+			// place non-bowl item from empty bowl slot in current slot
+			if(swap)
+				WPlayerController.windowClick_PICKUP(i < 9 ? 36 + i : i);
 		}
 		
+		// search soup in hotbar
+		int soupInHotbar = findSoup(0, 9);
+		
+		// check if any soup was found
 		if(soupInHotbar != -1)
 		{
-			// eat soup in hotbar
-			WConnection
-				.sendPacket(new CPacketHeldItemChange(soupInHotbar - 36));
-			WConnection.sendPacket(
-				new CPacketPlayerBlockPlacement(EnumHand.MAIN_HAND));
-			playerController.updateController();
-		}else
-			// move soup in inventory to hotbar
+			// check if player should eat soup
+			if(!shouldEatSoup())
+			{
+				stopIfEating();
+				return;
+			}
+			
+			// save old slot
+			if(oldSlot == -1)
+				oldSlot = WMinecraft.getPlayer().inventory.currentItem;
+			
+			// set slot
+			WMinecraft.getPlayer().inventory.currentItem = soupInHotbar;
+			
+			// eat soup
+			mc.gameSettings.keyBindUseItem.pressed = true;
+			WPlayerController.processRightClick();
+			
+			return;
+		}
+		
+		stopIfEating();
+		
+		// search soup in inventory
+		int soupInInventory = findSoup(9, 36);
+		
+		// move soup in inventory to hotbar
+		if(soupInInventory != -1)
 			WPlayerController.windowClick_QUICK_MOVE(soupInInventory);
 	}
 	
 	@Override
-	public void onDisable()
+	public void onYesCheatUpdate(BypassLevel bypassLevel)
 	{
-		wurst.events.remove(UpdateListener.class, this);
+		switch(bypassLevel)
+		{
+			case GHOST_MODE:
+			ignoreScreen.lock(() -> false);
+			break;
+			
+			default:
+			ignoreScreen.unlock();
+			break;
+		}
 	}
 	
 	private int findSoup(int startSlot, int endSlot)
@@ -121,10 +154,54 @@ public final class AutoSoupMod extends Mod implements UpdateListener
 		for(int i = startSlot; i < endSlot; i++)
 		{
 			ItemStack stack =
-				WMinecraft.getPlayer().inventoryContainer.getSlot(i).getStack();
-			if(stack != null && stack.getItem() == Items.mushroom_stew)
+				WMinecraft.getPlayer().inventory.getStackInSlot(i);
+			
+			if(stack != null && stack.getItem() instanceof ItemSoup)
 				return i;
 		}
+		
 		return -1;
+	}
+	
+	private boolean shouldEatSoup()
+	{
+		// check health
+		if(WMinecraft.getPlayer().getHealth() > health.getValueF() * 2F)
+			return false;
+		
+		// check screen
+		if(!ignoreScreen.isChecked() && mc.currentScreen != null)
+			return false;
+		
+		// check for clickable objects
+		if(mc.currentScreen == null && mc.objectMouseOver != null)
+		{
+			// clickable entities
+			Entity entity = mc.objectMouseOver.entityHit;
+			if(entity instanceof EntityVillager
+				|| entity instanceof EntityTameable)
+				return false;
+			
+			// clickable blocks
+			if(mc.objectMouseOver.getBlockPos() != null && WBlock.getBlock(
+				mc.objectMouseOver.getBlockPos()) instanceof BlockContainer)
+				return false;
+		}
+		
+		return true;
+	}
+	
+	private void stopIfEating()
+	{
+		// check if eating
+		if(oldSlot == -1)
+			return;
+		
+		// stop eating
+		mc.gameSettings.keyBindUseItem.pressed = false;
+		
+		// reset slot
+		WMinecraft.getPlayer().inventory.currentItem = oldSlot;
+		oldSlot = -1;
 	}
 }
