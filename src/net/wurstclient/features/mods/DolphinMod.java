@@ -24,16 +24,16 @@ public final class DolphinMod extends Mod implements UpdateListener
 	}
 	
 	@Override
+	public void onDisable()
+	{
+		wurst.events.remove(UpdateListener.class, this);
+	}
+	
+	@Override
 	public void onUpdate()
 	{
 		if(WMinecraft.getPlayer().isInWater()
 			&& !mc.gameSettings.keyBindSneak.pressed)
 			WMinecraft.getPlayer().motionY += 0.04;
-	}
-	
-	@Override
-	public void onDisable()
-	{
-		wurst.events.remove(UpdateListener.class, this);
 	}
 }
