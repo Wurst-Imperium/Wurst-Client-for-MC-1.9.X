@@ -59,7 +59,7 @@ public class ModManager
 	public final ClickAuraMod clickAuraMod = new ClickAuraMod();
 	public final CmdBlockMod cmdBlockMod = new CmdBlockMod();
 	public final CrashChestMod crashChestMod = new CrashChestMod();
-	public final CrashItemMod crashItemMod = new CrashItemMod();
+	public final CrashTagMod crashTagMod = new CrashTagMod();
 	public final CriticalsMod criticalsMod = new CriticalsMod();
 	public final DerpMod derpMod = new DerpMod();
 	public final DolphinMod dolphinMod = new DolphinMod();
