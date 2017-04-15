@@ -1,6 +1,6 @@
-From e1c65b6904bf9e30a483d6f81ab4fa8e7e6ab259 Mon Sep 17 00:00:00 2001
+From 2be68def33191e5e0001d8058864ee01078e753e Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Fri, 14 Apr 2017 21:08:32 +0200
+Date: Sat, 15 Apr 2017 07:05:11 +0200
 Subject: [PATCH] mod
 
 ---
@@ -73,7 +73,7 @@ Subject: [PATCH] mod
  net/minecraft/entity/player/EntityPlayerMP.java    |   6 +-
  net/minecraft/entity/projectile/EntityPotion.java  |   4 +-
  .../entity/projectile/EntityTippedArrow.java       |   2 +-
- net/minecraft/init/Blocks.java                     |  84 +++++----
+ net/minecraft/init/Blocks.java                     |  85 +++++----
  net/minecraft/init/Items.java                      |   8 +
  net/minecraft/init/SoundEvents.java                |   3 +
  net/minecraft/item/Item.java                       |   6 +-
@@ -101,7 +101,7 @@ Subject: [PATCH] mod
  net/minecraft/util/math/Vec3d.java                 |   6 +
  net/minecraft/util/text/ITextComponent.java        |  12 ++
  net/minecraft/util/text/Style.java                 |   6 +
- 97 files changed, 1451 insertions(+), 479 deletions(-)
+ 97 files changed, 1452 insertions(+), 479 deletions(-)
 
 diff --git a/Start.java b/Start.java
 index ae0025f..078afa5 100644
@@ -4438,7 +4438,7 @@ index cae123a..25014cd 100644
  
          if (!this.field_184561_h.isEmpty())
 diff --git a/net/minecraft/init/Blocks.java b/net/minecraft/init/Blocks.java
-index 72e11bf..612b526 100644
+index 72e11bf..79115f1 100644
 --- a/net/minecraft/init/Blocks.java
 +++ b/net/minecraft/init/Blocks.java
 @@ -1,39 +1,10 @@
@@ -4485,7 +4485,7 @@ index 72e11bf..612b526 100644
  import net.minecraft.util.ResourceLocation;
  
  public class Blocks
-@@ -497,4 +468,51 @@ public class Blocks
+@@ -497,4 +468,52 @@ public class Blocks
              CACHE.clear();
          }
      }
@@ -4532,6 +4532,7 @@ index 72e11bf..612b526 100644
 +	public static final Block VINE = vine;
 +	public static final Block WATERLILY = waterlily;
 +	public static final Block EMERALD_ORE = emerald_ore;
++	public static final Block COMMAND_BLOCK = command_block;
 +	public static final Block QUARTZ_ORE = quartz_ore;
 +	public static final Block HARDENED_CLAY = hardened_clay;
 +	public static final BlockDoublePlant DOUBLE_PLANT = double_plant;
