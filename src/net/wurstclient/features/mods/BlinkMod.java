@@ -9,13 +9,12 @@ package net.wurstclient.features.mods;
 
 import java.util.ArrayList;
 
-import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.wurstclient.compatibility.WConnection;
-import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.PacketOutputEvent;
 import net.wurstclient.events.listeners.PacketOutputListener;
+import net.wurstclient.utils.EntityFakePlayer;
 
 @Mod.Info(
 	description = "Suspends all motion updates while enabled.\n"
@@ -26,13 +25,9 @@ import net.wurstclient.events.listeners.PacketOutputListener;
 @Mod.DontSaveState
 public final class BlinkMod extends Mod implements PacketOutputListener
 {
-	private static ArrayList<Packet> packets = new ArrayList<>();
-	private EntityOtherPlayerMP fakePlayer = null;
-	private double oldX;
-	private double oldY;
-	private double oldZ;
-	private static long blinkTime;
-	private static long lastTime;
+	private final ArrayList<Packet> packets = new ArrayList<>();
+	private EntityFakePlayer fakePlayer;
+	private int blinkTime;
 	
 	@Override
 	public String getRenderName()
@@ -43,60 +38,58 @@ public final class BlinkMod extends Mod implements PacketOutputListener
 	@Override
 	public void onEnable()
 	{
-		lastTime = System.currentTimeMillis();
+		// reset timer
+		blinkTime = 0;
 		
-		oldX = WMinecraft.getPlayer().posX;
-		oldY = WMinecraft.getPlayer().posY;
-		oldZ = WMinecraft.getPlayer().posZ;
-		fakePlayer = new EntityOtherPlayerMP(WMinecraft.getWorld(),
-			WMinecraft.getPlayer().getGameProfile());
-		fakePlayer.clonePlayer(WMinecraft.getPlayer(), true);
-		fakePlayer.copyLocationAndAnglesFrom(WMinecraft.getPlayer());
-		fakePlayer.rotationYawHead = WMinecraft.getPlayer().rotationYawHead;
-		WMinecraft.getWorld().addEntityToWorld(-69, fakePlayer);
+		fakePlayer = new EntityFakePlayer();
 		
+		// add listener
 		wurst.events.add(PacketOutputListener.class, this);
+	}
+	
+	@Override
+	public void onDisable()
+	{
+		// remove listener
+		wurst.events.remove(PacketOutputListener.class, this);
+		
+		// send & delete saved packets
+		for(Packet packet : packets)
+			WConnection.sendPacket(packet);
+		packets.clear();
+		
+		fakePlayer.despawn();
 	}
 	
 	@Override
 	public void onSentPacket(PacketOutputEvent event)
 	{
 		Packet packet = event.getPacket();
-		if(packet instanceof CPacketPlayer)
-		{
-			if(WMinecraft.getPlayer().posX != WMinecraft.getPlayer().prevPosX
-				|| WMinecraft.getPlayer().posZ != WMinecraft
-					.getPlayer().prevPosZ
-				|| WMinecraft.getPlayer().posY != WMinecraft
-					.getPlayer().prevPosY)
-			{
-				blinkTime += System.currentTimeMillis() - lastTime;
-				packets.add(packet);
-			}
-			lastTime = System.currentTimeMillis();
-			event.cancel();
-		}
-	}
-	
-	@Override
-	public void onDisable()
-	{
-		wurst.events.remove(PacketOutputListener.class, this);
 		
-		for(Packet packet : packets)
-			WConnection.sendPacket(packet);
-		packets.clear();
-		WMinecraft.getWorld().removeEntityFromWorld(-69);
-		fakePlayer = null;
-		blinkTime = 0;
+		// check for player packets
+		if(!(packet instanceof CPacketPlayer))
+			return;
+		
+		// cancel player packets
+		event.cancel();
+		
+		// check for movement packets
+		if(!(packet instanceof CPacketPlayer.Position)
+			&& !(packet instanceof CPacketPlayer.PositionRotation))
+			return;
+		
+		// save movement packets
+		packets.add(packet);
+		blinkTime += 50;
 	}
 	
 	public void cancel()
 	{
+		// delete saved packets
 		packets.clear();
-		WMinecraft.getPlayer().setPositionAndRotation(oldX, oldY, oldZ,
-			WMinecraft.getPlayer().rotationYaw,
-			WMinecraft.getPlayer().rotationPitch);
+		
+		fakePlayer.resetPlayerPosition();
+		
 		setEnabled(false);
 	}
 }
