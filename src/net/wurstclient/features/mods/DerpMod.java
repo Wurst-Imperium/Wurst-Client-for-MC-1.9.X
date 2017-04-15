@@ -7,7 +7,7 @@
  */
 package net.wurstclient.features.mods;
 
-import net.minecraft.network.play.client.CPacketPlayer.Rotation;
+import net.minecraft.network.play.client.CPacketPlayer;
 import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
@@ -28,18 +28,18 @@ public final class DerpMod extends Mod implements UpdateListener
 	}
 	
 	@Override
+	public void onDisable()
+	{
+		wurst.events.remove(UpdateListener.class, this);
+	}
+	
+	@Override
 	public void onUpdate()
 	{
 		float yaw = WMinecraft.getPlayer().rotationYaw
 			+ (float)(Math.random() * 360 - 180);
 		float pitch = (float)(Math.random() * 180 - 90);
-		WConnection.sendPacket(
-			new Rotation(yaw, pitch, WMinecraft.getPlayer().onGround));
-	}
-	
-	@Override
-	public void onDisable()
-	{
-		wurst.events.remove(UpdateListener.class, this);
+		WConnection.sendPacket(new CPacketPlayer.Rotation(yaw, pitch,
+			WMinecraft.getPlayer().onGround));
 	}
 }
