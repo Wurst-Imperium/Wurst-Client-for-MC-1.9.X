@@ -16,35 +16,28 @@ import net.wurstclient.settings.SliderSetting.ValueDisplay;
 	description = "Allows you to break blocks faster.\n"
 		+ "Tip: This works with Nuker.",
 	name = "FastBreak",
-	tags = "SpeedyGonzales, fast break, speedy gonzales",
+	tags = "SpeedMine, SpeedyGonzales, fast break, speed mine, speedy gonzales",
 	help = "Mods/FastBreak")
 @Mod.Bypasses
 public final class FastBreakMod extends Mod
 {
-	public float speed = 2;
-	private int mode = 0;
-	private String[] modes = new String[]{"Normal", "Instant"};
-	
-	@Override
-	public void initSettings()
-	{
-		settings.add(
-			new SliderSetting("Speed", speed, 1, 5, 0.05, ValueDisplay.DECIMAL)
-			{
-				@Override
-				public void update()
-				{
-					speed = (float)getValue();
-				}
-			});
-		settings.add(new ModeSetting("Mode", modes, mode)
+	public final ModeSetting mode =
+		new ModeSetting("Mode", new String[]{"Normal", "Instant"}, 1)
 		{
 			@Override
 			public void update()
 			{
-				mode = getSelected();
+				speed.setDisabled(getSelected() == 1);
 			}
-		});
+		};
+	public final SliderSetting speed =
+		new SliderSetting("Speed", 2, 1, 5, 0.05, ValueDisplay.DECIMAL);
+	
+	@Override
+	public void initSettings()
+	{
+		settings.add(mode);
+		settings.add(speed);
 	}
 	
 	@Override
@@ -54,8 +47,19 @@ public final class FastBreakMod extends Mod
 			wurst.mods.nukerMod};
 	}
 	
-	public int getMode()
+	public float getHardnessModifier()
 	{
-		return mode;
+		if(!isActive())
+			return 1;
+		
+		if(mode.getSelected() != 0)
+			return 1;
+		
+		return speed.getValueF();
+	}
+	
+	public boolean shouldSpamPackets()
+	{
+		return isActive() && mode.getSelected() == 1;
 	}
 }

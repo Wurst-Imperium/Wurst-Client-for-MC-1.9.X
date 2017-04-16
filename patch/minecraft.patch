@@ -1,11 +1,11 @@
-From b292aaf10bef78e082a25da988998788bc4b8c27 Mon Sep 17 00:00:00 2001
+From 0da9ba383ec0c1ca384ba65d8039079feebd3f35 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Sat, 15 Apr 2017 10:26:23 +0200
+Date: Sun, 16 Apr 2017 12:07:20 +0200
 Subject: [PATCH] mod
 
 ---
  Start.java                                         |   2 +-
- net/minecraft/block/Block.java                     |  17 +-
+ net/minecraft/block/Block.java                     |  27 ++-
  net/minecraft/block/BlockCactus.java               |  11 +-
  net/minecraft/block/BlockLiquid.java               |  14 +-
  net/minecraft/block/BlockSlab.java                 |   6 +-
@@ -40,7 +40,7 @@ Subject: [PATCH] mod
  .../client/gui/inventory/GuiEditSign.java          |  17 ++
  net/minecraft/client/model/ModelElytra.java        |   2 +-
  .../client/multiplayer/GuiConnecting.java          |   8 +-
- .../client/multiplayer/PlayerControllerMP.java     |  65 ++++---
+ .../client/multiplayer/PlayerControllerMP.java     |  54 +++---
  net/minecraft/client/multiplayer/ServerList.java   |   6 +
  .../client/network/NetHandlerPlayClient.java       |  27 ++-
  .../client/network/NetworkPlayerInfo.java          |  10 +
@@ -101,7 +101,7 @@ Subject: [PATCH] mod
  net/minecraft/util/math/Vec3d.java                 |   6 +
  net/minecraft/util/text/ITextComponent.java        |  12 ++
  net/minecraft/util/text/Style.java                 |   6 +
- 97 files changed, 1453 insertions(+), 479 deletions(-)
+ 97 files changed, 1451 insertions(+), 480 deletions(-)
 
 diff --git a/Start.java b/Start.java
 index ae0025f..078afa5 100644
@@ -117,7 +117,7 @@ index ae0025f..078afa5 100644
  
      public static <T> T[] concat(T[] first, T[] second)
 diff --git a/net/minecraft/block/Block.java b/net/minecraft/block/Block.java
-index b386ea0..71313c8 100644
+index b386ea0..09f8118 100644
 --- a/net/minecraft/block/Block.java
 +++ b/net/minecraft/block/Block.java
 @@ -1,9 +1,11 @@
@@ -141,19 +141,21 @@ index b386ea0..71313c8 100644
  
  public class Block
  {
-@@ -339,7 +343,10 @@ public class Block
+@@ -339,7 +343,12 @@ public class Block
  
      public boolean isFullCube(IBlockState state)
      {
 -        return true;
 +		// TODO: Client
-+		return !WurstClient.INSTANCE.mods.xRayMod.isActive()
-+			&& !WurstClient.INSTANCE.mods.freecamMod.isActive()
-+			&& !WurstClient.INSTANCE.mods.noClipMod.isActive();
++		if(WurstClient.INSTANCE.mods.xRayMod.isActive())
++			return XRayUtils.isXRayBlock(this);
++		else
++			return !WurstClient.INSTANCE.mods.freecamMod.isActive()
++				&& !WurstClient.INSTANCE.mods.noClipMod.isActive();
      }
  
      public boolean isPassable(IBlockAccess worldIn, BlockPos pos)
-@@ -435,6 +442,10 @@ public class Block
+@@ -435,6 +444,10 @@ public class Block
  
      public boolean shouldSideBeRendered(IBlockState worldIn, IBlockAccess pos, BlockPos side, EnumFacing facing)
      {
@@ -164,7 +166,7 @@ index b386ea0..71313c8 100644
          AxisAlignedBB axisalignedbb = worldIn.func_185900_c(pos, side);
  
          switch (facing)
-@@ -535,6 +546,10 @@ public class Block
+@@ -535,6 +548,10 @@ public class Block
  
      public boolean canCollideCheck(IBlockState state, boolean hitIfLiquid)
      {
@@ -175,6 +177,21 @@ index b386ea0..71313c8 100644
          return this.isCollidable();
      }
  
+@@ -614,7 +631,13 @@ public class Block
+     public float getPlayerRelativeBlockHardness(IBlockState playerIn, EntityPlayer worldIn, World pos, BlockPos p_180647_4_)
+     {
+         float f = playerIn.getBlockHardness(pos, p_180647_4_);
+-        return f < 0.0F ? 0.0F : (!worldIn.func_184823_b(playerIn) ? worldIn.func_184813_a(playerIn) / f / 100.0F : worldIn.func_184813_a(playerIn) / f / 30.0F);
++
++		// TODO: Client
++		return f < 0.0F ? 0.0F
++			: (!worldIn.func_184823_b(playerIn)
++				? worldIn.func_184813_a(playerIn) / f / 100.0F
++				: worldIn.func_184813_a(playerIn) / f / 30.0F)
++				* WurstClient.INSTANCE.mods.fastBreakMod.getHardnessModifier();
+     }
+ 
+     /**
 diff --git a/net/minecraft/block/BlockCactus.java b/net/minecraft/block/BlockCactus.java
 index d1d7e2c..aa4f668 100644
 --- a/net/minecraft/block/BlockCactus.java
@@ -2669,7 +2686,7 @@ index 74c8ca7..7ff3577 100644
                  }
                  catch (UnknownHostException unknownhostexception)
 diff --git a/net/minecraft/client/multiplayer/PlayerControllerMP.java b/net/minecraft/client/multiplayer/PlayerControllerMP.java
-index a54fc8f..27064cf 100644
+index a54fc8f..6745f4a 100644
 --- a/net/minecraft/client/multiplayer/PlayerControllerMP.java
 +++ b/net/minecraft/client/multiplayer/PlayerControllerMP.java
 @@ -19,15 +19,7 @@ import net.minecraft.item.ItemBlock;
@@ -2725,19 +2742,20 @@ index a54fc8f..27064cf 100644
      {
          if (this.currentGameType.isAdventure())
          {
-@@ -238,7 +232,10 @@ public class PlayerControllerMP
+@@ -238,7 +232,11 @@ public class PlayerControllerMP
              {
                  this.netClientHandler.addToSendQueue(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, loc, face));
                  clickBlockCreative(this.mc, this, loc, face);
 -                this.blockHitDelay = 5;
 +                
-+                //TODO: Client
-+                this.blockHitDelay = WurstClient.INSTANCE.mods.fastBreakMod.isEnabled() ? 0 : 5;
++				// TODO: Client
++				this.blockHitDelay =
++					WurstClient.INSTANCE.mods.fastBreakMod.isActive() ? 0 : 5;
 +                
              }
              else if (!this.isHittingBlock || !this.isHittingPosition(loc))
              {
-@@ -258,7 +255,7 @@ public class PlayerControllerMP
+@@ -258,7 +256,7 @@ public class PlayerControllerMP
  
                  if (flag && iblockstate.getPlayerRelativeBlockHardness(this.mc.thePlayer, this.mc.thePlayer.worldObj, loc) >= 1.0F)
                  {
@@ -2746,7 +2764,7 @@ index a54fc8f..27064cf 100644
                  }
                  else
                  {
-@@ -286,7 +283,7 @@ public class PlayerControllerMP
+@@ -286,7 +284,7 @@ public class PlayerControllerMP
              this.isHittingBlock = false;
              this.curBlockDamageMP = 0.0F;
              this.mc.theWorld.sendBlockBreakProgress(this.mc.thePlayer.getEntityId(), this.currentBlock, -1);
@@ -2755,36 +2773,19 @@ index a54fc8f..27064cf 100644
          }
      }
  
-@@ -301,7 +298,9 @@ public class PlayerControllerMP
+@@ -301,7 +299,10 @@ public class PlayerControllerMP
          }
          else if (this.currentGameType.isCreative() && this.mc.theWorld.getWorldBorder().contains(posBlock))
          {
 -            this.blockHitDelay = 5;
-+        	//TODO: Client
-+            this.blockHitDelay = WurstClient.INSTANCE.mods.fastBreakMod.isEnabled() ? 0 : 5;
++			// TODO: Client
++			this.blockHitDelay =
++				WurstClient.INSTANCE.mods.fastBreakMod.isActive() ? 0 : 5;
 +            
              this.netClientHandler.addToSendQueue(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, posBlock, directionFacing));
              clickBlockCreative(this.mc, this, posBlock, directionFacing);
              return true;
-@@ -318,7 +317,16 @@ public class PlayerControllerMP
-             }
-             else
-             {
--                this.curBlockDamageMP += iblockstate.getPlayerRelativeBlockHardness(this.mc.thePlayer, this.mc.thePlayer.worldObj, posBlock);
-+				// TODO: Client
-+				FastBreakMod fastBreak = WurstClient.INSTANCE.mods.fastBreakMod;
-+				this.curBlockDamageMP +=
-+					iblockstate
-+						.getPlayerRelativeBlockHardness(this.mc.thePlayer,
-+							this.mc.thePlayer.worldObj, posBlock)
-+						* (fastBreak.isActive()
-+							&& !this.currentGameType.isCreative()
-+							&& WurstClient.INSTANCE.mods.fastBreakMod.getMode() == 0
-+							? fastBreak.speed : 1);
- 
-                 if (this.stepSoundTickCounter % 4.0F == 0.0F)
-                 {
-@@ -332,10 +340,21 @@ public class PlayerControllerMP
+@@ -332,11 +333,18 @@ public class PlayerControllerMP
                  {
                      this.isHittingBlock = false;
                      this.netClientHandler.addToSendQueue(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, posBlock, directionFacing));
@@ -2793,21 +2794,19 @@ index a54fc8f..27064cf 100644
                      this.curBlockDamageMP = 0.0F;
                      this.stepSoundTickCounter = 0.0F;
                      this.blockHitDelay = 5;
+-                }
 +                    
 +					// TODO: Client
-+				}else if(!this.currentGameType.isCreative()
-+					&& WurstClient.INSTANCE.mods.fastBreakMod.isEnabled()
-+					&& WurstClient.INSTANCE.mods.fastBreakMod.getMode() == 1)
-+				{
-+					
++				}else if(WurstClient.INSTANCE.mods.fastBreakMod
++					.shouldSpamPackets())
 +					this.netClientHandler
 +						.addToSendQueue(new CPacketPlayerDigging(
 +							CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK,
 +							posBlock, directionFacing));
-                 }
  
                  this.mc.theWorld.sendBlockBreakProgress(this.mc.thePlayer.getEntityId(), this.currentBlock, (int)(this.curBlockDamageMP * 10.0F) - 1);
-@@ -439,7 +458,7 @@ public class PlayerControllerMP
+                 return true;
+@@ -439,7 +447,7 @@ public class PlayerControllerMP
                  {
                      return EnumActionResult.PASS;
                  }
@@ -2816,7 +2815,7 @@ index a54fc8f..27064cf 100644
                  {
                      return EnumActionResult.PASS;
                  }
-@@ -468,7 +487,7 @@ public class PlayerControllerMP
+@@ -468,7 +476,7 @@ public class PlayerControllerMP
          }
      }
  
@@ -2825,7 +2824,7 @@ index a54fc8f..27064cf 100644
      {
          if (this.currentGameType == WorldSettings.GameType.SPECTATOR)
          {
-@@ -479,7 +498,7 @@ public class PlayerControllerMP
+@@ -479,7 +487,7 @@ public class PlayerControllerMP
              this.syncCurrentPlayItem();
              this.netClientHandler.addToSendQueue(new CPacketPlayerBlockPlacement(p_187101_4_));
  
@@ -2834,7 +2833,7 @@ index a54fc8f..27064cf 100644
              {
                  return EnumActionResult.PASS;
              }
-@@ -520,7 +539,7 @@ public class PlayerControllerMP
+@@ -520,7 +528,7 @@ public class PlayerControllerMP
          if (this.currentGameType != WorldSettings.GameType.SPECTATOR)
          {
              playerIn.attackTargetEntityWithCurrentItem(targetEntity);
@@ -2843,7 +2842,7 @@ index a54fc8f..27064cf 100644
          }
      }
  
-@@ -539,7 +558,7 @@ public class PlayerControllerMP
+@@ -539,7 +547,7 @@ public class PlayerControllerMP
          return this.currentGameType == WorldSettings.GameType.SPECTATOR ? EnumActionResult.PASS : p_187102_2_.func_184199_a(p_187102_1_, vec3d, p_187102_4_, p_187102_5_);
      }
  
