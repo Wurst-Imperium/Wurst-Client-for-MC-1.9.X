@@ -24,16 +24,16 @@ public final class FastLadderMod extends Mod implements UpdateListener
 	}
 	
 	@Override
+	public void onDisable()
+	{
+		wurst.events.remove(UpdateListener.class, this);
+	}
+	
+	@Override
 	public void onUpdate()
 	{
 		if(WMinecraft.getPlayer().isOnLadder()
 			&& WMinecraft.getPlayer().isCollidedHorizontally)
 			WMinecraft.getPlayer().motionY = 0.2872;
-	}
-	
-	@Override
-	public void onDisable()
-	{
-		wurst.events.remove(UpdateListener.class, this);
 	}
 }
