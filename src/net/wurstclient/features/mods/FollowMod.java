@@ -8,12 +8,14 @@
 package net.wurstclient.features.mods;
 
 import net.minecraft.entity.Entity;
+import net.wurstclient.ai.FollowAI;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
+import net.wurstclient.settings.SliderSetting;
+import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.utils.ChatUtils;
 import net.wurstclient.utils.EntityUtils;
 import net.wurstclient.utils.EntityUtils.TargetSettings;
-import net.wurstclient.utils.RotationUtils;
 
 @Mod.Info(
 	description = "A bot that follows the closest entity.\n" + "Very annoying.",
@@ -24,7 +26,25 @@ import net.wurstclient.utils.RotationUtils;
 public final class FollowMod extends Mod implements UpdateListener
 {
 	private Entity entity;
+	private FollowAI ai;
+	
 	private float range = 12F;
+	
+	public SliderSetting distance =
+		new SliderSetting("Distance", 1F, 1F, 12F, 0.5F, ValueDisplay.DECIMAL)
+		{
+			@Override
+			public void update()
+			{
+				entity = null;
+			};
+		};
+	
+	@Override
+	public void initSettings()
+	{
+		settings.add(distance);
+	}
 	
 	private TargetSettings targetSettingsFind = new TargetSettings()
 	{
@@ -38,6 +58,69 @@ public final class FollowMod extends Mod implements UpdateListener
 		public float getRange()
 		{
 			return range;
+		}
+	};
+	
+	private TargetSettings targetSettingsKeep = new TargetSettings()
+	{
+		@Override
+		public boolean targetFriends()
+		{
+			return true;
+		}
+		
+		@Override
+		public boolean targetBehindWalls()
+		{
+			return true;
+		};
+		
+		@Override
+		public boolean targetPlayers()
+		{
+			return true;
+		}
+		
+		@Override
+		public boolean targetAnimals()
+		{
+			return true;
+		}
+		
+		@Override
+		public boolean targetMonsters()
+		{
+			return true;
+		}
+		
+		@Override
+		public boolean targetGolems()
+		{
+			return true;
+		}
+		
+		@Override
+		public boolean targetSleepingPlayers()
+		{
+			return true;
+		}
+		
+		@Override
+		public boolean targetInvisiblePlayers()
+		{
+			return true;
+		}
+		
+		@Override
+		public boolean targetInvisibleMobs()
+		{
+			return true;
+		}
+		
+		@Override
+		public boolean targetTeams()
+		{
+			return false;
 		}
 	};
 	
@@ -63,44 +146,54 @@ public final class FollowMod extends Mod implements UpdateListener
 			return;
 		}
 		
+		ai = new FollowAI(entity, distance.getValueF());
 		wurst.events.add(UpdateListener.class, this);
-	}
-	
-	@Override
-	public void onUpdate()
-	{
-		if(entity == null)
-		{
-			setEnabled(false);
-			return;
-		}
-		if(entity.isDead || WMinecraft.getPlayer().isDead)
-		{
-			entity = null;
-			setEnabled(false);
-			return;
-		}
-		double xDist = Math.abs(WMinecraft.getPlayer().posX - entity.posX);
-		double zDist = Math.abs(WMinecraft.getPlayer().posZ - entity.posZ);
-		RotationUtils.faceEntityClient(entity);
-		if(xDist > 1D || zDist > 1D)
-			mc.gameSettings.keyBindForward.pressed = true;
-		else
-			mc.gameSettings.keyBindForward.pressed = false;
-		if(WMinecraft.getPlayer().isCollidedHorizontally
-			&& WMinecraft.getPlayer().onGround)
-			WMinecraft.getPlayer().jump();
-		if(WMinecraft.getPlayer().isInWater()
-			&& WMinecraft.getPlayer().posY < entity.posY)
-			WMinecraft.getPlayer().motionY += 0.04;
+		ChatUtils.message("Now following " + entity.getName());
 	}
 	
 	@Override
 	public void onDisable()
 	{
 		wurst.events.remove(UpdateListener.class, this);
+		
+		if(ai != null)
+			ai.stop();
+		
 		if(entity != null)
-			mc.gameSettings.keyBindForward.pressed = false;
+			ChatUtils.message("No longer following " + entity.getName());
+		
+		entity = null;
+	}
+	
+	@Override
+	public void onUpdate()
+	{
+		// check if player died
+		if(WMinecraft.getPlayer().getHealth() <= 0)
+		{
+			if(entity == null)
+				ChatUtils.message("No longer following entity");
+			setEnabled(false);
+			return;
+		}
+		
+		// check if entity died or entity disappeared
+		if(!EntityUtils.isCorrectEntity(entity, targetSettingsKeep))
+		{
+			entity = EntityUtils.getClosestEntity(targetSettingsFind);
+			
+			if(entity == null)
+			{
+				ChatUtils.message("No longer following entity");
+				setEnabled(false);
+				return;
+			}
+			
+			ai = new FollowAI(entity, distance.getValueF());
+		}
+		
+		// go to entity
+		ai.update();
 	}
 	
 	public void setEntity(Entity entity)
