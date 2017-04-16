@@ -1,6 +1,6 @@
-From 0da9ba383ec0c1ca384ba65d8039079feebd3f35 Mon Sep 17 00:00:00 2001
+From 6dcd772dcd25733cb7f42404e93f7b0d9b2712ad Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Sun, 16 Apr 2017 12:07:20 +0200
+Date: Sun, 16 Apr 2017 12:20:53 +0200
 Subject: [PATCH] mod
 
 ---
@@ -35,12 +35,12 @@ Subject: [PATCH] mod
  net/minecraft/client/gui/ServerSelectionList.java  |   2 +-
  net/minecraft/client/gui/achievement/GuiStats.java |  18 +-
  net/minecraft/client/gui/inventory/GuiChest.java   |  76 ++++++++
- .../client/gui/inventory/GuiContainer.java         |  40 ++--
+ .../client/gui/inventory/GuiContainer.java         |  51 ++---
  .../client/gui/inventory/GuiContainerCreative.java |   2 +-
  .../client/gui/inventory/GuiEditSign.java          |  17 ++
  net/minecraft/client/model/ModelElytra.java        |   2 +-
  .../client/multiplayer/GuiConnecting.java          |   8 +-
- .../client/multiplayer/PlayerControllerMP.java     |  54 +++---
+ .../client/multiplayer/PlayerControllerMP.java     |  57 +++---
  net/minecraft/client/multiplayer/ServerList.java   |   6 +
  .../client/network/NetHandlerPlayClient.java       |  27 ++-
  .../client/network/NetworkPlayerInfo.java          |  10 +
@@ -101,7 +101,7 @@ Subject: [PATCH] mod
  net/minecraft/util/math/Vec3d.java                 |   6 +
  net/minecraft/util/text/ITextComponent.java        |  12 ++
  net/minecraft/util/text/Style.java                 |   6 +
- 97 files changed, 1451 insertions(+), 480 deletions(-)
+ 97 files changed, 1463 insertions(+), 482 deletions(-)
 
 diff --git a/Start.java b/Start.java
 index ae0025f..078afa5 100644
@@ -2436,10 +2436,33 @@ index b01af09..d73cf3c 100644
       * Draw the foreground layer for the GuiContainer (everything in front of the items). Args : mouseX, mouseY
       */
 diff --git a/net/minecraft/client/gui/inventory/GuiContainer.java b/net/minecraft/client/gui/inventory/GuiContainer.java
-index c1a2665..c4057a4 100644
+index c1a2665..f199333 100644
 --- a/net/minecraft/client/gui/inventory/GuiContainer.java
 +++ b/net/minecraft/client/gui/inventory/GuiContainer.java
-@@ -410,7 +410,7 @@ public abstract class GuiContainer extends GuiScreen
+@@ -1,8 +1,12 @@
+ package net.minecraft.client.gui.inventory;
+ 
+-import com.google.common.collect.Sets;
+ import java.io.IOException;
+ import java.util.Set;
++
++import org.lwjgl.input.Keyboard;
++
++import com.google.common.collect.Sets;
++
+ import net.minecraft.client.Minecraft;
+ import net.minecraft.client.gui.GuiScreen;
+ import net.minecraft.client.renderer.GlStateManager;
+@@ -18,7 +22,7 @@ import net.minecraft.item.ItemStack;
+ import net.minecraft.util.ResourceLocation;
+ import net.minecraft.util.math.MathHelper;
+ import net.minecraft.util.text.TextFormatting;
+-import org.lwjgl.input.Keyboard;
++import net.wurstclient.WurstClient;
+ 
+ public abstract class GuiContainer extends GuiScreen
+ {
+@@ -410,7 +414,7 @@ public abstract class GuiContainer extends GuiScreen
                      {
                          if (mouseButton == this.mc.gameSettings.keyBindPickBlock.getKeyCode() + 100)
                          {
@@ -2448,7 +2471,7 @@ index c1a2665..c4057a4 100644
                          }
                          else
                          {
-@@ -427,7 +427,7 @@ public abstract class GuiContainer extends GuiScreen
+@@ -427,7 +431,7 @@ public abstract class GuiContainer extends GuiScreen
                                  clicktype = ClickType.THROW;
                              }
  
@@ -2457,7 +2480,7 @@ index c1a2665..c4057a4 100644
                          }
  
                          this.ignoreMouseUp = true;
-@@ -488,9 +488,9 @@ public abstract class GuiContainer extends GuiScreen
+@@ -488,9 +492,9 @@ public abstract class GuiContainer extends GuiScreen
                      {
                          if (i - this.dragItemDropDelay > 500L)
                          {
@@ -2470,7 +2493,7 @@ index c1a2665..c4057a4 100644
                              this.dragItemDropDelay = i + 750L;
                              --this.draggedStack.stackSize;
                          }
-@@ -541,14 +541,14 @@ public abstract class GuiContainer extends GuiScreen
+@@ -541,14 +545,14 @@ public abstract class GuiContainer extends GuiScreen
                      {
                          if (slot2 != null && slot2.canTakeStack(this.mc.thePlayer) && slot2.getHasStack() && slot2.inventory == slot.inventory && Container.canAddItemToSlot(slot2, this.shiftClickedSlot, true))
                          {
@@ -2487,7 +2510,7 @@ index c1a2665..c4057a4 100644
              }
  
              this.doubleClick = false;
-@@ -583,12 +583,12 @@ public abstract class GuiContainer extends GuiScreen
+@@ -583,12 +587,12 @@ public abstract class GuiContainer extends GuiScreen
  
                      if (k != -1 && this.draggedStack != null && flag2)
                      {
@@ -2503,7 +2526,7 @@ index c1a2665..c4057a4 100644
                              this.touchUpX = mouseX - i;
                              this.touchUpY = mouseY - j;
                              this.returningStackDestSlot = this.clickedSlot;
-@@ -615,20 +615,20 @@ public abstract class GuiContainer extends GuiScreen
+@@ -615,20 +619,20 @@ public abstract class GuiContainer extends GuiScreen
              }
              else if (this.dragSplitting && !this.dragSplittingSlots.isEmpty())
              {
@@ -2528,7 +2551,7 @@ index c1a2665..c4057a4 100644
                  }
                  else
                  {
-@@ -639,7 +639,7 @@ public abstract class GuiContainer extends GuiScreen
+@@ -639,7 +643,7 @@ public abstract class GuiContainer extends GuiScreen
                          this.shiftClickedSlot = slot != null && slot.getHasStack() ? slot.getStack() : null;
                      }
  
@@ -2537,7 +2560,7 @@ index c1a2665..c4057a4 100644
                  }
              }
          }
-@@ -673,14 +673,14 @@ public abstract class GuiContainer extends GuiScreen
+@@ -673,14 +677,14 @@ public abstract class GuiContainer extends GuiScreen
          return pointX >= left - 1 && pointX < left + right + 1 && pointY >= top - 1 && pointY < top + bottom + 1;
      }
  
@@ -2554,7 +2577,7 @@ index c1a2665..c4057a4 100644
      }
  
      /**
-@@ -700,11 +700,11 @@ public abstract class GuiContainer extends GuiScreen
+@@ -700,11 +704,11 @@ public abstract class GuiContainer extends GuiScreen
          {
              if (keyCode == this.mc.gameSettings.keyBindPickBlock.getKeyCode())
              {
@@ -2568,7 +2591,7 @@ index c1a2665..c4057a4 100644
              }
          }
      }
-@@ -721,7 +721,7 @@ public abstract class GuiContainer extends GuiScreen
+@@ -721,7 +725,7 @@ public abstract class GuiContainer extends GuiScreen
              {
                  if (keyCode == this.mc.gameSettings.keyBindsHotbar[i].getKeyCode())
                  {
@@ -2577,6 +2600,16 @@ index c1a2665..c4057a4 100644
                      return true;
                  }
              }
+@@ -735,6 +739,9 @@ public abstract class GuiContainer extends GuiScreen
+      */
+     public void onGuiClosed()
+     {
++		// TODO: Client
++		WurstClient.INSTANCE.mods.chestEspMod.closeChest(inventorySlots);
++    	
+         if (this.mc.thePlayer != null)
+         {
+             this.inventorySlots.onContainerClosed(this.mc.thePlayer);
 diff --git a/net/minecraft/client/gui/inventory/GuiContainerCreative.java b/net/minecraft/client/gui/inventory/GuiContainerCreative.java
 index 7ed3f4f..05c3eb8 100644
 --- a/net/minecraft/client/gui/inventory/GuiContainerCreative.java
@@ -2686,7 +2719,7 @@ index 74c8ca7..7ff3577 100644
                  }
                  catch (UnknownHostException unknownhostexception)
 diff --git a/net/minecraft/client/multiplayer/PlayerControllerMP.java b/net/minecraft/client/multiplayer/PlayerControllerMP.java
-index a54fc8f..6745f4a 100644
+index a54fc8f..de622d4 100644
 --- a/net/minecraft/client/multiplayer/PlayerControllerMP.java
 +++ b/net/minecraft/client/multiplayer/PlayerControllerMP.java
 @@ -19,15 +19,7 @@ import net.minecraft.item.ItemBlock;
@@ -2806,7 +2839,17 @@ index a54fc8f..6745f4a 100644
  
                  this.mc.theWorld.sendBlockBreakProgress(this.mc.thePlayer.getEntityId(), this.currentBlock, (int)(this.curBlockDamageMP * 10.0F) - 1);
                  return true;
-@@ -439,7 +447,7 @@ public class PlayerControllerMP
+@@ -399,6 +407,9 @@ public class PlayerControllerMP
+ 
+     public EnumActionResult func_187099_a(EntityPlayerSP p_187099_1_, WorldClient p_187099_2_, ItemStack p_187099_3_, BlockPos p_187099_4_, EnumFacing p_187099_5_, Vec3d p_187099_6_, EnumHand p_187099_7_)
+     {
++		// TODO: Client
++		WurstClient.INSTANCE.mods.chestEspMod.openChest(p_187099_4_);
++		
+         this.syncCurrentPlayItem();
+         float f = (float)(p_187099_6_.xCoord - (double)p_187099_4_.getX());
+         float f1 = (float)(p_187099_6_.yCoord - (double)p_187099_4_.getY());
+@@ -439,7 +450,7 @@ public class PlayerControllerMP
                  {
                      return EnumActionResult.PASS;
                  }
@@ -2815,7 +2858,7 @@ index a54fc8f..6745f4a 100644
                  {
                      return EnumActionResult.PASS;
                  }
-@@ -468,7 +476,7 @@ public class PlayerControllerMP
+@@ -468,7 +479,7 @@ public class PlayerControllerMP
          }
      }
  
@@ -2824,7 +2867,7 @@ index a54fc8f..6745f4a 100644
      {
          if (this.currentGameType == WorldSettings.GameType.SPECTATOR)
          {
-@@ -479,7 +487,7 @@ public class PlayerControllerMP
+@@ -479,7 +490,7 @@ public class PlayerControllerMP
              this.syncCurrentPlayItem();
              this.netClientHandler.addToSendQueue(new CPacketPlayerBlockPlacement(p_187101_4_));
  
@@ -2833,7 +2876,7 @@ index a54fc8f..6745f4a 100644
              {
                  return EnumActionResult.PASS;
              }
-@@ -520,7 +528,7 @@ public class PlayerControllerMP
+@@ -520,7 +531,7 @@ public class PlayerControllerMP
          if (this.currentGameType != WorldSettings.GameType.SPECTATOR)
          {
              playerIn.attackTargetEntityWithCurrentItem(targetEntity);
@@ -2842,7 +2885,7 @@ index a54fc8f..6745f4a 100644
          }
      }
  
-@@ -539,7 +547,7 @@ public class PlayerControllerMP
+@@ -539,7 +550,7 @@ public class PlayerControllerMP
          return this.currentGameType == WorldSettings.GameType.SPECTATOR ? EnumActionResult.PASS : p_187102_2_.func_184199_a(p_187102_1_, vec3d, p_187102_4_, p_187102_5_);
      }
  
