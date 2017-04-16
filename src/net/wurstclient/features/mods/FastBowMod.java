@@ -8,17 +8,14 @@
 package net.wurstclient.features.mods;
 
 import net.minecraft.item.ItemBow;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketPlayer;
-import net.minecraft.network.play.client.CPacketPlayerDigging;
-import net.minecraft.network.play.client.CPacketPlayerDigging.Action;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
 import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.compatibility.WPlayerController;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
+import net.wurstclient.utils.InventoryUtils;
 
 @Mod.Info(
 	description = "Turns your bow into a machine gun.\n"
@@ -44,30 +41,31 @@ public final class FastBowMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		if(WMinecraft.getPlayer().getHealth() > 0
-			&& (WMinecraft.getPlayer().onGround
-				|| WMinecraft.getPlayer().capabilities.isCreativeMode)
-			&& WMinecraft.getPlayer().inventory.getCurrentItem() != null
-			&& WMinecraft.getPlayer().inventory.getCurrentItem()
-				.getItem() instanceof ItemBow
-			&& mc.gameSettings.keyBindUseItem.pressed)
-		{
-			WPlayerController.processRightClick();
-			WMinecraft.getPlayer().inventory.getCurrentItem().getItem()
-				.onItemRightClick(
-					WMinecraft.getPlayer().inventory.getCurrentItem(),
-					WMinecraft.getWorld(), WMinecraft.getPlayer(),
-					EnumHand.MAIN_HAND);
-			for(int i = 0; i < 20; i++)
-				WConnection.sendPacket(new CPacketPlayer(false));
-			WConnection
-				.sendPacket(new CPacketPlayerDigging(Action.RELEASE_USE_ITEM,
-					new BlockPos(0, 0, 0), EnumFacing.DOWN));
-			WMinecraft.getPlayer().inventory.getCurrentItem().getItem()
-				.onPlayerStoppedUsing(
-					WMinecraft.getPlayer().inventory.getCurrentItem(),
-					WMinecraft.getWorld(), WMinecraft.getPlayer(), 10);
-		}
+		// check if right-clicking
+		if(!mc.gameSettings.keyBindUseItem.pressed)
+			return;
+		
+		// check fly-kick
+		if(!WMinecraft.getPlayer().onGround
+			&& !WMinecraft.getPlayer().capabilities.isCreativeMode)
+			return;
+		
+		// check health
+		if(WMinecraft.getPlayer().getHealth() <= 0)
+			return;
+		
+		// check held item
+		ItemStack stack = WMinecraft.getPlayer().inventory.getCurrentItem();
+		if(InventoryUtils.isEmptySlot(stack)
+			|| !(stack.getItem() instanceof ItemBow))
+			return;
+		
+		WPlayerController.processRightClick();
+		
+		for(int i = 0; i < 20; i++)
+			WConnection.sendPacket(new CPacketPlayer(false));
+		
+		mc.playerController.onStoppedUsingItem(WMinecraft.getPlayer());
 	}
 	
 	@Override
