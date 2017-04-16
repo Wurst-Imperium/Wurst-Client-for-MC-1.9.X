@@ -33,14 +33,14 @@ public final class FastPlaceMod extends Mod implements UpdateListener
 	}
 	
 	@Override
-	public void onUpdate()
-	{
-		mc.rightClickDelayTimer = 0;
-	}
-	
-	@Override
 	public void onDisable()
 	{
 		wurst.events.remove(UpdateListener.class, this);
+	}
+	
+	@Override
+	public void onUpdate()
+	{
+		mc.rightClickDelayTimer = 0;
 	}
 }
