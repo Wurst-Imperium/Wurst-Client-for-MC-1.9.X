@@ -24,6 +24,12 @@ public final class GlideMod extends Mod implements UpdateListener
 	}
 	
 	@Override
+	public void onDisable()
+	{
+		wurst.events.remove(UpdateListener.class, this);
+	}
+	
+	@Override
 	public void onUpdate()
 	{
 		if(WMinecraft.getPlayer().motionY < 0
@@ -35,11 +41,5 @@ public final class GlideMod extends Mod implements UpdateListener
 			WMinecraft.getPlayer().motionY = -0.125f;
 			WMinecraft.getPlayer().jumpMovementFactor *= 1.21337f;
 		}
-	}
-	
-	@Override
-	public void onDisable()
-	{
-		wurst.events.remove(UpdateListener.class, this);
 	}
 }
