@@ -7,7 +7,7 @@
  */
 package net.wurstclient.features.mods;
 
-import net.minecraft.network.play.client.CPacketPlayer.Rotation;
+import net.minecraft.network.play.client.CPacketPlayer;
 import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
@@ -28,18 +28,19 @@ public final class HeadRollMod extends Mod implements UpdateListener
 	}
 	
 	@Override
-	public void onUpdate()
-	{
-		WConnection.sendPacket(new Rotation(WMinecraft.getPlayer().rotationYaw,
-			(float)Math
-				.sin(WMinecraft.getPlayer().ticksExisted % 20 / 10d * Math.PI)
-				* 90,
-			WMinecraft.getPlayer().onGround));
-	}
-	
-	@Override
 	public void onDisable()
 	{
 		wurst.events.remove(UpdateListener.class, this);
+	}
+	
+	@Override
+	public void onUpdate()
+	{
+		WConnection.sendPacket(
+			new CPacketPlayer.Rotation(WMinecraft.getPlayer().rotationYaw,
+				(float)Math.sin(
+					WMinecraft.getPlayer().ticksExisted % 20 / 10d * Math.PI)
+					* 90,
+				WMinecraft.getPlayer().onGround));
 	}
 }
