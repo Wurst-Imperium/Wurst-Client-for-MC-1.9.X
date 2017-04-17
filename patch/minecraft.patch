@@ -1,6 +1,6 @@
-From 6dcd772dcd25733cb7f42404e93f7b0d9b2712ad Mon Sep 17 00:00:00 2001
+From 019aee0079871e67bab246e2e5bcff755366ef3f Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Sun, 16 Apr 2017 12:20:53 +0200
+Date: Mon, 17 Apr 2017 17:44:21 +0200
 Subject: [PATCH] mod
 
 ---
@@ -63,7 +63,7 @@ Subject: [PATCH] mod
  net/minecraft/crash/CrashReportCategory.java       |  10 +-
  net/minecraft/entity/Entity.java                   |  67 ++++---
  net/minecraft/entity/EntityAreaEffectCloud.java    |   6 +-
- net/minecraft/entity/EntityLivingBase.java         |  96 ++++++----
+ net/minecraft/entity/EntityLivingBase.java         | 110 +++++------
  net/minecraft/entity/EntityTrackerEntry.java       |   4 +-
  .../entity/ai/EntityAIAttackRangedBow.java         |   4 +-
  net/minecraft/entity/monster/EntityMob.java        |   4 +-
@@ -101,7 +101,7 @@ Subject: [PATCH] mod
  net/minecraft/util/math/Vec3d.java                 |   6 +
  net/minecraft/util/text/ITextComponent.java        |  12 ++
  net/minecraft/util/text/Style.java                 |   6 +
- 97 files changed, 1463 insertions(+), 482 deletions(-)
+ 97 files changed, 1466 insertions(+), 493 deletions(-)
 
 diff --git a/Start.java b/Start.java
 index ae0025f..078afa5 100644
@@ -3851,14 +3851,14 @@ index 0e4a8e5..2bd1e64 100644
                                          else
                                          {
 diff --git a/net/minecraft/entity/EntityLivingBase.java b/net/minecraft/entity/EntityLivingBase.java
-index d1580a1..8f27952 100644
+index d1580a1..ae88926 100644
 --- a/net/minecraft/entity/EntityLivingBase.java
 +++ b/net/minecraft/entity/EntityLivingBase.java
-@@ -2,12 +2,14 @@ package net.minecraft.entity;
+@@ -1,13 +1,15 @@
+ package net.minecraft.entity;
  
- import com.google.common.base.Objects;
- import com.google.common.collect.Maps;
-+
+-import com.google.common.base.Objects;
+-import com.google.common.collect.Maps;
  import java.util.Collection;
  import java.util.Iterator;
  import java.util.List;
@@ -3866,10 +3866,30 @@ index d1580a1..8f27952 100644
  import java.util.Random;
  import java.util.UUID;
 +
++import com.google.common.base.Objects;
++import com.google.common.collect.Maps;
++
  import net.minecraft.block.Block;
  import net.minecraft.block.BlockLadder;
  import net.minecraft.block.BlockTrapDoor;
-@@ -67,6 +69,8 @@ import net.minecraft.util.math.MathHelper;
+@@ -51,22 +53,15 @@ import net.minecraft.network.play.server.SPacketEntityEquipment;
+ import net.minecraft.potion.Potion;
+ import net.minecraft.potion.PotionEffect;
+ import net.minecraft.potion.PotionUtils;
+-import net.minecraft.util.CombatRules;
+-import net.minecraft.util.CombatTracker;
+-import net.minecraft.util.DamageSource;
+-import net.minecraft.util.EntityDamageSource;
+-import net.minecraft.util.EntitySelectors;
+-import net.minecraft.util.EnumFacing;
+-import net.minecraft.util.EnumHand;
+-import net.minecraft.util.EnumHandSide;
+-import net.minecraft.util.EnumParticleTypes;
+-import net.minecraft.util.SoundEvent;
++import net.minecraft.util.*;
+ import net.minecraft.util.math.AxisAlignedBB;
+ import net.minecraft.util.math.BlockPos;
+ import net.minecraft.util.math.MathHelper;
  import net.minecraft.util.math.Vec3d;
  import net.minecraft.world.World;
  import net.minecraft.world.WorldServer;
@@ -3878,7 +3898,7 @@ index d1580a1..8f27952 100644
  
  public abstract class EntityLivingBase extends Entity
  {
-@@ -201,7 +205,7 @@ public abstract class EntityLivingBase extends Entity
+@@ -201,7 +196,7 @@ public abstract class EntityLivingBase extends Entity
      /** Number of ticks since last jump */
      private int jumpTicks;
      private float absorptionAmount;
@@ -3887,7 +3907,7 @@ index d1580a1..8f27952 100644
      protected int field_184628_bn;
      protected int field_184629_bo;
      private BlockPos field_184620_bC;
-@@ -632,7 +636,7 @@ public abstract class EntityLivingBase extends Entity
+@@ -632,7 +627,7 @@ public abstract class EntityLivingBase extends Entity
  
                  if (potioneffect != null)
                  {
@@ -3896,7 +3916,7 @@ index d1580a1..8f27952 100644
                  }
              }
          }
-@@ -798,11 +802,11 @@ public abstract class EntityLivingBase extends Entity
+@@ -798,11 +793,11 @@ public abstract class EntityLivingBase extends Entity
      {
          if (this.isPotionApplicable(potioneffectIn))
          {
@@ -3910,7 +3930,7 @@ index d1580a1..8f27952 100644
                  this.onNewPotionEffect(potioneffectIn);
              }
              else
-@@ -817,7 +821,7 @@ public abstract class EntityLivingBase extends Entity
+@@ -817,7 +812,7 @@ public abstract class EntityLivingBase extends Entity
      {
          if (this.getCreatureAttribute() == EnumCreatureAttribute.UNDEAD)
          {
@@ -3919,7 +3939,7 @@ index d1580a1..8f27952 100644
  
              if (potion == MobEffects.regeneration || potion == MobEffects.poison)
              {
-@@ -836,14 +840,14 @@ public abstract class EntityLivingBase extends Entity
+@@ -836,14 +831,14 @@ public abstract class EntityLivingBase extends Entity
          return this.getCreatureAttribute() == EnumCreatureAttribute.UNDEAD;
      }
  
@@ -3937,7 +3957,7 @@ index d1580a1..8f27952 100644
  
          if (potioneffect != null)
          {
-@@ -857,7 +861,7 @@ public abstract class EntityLivingBase extends Entity
+@@ -857,7 +852,7 @@ public abstract class EntityLivingBase extends Entity
  
          if (!this.worldObj.isRemote)
          {
@@ -3946,7 +3966,7 @@ index d1580a1..8f27952 100644
          }
      }
  
-@@ -867,7 +871,7 @@ public abstract class EntityLivingBase extends Entity
+@@ -867,7 +862,7 @@ public abstract class EntityLivingBase extends Entity
  
          if (p_70695_2_ && !this.worldObj.isRemote)
          {
@@ -3955,7 +3975,7 @@ index d1580a1..8f27952 100644
              potion.removeAttributesModifiersFromEntity(this, this.getAttributeMap(), id.getAmplifier());
              potion.applyAttributesModifiersToEntity(this, this.getAttributeMap(), id.getAmplifier());
          }
-@@ -879,7 +883,7 @@ public abstract class EntityLivingBase extends Entity
+@@ -879,7 +874,7 @@ public abstract class EntityLivingBase extends Entity
  
          if (!this.worldObj.isRemote)
          {
@@ -3964,27 +3984,26 @@ index d1580a1..8f27952 100644
          }
      }
  
-@@ -1761,7 +1765,12 @@ public abstract class EntityLivingBase extends Entity
-      */
-     protected void jump()
+@@ -1763,6 +1758,11 @@ public abstract class EntityLivingBase extends Entity
      {
--        this.motionY = (double)this.getJumpUpwardsMotion();
+         this.motionY = (double)this.getJumpUpwardsMotion();
+         
 +		// TODO: Client
 +		HighJumpMod highJumpMod = WurstClient.INSTANCE.mods.highJumpMod;
-+		this.motionY =
-+			(double)this.getJumpUpwardsMotion()
-+				+ (this instanceof EntityPlayer && highJumpMod.isActive()
-+					? highJumpMod.jumpHeight * 0.1F : 0F);
- 
++		if(this instanceof EntityPlayer && highJumpMod.isActive())
++			this.motionY += highJumpMod.height.getValueF() * 0.1F;
++		
          if (this.isPotionActive(MobEffects.jump))
          {
-@@ -1798,11 +1807,16 @@ public abstract class EntityLivingBase extends Entity
+             this.motionY += (double)((float)(this.getActivePotionEffect(MobEffects.jump).getAmplifier() + 1) * 0.1F);
+@@ -1798,11 +1798,17 @@ public abstract class EntityLivingBase extends Entity
      {
          if (this.isServerWorld() || this.func_184186_bw())
          {
 -            if (!this.isInWater() || this instanceof EntityPlayer && ((EntityPlayer)this).capabilities.isFlying)
 +			// TODO: Client
 +			if(!this.isInWater()
++				|| WurstClient.INSTANCE.mods.flightMod.isActive()
 +				|| WurstClient.INSTANCE.mods.noSlowdownMod.isActive()
 +				|| this instanceof EntityPlayer
 +				&& ((EntityPlayer)this).capabilities.isFlying)
@@ -3997,7 +4016,7 @@ index d1580a1..8f27952 100644
                      {
                          if (this.motionY > -0.5D)
                          {
-@@ -2212,7 +2226,7 @@ public abstract class EntityLivingBase extends Entity
+@@ -2212,7 +2218,7 @@ public abstract class EntityLivingBase extends Entity
          this.worldObj.theProfiler.endSection();
          this.movedDistance += f3;
  
@@ -4006,7 +4025,7 @@ index d1580a1..8f27952 100644
          {
              ++this.field_184629_bo;
          }
-@@ -2608,7 +2622,7 @@ public abstract class EntityLivingBase extends Entity
+@@ -2608,7 +2614,7 @@ public abstract class EntityLivingBase extends Entity
  
      public abstract EnumHandSide getPrimaryHand();
  
@@ -4015,7 +4034,7 @@ index d1580a1..8f27952 100644
      {
          return (((Byte)this.dataWatcher.get(field_184621_as)).byteValue() & 1) > 0;
      }
-@@ -2620,15 +2634,15 @@ public abstract class EntityLivingBase extends Entity
+@@ -2620,15 +2626,15 @@ public abstract class EntityLivingBase extends Entity
  
      protected void func_184608_ct()
      {
@@ -4034,7 +4053,7 @@ index d1580a1..8f27952 100644
                  }
  
                  if (--this.field_184628_bn == 0 && !this.worldObj.isRemote)
-@@ -2647,9 +2661,9 @@ public abstract class EntityLivingBase extends Entity
+@@ -2647,9 +2653,9 @@ public abstract class EntityLivingBase extends Entity
      {
          ItemStack itemstack = this.getHeldItem(p_184598_1_);
  
@@ -4046,7 +4065,7 @@ index d1580a1..8f27952 100644
              this.field_184628_bn = itemstack.getMaxItemUseDuration();
  
              if (!this.worldObj.isRemote)
-@@ -2672,18 +2686,18 @@ public abstract class EntityLivingBase extends Entity
+@@ -2672,18 +2678,18 @@ public abstract class EntityLivingBase extends Entity
  
          if (field_184621_as.equals(key) && this.worldObj.isRemote)
          {
@@ -4071,7 +4090,7 @@ index d1580a1..8f27952 100644
                  this.field_184628_bn = 0;
              }
          }
-@@ -2691,7 +2705,7 @@ public abstract class EntityLivingBase extends Entity
+@@ -2691,7 +2697,7 @@ public abstract class EntityLivingBase extends Entity
  
      protected void func_184584_a(ItemStack p_184584_1_, int p_184584_2_)
      {
@@ -4080,7 +4099,7 @@ index d1580a1..8f27952 100644
          {
              if (p_184584_1_.getItemUseAction() == EnumAction.DRINK)
              {
-@@ -2731,10 +2745,10 @@ public abstract class EntityLivingBase extends Entity
+@@ -2731,10 +2737,10 @@ public abstract class EntityLivingBase extends Entity
       */
      protected void onItemUseFinish()
      {
@@ -4094,7 +4113,7 @@ index d1580a1..8f27952 100644
  
              if (itemstack != null && itemstack.stackSize == 0)
              {
-@@ -2748,7 +2762,7 @@ public abstract class EntityLivingBase extends Entity
+@@ -2748,7 +2754,7 @@ public abstract class EntityLivingBase extends Entity
  
      public ItemStack func_184607_cu()
      {
@@ -4103,7 +4122,7 @@ index d1580a1..8f27952 100644
      }
  
      public int getItemInUseCount()
-@@ -2756,16 +2770,16 @@ public abstract class EntityLivingBase extends Entity
+@@ -2756,16 +2762,16 @@ public abstract class EntityLivingBase extends Entity
          return this.field_184628_bn;
      }
  
@@ -4124,7 +4143,7 @@ index d1580a1..8f27952 100644
          }
  
          this.func_184602_cy();
-@@ -2778,16 +2792,16 @@ public abstract class EntityLivingBase extends Entity
+@@ -2778,16 +2784,16 @@ public abstract class EntityLivingBase extends Entity
              this.dataWatcher.set(field_184621_as, Byte.valueOf((byte)0));
          }
  
@@ -4145,7 +4164,7 @@ index d1580a1..8f27952 100644
          }
          else
          {
-@@ -2795,7 +2809,7 @@ public abstract class EntityLivingBase extends Entity
+@@ -2795,7 +2801,7 @@ public abstract class EntityLivingBase extends Entity
          }
      }
  
