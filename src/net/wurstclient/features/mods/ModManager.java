@@ -92,7 +92,7 @@ public class ModManager
 	public final KaboomMod kaboomMod = new KaboomMod();
 	public final KillauraLegitMod killauraLegitMod = new KillauraLegitMod();
 	public final KillauraMod killauraMod = new KillauraMod();
-	public final KillerPotionMod killerPotionMod = new KillerPotionMod();
+	public final KillPotionMod killPotionMod = new KillPotionMod();
 	public final LiquidsMod liquidsMod = new LiquidsMod();
 	public final LogSpammerMod logSpammerMod = new LogSpammerMod();
 	public final LsdMod lsdMod = new LsdMod();

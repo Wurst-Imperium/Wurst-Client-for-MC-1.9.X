@@ -7,51 +7,50 @@
  */
 package net.wurstclient.features.mods;
 
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
-import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.utils.ChatUtils;
+import net.wurstclient.utils.InventoryUtils;
 
 @Mod.Info(
-	description = "Generates a potion that can kill players in Creative mode.\n"
+	description = "Generates a potion that can kill anything, even players in Creative mode.\n"
 		+ "Requires Creative mode.",
-	name = "KillerPotion",
-	tags = "killer potion",
+	name = "KillPotion",
+	tags = "KillerPotion,kill potion,killer potion",
 	help = "Mods/KillerPotion")
 @Mod.Bypasses
-public final class KillerPotionMod extends Mod
+public final class KillPotionMod extends Mod
 {
 	@Override
 	public void onEnable()
 	{
-		if(WMinecraft.getPlayer().inventory.getStackInSlot(0) != null)
-		{
-			ChatUtils.error("Please clear the first slot in your hotbar.");
-			setEnabled(false);
-			return;
-		}else if(!WMinecraft.getPlayer().capabilities.isCreativeMode)
+		// check gamemode
+		if(!WMinecraft.getPlayer().capabilities.isCreativeMode)
 		{
 			ChatUtils.error("Creative mode only.");
 			setEnabled(false);
 			return;
 		}
 		
-		ItemStack stack = new ItemStack(Items.splash_potion);
-		NBTTagList effects = new NBTTagList();
+		// generate potion
+		ItemStack stack = InventoryUtils.createSplashPotion();
 		NBTTagCompound effect = new NBTTagCompound();
 		effect.setInteger("Amplifier", 125);
 		effect.setInteger("Duration", 2000);
 		effect.setInteger("Id", 6);
+		NBTTagList effects = new NBTTagList();
 		effects.appendTag(effect);
 		stack.setTagInfo("CustomPotionEffects", effects);
-		stack.setStackDisplayName("§c§lKiller§6§lPotion");
+		stack.setStackDisplayName("§rSplash Potion of §4§lDEATH");
 		
-		WConnection.sendPacket(new CPacketCreativeInventoryAction(36, stack));
-		ChatUtils.message("Potion created.");
+		// give potion
+		if(InventoryUtils.placeStackInHotbar(stack))
+			ChatUtils.message("Potion created.");
+		else
+			ChatUtils.error("Please clear a slot in your hotbar.");
+		
 		setEnabled(false);
 	}
 }
