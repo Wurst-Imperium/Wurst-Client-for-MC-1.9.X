@@ -1,6 +1,6 @@
-From 019aee0079871e67bab246e2e5bcff755366ef3f Mon Sep 17 00:00:00 2001
+From 1654a6a02a64236b6ceba3ee8fb767fef59e2344 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Mon, 17 Apr 2017 17:44:21 +0200
+Date: Tue, 18 Apr 2017 21:11:27 +0200
 Subject: [PATCH] mod
 
 ---
@@ -16,7 +16,7 @@ Subject: [PATCH] mod
  net/minecraft/client/Minecraft.java                | 208 +++++++++++----------
  .../client/audio/PositionedSoundRecord.java        |   2 +-
  .../client/entity/AbstractClientPlayer.java        |   4 +-
- net/minecraft/client/entity/EntityPlayerSP.java    | 156 ++++++++++++----
+ net/minecraft/client/entity/EntityPlayerSP.java    | 132 +++++++++----
  net/minecraft/client/gui/FontRenderer.java         |   2 +-
  net/minecraft/client/gui/GuiButton.java            |  16 +-
  net/minecraft/client/gui/GuiDisconnected.java      |  88 +++++++++
@@ -84,9 +84,9 @@ Subject: [PATCH] mod
  net/minecraft/item/ItemSword.java                  |   2 +-
  net/minecraft/item/ItemTool.java                   |   2 +-
  net/minecraft/network/EnumConnectionState.java     |   6 +-
- net/minecraft/network/NetHandlerPlayServer.java    |   8 +-
+ net/minecraft/network/NetHandlerPlayServer.java    |  22 +--
  net/minecraft/network/NetworkManager.java          |  26 +++
- .../network/play/client/CPacketPlayer.java         |  18 +-
+ .../network/play/client/CPacketPlayer.java         |  28 +--
  .../network/play/server/SPacketEntityEffect.java   |   2 +-
  .../network/play/server/SPacketJoinGame.java       |   5 +
  net/minecraft/potion/PotionEffect.java             |  26 +--
@@ -101,7 +101,8 @@ Subject: [PATCH] mod
  net/minecraft/util/math/Vec3d.java                 |   6 +
  net/minecraft/util/text/ITextComponent.java        |  12 ++
  net/minecraft/util/text/Style.java                 |   6 +
- 97 files changed, 1466 insertions(+), 493 deletions(-)
+ net/minecraft/world/World.java                     |   7 +
+ 98 files changed, 1461 insertions(+), 505 deletions(-)
 
 diff --git a/Start.java b/Start.java
 index ae0025f..078afa5 100644
@@ -230,7 +231,7 @@ index d1d7e2c..aa4f668 100644
  
      public boolean isFullCube(IBlockState state)
 diff --git a/net/minecraft/block/BlockLiquid.java b/net/minecraft/block/BlockLiquid.java
-index 3914ef9..98e9631 100644
+index 3914ef9..ec8b44d 100644
 --- a/net/minecraft/block/BlockLiquid.java
 +++ b/net/minecraft/block/BlockLiquid.java
 @@ -1,6 +1,7 @@
@@ -255,8 +256,8 @@ index 3914ef9..98e9631 100644
      {
 -        return NULL_AABB;
 +		// TODO: Client
-+		return WurstClient.INSTANCE.mods.jesusMod.isEnabled() ? FULL_BLOCK_AABB
-+			: NULL_AABB;
++		return WurstClient.INSTANCE.mods.jesusMod.shouldBeSolid()
++			? FULL_BLOCK_AABB : NULL_AABB;
      }
  
      public boolean isPassable(IBlockAccess worldIn, BlockPos pos)
@@ -851,7 +852,7 @@ index c30247b..1fd170a 100644
  
              if (f1 > 1.0F)
 diff --git a/net/minecraft/client/entity/EntityPlayerSP.java b/net/minecraft/client/entity/EntityPlayerSP.java
-index 61b85c2..f3df887 100644
+index 61b85c2..77badb4 100644
 --- a/net/minecraft/client/entity/EntityPlayerSP.java
 +++ b/net/minecraft/client/entity/EntityPlayerSP.java
 @@ -1,5 +1,6 @@
@@ -946,7 +947,7 @@ index 61b85c2..f3df887 100644
          }
      }
  
-@@ -264,32 +271,83 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -264,32 +271,59 @@ public class EntityPlayerSP extends AbstractClientPlayer
  
          if (this.isCurrentViewEntity())
          {
@@ -980,33 +981,9 @@ index 61b85c2..f3df887 100644
 +					&& !getActivePotionEffects().isEmpty() && motionX == 0 && motionZ == 0))
 +			{	
 +				
-+			}else if(WurstClient.INSTANCE.mods.jesusMod.isActive()
-+				&& WurstClient.INSTANCE.special.yesCheatSpf.getBypassLevel()
-+					.ordinal() >= BypassLevel.ANTICHEAT.ordinal()
-+				&& !isInWater()
-+				&& Minecraft.getMinecraft().theWorld
-+					.getBlockState(new BlockPos(this).add(0, -1, 0)).getBlock()
-+					.getMaterial(null) == Material.water)
-+			{
-+				if(flag2)
-+				{
-+					this.sendQueue.addToSendQueue(
-+						new CPacketPlayer.PositionRotation(this.posX,
-+							this.getEntityBoundingBox().minY
-+								+ (ticksExisted % 2 == 0 ? 0.05 : -0.05),
-+							this.posZ, yaw, pitch, this.onGround));
-+				}else if(flag3)
- 				{
--                this.sendQueue.addToSendQueue(new CPacketPlayer.C06PacketPlayerPosLook(this.motionX, -999.0D, this.motionZ, this.rotationYaw, this.rotationPitch, this.onGround));
-+					this.sendQueue.addToSendQueue(
-+						new CPacketPlayer.Rotation(yaw, pitch, this.onGround));
-+				}else
-+				{
-+					this.sendQueue
-+						.addToSendQueue(new CPacketPlayer(this.onGround));
-+				}
 +			}else if (this.isRiding())
-+            {
+             {
+-                this.sendQueue.addToSendQueue(new CPacketPlayer.C06PacketPlayerPosLook(this.motionX, -999.0D, this.motionZ, this.rotationYaw, this.rotationPitch, this.onGround));
 +				// TODO: Client
 +				this.sendQueue.addToSendQueue(
 +					new CPacketPlayer.PositionRotation(this.motionX, -999.0D,
@@ -1037,7 +1014,7 @@ index 61b85c2..f3df887 100644
              }
              else if (this.field_184841_cd != this.onGround)
              {
-@@ -332,9 +390,31 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -332,9 +366,31 @@ public class EntityPlayerSP extends AbstractClientPlayer
      /**
       * Sends a chat message from the player. Args: chatMessage
       */
@@ -1071,7 +1048,7 @@ index 61b85c2..f3df887 100644
      }
  
      public void swingArm(EnumHand hand)
-@@ -629,7 +709,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -629,7 +685,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
      {
          ItemStack itemstack = this.getHeldItem(p_184598_1_);
  
@@ -1080,7 +1057,7 @@ index 61b85c2..f3df887 100644
          {
              super.func_184598_c(p_184598_1_);
              this.field_184842_cm = true;
-@@ -637,7 +717,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -637,7 +693,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
          }
      }
  
@@ -1089,7 +1066,7 @@ index 61b85c2..f3df887 100644
      {
          return this.field_184842_cm;
      }
-@@ -847,7 +927,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -847,7 +903,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
  
              if (this.timeInPortal == 0.0F)
              {
@@ -1098,7 +1075,7 @@ index 61b85c2..f3df887 100644
              }
  
              this.timeInPortal += 0.0125F;
-@@ -892,7 +972,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -892,7 +948,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
          boolean flag2 = this.movementInput.moveForward >= f;
          this.movementInput.updatePlayerMoveState();
  
@@ -1107,7 +1084,7 @@ index 61b85c2..f3df887 100644
          {
              this.movementInput.moveStrafe *= 0.2F;
              this.movementInput.moveForward *= 0.2F;
-@@ -906,7 +986,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -906,7 +962,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
          this.pushOutOfBlocks(this.posX + (double)this.width * 0.35D, axisalignedbb.minY + 0.5D, this.posZ + (double)this.width * 0.35D);
          boolean flag3 = (float)this.getFoodStats().getFoodLevel() > 6.0F || this.capabilities.allowFlying;
  
@@ -1116,7 +1093,7 @@ index 61b85c2..f3df887 100644
          {
              if (this.sprintToggleTimer <= 0 && !this.mc.gameSettings.keyBindSprint.isKeyDown())
              {
-@@ -918,7 +998,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -918,7 +974,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
              }
          }
  
@@ -1125,7 +1102,7 @@ index 61b85c2..f3df887 100644
          {
              this.setSprinting(true);
          }
-@@ -953,7 +1033,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -953,7 +1009,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
              }
          }
  
@@ -1134,7 +1111,7 @@ index 61b85c2..f3df887 100644
          {
              ItemStack itemstack = this.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
  
-@@ -1052,7 +1132,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -1052,7 +1108,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
          return this.field_184844_co;
      }
  
@@ -1143,7 +1120,7 @@ index 61b85c2..f3df887 100644
      {
          if (p_184596_1_ == MobEffects.confusion)
          {
-@@ -1060,6 +1140,6 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -1060,6 +1116,6 @@ public class EntityPlayerSP extends AbstractClientPlayer
              this.timeInPortal = 0.0F;
          }
  
@@ -4749,9 +4726,44 @@ index 2d2fc3a..6c6f59d 100644
              this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketVehicleMove.class);
              this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketSteerBoat.class);
 diff --git a/net/minecraft/network/NetHandlerPlayServer.java b/net/minecraft/network/NetHandlerPlayServer.java
-index 4e7576e..36e9eb1 100644
+index 4e7576e..6fc2033 100644
 --- a/net/minecraft/network/NetHandlerPlayServer.java
 +++ b/net/minecraft/network/NetHandlerPlayServer.java
+@@ -304,7 +304,7 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, ITickable
+ 
+     private static boolean isMovePlayerPacketInvalid(CPacketPlayer packetIn)
+     {
+-        return Doubles.isFinite(packetIn.func_186997_a(0.0D)) && Doubles.isFinite(packetIn.func_186996_b(0.0D)) && Doubles.isFinite(packetIn.func_187000_c(0.0D)) && Floats.isFinite(packetIn.func_186998_b(0.0F)) && Floats.isFinite(packetIn.func_186999_a(0.0F)) ? false : Math.abs(packetIn.func_186997_a(0.0D)) <= 3.0E7D && Math.abs(packetIn.func_186997_a(0.0D)) <= 3.0E7D;
++        return Doubles.isFinite(packetIn.getX(0.0D)) && Doubles.isFinite(packetIn.getY(0.0D)) && Doubles.isFinite(packetIn.getZ(0.0D)) && Floats.isFinite(packetIn.getPitch(0.0F)) && Floats.isFinite(packetIn.getYaw(0.0F)) ? false : Math.abs(packetIn.getX(0.0D)) <= 3.0E7D && Math.abs(packetIn.getX(0.0D)) <= 3.0E7D;
+     }
+ 
+     private static boolean isMoveVehiclePacketInvalid(CPacketVehicleMove packetIn)
+@@ -448,7 +448,7 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, ITickable
+ 
+                     if (this.playerEntity.isRiding())
+                     {
+-                        this.playerEntity.setPositionAndRotation(this.playerEntity.posX, this.playerEntity.posY, this.playerEntity.posZ, packetIn.func_186999_a(this.playerEntity.rotationYaw), packetIn.func_186998_b(this.playerEntity.rotationPitch));
++                        this.playerEntity.setPositionAndRotation(this.playerEntity.posX, this.playerEntity.posY, this.playerEntity.posZ, packetIn.getYaw(this.playerEntity.rotationYaw), packetIn.getPitch(this.playerEntity.rotationPitch));
+                         this.serverController.getPlayerList().serverUpdateMountedMovingPlayer(this.playerEntity);
+                     }
+                     else
+@@ -457,11 +457,11 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, ITickable
+                         double d1 = this.playerEntity.posY;
+                         double d2 = this.playerEntity.posZ;
+                         double d3 = this.playerEntity.posY;
+-                        double d4 = packetIn.func_186997_a(this.playerEntity.posX);
+-                        double d5 = packetIn.func_186996_b(this.playerEntity.posY);
+-                        double d6 = packetIn.func_187000_c(this.playerEntity.posZ);
+-                        float f = packetIn.func_186999_a(this.playerEntity.rotationYaw);
+-                        float f1 = packetIn.func_186998_b(this.playerEntity.rotationPitch);
++                        double d4 = packetIn.getX(this.playerEntity.posX);
++                        double d5 = packetIn.getY(this.playerEntity.posY);
++                        double d6 = packetIn.getZ(this.playerEntity.posZ);
++                        float f = packetIn.getYaw(this.playerEntity.rotationYaw);
++                        float f1 = packetIn.getPitch(this.playerEntity.rotationPitch);
+                         double d7 = d4 - this.field_184349_l;
+                         double d8 = d5 - this.field_184350_m;
+                         double d9 = d6 - this.field_184351_n;
 @@ -476,9 +476,9 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, ITickable
                              i = 1;
                          }
@@ -4855,9 +4867,42 @@ index 0d831b0..eae1ee1 100644
              {
                  ((Packet<INetHandler>)p_channelRead0_2_).processPacket(this.packetListener);
 diff --git a/net/minecraft/network/play/client/CPacketPlayer.java b/net/minecraft/network/play/client/CPacketPlayer.java
-index 52619c0..6e29711 100644
+index 52619c0..fc11689 100644
 --- a/net/minecraft/network/play/client/CPacketPlayer.java
 +++ b/net/minecraft/network/play/client/CPacketPlayer.java
+@@ -49,27 +49,27 @@ public class CPacketPlayer implements Packet<INetHandlerPlayServer>
+         buf.writeByte(this.onGround ? 1 : 0);
+     }
+ 
+-    public double func_186997_a(double p_186997_1_)
++    public double getX(double p_186997_1_)
+     {
+         return this.moving ? this.x : p_186997_1_;
+     }
+ 
+-    public double func_186996_b(double p_186996_1_)
++    public double getY(double p_186996_1_)
+     {
+         return this.moving ? this.y : p_186996_1_;
+     }
+ 
+-    public double func_187000_c(double p_187000_1_)
++    public double getZ(double p_187000_1_)
+     {
+         return this.moving ? this.z : p_187000_1_;
+     }
+ 
+-    public float func_186999_a(float p_186999_1_)
++    public float getYaw(float p_186999_1_)
+     {
+         return this.rotating ? this.yaw : p_186999_1_;
+     }
+ 
+-    public float func_186998_b(float p_186998_1_)
++    public float getPitch(float p_186998_1_)
+     {
+         return this.rotating ? this.pitch : p_186998_1_;
+     }
 @@ -79,14 +79,14 @@ public class CPacketPlayer implements Packet<INetHandlerPlayServer>
          return this.onGround;
      }
@@ -5295,6 +5340,24 @@ index 246b592..2b752c9 100644
      /**
       * Sets the event that should be run when text of this ChatStyle is clicked on.
       */
+diff --git a/net/minecraft/world/World.java b/net/minecraft/world/World.java
+index f51c789..07db624 100644
+--- a/net/minecraft/world/World.java
++++ b/net/minecraft/world/World.java
+@@ -1242,6 +1242,13 @@ public abstract class World implements IBlockAccess
+         this.worldAccesses.remove(worldAccess);
+     }
+     
++	// TODO: Client
++	public List<AxisAlignedBB> getCollisionBoxes(Entity entity,
++		AxisAlignedBB aabb)
++	{
++		return func_184144_a(entity, aabb);
++	}
++    
+     public List<AxisAlignedBB> func_184144_a(Entity p_184144_1_, AxisAlignedBB p_184144_2_)
+     {
+         List<AxisAlignedBB> list = Lists.<AxisAlignedBB>newArrayList();
 -- 
 2.0.0
 
