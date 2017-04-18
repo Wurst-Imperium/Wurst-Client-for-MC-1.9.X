@@ -1,6 +1,6 @@
-From 1654a6a02a64236b6ceba3ee8fb767fef59e2344 Mon Sep 17 00:00:00 2001
+From 1589760f977a483f8254f8ee7d96b809e037b0a5 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Tue, 18 Apr 2017 21:11:27 +0200
+Date: Tue, 18 Apr 2017 21:30:54 +0200
 Subject: [PATCH] mod
 
 ---
@@ -45,7 +45,7 @@ Subject: [PATCH] mod
  .../client/network/NetHandlerPlayClient.java       |  27 ++-
  .../client/network/NetworkPlayerInfo.java          |  10 +
  .../client/renderer/BlockModelRenderer.java        |   8 +-
- net/minecraft/client/renderer/EntityRenderer.java  |  49 ++++-
+ net/minecraft/client/renderer/EntityRenderer.java  |  53 +++++-
  .../client/renderer/InventoryEffectRenderer.java   |   2 +-
  net/minecraft/client/renderer/ItemRenderer.java    |   6 +-
  net/minecraft/client/renderer/RenderGlobal.java    |   2 +-
@@ -102,7 +102,7 @@ Subject: [PATCH] mod
  net/minecraft/util/text/ITextComponent.java        |  12 ++
  net/minecraft/util/text/Style.java                 |   6 +
  net/minecraft/world/World.java                     |   7 +
- 98 files changed, 1461 insertions(+), 505 deletions(-)
+ 98 files changed, 1465 insertions(+), 505 deletions(-)
 
 diff --git a/Start.java b/Start.java
 index ae0025f..078afa5 100644
@@ -3032,7 +3032,7 @@ index 628f4dd..e08a1ee 100644
              this.renderQuadsSmooth(worldIn, stateIn, posIn, buffer, list1, afloat, bitset, blockmodelrenderer$ambientocclusionface);
              flag = true;
 diff --git a/net/minecraft/client/renderer/EntityRenderer.java b/net/minecraft/client/renderer/EntityRenderer.java
-index e8fdae5..161e855 100644
+index e8fdae5..a6eaad3 100644
 --- a/net/minecraft/client/renderer/EntityRenderer.java
 +++ b/net/minecraft/client/renderer/EntityRenderer.java
 @@ -3,6 +3,7 @@ package net.minecraft.client.renderer;
@@ -3072,7 +3072,7 @@ index e8fdae5..161e855 100644
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;
  import org.lwjgl.input.Mouse;
-@@ -178,10 +186,10 @@ public class EntityRenderer implements IResourceManagerReloadListener
+@@ -178,13 +186,17 @@ public class EntityRenderer implements IResourceManagerReloadListener
      private double cameraZoom = 1.0D;
      private double cameraYaw;
      private double cameraPitch;
@@ -3085,8 +3085,15 @@ index e8fdae5..161e855 100644
 +    public int shaderIndex;
      private boolean useShader;
      private int frameCount;
- 
-@@ -262,7 +270,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
+     
++	// TODO: Client
++    public static final ResourceLocation[] SHADERS_TEXTURES = shaderResourceLocations;
++	public static final int SHADER_COUNT = shaderCount;
++    
+     public EntityRenderer(Minecraft mcIn, IResourceManager resourceManagerIn)
+     {
+         this.shaderIndex = shaderCount;
+@@ -262,7 +274,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
          }
      }
  
@@ -3095,7 +3102,7 @@ index e8fdae5..161e855 100644
      {
          try
          {
-@@ -539,6 +547,10 @@ public class EntityRenderer implements IResourceManagerReloadListener
+@@ -539,6 +551,10 @@ public class EntityRenderer implements IResourceManagerReloadListener
              if (useFOVSetting)
              {
                  f = this.mc.gameSettings.fovSetting;
@@ -3106,7 +3113,7 @@ index e8fdae5..161e855 100644
                  f = f * (this.fovModifierHandPrev + (this.fovModifierHand - this.fovModifierHandPrev) * partialTicks);
              }
  
-@@ -561,6 +573,10 @@ public class EntityRenderer implements IResourceManagerReloadListener
+@@ -561,6 +577,10 @@ public class EntityRenderer implements IResourceManagerReloadListener
  
      private void hurtCameraEffect(float partialTicks)
      {
@@ -3117,7 +3124,7 @@ index e8fdae5..161e855 100644
          if (this.mc.getRenderViewEntity() instanceof EntityLivingBase)
          {
              EntityLivingBase entitylivingbase = (EntityLivingBase)this.mc.getRenderViewEntity();
-@@ -751,14 +767,17 @@ public class EntityRenderer implements IResourceManagerReloadListener
+@@ -751,14 +771,17 @@ public class EntityRenderer implements IResourceManagerReloadListener
  
          this.hurtCameraEffect(partialTicks);
  
@@ -3137,7 +3144,7 @@ index e8fdae5..161e855 100644
          {
              int i = 20;
  
-@@ -1293,7 +1312,11 @@ public class EntityRenderer implements IResourceManagerReloadListener
+@@ -1293,7 +1316,11 @@ public class EntityRenderer implements IResourceManagerReloadListener
          }
  
          this.getMouseOver(partialTicks);
@@ -3149,7 +3156,7 @@ index e8fdae5..161e855 100644
          GlStateManager.enableAlpha();
          GlStateManager.alphaFunc(516, 0.5F);
          this.mc.mcProfiler.startSection("center");
-@@ -1463,6 +1486,9 @@ public class EntityRenderer implements IResourceManagerReloadListener
+@@ -1463,6 +1490,9 @@ public class EntityRenderer implements IResourceManagerReloadListener
  
          this.mc.mcProfiler.endStartSection("hand");
  
@@ -3159,7 +3166,7 @@ index e8fdae5..161e855 100644
          if (this.renderHand)
          {
              GlStateManager.clear(256);
-@@ -1847,8 +1873,12 @@ public class EntityRenderer implements IResourceManagerReloadListener
+@@ -1847,8 +1877,12 @@ public class EntityRenderer implements IResourceManagerReloadListener
          this.fogColorBlue *= f13;
          double d1 = (entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double)partialTicks) * world.provider.getVoidFogYFactor();
  
@@ -3173,7 +3180,7 @@ index e8fdae5..161e855 100644
              int i = ((EntityLivingBase)entity).getActivePotionEffect(MobEffects.blindness).getDuration();
  
              if (i < 20)
-@@ -1927,7 +1957,10 @@ public class EntityRenderer implements IResourceManagerReloadListener
+@@ -1927,7 +1961,10 @@ public class EntityRenderer implements IResourceManagerReloadListener
          GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
          IBlockState iblockstate = ActiveRenderInfo.func_186703_a(this.mc.theWorld, entity, partialTicks);
  

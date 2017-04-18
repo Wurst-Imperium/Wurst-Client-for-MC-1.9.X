@@ -37,9 +37,9 @@ public final class LsdMod extends Mod implements UpdateListener
 				
 				mc.entityRenderer.shaderIndex = 19;
 				
-				if(mc.entityRenderer.shaderIndex != EntityRenderer.shaderCount)
+				if(mc.entityRenderer.shaderIndex != EntityRenderer.SHADER_COUNT)
 					mc.entityRenderer
-						.loadShader(EntityRenderer.shaderResourceLocations[19]);
+						.loadShader(EntityRenderer.SHADERS_TEXTURES[19]);
 				else
 					mc.entityRenderer.theShaderGroup = null;
 			}
@@ -47,23 +47,27 @@ public final class LsdMod extends Mod implements UpdateListener
 	}
 	
 	@Override
-	public void onUpdate()
-	{
-		if(!OpenGlHelper.shadersSupported)
-			WPlayer.addPotionEffect(MobEffects.confusion);
-		mc.gameSettings.smoothCamera = isEnabled();
-	}
-	
-	@Override
 	public void onDisable()
 	{
 		wurst.events.remove(UpdateListener.class, this);
+		
 		WPlayer.removePotionEffect(MobEffects.confusion);
+		
 		if(mc.entityRenderer.theShaderGroup != null)
 		{
 			mc.entityRenderer.theShaderGroup.deleteShaderGroup();
 			mc.entityRenderer.theShaderGroup = null;
 		}
+		
 		mc.gameSettings.smoothCamera = false;
+	}
+	
+	@Override
+	public void onUpdate()
+	{
+		if(!OpenGlHelper.shadersSupported)
+			WPlayer.addPotionEffect(MobEffects.confusion);
+		
+		mc.gameSettings.smoothCamera = isEnabled();
 	}
 }
