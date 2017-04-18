@@ -40,7 +40,7 @@ public final class MassTpaMod extends Mod
 	public void onEnable()
 	{
 		i = 0;
-		Iterator itr = mc.getNetHandler().getPlayerInfoMap().iterator();
+		Iterator itr = WMinecraft.getConnection().getPlayerInfoMap().iterator();
 		players = new ArrayList<>();
 		while(itr.hasNext())
 			players.add(StringUtils.stripControlCodes(
@@ -48,6 +48,13 @@ public final class MassTpaMod extends Mod
 		Collections.shuffle(players, random);
 		wurst.events.add(ChatInputListener.class, this);
 		wurst.events.add(UpdateListener.class, this);
+	}
+	
+	@Override
+	public void onDisable()
+	{
+		wurst.events.remove(ChatInputListener.class, this);
+		wurst.events.remove(UpdateListener.class, this);
 	}
 	
 	@Override
@@ -64,13 +71,6 @@ public final class MassTpaMod extends Mod
 			if(i >= players.size())
 				setEnabled(false);
 		}
-	}
-	
-	@Override
-	public void onDisable()
-	{
-		wurst.events.remove(ChatInputListener.class, this);
-		wurst.events.remove(UpdateListener.class, this);
 	}
 	
 	@Override
