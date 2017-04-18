@@ -16,7 +16,8 @@ import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.events.listeners.UpdateListener;
 
 @Mod.Info(
-	description = "Fills the server console with errors so that admins can't see what you are doing.",
+	description = "Fills the server console with errors so that admins can't see what you are doing.\n"
+		+ "Patched on Spigot.",
 	name = "LogSpammer",
 	help = "Mods/LogSpammer")
 @Mod.Bypasses(ghostMode = false)
@@ -41,6 +42,12 @@ public final class LogSpammerMod extends Mod implements UpdateListener
 	}
 	
 	@Override
+	public void onDisable()
+	{
+		wurst.events.remove(UpdateListener.class, this);
+	}
+	
+	@Override
 	public void onUpdate()
 	{
 		updateMS();
@@ -51,11 +58,5 @@ public final class LogSpammerMod extends Mod implements UpdateListener
 				payload));
 			updateLastMS();
 		}
-	}
-	
-	@Override
-	public void onDisable()
-	{
-		wurst.events.remove(UpdateListener.class, this);
 	}
 }
