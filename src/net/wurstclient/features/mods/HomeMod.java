@@ -31,6 +31,13 @@ public final class HomeMod extends Mod
 	}
 	
 	@Override
+	public void onDisable()
+	{
+		wurst.events.remove(ChatInputListener.class, this);
+		wurst.events.remove(UpdateListener.class, this);
+	}
+	
+	@Override
 	public void onUpdate()
 	{
 		if(disableTimer == 4)
@@ -38,13 +45,6 @@ public final class HomeMod extends Mod
 		else if(disableTimer == 0)
 			WMinecraft.getPlayer().sendChatMessage("/home");
 		disableTimer++;
-	}
-	
-	@Override
-	public void onDisable()
-	{
-		wurst.events.remove(ChatInputListener.class, this);
-		wurst.events.remove(UpdateListener.class, this);
 	}
 	
 	@Override
