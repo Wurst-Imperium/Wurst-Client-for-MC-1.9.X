@@ -26,6 +26,13 @@ public final class MileyCyrusMod extends Mod implements UpdateListener
 	}
 	
 	@Override
+	public void onDisable()
+	{
+		wurst.events.remove(UpdateListener.class, this);
+		mc.gameSettings.keyBindSneak.pressed = false;
+	}
+	
+	@Override
 	public void onUpdate()
 	{
 		timer++;
@@ -35,12 +42,5 @@ public final class MileyCyrusMod extends Mod implements UpdateListener
 				!mc.gameSettings.keyBindSneak.pressed;
 			timer = 0;
 		}
-	}
-	
-	@Override
-	public void onDisable()
-	{
-		wurst.events.remove(UpdateListener.class, this);
-		mc.gameSettings.keyBindSneak.pressed = false;
 	}
 }
