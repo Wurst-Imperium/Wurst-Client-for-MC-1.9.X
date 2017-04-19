@@ -1,6 +1,6 @@
-From dbe6c4a2d96441324bca997d028aca0a1f758caf Mon Sep 17 00:00:00 2001
+From ccd1b91bf9a548ccab6244d47b9de8e469f74d24 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Wed, 19 Apr 2017 06:38:06 +0200
+Date: Wed, 19 Apr 2017 07:56:49 +0200
 Subject: [PATCH] mod
 
 ---
@@ -16,7 +16,7 @@ Subject: [PATCH] mod
  net/minecraft/client/Minecraft.java                | 208 +++++++++++----------
  .../client/audio/PositionedSoundRecord.java        |   2 +-
  .../client/entity/AbstractClientPlayer.java        |   4 +-
- net/minecraft/client/entity/EntityPlayerSP.java    | 132 +++++++++----
+ net/minecraft/client/entity/EntityPlayerSP.java    | 135 +++++++++----
  net/minecraft/client/gui/FontRenderer.java         |   2 +-
  net/minecraft/client/gui/GuiButton.java            |  16 +-
  net/minecraft/client/gui/GuiDisconnected.java      |  88 +++++++++
@@ -102,7 +102,7 @@ Subject: [PATCH] mod
  net/minecraft/util/text/ITextComponent.java        |  12 ++
  net/minecraft/util/text/Style.java                 |   6 +
  net/minecraft/world/World.java                     |   7 +
- 98 files changed, 1492 insertions(+), 506 deletions(-)
+ 98 files changed, 1495 insertions(+), 506 deletions(-)
 
 diff --git a/Start.java b/Start.java
 index ae0025f..078afa5 100644
@@ -852,7 +852,7 @@ index c30247b..1fd170a 100644
  
              if (f1 > 1.0F)
 diff --git a/net/minecraft/client/entity/EntityPlayerSP.java b/net/minecraft/client/entity/EntityPlayerSP.java
-index 61b85c2..77badb4 100644
+index 61b85c2..41a64c7 100644
 --- a/net/minecraft/client/entity/EntityPlayerSP.java
 +++ b/net/minecraft/client/entity/EntityPlayerSP.java
 @@ -1,5 +1,6 @@
@@ -1075,16 +1075,20 @@ index 61b85c2..77badb4 100644
              }
  
              this.timeInPortal += 0.0125F;
-@@ -892,7 +948,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -892,8 +948,11 @@ public class EntityPlayerSP extends AbstractClientPlayer
          boolean flag2 = this.movementInput.moveForward >= f;
          this.movementInput.updatePlayerMoveState();
  
 -        if (this.func_184587_cr() && !this.isRiding())
-+        if (this.isUsingItem() && !this.isRiding())
-         {
++		// TODO: Client
++		if(this.isUsingItem() && !this.isRiding()
++			&& !WurstClient.INSTANCE.mods.noSlowdownMod.isActive())
+ 		{
++        	
              this.movementInput.moveStrafe *= 0.2F;
              this.movementInput.moveForward *= 0.2F;
-@@ -906,7 +962,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+             this.sprintToggleTimer = 0;
+@@ -906,7 +965,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
          this.pushOutOfBlocks(this.posX + (double)this.width * 0.35D, axisalignedbb.minY + 0.5D, this.posZ + (double)this.width * 0.35D);
          boolean flag3 = (float)this.getFoodStats().getFoodLevel() > 6.0F || this.capabilities.allowFlying;
  
@@ -1093,7 +1097,7 @@ index 61b85c2..77badb4 100644
          {
              if (this.sprintToggleTimer <= 0 && !this.mc.gameSettings.keyBindSprint.isKeyDown())
              {
-@@ -918,7 +974,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -918,7 +977,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
              }
          }
  
@@ -1102,7 +1106,7 @@ index 61b85c2..77badb4 100644
          {
              this.setSprinting(true);
          }
-@@ -953,7 +1009,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -953,7 +1012,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
              }
          }
  
@@ -1111,7 +1115,7 @@ index 61b85c2..77badb4 100644
          {
              ItemStack itemstack = this.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
  
-@@ -1052,7 +1108,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -1052,7 +1111,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
          return this.field_184844_co;
      }
  
@@ -1120,7 +1124,7 @@ index 61b85c2..77badb4 100644
      {
          if (p_184596_1_ == MobEffects.confusion)
          {
-@@ -1060,6 +1116,6 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -1060,6 +1119,6 @@ public class EntityPlayerSP extends AbstractClientPlayer
              this.timeInPortal = 0.0F;
          }
  

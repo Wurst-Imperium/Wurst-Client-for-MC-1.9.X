@@ -29,16 +29,16 @@ public final class NoSlowdownMod extends Mod implements UpdateListener
 	}
 	
 	@Override
+	public void onDisable()
+	{
+		wurst.events.remove(UpdateListener.class, this);
+	}
+	
+	@Override
 	public void onUpdate()
 	{
 		if(WMinecraft.getPlayer().onGround && WMinecraft.getPlayer().isInWater()
 			&& mc.gameSettings.keyBindJump.pressed)
 			WMinecraft.getPlayer().jump();
-	}
-	
-	@Override
-	public void onDisable()
-	{
-		wurst.events.remove(UpdateListener.class, this);
 	}
 }
