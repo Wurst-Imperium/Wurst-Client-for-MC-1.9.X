@@ -12,7 +12,6 @@ import org.lwjgl.opengl.GL13;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.item.*;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -25,6 +24,7 @@ import net.wurstclient.utils.RenderUtils;
 
 @Mod.Info(name = "Trajectories",
 	description = "Predicts the flight path of arrows and throwable items.",
+	
 	tags = "AimAssist, ArrowPrediction, aim assist, arrow prediction",
 	help = "Mods/Trajectories")
 @Mod.Bypasses
@@ -41,6 +41,12 @@ public final class TrajectoriesMod extends Mod implements RenderListener
 	public void onEnable()
 	{
 		wurst.events.add(RenderListener.class, this);
+	}
+	
+	@Override
+	public void onDisable()
+	{
+		wurst.events.remove(RenderListener.class, this);
 	}
 	
 	@Override
@@ -163,7 +169,7 @@ public final class TrajectoriesMod extends Mod implements RenderListener
 		GL11.glColor4f(0F, 1F, 0F, 0.15F);
 		RenderUtils.drawColorBox(bb, 0F, 1F, 0F, 0.15F);
 		GL11.glColor4d(0, 0, 0, 0.5F);
-		RenderGlobal.drawSelectionBoundingBox(bb);
+		RenderUtils.drawSelectionBoundingBox(bb);
 		
 		// GL resets
 		GL11.glDisable(3042);
@@ -173,11 +179,5 @@ public final class TrajectoriesMod extends Mod implements RenderListener
 		GL11.glDepthMask(true);
 		GL11.glDisable(GL11.GL_LINE_SMOOTH);
 		GL11.glPopMatrix();
-	}
-	
-	@Override
-	public void onDisable()
-	{
-		wurst.events.remove(RenderListener.class, this);
 	}
 }
