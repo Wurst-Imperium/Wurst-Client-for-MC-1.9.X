@@ -125,6 +125,7 @@ public class ModManager
 	public final RegenMod regenMod = new RegenMod();
 	public final RemoteViewMod remoteViewMod = new RemoteViewMod();
 	public final SafeWalkMod safeWalkMod = new SafeWalkMod();
+	public final ScaffoldWalkMod scaffoldWalkMod = new ScaffoldWalkMod();
 	public final SearchMod searchMod = new SearchMod();
 	public final SkinBlinkerMod skinBlinkerMod = new SkinBlinkerMod();
 	public final SneakMod sneakMod = new SneakMod();
