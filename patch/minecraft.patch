@@ -1,6 +1,6 @@
-From ccd1b91bf9a548ccab6244d47b9de8e469f74d24 Mon Sep 17 00:00:00 2001
+From 8cdf1ceafaa1c52f246912014ba9fbe8133b032d Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Wed, 19 Apr 2017 07:56:49 +0200
+Date: Wed, 19 Apr 2017 08:20:15 +0200
 Subject: [PATCH] mod
 
 ---
@@ -101,8 +101,8 @@ Subject: [PATCH] mod
  net/minecraft/util/math/Vec3d.java                 |   6 +
  net/minecraft/util/text/ITextComponent.java        |  12 ++
  net/minecraft/util/text/Style.java                 |   6 +
- net/minecraft/world/World.java                     |   7 +
- 98 files changed, 1495 insertions(+), 506 deletions(-)
+ net/minecraft/world/World.java                     |  26 +++
+ 98 files changed, 1514 insertions(+), 506 deletions(-)
 
 diff --git a/Start.java b/Start.java
 index ae0025f..078afa5 100644
@@ -5427,10 +5427,18 @@ index 246b592..2b752c9 100644
       * Sets the event that should be run when text of this ChatStyle is clicked on.
       */
 diff --git a/net/minecraft/world/World.java b/net/minecraft/world/World.java
-index f51c789..07db624 100644
+index f51c789..92ccccd 100644
 --- a/net/minecraft/world/World.java
 +++ b/net/minecraft/world/World.java
-@@ -1242,6 +1242,13 @@ public abstract class World implements IBlockAccess
+@@ -55,6 +55,7 @@ import net.minecraft.world.storage.ISaveHandler;
+ import net.minecraft.world.storage.MapStorage;
+ import net.minecraft.world.storage.WorldInfo;
+ import net.minecraft.world.storage.loot.LootTableManager;
++import net.wurstclient.WurstClient;
+ 
+ public abstract class World implements IBlockAccess
+ {
+@@ -1242,6 +1243,13 @@ public abstract class World implements IBlockAccess
          this.worldAccesses.remove(worldAccess);
      }
      
@@ -5444,6 +5452,43 @@ index f51c789..07db624 100644
      public List<AxisAlignedBB> func_184144_a(Entity p_184144_1_, AxisAlignedBB p_184144_2_)
      {
          List<AxisAlignedBB> list = Lists.<AxisAlignedBB>newArrayList();
+@@ -1550,11 +1558,24 @@ public abstract class World implements IBlockAccess
+      */
+     public float getCelestialAngle(float partialTicks)
+     {
++		// TODO: Client
++		if(WurstClient.INSTANCE.mods.noWeatherMod.isActive()
++			&& WurstClient.INSTANCE.mods.noWeatherMod.changeTime.isChecked())
++			return provider.calculateCelestialAngle(
++				(long)WurstClient.INSTANCE.mods.noWeatherMod.time.getValueI(),
++				partialTicks);
++		
+ 		return this.provider.calculateCelestialAngle(this.worldInfo.getWorldTime(), partialTicks);
+     }
+ 
+     public int getMoonPhase()
+     {
++		// TODO: Client
++		if(WurstClient.INSTANCE.mods.noWeatherMod.isActive()
++			&& WurstClient.INSTANCE.mods.noWeatherMod.changeMoonPhase
++				.isChecked())
++			return WurstClient.INSTANCE.mods.noWeatherMod.moonPhase.getValueI();
++		
+ 		return this.provider.getMoonPhase(this.worldInfo.getWorldTime());
+     }
+ 
+@@ -3592,6 +3613,11 @@ public abstract class World implements IBlockAccess
+      */
+     public float getRainStrength(float delta)
+     {
++		// TODO: Client
++		if(WurstClient.INSTANCE.mods.noWeatherMod.isActive()
++			&& WurstClient.INSTANCE.mods.noWeatherMod.disableRain.isChecked())
++			return 0;
++		
+         return this.prevRainingStrength + (this.rainingStrength - this.prevRainingStrength) * delta;
+     }
+ 
 -- 
 2.0.0
 

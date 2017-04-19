@@ -109,6 +109,7 @@ public class ModManager
 	public final NoHurtcamMod noHurtcamMod = new NoHurtcamMod();
 	public final NoOverlayMod noOverlayMod = new NoOverlayMod();
 	public final NoSlowdownMod noSlowdownMod = new NoSlowdownMod();
+	public final NoWeatherMod noWeatherMod = new NoWeatherMod();
 	public final NoWebMod noWebMod = new NoWebMod();
 	public final NukerMod nukerMod = new NukerMod();
 	public final NukerLegitMod nukerLegitMod = new NukerLegitMod();
