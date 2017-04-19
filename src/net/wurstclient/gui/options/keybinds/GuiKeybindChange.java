@@ -24,15 +24,15 @@ import net.wurstclient.gui.options.GuiPressAKeyCallback;
 
 public class GuiKeybindChange extends GuiScreen implements GuiPressAKeyCallback
 {
-	private GuiScreen prevMenu;
+	private GuiScreen prevScreen;
 	private GuiTextField commandBox;
 	private Entry<String, TreeSet<String>> entry;
 	private String key = "NONE";
 	
-	public GuiKeybindChange(GuiScreen prevMenu,
+	public GuiKeybindChange(GuiScreen prevScreen,
 		Entry<String, TreeSet<String>> entry)
 	{
-		this.prevMenu = prevMenu;
+		this.prevScreen = prevScreen;
 		this.entry = entry;
 		if(entry != null)
 			key = entry.getKey();
@@ -99,11 +99,11 @@ public class GuiKeybindChange extends GuiScreen implements GuiPressAKeyCallback
 				WurstClient.INSTANCE.keybinds.put(key, new TreeSet<>(
 					Arrays.asList(commandBox.getText().split(";"))));
 				ConfigFiles.KEYBINDS.save();
-				mc.displayGuiScreen(prevMenu);
+				mc.displayGuiScreen(prevScreen);
 				WurstClient.INSTANCE.analytics.trackEvent("keybinds", "set",
 					key);
 			}else if(clickedButton.id == 2)
-				mc.displayGuiScreen(prevMenu);
+				mc.displayGuiScreen(prevScreen);
 	}
 	
 	/**
