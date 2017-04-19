@@ -27,6 +27,13 @@ public final class NoClipMod extends Mod implements UpdateListener
 	}
 	
 	@Override
+	public void onDisable()
+	{
+		wurst.events.remove(UpdateListener.class, this);
+		WMinecraft.getPlayer().noClip = false;
+	}
+	
+	@Override
 	public void onUpdate()
 	{
 		WMinecraft.getPlayer().noClip = true;
@@ -44,12 +51,5 @@ public final class NoClipMod extends Mod implements UpdateListener
 			WMinecraft.getPlayer().motionY += speed;
 		if(mc.gameSettings.keyBindSneak.pressed)
 			WMinecraft.getPlayer().motionY -= speed;
-	}
-	
-	@Override
-	public void onDisable()
-	{
-		wurst.events.remove(UpdateListener.class, this);
-		WMinecraft.getPlayer().noClip = false;
 	}
 }
