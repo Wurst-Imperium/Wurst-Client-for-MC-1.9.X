@@ -44,6 +44,13 @@ public final class SearchMod extends Mod
 	}
 	
 	@Override
+	public void onDisable()
+	{
+		wurst.events.remove(UpdateListener.class, this);
+		wurst.events.remove(RenderListener.class, this);
+	}
+	
+	@Override
 	public void onRender(float partialTicks)
 	{
 		for(BlockPos blockPos : matchingBlocks)
@@ -90,12 +97,5 @@ public final class SearchMod extends Mod
 				notify = true;
 			updateLastMS();
 		}
-	}
-	
-	@Override
-	public void onDisable()
-	{
-		wurst.events.remove(UpdateListener.class, this);
-		wurst.events.remove(RenderListener.class, this);
 	}
 }
