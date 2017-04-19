@@ -19,10 +19,10 @@ import net.wurstclient.features.mods.Mod;
 
 public class GuiKeybindList extends GuiSlot
 {
-	public GuiKeybindList(Minecraft par1Minecraft, GuiScreen prevMenu)
+	public GuiKeybindList(Minecraft par1Minecraft, GuiScreen prevScreen)
 	{
-		super(par1Minecraft, prevMenu.width, prevMenu.height, 36,
-			prevMenu.height - 56, 30);
+		super(par1Minecraft, prevScreen.width, prevScreen.height, 36,
+			prevScreen.height - 56, 30);
 		mc = par1Minecraft;
 	}
 	

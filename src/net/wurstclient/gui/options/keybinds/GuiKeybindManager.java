@@ -20,12 +20,12 @@ import net.wurstclient.options.KeybindManager;
 
 public class GuiKeybindManager extends GuiScreen
 {
-	private GuiScreen prevMenu;
+	private GuiScreen prevScreen;
 	public static GuiKeybindList bindList;
 	
 	public GuiKeybindManager(GuiScreen par1GuiScreen)
 	{
-		prevMenu = par1GuiScreen;
+		prevScreen = par1GuiScreen;
 	}
 	
 	@Override
@@ -66,7 +66,7 @@ public class GuiKeybindManager extends GuiScreen
 			if(clickedButton.id == 0)
 				mc.displayGuiScreen(new GuiKeybindChange(this, null));
 			else if(clickedButton.id == 3)
-				mc.displayGuiScreen(prevMenu);
+				mc.displayGuiScreen(prevScreen);
 			else if(clickedButton.id == 4)
 				mc.displayGuiScreen(new GuiYesNo(this,
 					"Are you sure you want to reset your keybinds?",
