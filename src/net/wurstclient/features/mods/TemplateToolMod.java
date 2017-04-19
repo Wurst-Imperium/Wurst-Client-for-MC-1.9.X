@@ -473,8 +473,7 @@ public final class TemplateToolMod extends Mod
 					new TextComponentString(file.getName());
 				ClickEvent event = new ClickEvent(ClickEvent.Action.OPEN_FILE,
 					file.getParentFile().getAbsolutePath());
-				link.getChatStyle().setUnderlined(true)
-					.setChatClickEvent(event);
+				link.getStyle().setUnderlined(true).setClickEvent(event);
 				message.appendSibling(link);
 				ChatUtils.component(message);
 				
