@@ -20,12 +20,12 @@ import net.wurstclient.WurstClient;
 
 public class GuiBookHack extends GuiScreen
 {
-	private GuiScreenBook prevMenu;
+	private GuiScreenBook prevScreen;
 	private GuiTextField commandBox;
 	
-	public GuiBookHack(GuiScreenBook prevMenu)
+	public GuiBookHack(GuiScreenBook prevScreen)
 	{
-		this.prevMenu = prevMenu;
+		this.prevScreen = prevScreen;
 	}
 	
 	@Override
@@ -52,11 +52,11 @@ public class GuiBookHack extends GuiScreen
 		switch(button.id)
 		{
 			case 0:
-			prevMenu.signWithCommand(commandBox.getText());
+			prevScreen.signWithCommand(commandBox.getText());
 			WurstClient.INSTANCE.analytics.trackEvent("bookhack", "sign");
 			break;
 			case 1:
-			Minecraft.getMinecraft().displayGuiScreen(prevMenu);
+			Minecraft.getMinecraft().displayGuiScreen(prevScreen);
 			WurstClient.INSTANCE.analytics.trackEvent("bookhack", "cancel");
 			break;
 			default:

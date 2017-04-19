@@ -20,14 +20,14 @@ import net.wurstclient.features.mods.CmdBlockMod;
 
 public class GuiCmdBlock extends GuiScreen
 {
-	private GuiScreen prevMenu;
+	private GuiScreen prevScreen;
 	private CmdBlockMod mod;
 	private GuiTextField commandBox;
 	
-	public GuiCmdBlock(CmdBlockMod mod, GuiScreen prevMenu)
+	public GuiCmdBlock(CmdBlockMod mod, GuiScreen prevScreen)
 	{
 		this.mod = mod;
-		this.prevMenu = prevMenu;
+		this.prevScreen = prevScreen;
 	}
 	
 	@Override
@@ -54,12 +54,12 @@ public class GuiCmdBlock extends GuiScreen
 		switch(button.id)
 		{
 			case 0:
-			Minecraft.getMinecraft().displayGuiScreen(prevMenu);
+			Minecraft.getMinecraft().displayGuiScreen(prevScreen);
 			mod.createCmdBlock(commandBox.getText());
 			WurstClient.INSTANCE.analytics.trackEvent("cmdblock", "create");
 			break;
 			case 1:
-			Minecraft.getMinecraft().displayGuiScreen(prevMenu);
+			Minecraft.getMinecraft().displayGuiScreen(prevScreen);
 			WurstClient.INSTANCE.analytics.trackEvent("cmdblock", "cancel");
 			break;
 			default:
