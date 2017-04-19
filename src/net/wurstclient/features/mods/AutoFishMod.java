@@ -7,12 +7,12 @@
  */
 package net.wurstclient.features.mods;
 
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemFishingRod;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.SPacketSoundEffect;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.compatibility.WPlayerController;
+import net.wurstclient.compatibility.WSoundEvents;
 import net.wurstclient.events.PacketInputEvent;
 import net.wurstclient.events.listeners.PacketInputListener;
 import net.wurstclient.events.listeners.UpdateListener;
@@ -161,8 +161,7 @@ public final class AutoFishMod extends Mod
 			return;
 		
 		// check sound type
-		if(!SoundEvents.ENTITY_BOBBER_SPLASH
-			.equals(((SPacketSoundEffect)event.getPacket()).getSound()))
+		if(!WSoundEvents.isBobberSplash((SPacketSoundEffect)event.getPacket()))
 			return;
 		
 		// catch fish
