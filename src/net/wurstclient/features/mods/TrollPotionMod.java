@@ -7,14 +7,12 @@
  */
 package net.wurstclient.features.mods;
 
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
-import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.utils.ChatUtils;
+import net.wurstclient.utils.InventoryUtils;
 
 @Mod.Info(
 	description = "Generates an incredibly annoying potion.\n"
@@ -28,18 +26,16 @@ public final class TrollPotionMod extends Mod
 	@Override
 	public void onEnable()
 	{
-		if(WMinecraft.getPlayer().inventory.getStackInSlot(0) != null)
-		{
-			ChatUtils.error("Please clear the first slot in your hotbar.");
-			setEnabled(false);
-			return;
-		}else if(!WMinecraft.getPlayer().capabilities.isCreativeMode)
+		// check gamemode
+		if(!WMinecraft.getPlayer().capabilities.isCreativeMode)
 		{
 			ChatUtils.error("Creative mode only.");
 			setEnabled(false);
 			return;
 		}
-		ItemStack stack = new ItemStack(Items.splash_potion);
+		
+		// generate potion
+		ItemStack stack = InventoryUtils.createSplashPotion();
 		NBTTagList effects = new NBTTagList();
 		for(int i = 1; i <= 23; i++)
 		{
@@ -50,9 +46,14 @@ public final class TrollPotionMod extends Mod
 			effects.appendTag(effect);
 		}
 		stack.setTagInfo("CustomPotionEffects", effects);
-		stack.setStackDisplayName("§c§lTroll§6§lPotion");
-		WConnection.sendPacket(new CPacketCreativeInventoryAction(36, stack));
-		ChatUtils.message("Potion created. Trololo!");
+		stack.setStackDisplayName("§rSplash Potion of Trolling");
+		
+		// give potion
+		if(InventoryUtils.placeStackInHotbar(stack))
+			ChatUtils.message("Potion created.");
+		else
+			ChatUtils.error("Please clear a slot in your hotbar.");
+		
 		setEnabled(false);
 	}
 }
