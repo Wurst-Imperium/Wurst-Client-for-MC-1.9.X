@@ -20,7 +20,7 @@ public class KeybindManager extends TreeMap<String, TreeSet<String>>
 		put("G", ".t flight");
 		put("GRAVE", ".t speednuker");
 		put("H", ".t /home");
-		put("J", ".t phase");
+		put("J", ".t jesus");
 		put("K", ".t multiaura");
 		put("L", ".t nuker");
 		put("LCONTROL", ".t navigator");
