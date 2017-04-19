@@ -33,6 +33,12 @@ public final class ThrowMod extends Mod implements UpdateListener
 	}
 	
 	@Override
+	public void onDisable()
+	{
+		wurst.events.remove(UpdateListener.class, this);
+	}
+	
+	@Override
 	public void onUpdate()
 	{
 		if((mc.rightClickDelayTimer == 4 || wurst.mods.fastPlaceMod.isActive())
@@ -44,11 +50,5 @@ public final class ThrowMod extends Mod implements UpdateListener
 			for(int i = 0; i < wurst.options.throwAmount - 1; i++)
 				mc.rightClickMouse();
 		}
-	}
-	
-	@Override
-	public void onDisable()
-	{
-		wurst.events.remove(UpdateListener.class, this);
 	}
 }
