@@ -26,14 +26,14 @@ public final class NoWebMod extends Mod implements UpdateListener
 	}
 	
 	@Override
-	public void onUpdate()
-	{
-		WMinecraft.getPlayer().isInWeb = false;
-	}
-	
-	@Override
 	public void onDisable()
 	{
 		wurst.events.remove(UpdateListener.class, this);
+	}
+	
+	@Override
+	public void onUpdate()
+	{
+		WMinecraft.getPlayer().isInWeb = false;
 	}
 }
