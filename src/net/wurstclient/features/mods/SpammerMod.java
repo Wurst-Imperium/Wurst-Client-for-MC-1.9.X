@@ -181,7 +181,7 @@ public final class SpammerMod extends Mod
 					@Override
 					public void actionPerformed(ActionEvent e)
 					{
-						MiscUtils.openFile(WurstFolders.SPAM.toFile());
+						MiscUtils.openFile(WurstFolders.SPAM);
 					}
 				});
 				fileMenu.add(fileOpenFolder);
