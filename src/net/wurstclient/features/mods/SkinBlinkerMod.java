@@ -28,6 +28,14 @@ public final class SkinBlinkerMod extends Mod implements UpdateListener
 	}
 	
 	@Override
+	public void onDisable()
+	{
+		wurst.events.remove(UpdateListener.class, this);
+		for(EnumPlayerModelParts part : EnumPlayerModelParts.values())
+			mc.gameSettings.setModelPartEnabled(part, true);
+	}
+	
+	@Override
 	public void onUpdate()
 	{
 		updateMS();
@@ -39,13 +47,5 @@ public final class SkinBlinkerMod extends Mod implements UpdateListener
 				mc.gameSettings.setModelPartEnabled(part,
 					!activeParts.contains(part));
 		}
-	}
-	
-	@Override
-	public void onDisable()
-	{
-		wurst.events.remove(UpdateListener.class, this);
-		for(EnumPlayerModelParts part : EnumPlayerModelParts.values())
-			mc.gameSettings.setModelPartEnabled(part, true);
 	}
 }
