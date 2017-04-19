@@ -13,14 +13,14 @@ import net.minecraft.client.gui.GuiScreen;
 
 public class GuiPressAKey extends GuiScreen
 {
-	private GuiPressAKeyCallback prevMenu;
+	private GuiPressAKeyCallback prevScreen;
 	
-	public GuiPressAKey(GuiPressAKeyCallback prevMenu)
+	public GuiPressAKey(GuiPressAKeyCallback prevScreen)
 	{
-		if(!(prevMenu instanceof GuiScreen))
+		if(!(prevScreen instanceof GuiScreen))
 			throw new IllegalArgumentException(
-				"prevMenu is not an instance of GuiScreen");
-		this.prevMenu = prevMenu;
+				"prevScreen is not an instance of GuiScreen");
+		this.prevScreen = prevScreen;
 	}
 	
 	/**
@@ -30,8 +30,8 @@ public class GuiPressAKey extends GuiScreen
 	@Override
 	protected void keyTyped(char par1, int par2)
 	{
-		prevMenu.setKey(Keyboard.getKeyName(par2));
-		mc.displayGuiScreen((GuiScreen)prevMenu);
+		prevScreen.setKey(Keyboard.getKeyName(par2));
+		mc.displayGuiScreen((GuiScreen)prevScreen);
 	}
 	
 	/**
