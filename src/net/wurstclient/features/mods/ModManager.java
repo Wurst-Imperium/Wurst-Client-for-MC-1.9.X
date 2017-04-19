@@ -115,6 +115,7 @@ public class ModManager
 	public final NukerLegitMod nukerLegitMod = new NukerLegitMod();
 	public final OverlayMod overlayMod = new OverlayMod();
 	public final PanicMod panicMod = new PanicMod();
+	public final ParkourMod parkourMod = new ParkourMod();
 	public final PhaseMod phaseMod = new PhaseMod();
 	public final PlayerEspMod playerEspMod = new PlayerEspMod();
 	public final PlayerFinderMod playerFinderMod = new PlayerFinderMod();
