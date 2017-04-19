@@ -1,6 +1,6 @@
-From 1589760f977a483f8254f8ee7d96b809e037b0a5 Mon Sep 17 00:00:00 2001
+From dbe6c4a2d96441324bca997d028aca0a1f758caf Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Tue, 18 Apr 2017 21:30:54 +0200
+Date: Wed, 19 Apr 2017 06:38:06 +0200
 Subject: [PATCH] mod
 
 ---
@@ -21,7 +21,7 @@ Subject: [PATCH] mod
  net/minecraft/client/gui/GuiButton.java            |  16 +-
  net/minecraft/client/gui/GuiDisconnected.java      |  88 +++++++++
  net/minecraft/client/gui/GuiGameOver.java          |  13 +-
- net/minecraft/client/gui/GuiIngame.java            |  24 ++-
+ net/minecraft/client/gui/GuiIngame.java            |  31 ++-
  net/minecraft/client/gui/GuiIngameMenu.java        |  56 +++++-
  .../client/gui/GuiListWorldSelectionEntry.java     |   2 +-
  net/minecraft/client/gui/GuiMainMenu.java          |  38 +++-
@@ -45,9 +45,9 @@ Subject: [PATCH] mod
  .../client/network/NetHandlerPlayClient.java       |  27 ++-
  .../client/network/NetworkPlayerInfo.java          |  10 +
  .../client/renderer/BlockModelRenderer.java        |   8 +-
- net/minecraft/client/renderer/EntityRenderer.java  |  53 +++++-
+ net/minecraft/client/renderer/EntityRenderer.java  |  65 ++++++-
  .../client/renderer/InventoryEffectRenderer.java   |   2 +-
- net/minecraft/client/renderer/ItemRenderer.java    |   6 +-
+ net/minecraft/client/renderer/ItemRenderer.java    |  15 +-
  net/minecraft/client/renderer/RenderGlobal.java    |   2 +-
  net/minecraft/client/renderer/RenderItem.java      |   2 +-
  net/minecraft/client/renderer/chunk/VisGraph.java  |   4 +-
@@ -102,7 +102,7 @@ Subject: [PATCH] mod
  net/minecraft/util/text/ITextComponent.java        |  12 ++
  net/minecraft/util/text/Style.java                 |   6 +
  net/minecraft/world/World.java                     |   7 +
- 98 files changed, 1465 insertions(+), 505 deletions(-)
+ 98 files changed, 1492 insertions(+), 506 deletions(-)
 
 diff --git a/Start.java b/Start.java
 index ae0025f..078afa5 100644
@@ -1353,7 +1353,7 @@ index 08d7720..cf1ee7b 100644
      }
  }
 diff --git a/net/minecraft/client/gui/GuiIngame.java b/net/minecraft/client/gui/GuiIngame.java
-index 8c38552..e5dc66d 100644
+index 8c38552..203fe53 100644
 --- a/net/minecraft/client/gui/GuiIngame.java
 +++ b/net/minecraft/client/gui/GuiIngame.java
 @@ -1,12 +1,14 @@
@@ -1374,15 +1374,16 @@ index 8c38552..e5dc66d 100644
  import net.minecraft.block.material.Material;
  import net.minecraft.client.Minecraft;
  import net.minecraft.client.gui.inventory.GuiContainer;
-@@ -47,6 +49,7 @@ import net.minecraft.util.math.RayTraceResult;
+@@ -47,6 +49,8 @@ import net.minecraft.util.math.RayTraceResult;
  import net.minecraft.util.text.ITextComponent;
  import net.minecraft.util.text.TextFormatting;
  import net.minecraft.world.border.WorldBorder;
++import net.wurstclient.WurstClient;
 +import net.wurstclient.gui.UIRenderer;
  
  public class GuiIngame extends Gui
  {
-@@ -341,10 +344,12 @@ public class GuiIngame extends Gui
+@@ -341,11 +345,15 @@ public class GuiIngame extends Gui
  
          ScoreObjective scoreobjective1 = scoreobjective != null ? scoreobjective : scoreboard.getObjectiveInDisplaySlot(1);
  
@@ -1391,12 +1392,15 @@ index 8c38552..e5dc66d 100644
          {
              this.renderScoreboard(scoreobjective1, scaledresolution);
  		}
+ 		
++		// TODO: Client
 +		if(!this.mc.gameSettings.showDebugInfo)
 +			UIRenderer.renderUI(zLevel);
- 
++
          GlStateManager.enableBlend();
          GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-@@ -416,9 +421,9 @@ public class GuiIngame extends Gui
+         GlStateManager.disableAlpha();
+@@ -416,9 +424,9 @@ public class GuiIngame extends Gui
                  GlStateManager.enableAlpha();
                  this.drawTexturedModalRect(l / 2 - 7, i1 / 2 - 7, 0, 0, 16, 16);
  
@@ -1408,7 +1412,7 @@ index 8c38552..e5dc66d 100644
  
                      if (f < 1.0F)
                      {
-@@ -446,7 +451,7 @@ public class GuiIngame extends Gui
+@@ -446,7 +454,7 @@ public class GuiIngame extends Gui
  
              for (PotionEffect potioneffect : Ordering.natural().reverse().sortedCopy(collection))
              {
@@ -1417,7 +1421,7 @@ index 8c38552..e5dc66d 100644
  
                  if (potion.hasStatusIcon() && potioneffect.func_188418_e())
                  {
-@@ -547,9 +552,9 @@ public class GuiIngame extends Gui
+@@ -547,9 +555,9 @@ public class GuiIngame extends Gui
                  }
              }
  
@@ -1429,7 +1433,7 @@ index 8c38552..e5dc66d 100644
  
                  if (f1 < 1.0F)
                  {
-@@ -733,6 +738,7 @@ public class GuiIngame extends Gui
+@@ -733,6 +741,7 @@ public class GuiIngame extends Gui
              ++j;
              ScorePlayerTeam scoreplayerteam1 = scoreboard.getPlayersTeam(score1.getPlayerName());
              String s1 = ScorePlayerTeam.formatPlayerName(scoreplayerteam1, score1.getPlayerName());
@@ -1437,6 +1441,17 @@ index 8c38552..e5dc66d 100644
              String s2 = TextFormatting.RED + "" + score1.getScorePoints();
              int k = j1 - j * this.getFontRenderer().FONT_HEIGHT;
              int l = scaledRes.getScaledWidth() - k1 + 2;
+@@ -1055,6 +1064,10 @@ public class GuiIngame extends Gui
+ 
+     private void renderPumpkinOverlay(ScaledResolution scaledRes)
+     {
++		// TODO: Client
++		if(WurstClient.INSTANCE.mods.noOverlayMod.isActive())
++			return;
++    	
+         GlStateManager.disableDepth();
+         GlStateManager.depthMask(false);
+         GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 diff --git a/net/minecraft/client/gui/GuiIngameMenu.java b/net/minecraft/client/gui/GuiIngameMenu.java
 index b93bf8a..a1c8e1e 100644
 --- a/net/minecraft/client/gui/GuiIngameMenu.java
@@ -3032,7 +3047,7 @@ index 628f4dd..e08a1ee 100644
              this.renderQuadsSmooth(worldIn, stateIn, posIn, buffer, list1, afloat, bitset, blockmodelrenderer$ambientocclusionface);
              flag = true;
 diff --git a/net/minecraft/client/renderer/EntityRenderer.java b/net/minecraft/client/renderer/EntityRenderer.java
-index e8fdae5..a6eaad3 100644
+index e8fdae5..493d20d 100644
 --- a/net/minecraft/client/renderer/EntityRenderer.java
 +++ b/net/minecraft/client/renderer/EntityRenderer.java
 @@ -3,6 +3,7 @@ package net.minecraft.client.renderer;
@@ -3192,6 +3207,36 @@ index e8fdae5..a6eaad3 100644
          {
              float f1 = 5.0F;
              int i = ((EntityLivingBase)entity).getActivePotionEffect(MobEffects.blindness).getDuration();
+@@ -1966,8 +2003,11 @@ public class EntityRenderer implements IResourceManagerReloadListener
+ 
+             if (entity instanceof EntityLivingBase)
+             {
+-                if (((EntityLivingBase)entity).isPotionActive(MobEffects.waterBreathing))
++            	// TODO: Client
++                if (((EntityLivingBase)entity).isPotionActive(MobEffects.waterBreathing)
++					|| WurstClient.INSTANCE.mods.noOverlayMod.isActive())
+                 {
++                	
+                     GlStateManager.setFogDensity(0.01F);
+                 }
+                 else
+@@ -1982,9 +2022,16 @@ public class EntityRenderer implements IResourceManagerReloadListener
+         }
+         else if (iblockstate.getMaterial() == Material.lava)
+         {
++			// TODO: Client
++			if(WurstClient.INSTANCE.mods.noOverlayMod.isActive())
++				GlStateManager.setFogDensity(0.01F);
++			else
++			{
++				
+ 				GlStateManager.setFog(GlStateManager.FogMode.EXP);
+ 				GlStateManager.setFogDensity(2.0F);
+ 			}
++        }
+         else
+         {
+             float f = this.farPlaneDistance;
 diff --git a/net/minecraft/client/renderer/InventoryEffectRenderer.java b/net/minecraft/client/renderer/InventoryEffectRenderer.java
 index a6221d7..d45b658 100644
 --- a/net/minecraft/client/renderer/InventoryEffectRenderer.java
@@ -3206,10 +3251,18 @@ index a6221d7..d45b658 100644
                  this.mc.getTextureManager().bindTexture(inventoryBackground);
                  this.drawTexturedModalRect(i, j, 0, 166, 140, 32);
 diff --git a/net/minecraft/client/renderer/ItemRenderer.java b/net/minecraft/client/renderer/ItemRenderer.java
-index 4b843db..e89307c 100644
+index 4b843db..94a907d 100644
 --- a/net/minecraft/client/renderer/ItemRenderer.java
 +++ b/net/minecraft/client/renderer/ItemRenderer.java
-@@ -323,7 +323,7 @@ public class ItemRenderer
+@@ -27,6 +27,7 @@ import net.minecraft.util.ResourceLocation;
+ import net.minecraft.util.math.BlockPos;
+ import net.minecraft.util.math.MathHelper;
+ import net.minecraft.world.storage.MapData;
++import net.wurstclient.WurstClient;
+ 
+ public class ItemRenderer
+ {
+@@ -323,7 +324,7 @@ public class ItemRenderer
          boolean flag = true;
          boolean flag1 = true;
  
@@ -3218,7 +3271,7 @@ index 4b843db..e89307c 100644
          {
              ItemStack itemstack = abstractclientplayer.func_184607_cu();
  
-@@ -386,7 +386,7 @@ public class ItemRenderer
+@@ -386,7 +387,7 @@ public class ItemRenderer
          {
              boolean flag1 = enumhandside == EnumHandSide.RIGHT;
  
@@ -3227,7 +3280,29 @@ index 4b843db..e89307c 100644
              {
                  int j = flag1 ? 1 : -1;
  
-@@ -622,7 +622,7 @@ public class ItemRenderer
+@@ -535,6 +536,10 @@ public class ItemRenderer
+      */
+     private void renderWaterOverlayTexture(float partialTicks)
+     {
++		// TODO: Client
++		if(WurstClient.INSTANCE.mods.noOverlayMod.isActive())
++			return;
++    	
+         this.mc.getTextureManager().bindTexture(RES_UNDERWATER_OVERLAY);
+         Tessellator tessellator = Tessellator.getInstance();
+         VertexBuffer vertexbuffer = tessellator.getBuffer();
+@@ -567,6 +572,10 @@ public class ItemRenderer
+      */
+     private void renderFireInFirstPerson(float partialTicks)
+     {
++		// TODO: Client
++		if(WurstClient.INSTANCE.mods.noOverlayMod.isActive())
++			return;
++    	
+         Tessellator tessellator = Tessellator.getInstance();
+         VertexBuffer vertexbuffer = tessellator.getBuffer();
+         GlStateManager.color(1.0F, 1.0F, 1.0F, 0.9F);
+@@ -622,7 +631,7 @@ public class ItemRenderer
          }
          else
          {
