@@ -1,6 +1,6 @@
-From 5b9b7e71c8f45f12c0344f87ea50f448159f4eca Mon Sep 17 00:00:00 2001
+From c58ac2c80e7c3b3e7f5f357286b9240ea53d04d7 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Wed, 19 Apr 2017 09:40:11 +0200
+Date: Wed, 19 Apr 2017 10:40:08 +0200
 Subject: [PATCH] mod
 
 ---
@@ -33,7 +33,7 @@ Subject: [PATCH] mod
  .../client/gui/GuiScreenOptionsSounds.java         |   2 +-
  net/minecraft/client/gui/GuiScreenServerList.java  |   8 +
  .../client/gui/ServerListEntryNormal.java          |  13 +-
- net/minecraft/client/gui/ServerSelectionList.java  |   2 +-
+ net/minecraft/client/gui/ServerSelectionList.java  |   8 +-
  net/minecraft/client/gui/achievement/GuiStats.java |  18 +-
  net/minecraft/client/gui/inventory/GuiChest.java   |  76 ++++++++
  .../client/gui/inventory/GuiContainer.java         |  51 ++---
@@ -103,7 +103,7 @@ Subject: [PATCH] mod
  net/minecraft/util/text/ITextComponent.java        |  12 ++
  net/minecraft/util/text/Style.java                 |   6 +
  net/minecraft/world/World.java                     |  26 +++
- 99 files changed, 1510 insertions(+), 506 deletions(-)
+ 99 files changed, 1516 insertions(+), 506 deletions(-)
 
 diff --git a/Start.java b/Start.java
 index ae0025f..078afa5 100644
@@ -2279,10 +2279,10 @@ index f4982df..9eb3ec5 100644
          this.mc.fontRendererObj.drawString(s2, x + listWidth - j - 15 - 2, y + 1, 8421504);
          int k = 0;
 diff --git a/net/minecraft/client/gui/ServerSelectionList.java b/net/minecraft/client/gui/ServerSelectionList.java
-index d7c9b83..5d605df 100644
+index d7c9b83..01e9969 100644
 --- a/net/minecraft/client/gui/ServerSelectionList.java
 +++ b/net/minecraft/client/gui/ServerSelectionList.java
-@@ -63,7 +63,7 @@ public class ServerSelectionList extends GuiListExtended
+@@ -63,11 +63,17 @@ public class ServerSelectionList extends GuiListExtended
          return slotIndex == this.selectedSlotIndex;
      }
  
@@ -2291,6 +2291,16 @@ index d7c9b83..5d605df 100644
      {
          return this.selectedSlotIndex;
      }
+     
++	// TODO: Client
++	public void updateOnlineServers(ServerList p_148195_1_)
++	{
++		func_148195_a(p_148195_1_);
++	}
++    
+     public void func_148195_a(ServerList p_148195_1_)
+     {
+         this.serverListInternet.clear();
 diff --git a/net/minecraft/client/gui/achievement/GuiStats.java b/net/minecraft/client/gui/achievement/GuiStats.java
 index f14be3e..57dcfb7 100644
 --- a/net/minecraft/client/gui/achievement/GuiStats.java

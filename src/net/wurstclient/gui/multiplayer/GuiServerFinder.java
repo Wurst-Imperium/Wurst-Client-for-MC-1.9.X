@@ -52,7 +52,7 @@ public class GuiServerFinder extends GuiScreen
 		}
 	}
 	
-	private GuiMultiplayer prevMenu;
+	private GuiMultiplayer prevScreen;
 	private GuiTextField ipBox;
 	private GuiTextField maxThreadsBox;
 	private int checked;
@@ -61,7 +61,7 @@ public class GuiServerFinder extends GuiScreen
 	
 	public GuiServerFinder(GuiMultiplayer prevMultiplayerMenu)
 	{
-		prevMenu = prevMultiplayerMenu;
+		prevScreen = prevMultiplayerMenu;
 	}
 	
 	/**
@@ -232,13 +232,13 @@ public class GuiServerFinder extends GuiScreen
 				MiscUtils.openLink(
 					"https://www.wurstclient.net/wiki/Special_Features/Server_Finder/");
 			else if(clickedButton.id == 2)
-				mc.displayGuiScreen(prevMenu);
+				mc.displayGuiScreen(prevScreen);
 	}
 	
 	private boolean serverInList(String ip)
 	{
-		for(int i = 0; i < prevMenu.savedServerList.countServers(); i++)
-			if(prevMenu.savedServerList.getServerData(i).serverIP.equals(ip))
+		for(int i = 0; i < prevScreen.savedServerList.countServers(); i++)
+			if(prevScreen.savedServerList.getServerData(i).serverIP.equals(ip))
 				return true;
 			
 		return false;
@@ -256,17 +256,17 @@ public class GuiServerFinder extends GuiScreen
 					
 					if(!serverInList(pingers.get(i).server.serverIP))
 					{
-						GuiServerFinder.this.prevMenu.savedServerList
+						GuiServerFinder.this.prevScreen.savedServerList
 							.addServerData(
 								new ServerData("Grief me #" + working,
 									pingers.get(i).server.serverIP, false));
-						GuiServerFinder.this.prevMenu.savedServerList
+						GuiServerFinder.this.prevScreen.savedServerList
 							.saveServerList();
-						GuiServerFinder.this.prevMenu.serverListSelector
+						GuiServerFinder.this.prevScreen.serverListSelector
 							.setSelectedSlotIndex(-1);
-						GuiServerFinder.this.prevMenu.serverListSelector
-							.func_148195_a(
-								GuiServerFinder.this.prevMenu.savedServerList);
+						GuiServerFinder.this.prevScreen.serverListSelector
+							.updateOnlineServers(
+								GuiServerFinder.this.prevScreen.savedServerList);
 					}
 				}
 				pingers.remove(i);
