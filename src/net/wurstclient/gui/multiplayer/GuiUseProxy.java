@@ -20,13 +20,13 @@ import net.wurstclient.utils.MiscUtils;
 
 public class GuiUseProxy extends GuiScreen
 {
-	private GuiMultiplayer prevMenu;
+	private GuiMultiplayer prevScreen;
 	private GuiTextField proxyBox;
 	private String error = "";
 	
 	public GuiUseProxy(GuiMultiplayer prevMultiplayerMenu)
 	{
-		prevMenu = prevMultiplayerMenu;
+		prevScreen = prevMultiplayerMenu;
 	}
 	
 	/**
@@ -77,7 +77,7 @@ public class GuiUseProxy extends GuiScreen
 			{// Cancel
 				WurstClient.INSTANCE.analytics.trackEvent("use proxy",
 					"cancel");
-				mc.displayGuiScreen(prevMenu);
+				mc.displayGuiScreen(prevScreen);
 			}else if(clickedButton.id == 1)
 			{// Connect
 				WurstClient.INSTANCE.analytics.trackEvent("use proxy",
@@ -122,7 +122,7 @@ public class GuiUseProxy extends GuiScreen
 				{
 					WurstClient.INSTANCE.analytics.trackEvent("use proxy",
 						"success");
-					mc.displayGuiScreen(prevMenu);
+					mc.displayGuiScreen(prevScreen);
 				}else
 					WurstClient.INSTANCE.analytics.trackEvent("use proxy",
 						"error", error);
@@ -133,7 +133,7 @@ public class GuiUseProxy extends GuiScreen
 				System.setProperty("socksProxyHost", "");
 				System.setProperty("socksProxyPort", "");
 				
-				mc.displayGuiScreen(prevMenu);
+				mc.displayGuiScreen(prevScreen);
 			}
 	}
 	
