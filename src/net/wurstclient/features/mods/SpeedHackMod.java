@@ -29,6 +29,12 @@ public final class SpeedHackMod extends Mod implements UpdateListener
 	}
 	
 	@Override
+	public void onDisable()
+	{
+		wurst.events.remove(UpdateListener.class, this);
+	}
+	
+	@Override
 	public void onUpdate()
 	{
 		// return if sneaking or not walking
@@ -64,11 +70,5 @@ public final class SpeedHackMod extends Mod implements UpdateListener
 					WMinecraft.getPlayer().motionZ / currentSpeed * maxSpeed;
 			}
 		}
-	}
-	
-	@Override
-	public void onDisable()
-	{
-		wurst.events.remove(UpdateListener.class, this);
 	}
 }
