@@ -18,19 +18,19 @@ public class FriendsList extends TreeSet<String>
 {
 	public void middleClick(Entity entityHit)
 	{
-		if(entityHit != null && entityHit instanceof EntityPlayer)
-		{
-			WurstClient wurst = WurstClient.INSTANCE;
-			if(wurst.options.middleClickFriends)
-			{
-				FriendsList friends = wurst.friends;
-				String entityName = entityHit.getName();
-				if(friends.contains(entityName))
-					friends.remove(entityName);
-				else
-					friends.add(entityName);
-				ConfigFiles.FRIENDS.save();
-			}
-		}
+		if(entityHit == null || !(entityHit instanceof EntityPlayer))
+			return;
+		
+		if(!WurstClient.INSTANCE.options.middleClickFriends)
+			return;
+		
+		String name = entityHit.getName();
+		
+		if(WurstClient.INSTANCE.friends.contains(name))
+			WurstClient.INSTANCE.friends.remove(name);
+		else
+			WurstClient.INSTANCE.friends.add(name);
+		
+		ConfigFiles.FRIENDS.save();
 	}
 }
