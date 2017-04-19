@@ -17,19 +17,12 @@ import net.wurstclient.settings.SliderSetting.ValueDisplay;
 @Mod.Bypasses(ghostMode = false)
 public final class TimerMod extends Mod
 {
-	public float speed = 2.0F;
+	public final SliderSetting speed =
+		new SliderSetting("Speed", 2, 0.1, 10, 0.1, ValueDisplay.DECIMAL);
 	
 	@Override
 	public void initSettings()
 	{
-		settings.add(new SliderSetting("Speed", speed, 0.1, 10, 0.1,
-			ValueDisplay.DECIMAL)
-		{
-			@Override
-			public void update()
-			{
-				speed = (float)getValue();
-			}
-		});
+		settings.add(speed);
 	}
 }
