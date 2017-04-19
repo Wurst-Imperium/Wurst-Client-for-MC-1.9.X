@@ -26,15 +26,15 @@ public final class SpiderMod extends Mod implements UpdateListener
 	}
 	
 	@Override
+	public void onDisable()
+	{
+		wurst.events.remove(UpdateListener.class, this);
+	}
+	
+	@Override
 	public void onUpdate()
 	{
 		if(WMinecraft.getPlayer().isCollidedHorizontally)
 			WMinecraft.getPlayer().motionY = 0.2;
-	}
-	
-	@Override
-	public void onDisable()
-	{
-		wurst.events.remove(UpdateListener.class, this);
 	}
 }
