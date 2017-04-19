@@ -29,17 +29,17 @@ public final class PhaseMod extends Mod implements UpdateListener
 	}
 	
 	@Override
+	public void onDisable()
+	{
+		wurst.events.remove(UpdateListener.class, this);
+		WMinecraft.getPlayer().noClip = false;
+	}
+	
+	@Override
 	public void onUpdate()
 	{
 		WMinecraft.getPlayer().noClip = true;
 		WMinecraft.getPlayer().fallDistance = 0;
 		WMinecraft.getPlayer().onGround = true;
-	}
-	
-	@Override
-	public void onDisable()
-	{
-		wurst.events.remove(UpdateListener.class, this);
-		WMinecraft.getPlayer().noClip = false;
 	}
 }
