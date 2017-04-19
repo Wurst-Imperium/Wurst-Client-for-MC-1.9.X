@@ -12,7 +12,6 @@ import static org.lwjgl.opengl.GL11.glDisable;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -26,37 +25,21 @@ import net.wurstclient.features.mods.XRayMod;
 
 public class GuiXRayBlocksList extends GuiSlot
 {
-	public GuiXRayBlocksList(Minecraft par1Minecraft, GuiScreen prevMenu)
+	public GuiXRayBlocksList(Minecraft mc, GuiScreen prevScreen)
 	{
-		super(par1Minecraft, prevMenu.width, prevMenu.height, 36,
-			prevMenu.height - 56, 30);
-		mc = par1Minecraft;
+		super(mc, prevScreen.width, prevScreen.height, 36,
+			prevScreen.height - 56, 30);
 	}
 	
 	private int selectedSlot;
-	private Minecraft mc;
 	public static ArrayList<Block> blocks = new ArrayList<>();
 	
 	public static void sortBlocks()
 	{
 		blocks = XRayMod.xrayBlocks;
-		Collections.sort(blocks, new Comparator<Block>()
-		{
-			@Override
-			public int compare(Block o1, Block o2)
-			{
-				return o1.getLocalizedName()
-					.compareToIgnoreCase(o2.getLocalizedName());
-			}
-		});
-		ArrayList<Block> newBlocks = new ArrayList<>();
-		for(Block block : blocks)
-			if(XRayMod.xrayBlocks.contains(block))
-				newBlocks.add(block);
-		for(Block block : blocks)
-			if(!XRayMod.xrayBlocks.contains(block))
-				newBlocks.add(block);
-		blocks = newBlocks;
+		
+		Collections.sort(blocks, (o1, o2) -> o1.getLocalizedName()
+			.compareToIgnoreCase(o2.getLocalizedName()));
 	}
 	
 	@Override
@@ -84,41 +67,47 @@ public class GuiXRayBlocksList extends GuiSlot
 	
 	@Override
 	protected void drawBackground()
-	{}
+	{
+		
+	}
 	
 	@Override
 	protected void drawSlot(int id, int x, int y, int var4, int var5, int var6)
 	{
 		Block block = blocks.get(id);
 		ItemStack itemStack = new ItemStack(Item.getItemFromBlock(block));
+		
 		GlStateManager.enableRescaleNormal();
 		GlStateManager.enableBlend();
 		RenderHelper.enableGUIStandardItemLighting();
 		GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+		
 		if(itemStack.getItem() != null)
 			try
 			{
-				Minecraft.getMinecraft().getRenderItem()
-					.renderItemAndEffectIntoGUI(itemStack, x + 4, y + 4);
+				mc.getRenderItem().renderItemAndEffectIntoGUI(itemStack, x + 4,
+					y + 4);
 			}catch(Exception e)
 			{
 				e.printStackTrace();
 			}
 		else
 			mc.fontRendererObj.drawString("?", x + 10, y + 9, 10526880);
-		Minecraft.getMinecraft().getRenderItem().renderItemOverlays(
-			Minecraft.getMinecraft().fontRendererObj, itemStack, x + 4, y + 4);
+		mc.getRenderItem().renderItemOverlays(mc.fontRendererObj, itemStack,
+			x + 4, y + 4);
+		
 		RenderHelper.disableStandardItemLighting();
 		GlStateManager.disableRescaleNormal();
 		GlStateManager.disableBlend();
 		glDisable(GL_LIGHTING);
+		
 		mc.fontRendererObj
 			.drawString(
 				"Name: " + (itemStack.getItem() == null
 					? block.getLocalizedName() : itemStack.getDisplayName()),
 				x + 31, y + 3, 10526880);
-		int blockID = Block.getIdFromBlock(block);
-		mc.fontRendererObj.drawString("ID: " + blockID, x + 31, y + 15,
-			10526880);
+		
+		mc.fontRendererObj.drawString("ID: " + Block.getIdFromBlock(block),
+			x + 31, y + 15, 10526880);
 	}
 }

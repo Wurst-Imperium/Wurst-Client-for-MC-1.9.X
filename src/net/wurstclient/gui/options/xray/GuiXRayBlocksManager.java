@@ -9,21 +9,22 @@ package net.wurstclient.gui.options.xray;
 
 import java.io.IOException;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-import net.wurstclient.WurstClient;
 import net.wurstclient.features.mods.XRayMod;
 import net.wurstclient.files.ConfigFiles;
 
 public class GuiXRayBlocksManager extends GuiScreen
 {
-	private GuiScreen prevMenu;
-	public static GuiXRayBlocksList blockList;
+	private GuiScreen prevScreen;
+	private GuiXRayBlocksList blockList;
 	
-	public GuiXRayBlocksManager(GuiScreen par1GuiScreen)
+	private GuiButton addButton;
+	private GuiButton removeButton;
+	
+	public GuiXRayBlocksManager(GuiScreen prevScreen)
 	{
-		prevMenu = par1GuiScreen;
+		this.prevScreen = prevScreen;
 	}
 	
 	@Override
@@ -33,67 +34,55 @@ public class GuiXRayBlocksManager extends GuiScreen
 		blockList.registerScrollButtons(7, 8);
 		GuiXRayBlocksList.sortBlocks();
 		blockList.elementClicked(-1, false, 0, 0);
-		buttonList.clear();
-		buttonList
-			.add(new GuiButton(0, width / 2 - 100, height - 52, 98, 20, "Add"));
-		buttonList.add(
+		
+		buttonList.add(addButton =
+			new GuiButton(0, width / 2 - 100, height - 52, 98, 20, "Add"));
+		buttonList.add(removeButton =
 			new GuiButton(1, width / 2 + 2, height - 52, 98, 20, "Remove"));
 		buttonList.add(
 			new GuiButton(2, width / 2 - 100, height - 28, 200, 20, "Back"));
-		WurstClient.INSTANCE.analytics.trackPageView("/options/xray-manager",
-			"X-Ray Block Manager");
 	}
 	
-	/**
-	 * Called from the main game loop to update the screen.
-	 */
 	@Override
 	public void updateScreen()
 	{
-		buttonList.get(1).enabled =
+		removeButton.enabled =
 			blockList.getSelectedSlot() != -1 && !XRayMod.xrayBlocks.isEmpty();
 	}
 	
 	@Override
-	protected void actionPerformed(GuiButton clickedButton)
+	protected void actionPerformed(GuiButton button)
 	{
-		if(clickedButton.enabled)
-			if(clickedButton.id == 0)
-				mc.displayGuiScreen(new GuiXRayBlocksAdd(this));
-			else if(clickedButton.id == 1)
-			{// Remove
-				WurstClient.INSTANCE.analytics.trackEvent("x-ray blocks",
-					"remove", Integer.toString(Block.getIdFromBlock(
-						XRayMod.xrayBlocks.get(blockList.getSelectedSlot()))));
-				XRayMod.xrayBlocks.remove(blockList.getSelectedSlot());
-				GuiXRayBlocksList.sortBlocks();
-				ConfigFiles.XRAY.save();
-			}else if(clickedButton.id == 2)
-				mc.displayGuiScreen(prevMenu);
+		if(!button.enabled)
+			return;
+		
+		if(button.id == 0)
+			mc.displayGuiScreen(new GuiXRayBlocksAdd(this));
+		else if(button.id == 1)
+		{
+			// remove
+			XRayMod.xrayBlocks.remove(blockList.getSelectedSlot());
+			GuiXRayBlocksList.sortBlocks();
+			ConfigFiles.XRAY.save();
+			
+		}else if(button.id == 2)
+			mc.displayGuiScreen(prevScreen);
 	}
 	
-	/**
-	 * Fired when a key is typed. This is the equivalent of
-	 * KeyListener.keyTyped(KeyEvent e).
-	 */
 	@Override
 	protected void keyTyped(char par1, int par2)
 	{
 		if(par2 == 28 || par2 == 156)
-			actionPerformed(buttonList.get(0));
+			actionPerformed(addButton);
 	}
 	
-	/**
-	 * Called when the mouse is clicked.
-	 *
-	 * @throws IOException
-	 */
 	@Override
 	protected void mouseClicked(int par1, int par2, int par3) throws IOException
 	{
 		if(par2 >= 36 && par2 <= height - 57)
 			if(par1 >= width / 2 + 140 || par1 <= width / 2 - 126)
 				blockList.elementClicked(-1, false, 0, 0);
+			
 		super.mouseClicked(par1, par2, par3);
 	}
 	
@@ -104,22 +93,18 @@ public class GuiXRayBlocksManager extends GuiScreen
 		blockList.handleMouseInput();
 	}
 	
-	/**
-	 * Draws the screen and all the components in it.
-	 */
 	@Override
 	public void drawScreen(int par1, int par2, float par3)
 	{
 		drawDefaultBackground();
+		
 		blockList.drawScreen(par1, par2, par3);
+		
 		drawCenteredString(fontRendererObj, "X-Ray Block Manager", width / 2, 8,
 			16777215);
-		int totalBlocks = 0;
-		for(int i = 0; i < GuiXRayBlocksList.blocks.size(); i++)
-			if(XRayMod.xrayBlocks.contains(GuiXRayBlocksList.blocks.get(i)))
-				totalBlocks++;
-		drawCenteredString(fontRendererObj, "Blocks: " + totalBlocks, width / 2,
-			20, 16777215);
+		drawCenteredString(fontRendererObj,
+			"Blocks: " + XRayMod.xrayBlocks.size(), width / 2, 20, 16777215);
+		
 		super.drawScreen(par1, par2, par3);
 	}
 }
