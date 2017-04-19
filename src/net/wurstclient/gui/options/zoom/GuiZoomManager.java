@@ -19,11 +19,11 @@ import net.wurstclient.options.OptionsManager;
 
 public class GuiZoomManager extends GuiScreen implements GuiPressAKeyCallback
 {
-	private GuiScreen prevMenu;
+	private GuiScreen prevScreen;
 	
 	public GuiZoomManager(GuiScreen par1GuiScreen)
 	{
-		prevMenu = par1GuiScreen;
+		prevScreen = par1GuiScreen;
 	}
 	
 	@Override
@@ -65,7 +65,7 @@ public class GuiZoomManager extends GuiScreen implements GuiPressAKeyCallback
 			{
 				case 0:
 				// Back
-				mc.displayGuiScreen(prevMenu);
+				mc.displayGuiScreen(prevScreen);
 				break;
 				case 1:
 				// Zoom Key
