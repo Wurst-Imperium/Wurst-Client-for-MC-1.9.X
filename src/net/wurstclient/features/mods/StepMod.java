@@ -127,9 +127,7 @@ public final class StepMod extends Mod implements UpdateListener
 				.getBlockState(collisionBlock.add(0, 1, 0))
 				.getBlock() instanceof BlockFenceGate))
 				if(WMinecraft.getWorld()
-					.getBlockState(collisionBlock.add(0, 1, 0)).getBlock()
-					.getCollisionBoundingBox(
-						WMinecraft.getWorld().getBlockState(collisionBlock),
+					.getBlockState(collisionBlock.add(0, 1, 0)).getBoundingBox(
 						WMinecraft.getWorld(), belowPlayerPos) != null)
 					return false;
 				

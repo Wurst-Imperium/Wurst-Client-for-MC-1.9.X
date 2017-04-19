@@ -1,6 +1,6 @@
-From af573c70a323098fcea170b954d276ded8d30993 Mon Sep 17 00:00:00 2001
+From 8355fde03813f823376f7ba6786584bdea551637 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Wed, 19 Apr 2017 09:07:53 +0200
+Date: Wed, 19 Apr 2017 09:32:06 +0200
 Subject: [PATCH] mod
 
 ---
@@ -12,6 +12,7 @@ Subject: [PATCH] mod
  net/minecraft/block/BlockSoulSand.java             |   5 +
  net/minecraft/block/material/Material.java         |   7 +
  net/minecraft/block/state/BlockStateContainer.java |   3 +-
+ net/minecraft/block/state/IBlockProperties.java    |   6 +
  net/minecraft/block/state/IBlockState.java         |   2 +-
  net/minecraft/client/Minecraft.java                | 208 +++++++++++----------
  .../client/audio/PositionedSoundRecord.java        |   2 +-
@@ -102,7 +103,7 @@ Subject: [PATCH] mod
  net/minecraft/util/text/ITextComponent.java        |  12 ++
  net/minecraft/util/text/Style.java                 |   6 +
  net/minecraft/world/World.java                     |  26 +++
- 98 files changed, 1504 insertions(+), 506 deletions(-)
+ 99 files changed, 1510 insertions(+), 506 deletions(-)
 
 diff --git a/Start.java b/Start.java
 index ae0025f..078afa5 100644
@@ -366,6 +367,23 @@ index 72ab5aa..7148dae 100644
          {
              if (!this.properties.containsKey(property))
              {
+diff --git a/net/minecraft/block/state/IBlockProperties.java b/net/minecraft/block/state/IBlockProperties.java
+index 22ae51b..b902b3e 100644
+--- a/net/minecraft/block/state/IBlockProperties.java
++++ b/net/minecraft/block/state/IBlockProperties.java
+@@ -83,6 +83,12 @@ public interface IBlockProperties
+ 
+     void func_185908_a(World p_185908_1_, BlockPos p_185908_2_, AxisAlignedBB p_185908_3_, List<AxisAlignedBB> p_185908_4_, Entity p_185908_5_);
+     
++	// TODO: Client
++	default AxisAlignedBB getBoundingBox(IBlockAccess blockAccess, BlockPos pos)
++	{
++		return func_185900_c(blockAccess, pos);
++	}
++    
+     AxisAlignedBB func_185900_c(IBlockAccess p_185900_1_, BlockPos p_185900_2_);
+ 
+     RayTraceResult func_185910_a(World p_185910_1_, BlockPos p_185910_2_, Vec3d p_185910_3_, Vec3d p_185910_4_);
 diff --git a/net/minecraft/block/state/IBlockState.java b/net/minecraft/block/state/IBlockState.java
 index e590b46..157dc4b 100644
 --- a/net/minecraft/block/state/IBlockState.java
