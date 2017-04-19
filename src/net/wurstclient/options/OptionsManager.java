@@ -32,7 +32,7 @@ public class OptionsManager
 	public int spamDelay = 1000;
 	public int throwAmount = 16;
 	
-	public String forceOPList = WurstFolders.MAIN.toFile().getPath();
+	public String forceOPList = WurstFolders.MAIN.toString();
 	public String lastLaunchedVersion = "0";
 	
 	public OptionsManager.GoogleAnalytics google_analytics =
