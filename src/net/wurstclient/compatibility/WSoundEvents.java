@@ -7,6 +7,8 @@
  */
 package net.wurstclient.compatibility;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.network.play.server.SPacketSoundEffect;
 
@@ -15,5 +17,12 @@ public final class WSoundEvents
 	public static boolean isBobberSplash(SPacketSoundEffect soundEffect)
 	{
 		return SoundEvents.ENTITY_BOBBER_SPLASH.equals(soundEffect.getSound());
+	}
+	
+	public static void playButtonClick()
+	{
+		Minecraft.getMinecraft().getSoundHandler()
+			.playSound(PositionedSoundRecord
+				.createPositionedSoundRecord(SoundEvents.ui_button_click, 1));
 	}
 }
