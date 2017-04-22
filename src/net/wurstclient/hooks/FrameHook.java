@@ -46,7 +46,7 @@ public class FrameHook
 			return;
 		
 		// create frame
-		frame = new JFrame("Minecraft 1.9");
+		frame = new JFrame("Minecraft " + WMinecraft.DISPLAY_VERSION);
 		
 		// add LWJGL
 		Canvas canvas = new Canvas();
