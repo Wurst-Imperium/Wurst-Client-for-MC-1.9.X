@@ -10,6 +10,7 @@ package net.wurstclient.features.mods;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
+import net.wurstclient.features.Mod;
 
 @Mod.Info(tags = "free cam, spectator", help = "Mods/Freecam")
 @Mod.Bypasses

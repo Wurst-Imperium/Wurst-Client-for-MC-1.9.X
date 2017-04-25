@@ -12,6 +12,8 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.TreeMap;
 
+import net.wurstclient.features.Mod;
+
 public class ModManager
 {
 	private final TreeMap<String, Mod> mods =

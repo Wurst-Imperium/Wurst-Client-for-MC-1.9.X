@@ -12,6 +12,7 @@ import net.minecraft.init.Enchantments;
 import net.minecraft.item.ItemStack;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.ChatOutputEvent;
+import net.wurstclient.features.Cmd;
 import net.wurstclient.utils.ChatUtils;
 
 @Cmd.Info(description = "Enchants items with everything.",

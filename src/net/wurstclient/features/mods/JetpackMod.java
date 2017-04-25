@@ -9,6 +9,7 @@ package net.wurstclient.features.mods;
 
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
+import net.wurstclient.features.Mod;
 
 @Mod.Info(tags = "jet pack", help = "Mods/Jetpack")
 @Mod.Bypasses(ghostMode = false,

@@ -8,6 +8,7 @@
 package net.wurstclient.features.special_features;
 
 import net.wurstclient.features.Feature;
+import net.wurstclient.features.Spf;
 
 @Spf.Info(
 	description = "Allows you to insert links that execute commands into writable books. This can be used to\n"

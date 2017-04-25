@@ -18,6 +18,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionUtils;
 import net.wurstclient.compatibility.WMinecraft;
+import net.wurstclient.features.Cmd;
 import net.wurstclient.utils.MiscUtils;
 
 @Cmd.Info(description = "Changes the effects of the held potion.",

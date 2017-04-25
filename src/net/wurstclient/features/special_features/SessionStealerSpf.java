@@ -8,6 +8,7 @@
 package net.wurstclient.features.special_features;
 
 import net.wurstclient.features.Feature;
+import net.wurstclient.features.Spf;
 
 @Spf.Info(
 	description = "Allows you to temporarily steal the Minecraft account of another player. This can either be\n"
