@@ -25,15 +25,18 @@ import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 
-@Mod.Info(
-	description = "Automatically throws splash healing potions if your health is below the set value.",
-	name = "AutoSplashPot",
-	tags = "AutoPotion,auto potion,auto splash potion",
+@Mod.Info(tags = "AutoPotion,auto potion,auto splash potion",
 	help = "Mods/AutoSplashPot")
 @Mod.Bypasses
 public final class AutoSplashPotMod extends Mod implements UpdateListener
 {
 	public float health = 18F;
+	
+	public AutoSplashPotMod()
+	{
+		super("AutoSplashPot",
+			"Automatically throws splash healing potions if your health is below the set value.");
+	}
 	
 	@Override
 	public void initSettings()

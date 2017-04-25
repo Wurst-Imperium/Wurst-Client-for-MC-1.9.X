@@ -19,9 +19,7 @@ import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.special_features.YesCheatSpf.BypassLevel;
 import net.wurstclient.settings.CheckboxSetting;
 
-@Mod.Info(description = "Eases the use of the Elytra.",
-	name = "ExtraElytra",
-	tags = "EasyElytra, extra elytra, easy elytra",
+@Mod.Info(tags = "EasyElytra, extra elytra, easy elytra",
 	help = "Mods/ExtraElytra")
 @Mod.Bypasses
 public final class ExtraElytraMod extends Mod implements UpdateListener
@@ -31,6 +29,11 @@ public final class ExtraElytraMod extends Mod implements UpdateListener
 	private CheckboxSetting easyFly = new CheckboxSetting("Easy fly", false);
 	private CheckboxSetting stopInWater =
 		new CheckboxSetting("Stop flying in water", true);
+	
+	public ExtraElytraMod()
+	{
+		super("ExtraElytra", "Eases the use of the Elytra.");
+	}
 	
 	@Override
 	public void initSettings()

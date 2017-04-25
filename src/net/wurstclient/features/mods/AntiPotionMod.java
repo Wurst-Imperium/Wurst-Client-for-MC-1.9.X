@@ -14,9 +14,7 @@ import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 
-@Mod.Info(description = "Blocks bad potion effects.",
-	name = "AntiPotion",
-	tags = "NoPotion, Zoot, anti potions, no potions",
+@Mod.Info(tags = "NoPotion, Zoot, anti potions, no potions",
 	help = "Mods/AntiPotion")
 @Mod.Bypasses(ghostMode = false, latestNCP = false, olderNCP = false)
 public final class AntiPotionMod extends Mod implements UpdateListener
@@ -25,6 +23,11 @@ public final class AntiPotionMod extends Mod implements UpdateListener
 		MobEffects.moveSlowdown, MobEffects.digSlowdown, MobEffects.harm,
 		MobEffects.confusion, MobEffects.blindness, MobEffects.weakness,
 		MobEffects.wither, MobEffects.poison};
+	
+	public AntiPotionMod()
+	{
+		super("AntiPotion", "Blocks bad potion effects.");
+	}
 	
 	@Override
 	public void onEnable()

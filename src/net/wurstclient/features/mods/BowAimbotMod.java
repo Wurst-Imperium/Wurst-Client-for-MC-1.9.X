@@ -25,12 +25,7 @@ import net.wurstclient.utils.EntityUtils.TargetSettings;
 import net.wurstclient.utils.RenderUtils;
 import net.wurstclient.utils.RotationUtils;
 
-@Mod.Info(
-	description = "Automatically aims your bow at the closest entity.\n"
-		+ "Tip: This works with FastBow.",
-	name = "BowAimbot",
-	tags = "bow aimbot",
-	help = "Mods/BowAimbot")
+@Mod.Info(tags = "bow aimbot", help = "Mods/BowAimbot")
 @Mod.Bypasses
 public final class BowAimbotMod extends Mod
 	implements UpdateListener, RenderListener, GUIRenderListener
@@ -42,6 +37,13 @@ public final class BowAimbotMod extends Mod
 	private float velocity;
 	
 	private TargetSettings targetSettings = new TargetSettings();
+	
+	public BowAimbotMod()
+	{
+		super("BowAimbot",
+			"Automatically aims your bow at the closest entity.\n"
+				+ "Tip: This works with FastBow.");
+	}
 	
 	@Override
 	public Feature[] getSeeAlso()

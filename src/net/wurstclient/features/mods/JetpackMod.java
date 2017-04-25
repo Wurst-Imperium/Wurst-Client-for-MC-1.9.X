@@ -10,12 +10,7 @@ package net.wurstclient.features.mods;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 
-@Mod.Info(
-	description = "Allows you to jump in mid-air.\n"
-		+ "Looks as if you had a jetpack.",
-	name = "Jetpack",
-	tags = "jet pack",
-	help = "Mods/Jetpack")
+@Mod.Info(tags = "jet pack", help = "Mods/Jetpack")
 @Mod.Bypasses(ghostMode = false,
 	latestNCP = false,
 	olderNCP = false,
@@ -23,6 +18,12 @@ import net.wurstclient.events.listeners.UpdateListener;
 	mineplex = false)
 public final class JetpackMod extends Mod implements UpdateListener
 {
+	public JetpackMod()
+	{
+		super("Jetpack", "Allows you to jump in mid-air.\n"
+			+ "Looks as if you had a jetpack.");
+	}
+	
 	@Override
 	public void onEnable()
 	{

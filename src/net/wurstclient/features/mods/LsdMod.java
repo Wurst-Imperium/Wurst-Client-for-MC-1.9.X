@@ -14,11 +14,16 @@ import net.minecraft.init.MobEffects;
 import net.wurstclient.compatibility.WPlayer;
 import net.wurstclient.events.listeners.UpdateListener;
 
-@Mod.Info(description = "Thousands of colors!", name = "LSD", help = "Mods/LSD")
+@Mod.Info(help = "Mods/LSD")
 @Mod.Bypasses
 @Mod.DontSaveState
 public final class LsdMod extends Mod implements UpdateListener
 {
+	public LsdMod()
+	{
+		super("LSD", "Thousands of colors!");
+	}
+	
 	@Override
 	public void onToggle()
 	{
