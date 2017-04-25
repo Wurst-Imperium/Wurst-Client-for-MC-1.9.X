@@ -1,6 +1,6 @@
-From c58ac2c80e7c3b3e7f5f357286b9240ea53d04d7 Mon Sep 17 00:00:00 2001
+From f1b284e0feb66f98fbb49417db57779eabf1eec1 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Wed, 19 Apr 2017 10:40:08 +0200
+Date: Tue, 25 Apr 2017 07:01:34 +0200
 Subject: [PATCH] mod
 
 ---
@@ -51,7 +51,7 @@ Subject: [PATCH] mod
  net/minecraft/client/renderer/ItemRenderer.java    |  15 +-
  net/minecraft/client/renderer/RenderGlobal.java    |   2 +-
  net/minecraft/client/renderer/RenderItem.java      |   2 +-
- net/minecraft/client/renderer/chunk/VisGraph.java  |   4 +-
+ net/minecraft/client/renderer/chunk/VisGraph.java  |   8 +-
  net/minecraft/client/renderer/entity/Render.java   |  47 ++++-
  .../client/renderer/entity/RenderManager.java      |   6 +-
  .../client/renderer/entity/RenderPlayer.java       |   2 +-
@@ -103,7 +103,7 @@ Subject: [PATCH] mod
  net/minecraft/util/text/ITextComponent.java        |  12 ++
  net/minecraft/util/text/Style.java                 |   6 +
  net/minecraft/world/World.java                     |  26 +++
- 99 files changed, 1516 insertions(+), 506 deletions(-)
+ 99 files changed, 1520 insertions(+), 506 deletions(-)
 
 diff --git a/Start.java b/Start.java
 index ae0025f..078afa5 100644
@@ -3360,16 +3360,27 @@ index b586e15..0cacdff 100644
              if (f > 0.0F)
              {
 diff --git a/net/minecraft/client/renderer/chunk/VisGraph.java b/net/minecraft/client/renderer/chunk/VisGraph.java
-index 1fe434a..b9bd178 100644
+index 1fe434a..f01e139 100644
 --- a/net/minecraft/client/renderer/chunk/VisGraph.java
 +++ b/net/minecraft/client/renderer/chunk/VisGraph.java
-@@ -20,7 +20,9 @@ public class VisGraph
+@@ -8,6 +8,7 @@ import java.util.Set;
+ import net.minecraft.util.EnumFacing;
+ import net.minecraft.util.IntegerCache;
+ import net.minecraft.util.math.BlockPos;
++import net.wurstclient.WurstClient;
+ 
+ public class VisGraph
+ {
+@@ -20,7 +21,12 @@ public class VisGraph
  
      public void func_178606_a(BlockPos pos)
      {
 -        this.field_178612_d.set(getIndex(pos), true);
-+    	// TODO: Client
-+        // this.field_178612_d.set(getIndex(pos), true);
++		// TODO: Client
++		if(WurstClient.INSTANCE.mods.xRayMod.isActive()
++			|| WurstClient.INSTANCE.mods.freecamMod.isActive()
++			|| WurstClient.INSTANCE.mods.caveFinderMod.isActive())
++			return;
 +    	
          --this.field_178611_f;
      }
