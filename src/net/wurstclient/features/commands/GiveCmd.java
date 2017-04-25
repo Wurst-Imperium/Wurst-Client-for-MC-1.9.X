@@ -19,12 +19,7 @@ import net.wurstclient.utils.ChatUtils;
 import net.wurstclient.utils.InventoryUtils;
 import net.wurstclient.utils.MiscUtils;
 
-@Cmd.Info(
-	description = "Gives you an item with custom NBT data. Requires creative mode.",
-	name = "give",
-	syntax = {"(<item_name>|<item_id>) [<amount>] [<metadata>] [<nbt>]",
-		"template <template_id> [<amount>]", "templates"},
-	help = "Commands/give")
+@Cmd.Info(help = "Commands/give")
 public final class GiveCmd extends Cmd
 {
 	private ItemTemplate[] templates =
@@ -69,6 +64,14 @@ public final class GiveCmd extends Cmd
 				"{CustomPotionEffects:["
 					+ "{Id:3, Amplifier:127, Duration:2147483647}"
 					+ "], display:{Name:§6Griefer Potion}, HideFlags:63}")};
+	
+	public GiveCmd()
+	{
+		super("give",
+			"Gives you an item with custom NBT data. Requires creative mode.",
+			"(<item_name>|<item_id>) [<amount>] [<metadata>] [<nbt>]",
+			"template <template_id> [<amount>]", "templates");
+	}
 	
 	@Override
 	public void execute(String[] args) throws CmdError

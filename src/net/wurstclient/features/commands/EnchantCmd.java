@@ -15,12 +15,14 @@ import net.wurstclient.events.ChatOutputEvent;
 import net.wurstclient.features.Cmd;
 import net.wurstclient.utils.ChatUtils;
 
-@Cmd.Info(description = "Enchants items with everything.",
-	name = "enchant",
-	syntax = {"[all]"},
-	help = "Commands/enchant")
+@Cmd.Info(help = "Commands/enchant")
 public final class EnchantCmd extends Cmd
 {
+	public EnchantCmd()
+	{
+		super("enchant", "Enchants items with everything.", "[all]");
+	}
+	
 	@Override
 	public void execute(String[] args) throws CmdError
 	{

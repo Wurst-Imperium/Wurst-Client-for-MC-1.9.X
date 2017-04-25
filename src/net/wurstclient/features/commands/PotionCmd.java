@@ -21,13 +21,16 @@ import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.features.Cmd;
 import net.wurstclient.utils.MiscUtils;
 
-@Cmd.Info(description = "Changes the effects of the held potion.",
-	name = "potion",
-	syntax = {"add (<effect> <amplifier> <duration>)...",
-		"set (<effect> <amplifier> <duration>)...", "remove <effect>"},
-	help = "Commands/potion")
+@Cmd.Info(help = "Commands/potion")
 public final class PotionCmd extends Cmd
 {
+	public PotionCmd()
+	{
+		super("potion", "Changes the effects of the held potion.",
+			"add (<effect> <amplifier> <duration>)...",
+			"set (<effect> <amplifier> <duration>)...", "remove <effect>");
+	}
+	
 	@Override
 	public void execute(String[] args) throws CmdError
 	{
