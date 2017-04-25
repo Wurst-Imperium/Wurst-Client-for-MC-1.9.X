@@ -10,15 +10,18 @@ package net.wurstclient.features.special_features;
 import net.wurstclient.features.Feature;
 import net.wurstclient.features.Spf;
 
-@Spf.Info(
-	description = "Allows you to insert links that execute commands into writable books. This can be used to\n"
-		+ "trick other people (including admins) into executing commands like \"/op YourName\" or\n"
-		+ "\"/kill\".",
-	name = "BookHack",
-	tags = "Force OP,Book Hack,OP Book,command book",
+@Spf.Info(tags = "Force OP,Book Hack,OP Book,command book",
 	help = "Special_Features/Force_OP_(BookHack)")
 public final class BookHackSpf extends Spf
 {
+	public BookHackSpf()
+	{
+		super("BookHack",
+			"Allows you to insert links that execute commands into writable books. This can be used to\n"
+				+ "trick other people (including admins) into executing commands like \"/op YourName\" or\n"
+				+ "\"/kill\".");
+	}
+	
 	@Override
 	public Feature[] getSeeAlso()
 	{
