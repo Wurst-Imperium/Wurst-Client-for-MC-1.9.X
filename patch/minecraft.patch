@@ -1,6 +1,6 @@
-From f1b284e0feb66f98fbb49417db57779eabf1eec1 Mon Sep 17 00:00:00 2001
+From dc175798ebaeaf57101ae2b136483592958b7d46 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Tue, 25 Apr 2017 07:01:34 +0200
+Date: Tue, 25 Apr 2017 07:10:45 +0200
 Subject: [PATCH] mod
 
 ---
@@ -64,7 +64,7 @@ Subject: [PATCH] mod
  net/minecraft/crash/CrashReportCategory.java       |  10 +-
  net/minecraft/entity/Entity.java                   |  67 ++++---
  net/minecraft/entity/EntityAreaEffectCloud.java    |   6 +-
- net/minecraft/entity/EntityLivingBase.java         | 110 +++++------
+ net/minecraft/entity/EntityLivingBase.java         | 111 +++++------
  net/minecraft/entity/EntityTrackerEntry.java       |   4 +-
  .../entity/ai/EntityAIAttackRangedBow.java         |   4 +-
  net/minecraft/entity/monster/EntityMob.java        |   4 +-
@@ -103,7 +103,7 @@ Subject: [PATCH] mod
  net/minecraft/util/text/ITextComponent.java        |  12 ++
  net/minecraft/util/text/Style.java                 |   6 +
  net/minecraft/world/World.java                     |  26 +++
- 99 files changed, 1520 insertions(+), 506 deletions(-)
+ 99 files changed, 1521 insertions(+), 506 deletions(-)
 
 diff --git a/Start.java b/Start.java
 index ae0025f..078afa5 100644
@@ -3943,7 +3943,7 @@ index 0e4a8e5..2bd1e64 100644
                                          else
                                          {
 diff --git a/net/minecraft/entity/EntityLivingBase.java b/net/minecraft/entity/EntityLivingBase.java
-index d1580a1..ae88926 100644
+index d1580a1..dc4981c 100644
 --- a/net/minecraft/entity/EntityLivingBase.java
 +++ b/net/minecraft/entity/EntityLivingBase.java
 @@ -1,13 +1,15 @@
@@ -4088,7 +4088,7 @@ index d1580a1..ae88926 100644
          if (this.isPotionActive(MobEffects.jump))
          {
              this.motionY += (double)((float)(this.getActivePotionEffect(MobEffects.jump).getAmplifier() + 1) * 0.1F);
-@@ -1798,11 +1798,17 @@ public abstract class EntityLivingBase extends Entity
+@@ -1798,11 +1798,18 @@ public abstract class EntityLivingBase extends Entity
      {
          if (this.isServerWorld() || this.func_184186_bw())
          {
@@ -4096,6 +4096,7 @@ index d1580a1..ae88926 100644
 +			// TODO: Client
 +			if(!this.isInWater()
 +				|| WurstClient.INSTANCE.mods.flightMod.isActive()
++				|| WurstClient.INSTANCE.mods.freecamMod.isActive()
 +				|| WurstClient.INSTANCE.mods.noSlowdownMod.isActive()
 +				|| this instanceof EntityPlayer
 +				&& ((EntityPlayer)this).capabilities.isFlying)
@@ -4108,7 +4109,7 @@ index d1580a1..ae88926 100644
                      {
                          if (this.motionY > -0.5D)
                          {
-@@ -2212,7 +2218,7 @@ public abstract class EntityLivingBase extends Entity
+@@ -2212,7 +2219,7 @@ public abstract class EntityLivingBase extends Entity
          this.worldObj.theProfiler.endSection();
          this.movedDistance += f3;
  
@@ -4117,7 +4118,7 @@ index d1580a1..ae88926 100644
          {
              ++this.field_184629_bo;
          }
-@@ -2608,7 +2614,7 @@ public abstract class EntityLivingBase extends Entity
+@@ -2608,7 +2615,7 @@ public abstract class EntityLivingBase extends Entity
  
      public abstract EnumHandSide getPrimaryHand();
  
@@ -4126,7 +4127,7 @@ index d1580a1..ae88926 100644
      {
          return (((Byte)this.dataWatcher.get(field_184621_as)).byteValue() & 1) > 0;
      }
-@@ -2620,15 +2626,15 @@ public abstract class EntityLivingBase extends Entity
+@@ -2620,15 +2627,15 @@ public abstract class EntityLivingBase extends Entity
  
      protected void func_184608_ct()
      {
@@ -4145,7 +4146,7 @@ index d1580a1..ae88926 100644
                  }
  
                  if (--this.field_184628_bn == 0 && !this.worldObj.isRemote)
-@@ -2647,9 +2653,9 @@ public abstract class EntityLivingBase extends Entity
+@@ -2647,9 +2654,9 @@ public abstract class EntityLivingBase extends Entity
      {
          ItemStack itemstack = this.getHeldItem(p_184598_1_);
  
@@ -4157,7 +4158,7 @@ index d1580a1..ae88926 100644
              this.field_184628_bn = itemstack.getMaxItemUseDuration();
  
              if (!this.worldObj.isRemote)
-@@ -2672,18 +2678,18 @@ public abstract class EntityLivingBase extends Entity
+@@ -2672,18 +2679,18 @@ public abstract class EntityLivingBase extends Entity
  
          if (field_184621_as.equals(key) && this.worldObj.isRemote)
          {
@@ -4182,7 +4183,7 @@ index d1580a1..ae88926 100644
                  this.field_184628_bn = 0;
              }
          }
-@@ -2691,7 +2697,7 @@ public abstract class EntityLivingBase extends Entity
+@@ -2691,7 +2698,7 @@ public abstract class EntityLivingBase extends Entity
  
      protected void func_184584_a(ItemStack p_184584_1_, int p_184584_2_)
      {
@@ -4191,7 +4192,7 @@ index d1580a1..ae88926 100644
          {
              if (p_184584_1_.getItemUseAction() == EnumAction.DRINK)
              {
-@@ -2731,10 +2737,10 @@ public abstract class EntityLivingBase extends Entity
+@@ -2731,10 +2738,10 @@ public abstract class EntityLivingBase extends Entity
       */
      protected void onItemUseFinish()
      {
@@ -4205,7 +4206,7 @@ index d1580a1..ae88926 100644
  
              if (itemstack != null && itemstack.stackSize == 0)
              {
-@@ -2748,7 +2754,7 @@ public abstract class EntityLivingBase extends Entity
+@@ -2748,7 +2755,7 @@ public abstract class EntityLivingBase extends Entity
  
      public ItemStack func_184607_cu()
      {
@@ -4214,7 +4215,7 @@ index d1580a1..ae88926 100644
      }
  
      public int getItemInUseCount()
-@@ -2756,16 +2762,16 @@ public abstract class EntityLivingBase extends Entity
+@@ -2756,16 +2763,16 @@ public abstract class EntityLivingBase extends Entity
          return this.field_184628_bn;
      }
  
@@ -4235,7 +4236,7 @@ index d1580a1..ae88926 100644
          }
  
          this.func_184602_cy();
-@@ -2778,16 +2784,16 @@ public abstract class EntityLivingBase extends Entity
+@@ -2778,16 +2785,16 @@ public abstract class EntityLivingBase extends Entity
              this.dataWatcher.set(field_184621_as, Byte.valueOf((byte)0));
          }
  
@@ -4256,7 +4257,7 @@ index d1580a1..ae88926 100644
          }
          else
          {
-@@ -2795,7 +2801,7 @@ public abstract class EntityLivingBase extends Entity
+@@ -2795,7 +2802,7 @@ public abstract class EntityLivingBase extends Entity
          }
      }
  
