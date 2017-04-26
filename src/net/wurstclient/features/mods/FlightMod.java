@@ -12,6 +12,7 @@ import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
+import net.wurstclient.features.HelpPage;
 import net.wurstclient.features.Mod;
 import net.wurstclient.features.SearchTags;
 import net.wurstclient.features.special_features.YesCheatSpf.BypassLevel;
@@ -19,7 +20,7 @@ import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 
 @SearchTags({"FlyHack", "fly hack", "flying"})
-@Mod.Info(help = "Mods/Flight")
+@HelpPage("Mods/Flight")
 @Mod.Bypasses(ghostMode = false, latestNCP = false)
 public final class FlightMod extends Mod implements UpdateListener
 {

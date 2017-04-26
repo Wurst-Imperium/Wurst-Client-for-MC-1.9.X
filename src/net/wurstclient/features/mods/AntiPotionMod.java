@@ -13,11 +13,12 @@ import net.minecraft.potion.Potion;
 import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
+import net.wurstclient.features.HelpPage;
 import net.wurstclient.features.Mod;
 import net.wurstclient.features.SearchTags;
 
 @SearchTags({"NoPotion", "Zoot", "anti potions", "no potions"})
-@Mod.Info(help = "Mods/AntiPotion")
+@HelpPage("Mods/AntiPotion")
 @Mod.Bypasses(ghostMode = false, latestNCP = false, olderNCP = false)
 public final class AntiPotionMod extends Mod implements UpdateListener
 {

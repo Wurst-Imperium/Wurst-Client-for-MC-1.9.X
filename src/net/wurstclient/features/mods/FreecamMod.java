@@ -10,11 +10,12 @@ package net.wurstclient.features.mods;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
+import net.wurstclient.features.HelpPage;
 import net.wurstclient.features.Mod;
 import net.wurstclient.features.SearchTags;
 
 @SearchTags({"free camera", "spectator"})
-@Mod.Info(help = "Mods/Freecam")
+@HelpPage("Mods/Freecam")
 @Mod.Bypasses
 @Mod.DontSaveState
 public final class FreecamMod extends Mod implements UpdateListener

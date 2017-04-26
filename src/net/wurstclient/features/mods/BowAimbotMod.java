@@ -19,6 +19,7 @@ import net.wurstclient.events.listeners.GUIRenderListener;
 import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
+import net.wurstclient.features.HelpPage;
 import net.wurstclient.features.Mod;
 import net.wurstclient.features.SearchTags;
 import net.wurstclient.font.Fonts;
@@ -28,7 +29,7 @@ import net.wurstclient.utils.RenderUtils;
 import net.wurstclient.utils.RotationUtils;
 
 @SearchTags({"bow aimbot"})
-@Mod.Info(help = "Mods/BowAimbot")
+@HelpPage("Mods/BowAimbot")
 @Mod.Bypasses
 public final class BowAimbotMod extends Mod
 	implements UpdateListener, RenderListener, GUIRenderListener

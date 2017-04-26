@@ -13,9 +13,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.wurstclient.compatibility.WPlayer;
 import net.wurstclient.events.listeners.UpdateListener;
+import net.wurstclient.features.HelpPage;
 import net.wurstclient.features.Mod;
 
-@Mod.Info(help = "Mods/LSD")
+@HelpPage("Mods/LSD")
 @Mod.Bypasses
 @Mod.DontSaveState
 public final class LsdMod extends Mod implements UpdateListener

@@ -16,13 +16,14 @@ import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMath;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
+import net.wurstclient.features.HelpPage;
 import net.wurstclient.features.Mod;
 import net.wurstclient.features.SearchTags;
 import net.wurstclient.features.special_features.YesCheatSpf.BypassLevel;
 import net.wurstclient.settings.CheckboxSetting;
 
 @SearchTags({"EasyElytra", "extra elytra", "easy elytra"})
-@Mod.Info(help = "Mods/ExtraElytra")
+@HelpPage("Mods/ExtraElytra")
 @Mod.Bypasses
 public final class ExtraElytraMod extends Mod implements UpdateListener
 {
