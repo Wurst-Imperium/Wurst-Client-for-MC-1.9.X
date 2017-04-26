@@ -8,10 +8,11 @@
 package net.wurstclient.features.special_features;
 
 import net.wurstclient.features.Feature;
+import net.wurstclient.features.SearchTags;
 import net.wurstclient.features.Spf;
 
-@Spf.Info(tags = "Force OP,Session Stealer,Account Stealer",
-	help = "Special_Features/Force_OP_(Session_Stealer)")
+@SearchTags({"Force OP", "Session Stealer", "Account Stealer"})
+@Spf.Info(help = "Special_Features/Force_OP_(Session_Stealer)")
 public final class SessionStealerSpf extends Spf
 {
 	public SessionStealerSpf()
