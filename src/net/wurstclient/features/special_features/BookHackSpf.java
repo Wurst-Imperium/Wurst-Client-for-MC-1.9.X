@@ -8,11 +8,12 @@
 package net.wurstclient.features.special_features;
 
 import net.wurstclient.features.Feature;
+import net.wurstclient.features.HelpPage;
 import net.wurstclient.features.SearchTags;
 import net.wurstclient.features.Spf;
 
 @SearchTags({"Force OP", "Book Hack", "OP Book", "command book"})
-@Spf.Info(help = "Special_Features/Force_OP_(BookHack)")
+@HelpPage("Special_Features/Force_OP_(BookHack)")
 public final class BookHackSpf extends Spf
 {
 	public BookHackSpf()
