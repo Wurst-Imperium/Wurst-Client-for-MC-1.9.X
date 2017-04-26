@@ -10,8 +10,10 @@ package net.wurstclient.features.mods;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Mod;
+import net.wurstclient.features.SearchTags;
 
-@Mod.Info(tags = "BoatFlight, boat fly, boat flight", help = "Mods/BoatFly")
+@SearchTags({"BoatFlight", "boat fly", "boat flight"})
+@Mod.Info(help = "Mods/BoatFly")
 @Mod.Bypasses(ghostMode = false, latestNCP = false)
 public final class BoatFlyMod extends Mod implements UpdateListener
 {

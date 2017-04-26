@@ -10,8 +10,10 @@ package net.wurstclient.features.mods;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Mod;
+import net.wurstclient.features.SearchTags;
 
-@Mod.Info(tags = "jet pack", help = "Mods/Jetpack")
+@SearchTags({"jet pack"})
+@Mod.Info(help = "Mods/Jetpack")
 @Mod.Bypasses(ghostMode = false,
 	latestNCP = false,
 	olderNCP = false,
