@@ -7,7 +7,8 @@
  */
 package net.wurstclient.features.mods;
 
-import net.minecraft.network.play.client.CPacketPlayer.Position;
+import net.minecraft.network.play.client.CPacketPlayer;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
@@ -16,6 +17,8 @@ import net.wurstclient.features.HelpPage;
 import net.wurstclient.features.Mod;
 import net.wurstclient.features.SearchTags;
 import net.wurstclient.features.special_features.YesCheatSpf.BypassLevel;
+import net.wurstclient.settings.CheckboxSetting;
+import net.wurstclient.settings.ModeSetting;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 
@@ -24,80 +27,132 @@ import net.wurstclient.settings.SliderSetting.ValueDisplay;
 @Mod.Bypasses(ghostMode = false, latestNCP = false)
 public final class FlightMod extends Mod implements UpdateListener
 {
-	public float speed = 1F;
+	private final ModeSetting mode = new ModeSetting("Mode",
+		new String[]{"Normal", "Mineplex", "Old NCP"}, 0)
+	{
+		@Override
+		public void update()
+		{
+			if(getSelected() > 0)
+			{
+				speed.setDisabled(true);
+				if(flightKickBypass != null)
+					flightKickBypass.lock(() -> false);
+			}else
+			{
+				speed.setDisabled(false);
+				if(flightKickBypass != null)
+					flightKickBypass.unlock();
+			}
+		}
+	};
+	public final SliderSetting speed =
+		new SliderSetting("Speed", 1, 0.05, 5, 0.05, ValueDisplay.DECIMAL);
+	private final CheckboxSetting flightKickBypass = WMinecraft.COOLDOWN ? null
+		: new CheckboxSetting("Flight-Kick-Bypass", false);
+	
+	public double flyHeight;
 	private double startY;
 	
 	public FlightMod()
 	{
-		super("Flight",
-			"Allows you to you fly.\n"
-				+ "Bypasses NoCheat+ if YesCheat+ is enabled.\n"
-				+ "Bypasses MAC if AntiMAC is enabled.");
+		super("Flight", "Allows you to you fly.");
+	}
+	
+	@Override
+	public String getRenderName()
+	{
+		if(flightKickBypass == null || !flightKickBypass.isChecked())
+			return getName();
+		
+		return getName() + "[Kick: " + (flyHeight <= 300 ? "Safe" : "Unsafe")
+			+ "]";
 	}
 	
 	@Override
 	public void initSettings()
 	{
-		settings.add(new SliderSetting("Speed", speed, 0.05, 5, 0.05,
-			ValueDisplay.DECIMAL)
-		{
-			@Override
-			public void update()
-			{
-				speed = (float)getValue();
-			}
-		});
+		settings.add(mode);
+		settings.add(speed);
+		
+		if(flightKickBypass != null)
+			settings.add(flightKickBypass);
 	}
 	
 	@Override
 	public Feature[] getSeeAlso()
 	{
-		return new Feature[]{wurst.mods.boatFlyMod, wurst.mods.extraElytraMod,
-			wurst.mods.jetpackMod, wurst.mods.glideMod, wurst.mods.noFallMod,
-			wurst.special.yesCheatSpf};
+		return new Feature[]{wurst.mods.jetpackMod, wurst.mods.glideMod,
+			wurst.mods.noFallMod, wurst.special.yesCheatSpf};
 	}
 	
 	@Override
 	public void onEnable()
 	{
-		if(wurst.mods.jetpackMod.isEnabled())
-			wurst.mods.jetpackMod.setEnabled(false);
+		wurst.mods.jetpackMod.setEnabled(false);
 		
-		if(wurst.special.yesCheatSpf.getBypassLevel()
-			.ordinal() >= BypassLevel.MINEPLEX.ordinal())
+		if(mode.getSelected() > 0)
 		{
 			double startX = WMinecraft.getPlayer().posX;
 			startY = WMinecraft.getPlayer().posY;
 			double startZ = WMinecraft.getPlayer().posZ;
+			
 			for(int i = 0; i < 4; i++)
 			{
+				WConnection.sendPacket(new CPacketPlayer.Position(startX,
+					startY + 1.01, startZ, false));
 				WConnection.sendPacket(
-					new Position(startX, startY + 1.01, startZ, false));
-				WConnection
-					.sendPacket(new Position(startX, startY, startZ, false));
+					new CPacketPlayer.Position(startX, startY, startZ, false));
 			}
+			
 			WMinecraft.getPlayer().jump();
 		}
+		
 		wurst.events.add(UpdateListener.class, this);
+	}
+	
+	@Override
+	public void onDisable()
+	{
+		wurst.events.remove(UpdateListener.class, this);
 	}
 	
 	@Override
 	public void onUpdate()
 	{
-		switch(wurst.special.yesCheatSpf.getBypassLevel())
+		switch(mode.getSelected())
 		{
-			case LATEST_NCP:
-			case OLDER_NCP:
-			if(!WMinecraft.getPlayer().onGround)
-				if(mc.gameSettings.keyBindJump.pressed
-					&& WMinecraft.getPlayer().posY < startY - 1)
-					WMinecraft.getPlayer().motionY = 0.2;
-				else
-					WMinecraft.getPlayer().motionY = -0.02;
+			case 0:
+			// Normal
+			WMinecraft.getPlayer().capabilities.isFlying = false;
+			WMinecraft.getPlayer().motionX = 0;
+			WMinecraft.getPlayer().motionY = 0;
+			WMinecraft.getPlayer().motionZ = 0;
+			WMinecraft.getPlayer().jumpMovementFactor = speed.getValueF();
+			
+			if(mc.gameSettings.keyBindJump.pressed)
+				WMinecraft.getPlayer().motionY += speed.getValue();
+			if(mc.gameSettings.keyBindSneak.pressed)
+				WMinecraft.getPlayer().motionY -= speed.getValue();
+			
+			if(flightKickBypass != null && flightKickBypass.isChecked())
+			{
+				updateMS();
+				
+				updateFlyHeight();
+				WConnection.sendPacket(new CPacketPlayer(true));
+				
+				if(flyHeight <= 290 && hasTimePassedM(500)
+					|| flyHeight > 290 && hasTimePassedM(100))
+				{
+					goToGround();
+					updateLastMS();
+				}
+			}
 			break;
 			
-			case ANTICHEAT:
-			case MINEPLEX:
+			case 1:
+			// Mineplex
 			updateMS();
 			if(!WMinecraft.getPlayer().onGround)
 				if(mc.gameSettings.keyBindJump.pressed && hasTimePassedS(2))
@@ -114,25 +169,92 @@ public final class FlightMod extends Mod implements UpdateListener
 			WMinecraft.getPlayer().jumpMovementFactor = 0.04F;
 			break;
 			
-			case OFF:
-			default:
-			WMinecraft.getPlayer().capabilities.isFlying = false;
-			WMinecraft.getPlayer().motionX = 0;
-			WMinecraft.getPlayer().motionY = 0;
-			WMinecraft.getPlayer().motionZ = 0;
-			WMinecraft.getPlayer().jumpMovementFactor = speed;
-			
-			if(mc.gameSettings.keyBindJump.pressed)
-				WMinecraft.getPlayer().motionY += speed;
-			if(mc.gameSettings.keyBindSneak.pressed)
-				WMinecraft.getPlayer().motionY -= speed;
+			case 2:
+			// Old NCP
+			if(!WMinecraft.getPlayer().onGround)
+				if(mc.gameSettings.keyBindJump.pressed
+					&& WMinecraft.getPlayer().posY < startY - 1)
+					WMinecraft.getPlayer().motionY = 0.2;
+				else
+					WMinecraft.getPlayer().motionY = -0.02;
 			break;
 		}
 	}
 	
 	@Override
-	public void onDisable()
+	public void onYesCheatUpdate(BypassLevel bypassLevel)
 	{
-		wurst.events.remove(UpdateListener.class, this);
+		switch(bypassLevel)
+		{
+			case OFF:
+			default:
+			mode.unlock();
+			break;
+			
+			case MINEPLEX:
+			mode.lock(1);
+			break;
+			
+			case ANTICHEAT:
+			case OLDER_NCP:
+			mode.lock(2);
+			break;
+		}
+	}
+	
+	public void updateFlyHeight()
+	{
+		double h = 1;
+		AxisAlignedBB box = WMinecraft.getPlayer().getEntityBoundingBox()
+			.expand(0.0625, 0.0625, 0.0625);
+		for(flyHeight = 0; flyHeight < WMinecraft.getPlayer().posY; flyHeight +=
+			h)
+		{
+			AxisAlignedBB nextBox = box.offset(0, -flyHeight, 0);
+			
+			if(WMinecraft.getWorld().checkBlockCollision(nextBox))
+			{
+				if(h < 0.0625)
+					break;
+				
+				flyHeight -= h;
+				h /= 2;
+			}
+		}
+	}
+	
+	public void goToGround()
+	{
+		if(flyHeight > 300)
+			return;
+		
+		double minY = WMinecraft.getPlayer().posY - flyHeight;
+		
+		if(minY <= 0)
+			return;
+		
+		for(double y = WMinecraft.getPlayer().posY; y > minY;)
+		{
+			y -= 8;
+			if(y < minY)
+				y = minY;
+			
+			CPacketPlayer.Position packet =
+				new CPacketPlayer.Position(WMinecraft.getPlayer().posX, y,
+					WMinecraft.getPlayer().posZ, true);
+			WConnection.sendPacket(packet);
+		}
+		
+		for(double y = minY; y < WMinecraft.getPlayer().posY;)
+		{
+			y += 8;
+			if(y > WMinecraft.getPlayer().posY)
+				y = WMinecraft.getPlayer().posY;
+			
+			CPacketPlayer.Position packet =
+				new CPacketPlayer.Position(WMinecraft.getPlayer().posX, y,
+					WMinecraft.getPlayer().posZ, true);
+			WConnection.sendPacket(packet);
+		}
 	}
 }
