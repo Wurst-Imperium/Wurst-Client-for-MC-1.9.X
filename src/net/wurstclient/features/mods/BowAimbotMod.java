@@ -78,7 +78,9 @@ public final class BowAimbotMod extends Mod
 		target = null;
 		
 		// check if using item
-		if(!mc.gameSettings.keyBindUseItem.pressed
+		if(!mc.gameSettings.keyBindUseItem.pressed)
+			return;
+		if(!WMinecraft.getPlayer().isHandActive()
 			&& !wurst.mods.fastBowMod.isActive())
 			return;
 		
