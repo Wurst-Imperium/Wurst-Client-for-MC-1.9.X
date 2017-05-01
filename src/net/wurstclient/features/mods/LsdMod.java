@@ -10,7 +10,7 @@ package net.wurstclient.features.mods;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.MobEffects;
+import net.wurstclient.compatibility.WPotionEffects;
 import net.wurstclient.compatibility.WPlayer;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.HelpPage;
@@ -58,7 +58,7 @@ public final class LsdMod extends Mod implements UpdateListener
 	{
 		wurst.events.remove(UpdateListener.class, this);
 		
-		WPlayer.removePotionEffect(MobEffects.confusion);
+		WPlayer.removePotionEffect(WPotionEffects.NAUSEA);
 		
 		if(mc.entityRenderer.theShaderGroup != null)
 		{
@@ -73,7 +73,7 @@ public final class LsdMod extends Mod implements UpdateListener
 	public void onUpdate()
 	{
 		if(!OpenGlHelper.shadersSupported)
-			WPlayer.addPotionEffect(MobEffects.confusion);
+			WPlayer.addPotionEffect(WPotionEffects.NAUSEA);
 		
 		mc.gameSettings.smoothCamera = isEnabled();
 	}
