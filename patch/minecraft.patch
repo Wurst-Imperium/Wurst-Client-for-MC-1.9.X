@@ -1,6 +1,6 @@
-From 6f87982224a4ce685d790d4751f55f25436073ad Mon Sep 17 00:00:00 2001
+From 492f2426a0f227ca101a542f4cd86e18ef4be70c Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Mon, 1 May 2017 07:48:05 +0200
+Date: Wed, 3 May 2017 17:27:15 +0200
 Subject: [PATCH] mod
 
 ---
@@ -62,6 +62,7 @@ Subject: [PATCH] mod
  net/minecraft/command/CommandEffect.java           |   2 +-
  net/minecraft/crash/CrashReport.java               |  62 +++++-
  net/minecraft/crash/CrashReportCategory.java       |  10 +-
+ net/minecraft/enchantment/Enchantment.java         |   4 +
  net/minecraft/entity/Entity.java                   |  67 ++++---
  net/minecraft/entity/EntityAreaEffectCloud.java    |   6 +-
  net/minecraft/entity/EntityLivingBase.java         | 111 +++++------
@@ -103,7 +104,7 @@ Subject: [PATCH] mod
  net/minecraft/util/text/ITextComponent.java        |  12 ++
  net/minecraft/util/text/Style.java                 |   6 +
  net/minecraft/world/World.java                     |  26 +++
- 99 files changed, 1531 insertions(+), 509 deletions(-)
+ 100 files changed, 1535 insertions(+), 509 deletions(-)
 
 diff --git a/Start.java b/Start.java
 index ae0025f..078afa5 100644
@@ -3792,6 +3793,21 @@ index 0cebed2..ed02a9e 100644
      /**
       * Adds a Crashreport section with the given name with the value set to the result of the given Callable;
       */
+diff --git a/net/minecraft/enchantment/Enchantment.java b/net/minecraft/enchantment/Enchantment.java
+index 79768b5..06c460a 100644
+--- a/net/minecraft/enchantment/Enchantment.java
++++ b/net/minecraft/enchantment/Enchantment.java
+@@ -16,6 +16,10 @@ public abstract class Enchantment
+ {
+     public static final RegistryNamespaced<ResourceLocation, Enchantment> enchantmentRegistry = new RegistryNamespaced();
+     
++	// TODO: Client
++	public static final RegistryNamespaced<ResourceLocation, Enchantment> REGISTRY =
++		enchantmentRegistry;
++
+     /** Where this enchantment has an effect, e.g. offhand, pants */
+     private final EntityEquipmentSlot[] applicableEquipmentTypes;
+     private final Enchantment.Rarity weight;
 diff --git a/net/minecraft/entity/Entity.java b/net/minecraft/entity/Entity.java
 index 85a68a2..443ed13 100644
 --- a/net/minecraft/entity/Entity.java
