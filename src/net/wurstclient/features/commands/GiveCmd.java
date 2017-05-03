@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTException;
 import net.minecraft.util.ResourceLocation;
+import net.wurstclient.compatibility.WItem;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.features.Cmd;
 import net.wurstclient.features.HelpPage;
@@ -123,7 +124,7 @@ public final class GiveCmd extends Cmd
 			// custom item
 			
 			// id/name
-			item = Item.REGISTRY.getObject(new ResourceLocation(args[0]));
+			item = WItem.getFromRegistry(new ResourceLocation(args[0]));
 			if(item == null && MiscUtils.isInteger(args[0]))
 				item = Item.getItemById(Integer.parseInt(args[0]));
 			if(item == null)

@@ -8,6 +8,7 @@
 package net.wurstclient.compatibility;
 
 import net.minecraft.item.*;
+import net.minecraft.util.ResourceLocation;
 
 public final class WItem
 {
@@ -19,5 +20,10 @@ public final class WItem
 			|| item instanceof ItemSplashPotion
 			|| item instanceof ItemLingeringPotion
 			|| item instanceof ItemFishingRod;
+	}
+	
+	public static Item getFromRegistry(ResourceLocation location)
+	{
+		return Item.REGISTRY.getObject(location);
 	}
 }
