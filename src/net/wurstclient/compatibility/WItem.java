@@ -22,6 +22,12 @@ public final class WItem
 			|| item instanceof ItemFishingRod;
 	}
 	
+	public static boolean isPotion(ItemStack stack)
+	{
+		return stack != null && stack.getItem() instanceof ItemPotion
+			|| stack.getItem() instanceof ItemSplashPotion;
+	}
+	
 	public static Item getFromRegistry(ResourceLocation location)
 	{
 		return Item.REGISTRY.getObject(location);
