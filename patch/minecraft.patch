@@ -1,6 +1,6 @@
-From 492f2426a0f227ca101a542f4cd86e18ef4be70c Mon Sep 17 00:00:00 2001
+From c67ee52266483886f0458788df124633f39d29a0 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Wed, 3 May 2017 17:27:15 +0200
+Date: Mon, 8 May 2017 15:09:45 +0200
 Subject: [PATCH] mod
 
 ---
@@ -14,20 +14,20 @@ Subject: [PATCH] mod
  net/minecraft/block/state/BlockStateContainer.java |   3 +-
  net/minecraft/block/state/IBlockProperties.java    |   6 +
  net/minecraft/block/state/IBlockState.java         |   2 +-
- net/minecraft/client/Minecraft.java                | 208 +++++++++++----------
+ net/minecraft/client/Minecraft.java                | 229 +++++++++++----------
  .../client/audio/PositionedSoundRecord.java        |   2 +-
  .../client/entity/AbstractClientPlayer.java        |   4 +-
- net/minecraft/client/entity/EntityPlayerSP.java    | 131 +++++++++----
+ net/minecraft/client/entity/EntityPlayerSP.java    | 131 ++++++++----
  net/minecraft/client/gui/FontRenderer.java         |   2 +-
  net/minecraft/client/gui/GuiButton.java            |  16 +-
- net/minecraft/client/gui/GuiDisconnected.java      |  88 +++++++++
+ net/minecraft/client/gui/GuiDisconnected.java      |  88 ++++++++
  net/minecraft/client/gui/GuiGameOver.java          |  13 +-
  net/minecraft/client/gui/GuiIngame.java            |  31 ++-
- net/minecraft/client/gui/GuiIngameMenu.java        |  56 +++++-
+ net/minecraft/client/gui/GuiIngameMenu.java        |  56 ++++-
  .../client/gui/GuiListWorldSelectionEntry.java     |   2 +-
  net/minecraft/client/gui/GuiMainMenu.java          |  38 +++-
  net/minecraft/client/gui/GuiMemoryErrorScreen.java |   4 +-
- net/minecraft/client/gui/GuiMultiplayer.java       | 128 ++++++++++---
+ net/minecraft/client/gui/GuiMultiplayer.java       | 128 +++++++++---
  net/minecraft/client/gui/GuiNewChat.java           |  12 ++
  net/minecraft/client/gui/GuiScreenBook.java        |  72 ++++++-
  .../client/gui/GuiScreenOptionsSounds.java         |   2 +-
@@ -35,18 +35,18 @@ Subject: [PATCH] mod
  .../client/gui/ServerListEntryNormal.java          |  13 +-
  net/minecraft/client/gui/ServerSelectionList.java  |   8 +-
  net/minecraft/client/gui/achievement/GuiStats.java |  18 +-
- net/minecraft/client/gui/inventory/GuiChest.java   |  76 ++++++++
- .../client/gui/inventory/GuiContainer.java         |  51 ++---
+ net/minecraft/client/gui/inventory/GuiChest.java   |  76 +++++++
+ .../client/gui/inventory/GuiContainer.java         |  51 +++--
  .../client/gui/inventory/GuiContainerCreative.java |   2 +-
  .../client/gui/inventory/GuiEditSign.java          |  17 ++
  net/minecraft/client/model/ModelElytra.java        |   2 +-
  .../client/multiplayer/GuiConnecting.java          |   8 +-
- .../client/multiplayer/PlayerControllerMP.java     |  57 +++---
+ .../client/multiplayer/PlayerControllerMP.java     |  57 ++---
  net/minecraft/client/multiplayer/ServerList.java   |   6 +
  .../client/network/NetHandlerPlayClient.java       |  27 ++-
  .../client/network/NetworkPlayerInfo.java          |  10 +
  .../client/renderer/BlockModelRenderer.java        |   8 +-
- net/minecraft/client/renderer/EntityRenderer.java  |  65 ++++++-
+ net/minecraft/client/renderer/EntityRenderer.java  |  65 +++++-
  .../client/renderer/InventoryEffectRenderer.java   |   2 +-
  net/minecraft/client/renderer/ItemRenderer.java    |  15 +-
  net/minecraft/client/renderer/RenderGlobal.java    |   2 +-
@@ -56,26 +56,26 @@ Subject: [PATCH] mod
  .../client/renderer/entity/RenderManager.java      |   6 +-
  .../client/renderer/entity/RenderPlayer.java       |   2 +-
  .../client/renderer/texture/TextureUtil.java       |   2 +-
- net/minecraft/client/resources/SkinManager.java    |  22 ++-
+ net/minecraft/client/resources/SkinManager.java    |  22 +-
  net/minecraft/client/settings/GameSettings.java    |  14 +-
  net/minecraft/client/settings/KeyBinding.java      |   2 +-
  net/minecraft/command/CommandEffect.java           |   2 +-
  net/minecraft/crash/CrashReport.java               |  62 +++++-
  net/minecraft/crash/CrashReportCategory.java       |  10 +-
  net/minecraft/enchantment/Enchantment.java         |   4 +
- net/minecraft/entity/Entity.java                   |  67 ++++---
+ net/minecraft/entity/Entity.java                   |  67 +++---
  net/minecraft/entity/EntityAreaEffectCloud.java    |   6 +-
- net/minecraft/entity/EntityLivingBase.java         | 111 +++++------
+ net/minecraft/entity/EntityLivingBase.java         | 111 +++++-----
  net/minecraft/entity/EntityTrackerEntry.java       |   4 +-
  .../entity/ai/EntityAIAttackRangedBow.java         |   4 +-
  net/minecraft/entity/monster/EntityMob.java        |   4 +-
  net/minecraft/entity/monster/EntitySpider.java     |   2 +-
  net/minecraft/entity/monster/EntityZombie.java     |   2 +-
- net/minecraft/entity/player/EntityPlayer.java      |  43 +++--
+ net/minecraft/entity/player/EntityPlayer.java      |  43 ++--
  net/minecraft/entity/player/EntityPlayerMP.java    |   6 +-
  net/minecraft/entity/projectile/EntityPotion.java  |   4 +-
  .../entity/projectile/EntityTippedArrow.java       |   2 +-
- net/minecraft/init/Blocks.java                     |  86 +++++----
+ net/minecraft/init/Blocks.java                     |  86 +++++---
  net/minecraft/init/Items.java                      |   8 +
  net/minecraft/init/SoundEvents.java                |   3 +
  net/minecraft/item/Item.java                       |   6 +-
@@ -86,7 +86,7 @@ Subject: [PATCH] mod
  net/minecraft/item/ItemSword.java                  |   2 +-
  net/minecraft/item/ItemTool.java                   |   2 +-
  net/minecraft/network/EnumConnectionState.java     |   6 +-
- net/minecraft/network/NetHandlerPlayServer.java    |  22 +--
+ net/minecraft/network/NetHandlerPlayServer.java    |  22 +-
  net/minecraft/network/NetworkManager.java          |  26 +++
  .../network/play/client/CPacketPlayer.java         |  28 +--
  .../network/play/server/SPacketEntityEffect.java   |   2 +-
@@ -104,7 +104,7 @@ Subject: [PATCH] mod
  net/minecraft/util/text/ITextComponent.java        |  12 ++
  net/minecraft/util/text/Style.java                 |   6 +
  net/minecraft/world/World.java                     |  26 +++
- 100 files changed, 1535 insertions(+), 509 deletions(-)
+ 100 files changed, 1541 insertions(+), 524 deletions(-)
 
 diff --git a/Start.java b/Start.java
 index ae0025f..078afa5 100644
@@ -399,7 +399,7 @@ index e590b46..157dc4b 100644
      <T extends Comparable<T>> IBlockState cycleProperty(IProperty<T> property);
  
 diff --git a/net/minecraft/client/Minecraft.java b/net/minecraft/client/Minecraft.java
-index 61b2545..9f5ffde 100644
+index 61b2545..13cb29f 100644
 --- a/net/minecraft/client/Minecraft.java
 +++ b/net/minecraft/client/Minecraft.java
 @@ -1,17 +1,5 @@
@@ -420,7 +420,7 @@ index 61b2545..9f5ffde 100644
  import java.awt.image.BufferedImage;
  import java.io.File;
  import java.io.IOException;
-@@ -24,38 +12,20 @@ import java.nio.IntBuffer;
+@@ -24,38 +12,49 @@ import java.nio.IntBuffer;
  import java.text.DecimalFormat;
  import java.text.MessageFormat;
  import java.text.SimpleDateFormat;
@@ -438,6 +438,35 @@ index 61b2545..9f5ffde 100644
  import java.util.concurrent.FutureTask;
 +
  import javax.imageio.ImageIO;
++
++import org.apache.commons.io.IOUtils;
++import org.apache.commons.lang3.Validate;
++import org.apache.logging.log4j.LogManager;
++import org.apache.logging.log4j.Logger;
++import org.lwjgl.LWJGLException;
++import org.lwjgl.Sys;
++import org.lwjgl.input.Keyboard;
++import org.lwjgl.input.Mouse;
++import org.lwjgl.opengl.ContextCapabilities;
++import org.lwjgl.opengl.Display;
++import org.lwjgl.opengl.DisplayMode;
++import org.lwjgl.opengl.GLContext;
++import org.lwjgl.opengl.OpenGLException;
++import org.lwjgl.opengl.PixelFormat;
++import org.lwjgl.util.glu.GLU;
++
++import com.google.common.collect.Lists;
++import com.google.common.collect.Maps;
++import com.google.common.collect.Queues;
++import com.google.common.collect.Sets;
++import com.google.common.util.concurrent.Futures;
++import com.google.common.util.concurrent.ListenableFuture;
++import com.google.common.util.concurrent.ListenableFutureTask;
++import com.mojang.authlib.GameProfile;
++import com.mojang.authlib.GameProfileRepository;
++import com.mojang.authlib.minecraft.MinecraftSessionService;
++import com.mojang.authlib.properties.PropertyMap;
++import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 +
  import net.minecraft.block.Block;
  import net.minecraft.block.material.Material;
@@ -463,7 +492,7 @@ index 61b2545..9f5ffde 100644
  import net.minecraft.client.gui.achievement.GuiAchievement;
  import net.minecraft.client.gui.inventory.GuiInventory;
  import net.minecraft.client.main.GameConfiguration;
-@@ -66,15 +36,7 @@ import net.minecraft.client.multiplayer.WorldClient;
+@@ -66,15 +65,7 @@ import net.minecraft.client.multiplayer.WorldClient;
  import net.minecraft.client.network.NetHandlerLoginClient;
  import net.minecraft.client.network.NetHandlerPlayClient;
  import net.minecraft.client.particle.EffectRenderer;
@@ -480,7 +509,7 @@ index 61b2545..9f5ffde 100644
  import net.minecraft.client.renderer.block.model.ModelManager;
  import net.minecraft.client.renderer.chunk.RenderChunk;
  import net.minecraft.client.renderer.color.BlockColors;
-@@ -86,28 +48,8 @@ import net.minecraft.client.renderer.texture.TextureManager;
+@@ -86,28 +77,8 @@ import net.minecraft.client.renderer.texture.TextureManager;
  import net.minecraft.client.renderer.texture.TextureMap;
  import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
  import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -511,7 +540,7 @@ index 61b2545..9f5ffde 100644
  import net.minecraft.client.settings.GameSettings;
  import net.minecraft.client.settings.KeyBinding;
  import net.minecraft.client.shader.Framebuffer;
-@@ -149,20 +91,8 @@ import net.minecraft.stats.IStatStringFormat;
+@@ -149,20 +120,8 @@ import net.minecraft.stats.IStatStringFormat;
  import net.minecraft.stats.StatFileWriter;
  import net.minecraft.tileentity.TileEntity;
  import net.minecraft.tileentity.TileEntitySkull;
@@ -533,37 +562,32 @@ index 61b2545..9f5ffde 100644
  import net.minecraft.util.datafix.DataFixer;
  import net.minecraft.util.datafix.DataFixesManager;
  import net.minecraft.util.math.BlockPos;
-@@ -180,6 +110,13 @@ import net.minecraft.world.chunk.storage.AnvilSaveConverter;
+@@ -180,26 +139,20 @@ import net.minecraft.world.chunk.storage.AnvilSaveConverter;
  import net.minecraft.world.storage.ISaveFormat;
  import net.minecraft.world.storage.ISaveHandler;
  import net.minecraft.world.storage.WorldInfo;
+-import org.apache.commons.io.IOUtils;
+-import org.apache.commons.lang3.Validate;
+-import org.apache.logging.log4j.LogManager;
+-import org.apache.logging.log4j.Logger;
+-import org.lwjgl.LWJGLException;
+-import org.lwjgl.Sys;
+-import org.lwjgl.input.Keyboard;
+-import org.lwjgl.input.Mouse;
+-import org.lwjgl.opengl.ContextCapabilities;
+-import org.lwjgl.opengl.Display;
+-import org.lwjgl.opengl.DisplayMode;
+-import org.lwjgl.opengl.GLContext;
+-import org.lwjgl.opengl.OpenGLException;
+-import org.lwjgl.opengl.PixelFormat;
+-import org.lwjgl.util.glu.GLU;
 +import net.wurstclient.WurstClient;
 +import net.wurstclient.events.LeftClickEvent;
 +import net.wurstclient.events.RightClickEvent;
 +import net.wurstclient.gui.main.GuiWurstMainMenu;
 +import net.wurstclient.hooks.FrameHook;
 +import net.wurstclient.spam.SpamProcessor;
-+
- import org.apache.commons.io.IOUtils;
- import org.apache.commons.lang3.Validate;
- import org.apache.logging.log4j.LogManager;
-@@ -196,10 +133,26 @@ import org.lwjgl.opengl.OpenGLException;
- import org.lwjgl.opengl.PixelFormat;
- import org.lwjgl.util.glu.GLU;
  
-+import com.google.common.collect.Lists;
-+import com.google.common.collect.Maps;
-+import com.google.common.collect.Queues;
-+import com.google.common.collect.Sets;
-+import com.google.common.util.concurrent.Futures;
-+import com.google.common.util.concurrent.ListenableFuture;
-+import com.google.common.util.concurrent.ListenableFutureTask;
-+import com.mojang.authlib.GameProfile;
-+import com.mojang.authlib.GameProfileRepository;
-+import com.mojang.authlib.minecraft.MinecraftSessionService;
-+import com.mojang.authlib.properties.PropertyMap;
-+import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
-+
  public class Minecraft implements IThreadListener, ISnooperInfo
  {
      private static final Logger logger = LogManager.getLogger();
@@ -774,26 +798,17 @@ index 61b2545..9f5ffde 100644
              {
                  this.theWorld.doVoidFogParticles(MathHelper.floor_double(this.thePlayer.posX), MathHelper.floor_double(this.thePlayer.posY), MathHelper.floor_double(this.thePlayer.posZ));
              }
-@@ -2005,6 +1996,18 @@ public class Minecraft implements IThreadListener, ISnooperInfo
+@@ -2005,6 +1996,9 @@ public class Minecraft implements IThreadListener, ISnooperInfo
  
                  if (this.currentScreen == null)
                  {
 +					// TODO: Client
-+					if(Keyboard.getEventKey() != 0
-+						&& WurstClient.INSTANCE.isEnabled())
-+					{
-+						TreeSet<String> eventCommands =
-+							WurstClient.INSTANCE.keybinds.get(
-+								Keyboard.getKeyName(Keyboard.getEventKey()));
-+						if(eventCommands != null)
-+							eventCommands.forEach((cmd) -> thePlayer
-+								.sendAutomaticChatMessage(cmd));
-+					}
++					WurstClient.INSTANCE.keybinds.onKeyPress();
 +        			
                      if (i == 1)
                      {
                          this.displayInGameMenu();
-@@ -2242,7 +2245,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo
+@@ -2242,7 +2236,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo
              }
          }
  
@@ -802,7 +817,7 @@ index 61b2545..9f5ffde 100644
          {
              if (!this.gameSettings.keyBindUseItem.isKeyDown())
              {
-@@ -2290,7 +2293,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo
+@@ -2290,7 +2284,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo
              }
          }
  
@@ -811,7 +826,7 @@ index 61b2545..9f5ffde 100644
          {
              this.rightClickMouse();
          }
-@@ -2440,6 +2443,10 @@ public class Minecraft implements IThreadListener, ISnooperInfo
+@@ -2440,6 +2434,10 @@ public class Minecraft implements IThreadListener, ISnooperInfo
          networkmanager.sendPacket(new C00Handshake(107, socketaddress.toString(), 0, EnumConnectionState.LOGIN));
          networkmanager.sendPacket(new CPacketLoginStart(this.getSession().getProfile()));
          this.myNetworkManager = networkmanager;
@@ -822,7 +837,7 @@ index 61b2545..9f5ffde 100644
      }
  
      /**
-@@ -2644,6 +2651,9 @@ public class Minecraft implements IThreadListener, ISnooperInfo
+@@ -2644,6 +2642,9 @@ public class Minecraft implements IThreadListener, ISnooperInfo
              }
              else
              {
@@ -832,7 +847,7 @@ index 61b2545..9f5ffde 100644
                  if (this.objectMouseOver.typeOfHit != RayTraceResult.Type.ENTITY || this.objectMouseOver.entityHit == null || !flag)
                  {
                      return;
-@@ -3387,7 +3397,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo
+@@ -3387,7 +3388,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo
          return this.dataFixer;
      }
  
