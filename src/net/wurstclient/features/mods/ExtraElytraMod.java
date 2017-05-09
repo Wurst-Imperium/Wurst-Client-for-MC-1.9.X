@@ -19,7 +19,7 @@ import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.HelpPage;
 import net.wurstclient.features.Mod;
 import net.wurstclient.features.SearchTags;
-import net.wurstclient.features.special_features.YesCheatSpf.BypassLevel;
+import net.wurstclient.features.special_features.YesCheatSpf.Profile;
 import net.wurstclient.settings.CheckboxSetting;
 
 @SearchTags({"EasyElytra", "extra elytra", "easy elytra"})
@@ -118,9 +118,9 @@ public final class ExtraElytraMod extends Mod implements UpdateListener
 	}
 	
 	@Override
-	public void onYesCheatUpdate(BypassLevel bypassLevel)
+	public void onYesCheatUpdate(Profile profile)
 	{
-		switch(bypassLevel)
+		switch(profile)
 		{
 			default:
 			case OFF:
