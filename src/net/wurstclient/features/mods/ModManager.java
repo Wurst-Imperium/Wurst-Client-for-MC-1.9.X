@@ -13,6 +13,9 @@ import java.util.Comparator;
 import java.util.TreeMap;
 
 import net.wurstclient.features.Mod;
+import net.wurstclient.features.mods.retro.FastBowMod;
+import net.wurstclient.features.mods.retro.FastEatMod;
+import net.wurstclient.features.mods.retro.RegenMod;
 
 public class ModManager
 {
