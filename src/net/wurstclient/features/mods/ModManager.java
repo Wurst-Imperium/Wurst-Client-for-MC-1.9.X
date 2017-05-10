@@ -13,6 +13,13 @@ import java.util.Comparator;
 import java.util.TreeMap;
 
 import net.wurstclient.features.Mod;
+import net.wurstclient.features.mods.fun.DerpMod;
+import net.wurstclient.features.mods.fun.HeadRollMod;
+import net.wurstclient.features.mods.fun.HeadlessMod;
+import net.wurstclient.features.mods.fun.LsdMod;
+import net.wurstclient.features.mods.fun.MileyCyrusMod;
+import net.wurstclient.features.mods.fun.SkinBlinkerMod;
+import net.wurstclient.features.mods.fun.TiredMod;
 import net.wurstclient.features.mods.items.CmdBlockMod;
 import net.wurstclient.features.mods.items.CrashChestMod;
 import net.wurstclient.features.mods.items.CrashTagMod;
