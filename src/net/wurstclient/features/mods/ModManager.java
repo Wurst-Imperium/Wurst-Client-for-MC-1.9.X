@@ -13,6 +13,11 @@ import java.util.Comparator;
 import java.util.TreeMap;
 
 import net.wurstclient.features.Mod;
+import net.wurstclient.features.mods.items.CmdBlockMod;
+import net.wurstclient.features.mods.items.CrashChestMod;
+import net.wurstclient.features.mods.items.CrashTagMod;
+import net.wurstclient.features.mods.items.KillPotionMod;
+import net.wurstclient.features.mods.items.TrollPotionMod;
 import net.wurstclient.features.mods.retro.FastBowMod;
 import net.wurstclient.features.mods.retro.FastEatMod;
 import net.wurstclient.features.mods.retro.ForcePushMod;
