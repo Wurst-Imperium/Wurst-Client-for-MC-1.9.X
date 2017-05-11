@@ -26,6 +26,7 @@ import net.wurstclient.features.mods.items.CrashChestMod;
 import net.wurstclient.features.mods.items.CrashTagMod;
 import net.wurstclient.features.mods.items.KillPotionMod;
 import net.wurstclient.features.mods.items.TrollPotionMod;
+import net.wurstclient.features.mods.retro.CriticalsMod;
 import net.wurstclient.features.mods.retro.FastBowMod;
 import net.wurstclient.features.mods.retro.FastEatMod;
 import net.wurstclient.features.mods.retro.ForcePushMod;
