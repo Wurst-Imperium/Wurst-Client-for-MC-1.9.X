@@ -210,7 +210,7 @@ public class ServerHook
 	
 	public static void switchProtocolVersion()
 	{
-		if(protocolVersion < 110)
+		if(protocolVersion < 109)
 			protocolVersion++;
 		else
 			protocolVersion = 107;
@@ -230,9 +230,6 @@ public class ServerHook
 			case 109:
 			text += "1.9.2";
 			break;
-			case 110:
-			text += "1.9.3/4";
-			break;
 			default:
 			text += "unknown";
 			break;
@@ -247,9 +244,9 @@ public class ServerHook
 		{
 			case 108:
 			case 109:
-			case 110:
 			bytes = 10;
 			break;
+			
 			case 107:
 			default:
 			bytes = 0;
