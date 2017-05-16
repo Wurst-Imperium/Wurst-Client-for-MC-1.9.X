@@ -1,6 +1,6 @@
-From 2fe0d7b21fe6ec4a86aa17846b474922530db416 Mon Sep 17 00:00:00 2001
+From b9ccd3e3dc4ee5fe4e898e458bf24099ece8ef2a Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Thu, 11 May 2017 12:12:57 +0200
+Date: Tue, 16 May 2017 12:50:50 +0200
 Subject: [PATCH] mod
 
 ---
@@ -99,12 +99,12 @@ Subject: [PATCH] mod
  net/minecraft/tileentity/TileEntitySign.java       |   2 +-
  net/minecraft/util/ScreenShotHelper.java           |   7 +
  net/minecraft/util/Timer.java                      |   6 +
- net/minecraft/util/math/AxisAlignedBB.java         |   8 +
+ net/minecraft/util/math/AxisAlignedBB.java         |  14 ++
  net/minecraft/util/math/Vec3d.java                 |   6 +
  net/minecraft/util/text/ITextComponent.java        |  12 ++
  net/minecraft/util/text/Style.java                 |   6 +
  net/minecraft/world/World.java                     |  26 +++
- 100 files changed, 1537 insertions(+), 524 deletions(-)
+ 100 files changed, 1543 insertions(+), 524 deletions(-)
 
 diff --git a/Start.java b/Start.java
 index ae0025f..078afa5 100644
@@ -5408,10 +5408,10 @@ index 078063f..acdb82e 100644
          long j = i - this.lastSyncSysClock;
          long k = System.nanoTime() / 1000000L;
 diff --git a/net/minecraft/util/math/AxisAlignedBB.java b/net/minecraft/util/math/AxisAlignedBB.java
-index 97f47dc..f1243cc 100644
+index 97f47dc..4b58536 100644
 --- a/net/minecraft/util/math/AxisAlignedBB.java
 +++ b/net/minecraft/util/math/AxisAlignedBB.java
-@@ -31,6 +31,14 @@ public class AxisAlignedBB
+@@ -31,6 +31,20 @@ public class AxisAlignedBB
          this((double)pos1.getX(), (double)pos1.getY(), (double)pos1.getZ(), (double)pos2.getX(), (double)pos2.getY(), (double)pos2.getZ());
      }
  
@@ -5421,6 +5421,12 @@ index 97f47dc..f1243cc 100644
 +		return new Vec3d(this.minX + (this.maxX - this.minX) * 0.5D,
 +			this.minY + (this.maxY - this.minY) * 0.5D,
 +			this.minZ + (this.maxZ - this.minZ) * 0.5D);
++	}
++	
++	// TODO: Client
++	public AxisAlignedBB expandXyz(double value)
++	{
++		return this.expand(value, value, value);
 +	}
 +
      public AxisAlignedBB func_186666_e(double y2)
