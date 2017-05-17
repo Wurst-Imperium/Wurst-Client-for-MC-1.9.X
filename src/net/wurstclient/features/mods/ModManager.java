@@ -28,6 +28,7 @@ import net.wurstclient.features.mods.items.KillPotionMod;
 import net.wurstclient.features.mods.items.TrollPotionMod;
 import net.wurstclient.features.mods.movement.AutoSprintMod;
 import net.wurstclient.features.mods.movement.AutoWalkMod;
+import net.wurstclient.features.mods.movement.BunnyHopMod;
 import net.wurstclient.features.mods.movement.FastLadderMod;
 import net.wurstclient.features.mods.movement.JesusMod;
 import net.wurstclient.features.mods.movement.SpiderMod;
