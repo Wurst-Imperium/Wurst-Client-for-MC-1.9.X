@@ -26,6 +26,7 @@ import net.wurstclient.features.mods.items.CrashChestMod;
 import net.wurstclient.features.mods.items.CrashTagMod;
 import net.wurstclient.features.mods.items.KillPotionMod;
 import net.wurstclient.features.mods.items.TrollPotionMod;
+import net.wurstclient.features.mods.movement.AutoSprintMod;
 import net.wurstclient.features.mods.movement.FastLadderMod;
 import net.wurstclient.features.mods.movement.JesusMod;
 import net.wurstclient.features.mods.movement.SpiderMod;
