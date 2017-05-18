@@ -1,6 +1,6 @@
-From 71a87526209859c07148f57163afad1c7d424581 Mon Sep 17 00:00:00 2001
+From 978594a4d400762184820833ecc5dadf9f53b031 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Thu, 18 May 2017 12:34:41 +0200
+Date: Thu, 18 May 2017 14:59:52 +0200
 Subject: [PATCH] mod
 
 ---
@@ -1378,7 +1378,7 @@ index 08d7720..cf1ee7b 100644
      }
  }
 diff --git a/net/minecraft/client/gui/GuiIngame.java b/net/minecraft/client/gui/GuiIngame.java
-index 8c38552..203fe53 100644
+index 8c38552..17ece7d 100644
 --- a/net/minecraft/client/gui/GuiIngame.java
 +++ b/net/minecraft/client/gui/GuiIngame.java
 @@ -1,12 +1,14 @@
@@ -1420,7 +1420,7 @@ index 8c38552..203fe53 100644
  		
 +		// TODO: Client
 +		if(!this.mc.gameSettings.showDebugInfo)
-+			UIRenderer.renderUI(zLevel);
++			UIRenderer.renderUI();
 +
          GlStateManager.enableBlend();
          GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
