@@ -1,6 +1,6 @@
-From 0f82a0d2cb34eea7ddc6da17de137503c1bbac1e Mon Sep 17 00:00:00 2001
+From 2c80c664da5d10b3cb86722e51c523b2ee7114bb Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Fri, 19 May 2017 14:52:41 +0200
+Date: Fri, 19 May 2017 15:26:47 +0200
 Subject: [PATCH] mod
 
 ---
@@ -35,7 +35,7 @@ Subject: [PATCH] mod
  .../client/gui/ServerListEntryNormal.java          |  13 +-
  net/minecraft/client/gui/ServerSelectionList.java  |   8 +-
  net/minecraft/client/gui/achievement/GuiStats.java |  18 +-
- net/minecraft/client/gui/inventory/GuiChest.java   |  79 +++++++
+ net/minecraft/client/gui/inventory/GuiChest.java   |  76 +++++++
  .../client/gui/inventory/GuiContainer.java         |  51 +++--
  .../client/gui/inventory/GuiContainerCreative.java |   2 +-
  .../client/gui/inventory/GuiEditSign.java          |  17 ++
@@ -104,7 +104,7 @@ Subject: [PATCH] mod
  net/minecraft/util/text/ITextComponent.java        |  12 ++
  net/minecraft/util/text/Style.java                 |   6 +
  net/minecraft/world/World.java                     |  26 +++
- 100 files changed, 1542 insertions(+), 524 deletions(-)
+ 100 files changed, 1539 insertions(+), 524 deletions(-)
 
 diff --git a/Start.java b/Start.java
 index ae0025f..078afa5 100644
@@ -2354,10 +2354,10 @@ index f14be3e..57dcfb7 100644
          }
  
 diff --git a/net/minecraft/client/gui/inventory/GuiChest.java b/net/minecraft/client/gui/inventory/GuiChest.java
-index b01af09..bd474d4 100644
+index b01af09..758dadb 100644
 --- a/net/minecraft/client/gui/inventory/GuiChest.java
 +++ b/net/minecraft/client/gui/inventory/GuiChest.java
-@@ -1,10 +1,16 @@
+@@ -1,10 +1,15 @@
  package net.minecraft.client.gui.inventory;
  
  import net.minecraft.client.Minecraft;
@@ -2370,11 +2370,10 @@ index b01af09..bd474d4 100644
  import net.minecraft.util.ResourceLocation;
 +import net.wurstclient.WurstClient;
 +import net.wurstclient.compatibility.WItem;
-+import net.wurstclient.features.special_features.YesCheatSpf.Profile;
  
  public class GuiChest extends GuiContainer
  {
-@@ -30,6 +36,79 @@ public class GuiChest extends GuiContainer
+@@ -30,6 +35,77 @@ public class GuiChest extends GuiContainer
          this.ySize = j + this.inventoryRows * 18;
      }
  
@@ -2415,9 +2414,8 @@ index b01af09..bd474d4 100644
 +							continue;
 +						if(mc.currentScreen == null)
 +							break;
-+						if(WurstClient.INSTANCE.special.yesCheatSpf.getProfile()
-+							.ordinal() >= Profile.ANTICHEAT.ordinal())
-+							Thread.sleep(250);
++						Thread.sleep(
++							WurstClient.INSTANCE.mods.autoStealMod.getDelay());
 +						handleMouseClick(slot, slot.slotNumber, 0,
 +							ClickType.QUICK_MOVE);
 +					}
@@ -2438,9 +2436,8 @@ index b01af09..bd474d4 100644
 +							continue;
 +						if(mc.currentScreen == null)
 +							break;
-+						if(WurstClient.INSTANCE.special.yesCheatSpf.getProfile()
-+							.ordinal() >= Profile.ANTICHEAT.ordinal())
-+							Thread.sleep(250);
++						Thread.sleep(
++							WurstClient.INSTANCE.mods.autoStealMod.getDelay());
 +						handleMouseClick(slot, slot.slotNumber, 0,
 +							ClickType.QUICK_MOVE);
 +					}
