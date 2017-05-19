@@ -18,6 +18,7 @@ import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.math.BlockPos;
 import net.wurstclient.compatibility.WBlock;
 import net.wurstclient.compatibility.WConnection;
+import net.wurstclient.compatibility.WItem;
 import net.wurstclient.compatibility.WMinecraft;
 
 public class InventoryUtils
@@ -43,11 +44,6 @@ public class InventoryUtils
 	public static boolean isSlotEmpty(int slot)
 	{
 		return WMinecraft.getPlayer().inventory.getStackInSlot(slot) == null;
-	}
-	
-	public static boolean isEmptySlot(ItemStack slot)
-	{
-		return slot == null;
 	}
 	
 	public static boolean isSplashPotion(ItemStack stack)
@@ -83,7 +79,7 @@ public class InventoryUtils
 	{
 		ItemStack stack = WMinecraft.getPlayer().inventory.getCurrentItem();
 		
-		if(isEmptySlot(stack))
+		if(WItem.isNull(stack))
 			return false;
 		
 		return validator.isValid(stack.getItem());
