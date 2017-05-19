@@ -1,6 +1,6 @@
-From d60fc0464aad13d43c1f058cf66122114182e08e Mon Sep 17 00:00:00 2001
+From f84ed2fd694180281d6ab100c9db50bea30f9fb6 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Thu, 18 May 2017 19:41:56 +0200
+Date: Fri, 19 May 2017 14:19:34 +0200
 Subject: [PATCH] mod
 
 ---
@@ -35,7 +35,7 @@ Subject: [PATCH] mod
  .../client/gui/ServerListEntryNormal.java          |  13 +-
  net/minecraft/client/gui/ServerSelectionList.java  |   8 +-
  net/minecraft/client/gui/achievement/GuiStats.java |  18 +-
- net/minecraft/client/gui/inventory/GuiChest.java   |  79 +++++++
+ net/minecraft/client/gui/inventory/GuiChest.java   |  74 +++++++
  .../client/gui/inventory/GuiContainer.java         |  51 +++--
  .../client/gui/inventory/GuiContainerCreative.java |   2 +-
  .../client/gui/inventory/GuiEditSign.java          |  17 ++
@@ -104,7 +104,7 @@ Subject: [PATCH] mod
  net/minecraft/util/text/ITextComponent.java        |  12 ++
  net/minecraft/util/text/Style.java                 |   6 +
  net/minecraft/world/World.java                     |  26 +++
- 100 files changed, 1542 insertions(+), 524 deletions(-)
+ 100 files changed, 1537 insertions(+), 524 deletions(-)
 
 diff --git a/Start.java b/Start.java
 index ae0025f..078afa5 100644
@@ -2354,7 +2354,7 @@ index f14be3e..57dcfb7 100644
          }
  
 diff --git a/net/minecraft/client/gui/inventory/GuiChest.java b/net/minecraft/client/gui/inventory/GuiChest.java
-index b01af09..11a6902 100644
+index b01af09..09f6da4 100644
 --- a/net/minecraft/client/gui/inventory/GuiChest.java
 +++ b/net/minecraft/client/gui/inventory/GuiChest.java
 @@ -1,10 +1,15 @@
@@ -2373,7 +2373,7 @@ index b01af09..11a6902 100644
  
  public class GuiChest extends GuiContainer
  {
-@@ -30,6 +35,80 @@ public class GuiChest extends GuiContainer
+@@ -30,6 +35,75 @@ public class GuiChest extends GuiContainer
          this.ySize = j + this.inventoryRows * 18;
      }
  
@@ -2382,12 +2382,21 @@ index b01af09..11a6902 100644
 +	public void initGui()
 +	{
 +		super.initGui();
-+		buttonList.add(new GuiButton(0, guiLeft + xSize - 108, guiTop + 4, 50,
-+			12, "Steal"));
-+		buttonList.add(new GuiButton(1, guiLeft + xSize - 56, guiTop + 4, 50,
-+			12, "Store"));
++		if(!WurstClient.INSTANCE.isEnabled())
++			return;
++		GuiButton stealButton = new GuiButton(0, guiLeft + xSize - 108,
++			guiTop + 4, 50, 12, "Steal");
++		GuiButton storeButton =
++			new GuiButton(1, guiLeft + xSize - 56, guiTop + 4, 50, 12, "Store");
++		buttonList.add(stealButton);
++		buttonList.add(storeButton);
++		if(!WurstClient.INSTANCE.mods.autoStealMod.areButtonsVisible())
++		{
++			stealButton.visible = false;
++			storeButton.visible = false;
++		}
 +		if(WurstClient.INSTANCE.mods.autoStealMod.isActive())
-+			actionPerformed((GuiButton)buttonList.get(0));
++			actionPerformed(stealButton);
 +	}
 +	
 +	// TODO: Client
@@ -2395,58 +2404,44 @@ index b01af09..11a6902 100644
 +	protected void actionPerformed(GuiButton button)
 +	{
 +		if(button.id == 0)// Steal
-+			new Thread(new Runnable()
-+			{
-+				@Override
-+				public void run()
++			new Thread(() -> {
++				try
 +				{
-+					try
++					for(int i = 0; i < inventoryRows * 9; i++)
 +					{
-+						for(int i = 0; i < inventoryRows * 9; i++)
-+						{
-+							Slot slot =
-+								(Slot)inventorySlots.inventorySlots.get(i);
-+							if(slot.getStack() == null)
-+								continue;
-+							if(WurstClient.INSTANCE.special.yesCheatSpf
-+								.getProfile()
-+								.ordinal() >= Profile.ANTICHEAT.ordinal())
-+								Thread.sleep(250);
-+							handleMouseClick(slot, slot.slotNumber, 0,
-+								ClickType.QUICK_MOVE);
-+						}
-+					}catch(Exception e)
-+					{
-+						e.printStackTrace();
++						Slot slot = (Slot)inventorySlots.inventorySlots.get(i);
++						if(slot.getStack() == null)
++							continue;
++						if(WurstClient.INSTANCE.special.yesCheatSpf.getProfile()
++							.ordinal() >= Profile.ANTICHEAT.ordinal())
++							Thread.sleep(250);
++						handleMouseClick(slot, slot.slotNumber, 0,
++							ClickType.QUICK_MOVE);
 +					}
++				}catch(Exception e)
++				{
++					e.printStackTrace();
 +				}
 +			}).start();
 +		else if(button.id == 1)// Store
-+			new Thread(new Runnable()
-+			{
-+				@Override
-+				public void run()
++			new Thread(() -> {
++				try
 +				{
-+					try
++					for(int i = inventoryRows * 9; i < inventoryRows * 9
++						+ 44; i++)
 +					{
-+						for(int i = inventoryRows * 9; i < inventoryRows * 9
-+							+ 44; i++)
-+						{
-+							Slot slot =
-+								(Slot)inventorySlots.inventorySlots.get(i);
-+							if(slot.getStack() == null)
-+								continue;
-+							if(WurstClient.INSTANCE.special.yesCheatSpf
-+								.getProfile()
-+								.ordinal() >= Profile.ANTICHEAT.ordinal())
-+								Thread.sleep(250);
-+							handleMouseClick(slot, slot.slotNumber, 0,
-+								ClickType.QUICK_MOVE);
-+						}
-+					}catch(Exception e)
-+					{
-+						e.printStackTrace();
++						Slot slot = (Slot)inventorySlots.inventorySlots.get(i);
++						if(slot.getStack() == null)
++							continue;
++						if(WurstClient.INSTANCE.special.yesCheatSpf.getProfile()
++							.ordinal() >= Profile.ANTICHEAT.ordinal())
++							Thread.sleep(250);
++						handleMouseClick(slot, slot.slotNumber, 0,
++							ClickType.QUICK_MOVE);
 +					}
++				}catch(Exception e)
++				{
++					e.printStackTrace();
 +				}
 +			}).start();
 +	}
