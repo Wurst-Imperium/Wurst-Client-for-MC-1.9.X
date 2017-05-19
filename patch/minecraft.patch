@@ -1,6 +1,6 @@
-From 2c80c664da5d10b3cb86722e51c523b2ee7114bb Mon Sep 17 00:00:00 2001
+From 8c07ba816d08fdca14229804655871b28c740a15 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Fri, 19 May 2017 15:26:47 +0200
+Date: Fri, 19 May 2017 16:06:06 +0200
 Subject: [PATCH] mod
 
 ---
@@ -27,7 +27,7 @@ Subject: [PATCH] mod
  .../client/gui/GuiListWorldSelectionEntry.java     |   2 +-
  net/minecraft/client/gui/GuiMainMenu.java          |  38 +++-
  net/minecraft/client/gui/GuiMemoryErrorScreen.java |   4 +-
- net/minecraft/client/gui/GuiMultiplayer.java       | 124 ++++++++---
+ net/minecraft/client/gui/GuiMultiplayer.java       | 138 ++++++++++---
  net/minecraft/client/gui/GuiNewChat.java           |  12 ++
  net/minecraft/client/gui/GuiScreenBook.java        |  72 ++++++-
  .../client/gui/GuiScreenOptionsSounds.java         |   2 +-
@@ -104,7 +104,7 @@ Subject: [PATCH] mod
  net/minecraft/util/text/ITextComponent.java        |  12 ++
  net/minecraft/util/text/Style.java                 |   6 +
  net/minecraft/world/World.java                     |  26 +++
- 100 files changed, 1539 insertions(+), 524 deletions(-)
+ 100 files changed, 1548 insertions(+), 529 deletions(-)
 
 diff --git a/Start.java b/Start.java
 index ae0025f..078afa5 100644
@@ -1732,16 +1732,23 @@ index 77e3893..d304121 100644
          else if (button.id == 1)
          {
 diff --git a/net/minecraft/client/gui/GuiMultiplayer.java b/net/minecraft/client/gui/GuiMultiplayer.java
-index e4e5eb7..7d160a3 100644
+index e4e5eb7..2db0100 100644
 --- a/net/minecraft/client/gui/GuiMultiplayer.java
 +++ b/net/minecraft/client/gui/GuiMultiplayer.java
-@@ -2,14 +2,23 @@ package net.minecraft.client.gui;
+@@ -1,26 +1,34 @@
+ package net.minecraft.client.gui;
  
- import com.google.common.base.Splitter;
- import com.google.common.collect.Lists;
-+
+-import com.google.common.base.Splitter;
+-import com.google.common.collect.Lists;
  import java.io.IOException;
  import java.util.List;
++
++import org.apache.logging.log4j.LogManager;
++import org.apache.logging.log4j.Logger;
++import org.lwjgl.input.Keyboard;
++
++import com.google.common.base.Splitter;
++import com.google.common.collect.Lists;
 +
  import net.minecraft.client.multiplayer.GuiConnecting;
  import net.minecraft.client.multiplayer.ServerData;
@@ -1749,17 +1756,17 @@ index e4e5eb7..7d160a3 100644
  import net.minecraft.client.network.LanServerDetector;
  import net.minecraft.client.network.ServerPinger;
  import net.minecraft.client.resources.I18n;
+-import org.apache.logging.log4j.LogManager;
+-import org.apache.logging.log4j.Logger;
+-import org.lwjgl.input.Keyboard;
 +import net.wurstclient.WurstClient;
 +import net.wurstclient.gui.multiplayer.GuiCleanUp;
 +import net.wurstclient.gui.multiplayer.GuiServerFinder;
-+import net.wurstclient.gui.multiplayer.GuiUseProxy;
 +import net.wurstclient.hooks.ServerHook;
 +import net.wurstclient.spam.SpamProcessor;
-+
- import org.apache.logging.log4j.LogManager;
- import org.apache.logging.log4j.Logger;
- import org.lwjgl.input.Keyboard;
-@@ -19,8 +28,8 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
+ 
+ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
+ {
      private static final Logger logger = LogManager.getLogger();
      private final ServerPinger oldServerPinger = new ServerPinger();
      private GuiScreen parentScreen;
@@ -1770,17 +1777,18 @@ index e4e5eb7..7d160a3 100644
      private GuiButton btnEditServer;
      private GuiButton btnSelectServer;
      private GuiButton btnDeleteServer;
-@@ -86,6 +95,9 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
+@@ -86,6 +94,10 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
      public void handleMouseInput() throws IOException
      {
          super.handleMouseInput();
 +        
-+        //TODO: Client
-+        if(serverListSelector != null)
-         this.serverListSelector.handleMouseInput();
++		// TODO: Client
++		if(serverListSelector != null)
++			
+ 			this.serverListSelector.handleMouseInput();
      }
  
-@@ -98,7 +110,27 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
+@@ -98,7 +110,25 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
          this.buttonList.add(new GuiButton(3, this.width / 2 + 4 + 50, this.height - 52, 100, 20, I18n.format("selectServer.add", new Object[0])));
          this.buttonList.add(new GuiButton(8, this.width / 2 + 4, this.height - 28, 70, 20, I18n.format("selectServer.refresh", new Object[0])));
          this.buttonList.add(new GuiButton(0, this.width / 2 + 4 + 76, this.height - 28, 75, 20, I18n.format("gui.cancel", new Object[0])));
@@ -1792,7 +1800,7 @@ index e4e5eb7..7d160a3 100644
 +			this.buttonList.add(new GuiButton(5, this.width / 2 - 154, 10, 100,
 +				20, "Last server"));
 +			this.buttonList.add(new GuiButton(6, this.width / 2 + 54, 10, 100,
-+				20, "Use Proxy"));
++				20, "Version: ???"));
 +			this.buttonList.add(new GuiButton(10, this.width / 2 - 154 - 104,
 +				this.height - 52, 100, 20, "Import Servers"));
 +			this.buttonList.add(new GuiButton(11, this.width / 2 - 154 - 104,
@@ -1801,15 +1809,13 @@ index e4e5eb7..7d160a3 100644
 +				this.height - 52, 100, 20, "Server Finder"));
 +			this.buttonList.add(new GuiButton(13, this.width / 2 + 154 + 4,
 +				this.height - 28, 100, 20, "Clean Up"));
-+			this.buttonList.add(new GuiButton(14, this.width / 2 + 154 + 4, 10,
-+				100, 20, "Version: ???"));
 +		}
 +        
 +        this.selectServer(this.serverListSelector.getSelectedServer());
      }
  
      /**
-@@ -116,6 +148,17 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
+@@ -116,6 +146,15 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
          }
  
          this.oldServerPinger.pingPendingNetworks();
@@ -1818,16 +1824,14 @@ index e4e5eb7..7d160a3 100644
 +		if(WurstClient.INSTANCE.isEnabled())
 +		{
 +			// Enable/disable "Last Server" button
-+			((GuiButton)this.buttonList.get(7)).enabled =
-+				ServerHook.hasLastServer();
++			buttonList.get(7).enabled = ServerHook.hasLastServer();
 +			// Update "Version" button
-+			((GuiButton)this.buttonList.get(13)).displayString =
-+				ServerHook.getVersionButtonText();
++			buttonList.get(8).displayString = ServerHook.getVersionButtonText();
 +		}
      }
  
      /**
-@@ -141,7 +184,7 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
+@@ -141,7 +180,7 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
      {
          if (button.enabled)
          {
@@ -1836,7 +1840,7 @@ index e4e5eb7..7d160a3 100644
  
              if (button.id == 2 && guilistextended$iguilistentry instanceof ServerListEntryNormal)
              {
-@@ -154,7 +197,7 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
+@@ -154,7 +193,7 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
                      String s1 = "\'" + s4 + "\' " + I18n.format("selectServer.deleteWarning", new Object[0]);
                      String s2 = I18n.format("selectServer.deleteButton", new Object[0]);
                      String s3 = I18n.format("gui.cancel", new Object[0]);
@@ -1845,7 +1849,7 @@ index e4e5eb7..7d160a3 100644
                      this.mc.displayGuiScreen(guiyesno);
                  }
              }
-@@ -187,18 +230,42 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
+@@ -187,18 +226,39 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
              else if (button.id == 8)
              {
                  this.refreshServerList();
@@ -1859,8 +1863,8 @@ index e4e5eb7..7d160a3 100644
 +				// Last Server
 +				ServerHook.joinLastServer(this);
 +			else if(button.id == 6)
-+				// Use Proxy
-+				mc.displayGuiScreen(new GuiUseProxy(this));
++				// Version
++				ServerHook.switchProtocolVersion();
 +			else if(button.id == 10)
 +				// Import
 +				new Thread(() -> ServerHook.importServers(GuiMultiplayer.this))
@@ -1875,9 +1879,6 @@ index e4e5eb7..7d160a3 100644
 +			else if(button.id == 13)
 +				// Clean Up
 +				mc.displayGuiScreen(new GuiCleanUp(this));
-+			else if(button.id == 14)
-+				// Version
-+				ServerHook.switchProtocolVersion();
 +        }
 +    }
 +
@@ -1893,7 +1894,7 @@ index e4e5eb7..7d160a3 100644
  
          if (this.deletingServer)
          {
-@@ -206,7 +273,7 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
+@@ -206,7 +266,7 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
  
              if (result && guilistextended$iguilistentry instanceof ServerListEntryNormal)
              {
@@ -1902,7 +1903,7 @@ index e4e5eb7..7d160a3 100644
                  this.savedServerList.saveServerList();
                  this.serverListSelector.setSelectedSlotIndex(-1);
                  this.serverListSelector.func_148195_a(this.savedServerList);
-@@ -265,7 +332,7 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
+@@ -265,7 +325,7 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
       */
      protected void keyTyped(char typedChar, int keyCode) throws IOException
      {
@@ -1911,6 +1912,20 @@ index e4e5eb7..7d160a3 100644
          GuiListExtended.IGuiListEntry guilistextended$iguilistentry = i < 0 ? null : this.serverListSelector.getListEntry(i);
  
          if (keyCode == 63)
+@@ -276,6 +336,13 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
+         {
+             if (i >= 0)
+             {
++				// TODO: Client
++				if(keyCode == 211)
++				{
++					deletingServer = true;
++					confirmClicked(true, i);
++				}
++            	
+                 if (keyCode == 200)
+                 {
+                     if (isShiftKeyDown())
 @@ -283,19 +350,19 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
                          if (i > 0 && guilistextended$iguilistentry instanceof ServerListEntryNormal)
                          {
@@ -1951,31 +1966,34 @@ index e4e5eb7..7d160a3 100644
                              {
                                  this.selectServer(this.serverListSelector.getSize() + 1);
                                  this.serverListSelector.scrollBy(this.serverListSelector.getSlotHeight());
-@@ -370,7 +437,10 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
+@@ -370,7 +437,12 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
          this.hoveringText = null;
          this.drawDefaultBackground();
          this.serverListSelector.drawScreen(mouseX, mouseY, partialTicks);
 -        this.drawCenteredString(this.fontRendererObj, I18n.format("multiplayer.title", new Object[0]), this.width / 2, 20, 16777215);
 +        
-+        //TODO: Client
-+        this.drawCenteredString(this.fontRendererObj, I18n.format("multiplayer.title", new Object[0]), this.width / 2, 16, 16777215);
++		// TODO: Client
++		this.drawCenteredString(this.fontRendererObj,
++			I18n.format("multiplayer.title", new Object[0]), this.width / 2, 16,
++			16777215);
 +        
          super.drawScreen(mouseX, mouseY, partialTicks);
  
          if (this.hoveringText != null)
-@@ -381,7 +451,10 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
+@@ -381,7 +453,11 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
  
      public void connectToSelected()
      {
 -        GuiListExtended.IGuiListEntry guilistextended$iguilistentry = this.serverListSelector.func_148193_k() < 0 ? null : this.serverListSelector.getListEntry(this.serverListSelector.func_148193_k());
 +        GuiListExtended.IGuiListEntry guilistextended$iguilistentry = this.serverListSelector.getSelectedServer() < 0 ? null : this.serverListSelector.getListEntry(this.serverListSelector.getSelectedServer());
 +
-+        //TODO: Client
-+        ServerHook.updateLastServerFromServerlist(guilistextended$iguilistentry, this);
++		// TODO: Client
++		ServerHook.updateLastServerFromServerlist(guilistextended$iguilistentry,
++			this);
  
          if (guilistextended$iguilistentry instanceof ServerListEntryNormal)
          {
-@@ -394,9 +467,12 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
+@@ -394,9 +470,13 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
          }
      }
  
@@ -1984,12 +2002,13 @@ index e4e5eb7..7d160a3 100644
      {
          this.mc.displayGuiScreen(new GuiConnecting(this, this.mc, server));
 +        
-+        //TODO: Client
-+        SpamProcessor.runScript("joinserver", "Runs whenever you join a server.");
++		// TODO: Client
++		SpamProcessor.runScript("joinserver",
++			"Runs whenever you join a server.");
      }
  
      public void selectServer(int index)
-@@ -467,7 +543,7 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
+@@ -467,7 +547,7 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
          int i = p_175391_3_ ? 0 : p_175391_2_ - 1;
          this.savedServerList.swapServers(p_175391_2_, i);
  
@@ -1998,7 +2017,7 @@ index e4e5eb7..7d160a3 100644
          {
              this.selectServer(i);
          }
-@@ -480,7 +556,7 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
+@@ -480,7 +560,7 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
          int i = p_175393_3_ ? this.savedServerList.countServers() - 1 : p_175393_2_ + 1;
          this.savedServerList.swapServers(p_175393_2_, i);
  
