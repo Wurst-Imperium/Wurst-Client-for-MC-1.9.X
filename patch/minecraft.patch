@@ -1,6 +1,6 @@
-From f84ed2fd694180281d6ab100c9db50bea30f9fb6 Mon Sep 17 00:00:00 2001
+From 0f82a0d2cb34eea7ddc6da17de137503c1bbac1e Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Fri, 19 May 2017 14:19:34 +0200
+Date: Fri, 19 May 2017 14:52:41 +0200
 Subject: [PATCH] mod
 
 ---
@@ -35,7 +35,7 @@ Subject: [PATCH] mod
  .../client/gui/ServerListEntryNormal.java          |  13 +-
  net/minecraft/client/gui/ServerSelectionList.java  |   8 +-
  net/minecraft/client/gui/achievement/GuiStats.java |  18 +-
- net/minecraft/client/gui/inventory/GuiChest.java   |  74 +++++++
+ net/minecraft/client/gui/inventory/GuiChest.java   |  79 +++++++
  .../client/gui/inventory/GuiContainer.java         |  51 +++--
  .../client/gui/inventory/GuiContainerCreative.java |   2 +-
  .../client/gui/inventory/GuiEditSign.java          |  17 ++
@@ -104,7 +104,7 @@ Subject: [PATCH] mod
  net/minecraft/util/text/ITextComponent.java        |  12 ++
  net/minecraft/util/text/Style.java                 |   6 +
  net/minecraft/world/World.java                     |  26 +++
- 100 files changed, 1537 insertions(+), 524 deletions(-)
+ 100 files changed, 1542 insertions(+), 524 deletions(-)
 
 diff --git a/Start.java b/Start.java
 index ae0025f..078afa5 100644
@@ -2354,10 +2354,10 @@ index f14be3e..57dcfb7 100644
          }
  
 diff --git a/net/minecraft/client/gui/inventory/GuiChest.java b/net/minecraft/client/gui/inventory/GuiChest.java
-index b01af09..09f6da4 100644
+index b01af09..bd474d4 100644
 --- a/net/minecraft/client/gui/inventory/GuiChest.java
 +++ b/net/minecraft/client/gui/inventory/GuiChest.java
-@@ -1,10 +1,15 @@
+@@ -1,10 +1,16 @@
  package net.minecraft.client.gui.inventory;
  
  import net.minecraft.client.Minecraft;
@@ -2369,11 +2369,12 @@ index b01af09..09f6da4 100644
 +import net.minecraft.inventory.Slot;
  import net.minecraft.util.ResourceLocation;
 +import net.wurstclient.WurstClient;
++import net.wurstclient.compatibility.WItem;
 +import net.wurstclient.features.special_features.YesCheatSpf.Profile;
  
  public class GuiChest extends GuiContainer
  {
-@@ -30,6 +35,75 @@ public class GuiChest extends GuiContainer
+@@ -30,6 +36,79 @@ public class GuiChest extends GuiContainer
          this.ySize = j + this.inventoryRows * 18;
      }
  
@@ -2409,9 +2410,11 @@ index b01af09..09f6da4 100644
 +				{
 +					for(int i = 0; i < inventoryRows * 9; i++)
 +					{
-+						Slot slot = (Slot)inventorySlots.inventorySlots.get(i);
-+						if(slot.getStack() == null)
++						Slot slot = inventorySlots.inventorySlots.get(i);
++						if(WItem.isNull(slot.getStack()))
 +							continue;
++						if(mc.currentScreen == null)
++							break;
 +						if(WurstClient.INSTANCE.special.yesCheatSpf.getProfile()
 +							.ordinal() >= Profile.ANTICHEAT.ordinal())
 +							Thread.sleep(250);
@@ -2430,9 +2433,11 @@ index b01af09..09f6da4 100644
 +					for(int i = inventoryRows * 9; i < inventoryRows * 9
 +						+ 44; i++)
 +					{
-+						Slot slot = (Slot)inventorySlots.inventorySlots.get(i);
-+						if(slot.getStack() == null)
++						Slot slot = inventorySlots.inventorySlots.get(i);
++						if(WItem.isNull(slot.getStack()))
 +							continue;
++						if(mc.currentScreen == null)
++							break;
 +						if(WurstClient.INSTANCE.special.yesCheatSpf.getProfile()
 +							.ordinal() >= Profile.ANTICHEAT.ordinal())
 +							Thread.sleep(250);
