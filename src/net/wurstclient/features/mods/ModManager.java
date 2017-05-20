@@ -28,6 +28,7 @@ import net.wurstclient.features.mods.items.KillPotionMod;
 import net.wurstclient.features.mods.items.TrollPotionMod;
 import net.wurstclient.features.mods.movement.*;
 import net.wurstclient.features.mods.other.AntiAfkMod;
+import net.wurstclient.features.mods.render.AntiBlindMod;
 import net.wurstclient.features.mods.retro.CriticalsMod;
 import net.wurstclient.features.mods.retro.FastBowMod;
 import net.wurstclient.features.mods.retro.FastEatMod;
