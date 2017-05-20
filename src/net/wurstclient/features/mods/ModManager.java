@@ -13,6 +13,7 @@ import java.util.Comparator;
 import java.util.TreeMap;
 
 import net.wurstclient.features.Mod;
+import net.wurstclient.features.mods.blocks.AntiCactusMod;
 import net.wurstclient.features.mods.combat.*;
 import net.wurstclient.features.mods.fun.DerpMod;
 import net.wurstclient.features.mods.fun.HeadRollMod;
