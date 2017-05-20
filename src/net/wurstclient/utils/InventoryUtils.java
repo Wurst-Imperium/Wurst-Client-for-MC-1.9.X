@@ -9,7 +9,6 @@ package net.wurstclient.utils;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
 import net.minecraft.potion.Potion;
@@ -54,11 +53,6 @@ public class InventoryUtils
 	public static ItemStack createSplashPotion()
 	{
 		return new ItemStack(Items.splash_potion);
-	}
-	
-	public static int getArmorType(ItemArmor armor)
-	{
-		return armor.armorType.ordinal() - 2;
 	}
 	
 	public static float getStrVsBlock(ItemStack stack, BlockPos pos)

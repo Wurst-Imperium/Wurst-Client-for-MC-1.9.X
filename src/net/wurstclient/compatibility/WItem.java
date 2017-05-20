@@ -22,6 +22,11 @@ public final class WItem
 		return stack == null;
 	}
 	
+	public static int getArmorType(ItemArmor armor)
+	{
+		return armor.armorType.ordinal() - 2;
+	}
+	
 	public static boolean isThrowable(ItemStack stack)
 	{
 		Item item = stack.getItem();
