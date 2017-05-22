@@ -1,6 +1,6 @@
-From 8c07ba816d08fdca14229804655871b28c740a15 Mon Sep 17 00:00:00 2001
+From 8af9129cea917ffc046efb58b4295e4126adb932 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Fri, 19 May 2017 16:06:06 +0200
+Date: Mon, 22 May 2017 20:35:47 +0200
 Subject: [PATCH] mod
 
 ---
@@ -63,7 +63,7 @@ Subject: [PATCH] mod
  net/minecraft/crash/CrashReport.java               |  62 +++++-
  net/minecraft/crash/CrashReportCategory.java       |  10 +-
  net/minecraft/enchantment/Enchantment.java         |   4 +
- net/minecraft/entity/Entity.java                   |  67 +++---
+ net/minecraft/entity/Entity.java                   |  68 +++---
  net/minecraft/entity/EntityAreaEffectCloud.java    |   6 +-
  net/minecraft/entity/EntityLivingBase.java         | 110 +++++-----
  net/minecraft/entity/EntityTrackerEntry.java       |   4 +-
@@ -104,7 +104,7 @@ Subject: [PATCH] mod
  net/minecraft/util/text/ITextComponent.java        |  12 ++
  net/minecraft/util/text/Style.java                 |   6 +
  net/minecraft/world/World.java                     |  26 +++
- 100 files changed, 1548 insertions(+), 529 deletions(-)
+ 100 files changed, 1549 insertions(+), 529 deletions(-)
 
 diff --git a/Start.java b/Start.java
 index ae0025f..078afa5 100644
@@ -3823,7 +3823,7 @@ index 79768b5..06c460a 100644
      private final EntityEquipmentSlot[] applicableEquipmentTypes;
      private final Enchantment.Rarity weight;
 diff --git a/net/minecraft/entity/Entity.java b/net/minecraft/entity/Entity.java
-index 85a68a2..443ed13 100644
+index 85a68a2..6c46f96 100644
 --- a/net/minecraft/entity/Entity.java
 +++ b/net/minecraft/entity/Entity.java
 @@ -1,8 +1,5 @@
@@ -3877,17 +3877,18 @@ index 85a68a2..443ed13 100644
  import net.minecraft.util.math.AxisAlignedBB;
  import net.minecraft.util.math.BlockPos;
  import net.minecraft.util.math.MathHelper;
-@@ -71,8 +67,7 @@ import net.minecraft.world.Explosion;
+@@ -71,8 +67,8 @@ import net.minecraft.world.Explosion;
  import net.minecraft.world.Teleporter;
  import net.minecraft.world.World;
  import net.minecraft.world.WorldServer;
 -import org.apache.logging.log4j.LogManager;
 -import org.apache.logging.log4j.Logger;
 +import net.wurstclient.WurstClient;
++import net.wurstclient.compatibility.WMinecraft;
  
  public abstract class Entity implements ICommandSender
  {
-@@ -125,7 +120,7 @@ public abstract class Entity implements ICommandSender
+@@ -125,7 +121,7 @@ public abstract class Entity implements ICommandSender
      public float prevRotationPitch;
  
      /** Axis aligned bounding box. */
@@ -3896,7 +3897,7 @@ index 85a68a2..443ed13 100644
      public boolean onGround;
  
      /**
-@@ -143,7 +138,7 @@ public abstract class Entity implements ICommandSender
+@@ -143,7 +139,7 @@ public abstract class Entity implements ICommandSender
       */
      public boolean isCollided;
      public boolean velocityChanged;
@@ -3905,7 +3906,7 @@ index 85a68a2..443ed13 100644
      private boolean isOutsideBorder;
  
      /**
-@@ -687,9 +682,21 @@ public abstract class Entity implements ICommandSender
+@@ -687,9 +683,21 @@ public abstract class Entity implements ICommandSender
       */
      public void moveEntity(double x, double y, double z)
      {
@@ -3930,7 +3931,7 @@ index 85a68a2..443ed13 100644
              this.resetPositionToBB();
          }
          else
-@@ -713,7 +720,12 @@ public abstract class Entity implements ICommandSender
+@@ -713,7 +721,12 @@ public abstract class Entity implements ICommandSender
              double d3 = x;
              double d4 = y;
              double d5 = z;
@@ -3944,7 +3945,7 @@ index 85a68a2..443ed13 100644
  
              if (flag)
              {
-@@ -2265,9 +2277,14 @@ public abstract class Entity implements ICommandSender
+@@ -2265,9 +2278,14 @@ public abstract class Entity implements ICommandSender
       */
      public void setVelocity(double x, double y, double z)
      {
@@ -3953,9 +3954,9 @@ index 85a68a2..443ed13 100644
 -        this.motionZ = z;
 +		// TODO: Client
 +		float strength = 1F;
-+		if(WurstClient.INSTANCE.mods.antiKnockbackMod.isActive())
-+			strength = 1F - WurstClient.INSTANCE.mods.antiKnockbackMod.strength
-+				.getValueF();
++		if(this == WMinecraft.getPlayer())
++			strength = WurstClient.INSTANCE.mods.antiKnockbackMod
++				.getKnockbackModifier();
 +		this.motionX = x * strength;
 +		this.motionY = y * strength;
 +		this.motionZ = z * strength;
