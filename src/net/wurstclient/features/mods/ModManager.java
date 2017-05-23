@@ -15,6 +15,7 @@ import java.util.TreeMap;
 import net.wurstclient.features.Mod;
 import net.wurstclient.features.mods.blocks.AntiCactusMod;
 import net.wurstclient.features.mods.blocks.AutoMineMod;
+import net.wurstclient.features.mods.blocks.AutoSignMod;
 import net.wurstclient.features.mods.chat.AntiSpamMod;
 import net.wurstclient.features.mods.combat.*;
 import net.wurstclient.features.mods.fun.DerpMod;
