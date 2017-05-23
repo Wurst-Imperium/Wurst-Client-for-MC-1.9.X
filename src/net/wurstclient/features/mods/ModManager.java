@@ -38,6 +38,7 @@ import net.wurstclient.features.mods.other.AutoFishMod;
 import net.wurstclient.features.mods.other.AutoStealMod;
 import net.wurstclient.features.mods.other.AutoSwitchMod;
 import net.wurstclient.features.mods.render.AntiBlindMod;
+import net.wurstclient.features.mods.render.BaseFinderMod;
 import net.wurstclient.features.mods.retro.AntiFireMod;
 import net.wurstclient.features.mods.retro.AntiPotionMod;
 import net.wurstclient.features.mods.retro.CriticalsMod;
