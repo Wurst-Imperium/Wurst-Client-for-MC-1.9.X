@@ -13,13 +13,7 @@ import java.util.Comparator;
 import java.util.TreeMap;
 
 import net.wurstclient.features.Mod;
-import net.wurstclient.features.mods.blocks.AntiCactusMod;
-import net.wurstclient.features.mods.blocks.AutoMineMod;
-import net.wurstclient.features.mods.blocks.AutoSignMod;
-import net.wurstclient.features.mods.blocks.AutoToolMod;
-import net.wurstclient.features.mods.blocks.BonemealAuraMod;
-import net.wurstclient.features.mods.blocks.BuildRandomMod;
-import net.wurstclient.features.mods.blocks.FastBreakMod;
+import net.wurstclient.features.mods.blocks.*;
 import net.wurstclient.features.mods.chat.AntiSpamMod;
 import net.wurstclient.features.mods.chat.FancyChatMod;
 import net.wurstclient.features.mods.combat.*;
