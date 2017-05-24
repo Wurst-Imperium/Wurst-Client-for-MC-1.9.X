@@ -19,6 +19,7 @@ import net.wurstclient.features.mods.blocks.AutoSignMod;
 import net.wurstclient.features.mods.blocks.AutoToolMod;
 import net.wurstclient.features.mods.blocks.BonemealAuraMod;
 import net.wurstclient.features.mods.blocks.BuildRandomMod;
+import net.wurstclient.features.mods.blocks.FastBreakMod;
 import net.wurstclient.features.mods.chat.AntiSpamMod;
 import net.wurstclient.features.mods.chat.FancyChatMod;
 import net.wurstclient.features.mods.combat.*;
