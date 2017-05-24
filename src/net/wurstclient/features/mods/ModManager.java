@@ -40,6 +40,7 @@ import net.wurstclient.features.mods.render.BaseFinderMod;
 import net.wurstclient.features.mods.render.CaveFinderMod;
 import net.wurstclient.features.mods.render.FreecamMod;
 import net.wurstclient.features.mods.render.FullbrightMod;
+import net.wurstclient.features.mods.render.HealthTagsMod;
 import net.wurstclient.features.mods.retro.AntiFireMod;
 import net.wurstclient.features.mods.retro.AntiPotionMod;
 import net.wurstclient.features.mods.retro.CriticalsMod;
