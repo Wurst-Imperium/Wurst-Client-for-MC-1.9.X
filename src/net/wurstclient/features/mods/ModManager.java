@@ -123,7 +123,6 @@ public class ModManager
 	public final HighJumpMod highJumpMod = new HighJumpMod();
 	public final HomeMod homeMod = new HomeMod();
 	public final InstantBunkerMod instantBunkerMod = new InstantBunkerMod();
-	public final InvisibilityMod invisibilityMod = new InvisibilityMod();
 	public final ItemEspMod itemEspMod = new ItemEspMod();
 	public final JesusMod jesusMod = new JesusMod();
 	public final JetpackMod jetpackMod = new JetpackMod();
