@@ -35,7 +35,6 @@ import net.wurstclient.features.mods.other.*;
 import net.wurstclient.features.mods.render.*;
 import net.wurstclient.features.mods.retro.AntiFireMod;
 import net.wurstclient.features.mods.retro.AntiPotionMod;
-import net.wurstclient.features.mods.retro.CriticalsMod;
 import net.wurstclient.features.mods.retro.FastBowMod;
 import net.wurstclient.features.mods.retro.FastEatMod;
 import net.wurstclient.features.mods.retro.ForcePushMod;
