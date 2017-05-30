@@ -1,6 +1,6 @@
-From 8bee9acc4d4830d434c8de863f31b6db3817847f Mon Sep 17 00:00:00 2001
+From dbd5f8bba1c988bc54178d706ee5d6c9b23d5ef0 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Tue, 30 May 2017 11:52:21 +0200
+Date: Tue, 30 May 2017 13:11:34 +0200
 Subject: [PATCH] mod
 
 ---
@@ -17,7 +17,7 @@ Subject: [PATCH] mod
  net/minecraft/client/Minecraft.java                | 229 +++++++++++----------
  .../client/audio/PositionedSoundRecord.java        |   2 +-
  .../client/entity/AbstractClientPlayer.java        |   4 +-
- net/minecraft/client/entity/EntityPlayerSP.java    | 128 ++++++++----
+ net/minecraft/client/entity/EntityPlayerSP.java    | 127 ++++++++----
  net/minecraft/client/gui/FontRenderer.java         |   2 +-
  net/minecraft/client/gui/GuiButton.java            |  16 +-
  net/minecraft/client/gui/GuiDisconnected.java      |  88 ++++++++
@@ -92,7 +92,7 @@ Subject: [PATCH] mod
  .../network/play/client/CPacketPlayer.java         |  28 +--
  .../network/play/server/SPacketEntityEffect.java   |   2 +-
  .../network/play/server/SPacketJoinGame.java       |   5 +
- net/minecraft/potion/PotionEffect.java             |  26 +--
+ net/minecraft/potion/PotionEffect.java             |  37 ++--
  net/minecraft/potion/PotionType.java               |   2 +-
  net/minecraft/potion/PotionUtils.java              |   4 +-
  net/minecraft/realms/Realms.java                   |   4 +-
@@ -105,7 +105,7 @@ Subject: [PATCH] mod
  net/minecraft/util/text/ITextComponent.java        |  12 ++
  net/minecraft/util/text/Style.java                 |   6 +
  net/minecraft/world/World.java                     |  41 ++--
- 101 files changed, 1562 insertions(+), 546 deletions(-)
+ 101 files changed, 1569 insertions(+), 549 deletions(-)
 
 diff --git a/Start.java b/Start.java
 index ae0025f..078afa5 100644
@@ -887,7 +887,7 @@ index c30247b..1fd170a 100644
  
              if (f1 > 1.0F)
 diff --git a/net/minecraft/client/entity/EntityPlayerSP.java b/net/minecraft/client/entity/EntityPlayerSP.java
-index 61b85c2..8c2dace 100644
+index 61b85c2..1c91d84 100644
 --- a/net/minecraft/client/entity/EntityPlayerSP.java
 +++ b/net/minecraft/client/entity/EntityPlayerSP.java
 @@ -10,15 +10,7 @@ import net.minecraft.client.gui.GuiMerchant;
@@ -963,7 +963,7 @@ index 61b85c2..8c2dace 100644
          }
      }
  
-@@ -264,32 +258,59 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -264,32 +258,58 @@ public class EntityPlayerSP extends AbstractClientPlayer
  
          if (this.isCurrentViewEntity())
          {
@@ -993,8 +993,7 @@ index 61b85c2..8c2dace 100644
 +			// Stops motion updates
 +			if(WurstClient.INSTANCE.mods.remoteViewMod.isActive()
 +				|| WurstClient.INSTANCE.mods.freecamMod.isActive()
-+				|| (WurstClient.INSTANCE.mods.potionSaverMod.isActive()
-+					&& !getActivePotionEffects().isEmpty() && motionX == 0 && motionZ == 0))
++				|| WurstClient.INSTANCE.mods.potionSaverMod.isFrozen())
 +			{	
 +				
 +			}else if (this.isRiding())
@@ -1030,7 +1029,7 @@ index 61b85c2..8c2dace 100644
              }
              else if (this.field_184841_cd != this.onGround)
              {
-@@ -332,9 +353,31 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -332,9 +352,31 @@ public class EntityPlayerSP extends AbstractClientPlayer
      /**
       * Sends a chat message from the player. Args: chatMessage
       */
@@ -1064,7 +1063,7 @@ index 61b85c2..8c2dace 100644
      }
  
      public void swingArm(EnumHand hand)
-@@ -629,7 +672,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -629,7 +671,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
      {
          ItemStack itemstack = this.getHeldItem(p_184598_1_);
  
@@ -1073,7 +1072,7 @@ index 61b85c2..8c2dace 100644
          {
              super.func_184598_c(p_184598_1_);
              this.field_184842_cm = true;
-@@ -637,7 +680,13 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -637,7 +679,13 @@ public class EntityPlayerSP extends AbstractClientPlayer
          }
      }
      
@@ -1088,7 +1087,7 @@ index 61b85c2..8c2dace 100644
      {
          return this.field_184842_cm;
      }
-@@ -847,7 +896,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -847,7 +895,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
  
              if (this.timeInPortal == 0.0F)
              {
@@ -1097,7 +1096,7 @@ index 61b85c2..8c2dace 100644
              }
  
              this.timeInPortal += 0.0125F;
-@@ -892,8 +941,11 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -892,8 +940,11 @@ public class EntityPlayerSP extends AbstractClientPlayer
          boolean flag2 = this.movementInput.moveForward >= f;
          this.movementInput.updatePlayerMoveState();
  
@@ -1110,7 +1109,7 @@ index 61b85c2..8c2dace 100644
              this.movementInput.moveStrafe *= 0.2F;
              this.movementInput.moveForward *= 0.2F;
              this.sprintToggleTimer = 0;
-@@ -906,7 +958,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -906,7 +957,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
          this.pushOutOfBlocks(this.posX + (double)this.width * 0.35D, axisalignedbb.minY + 0.5D, this.posZ + (double)this.width * 0.35D);
          boolean flag3 = (float)this.getFoodStats().getFoodLevel() > 6.0F || this.capabilities.allowFlying;
  
@@ -1119,7 +1118,7 @@ index 61b85c2..8c2dace 100644
          {
              if (this.sprintToggleTimer <= 0 && !this.mc.gameSettings.keyBindSprint.isKeyDown())
              {
-@@ -918,7 +970,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -918,7 +969,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
              }
          }
  
@@ -1128,7 +1127,7 @@ index 61b85c2..8c2dace 100644
          {
              this.setSprinting(true);
          }
-@@ -953,7 +1005,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -953,7 +1004,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
              }
          }
  
@@ -1137,7 +1136,7 @@ index 61b85c2..8c2dace 100644
          {
              ItemStack itemstack = this.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
  
-@@ -1052,7 +1104,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -1052,7 +1103,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
          return this.field_184844_co;
      }
  
@@ -1146,7 +1145,7 @@ index 61b85c2..8c2dace 100644
      {
          if (p_184596_1_ == MobEffects.confusion)
          {
-@@ -1060,6 +1112,6 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -1060,6 +1111,6 @@ public class EntityPlayerSP extends AbstractClientPlayer
              this.timeInPortal = 0.0F;
          }
  
@@ -5207,10 +5206,23 @@ index e3eeb4f..ae892ea 100644
          {
              this.worldType = WorldType.DEFAULT;
 diff --git a/net/minecraft/potion/PotionEffect.java b/net/minecraft/potion/PotionEffect.java
-index 72152cb..3f7253d 100644
+index 72152cb..62fc2e4 100644
 --- a/net/minecraft/potion/PotionEffect.java
 +++ b/net/minecraft/potion/PotionEffect.java
-@@ -9,7 +9,7 @@ import org.apache.logging.log4j.Logger;
+@@ -1,15 +1,18 @@
+ package net.minecraft.potion;
+ 
++import org.apache.logging.log4j.LogManager;
++import org.apache.logging.log4j.Logger;
++
+ import com.google.common.collect.ComparisonChain;
++
+ import net.minecraft.entity.EntityLivingBase;
+ import net.minecraft.nbt.NBTTagCompound;
+-import org.apache.logging.log4j.LogManager;
+-import org.apache.logging.log4j.Logger;
++import net.wurstclient.WurstClient;
+ 
  public class PotionEffect implements Comparable<PotionEffect>
  {
      private static final Logger LOGGER = LogManager.getLogger();
@@ -5219,7 +5231,7 @@ index 72152cb..3f7253d 100644
  
      /** The duration of the potion effect */
      private int duration;
-@@ -44,7 +44,7 @@ public class PotionEffect implements Comparable<PotionEffect>
+@@ -44,7 +47,7 @@ public class PotionEffect implements Comparable<PotionEffect>
  
      public PotionEffect(Potion p_i46814_1_, int p_i46814_2_, int p_i46814_3_, boolean p_i46814_4_, boolean p_i46814_5_)
      {
@@ -5228,7 +5240,7 @@ index 72152cb..3f7253d 100644
          this.duration = p_i46814_2_;
          this.amplifier = p_i46814_3_;
          this.isAmbient = p_i46814_4_;
-@@ -53,7 +53,7 @@ public class PotionEffect implements Comparable<PotionEffect>
+@@ -53,7 +56,7 @@ public class PotionEffect implements Comparable<PotionEffect>
  
      public PotionEffect(PotionEffect other)
      {
@@ -5237,7 +5249,7 @@ index 72152cb..3f7253d 100644
          this.duration = other.duration;
          this.amplifier = other.amplifier;
          this.isAmbient = other.isAmbient;
-@@ -66,7 +66,7 @@ public class PotionEffect implements Comparable<PotionEffect>
+@@ -66,7 +69,7 @@ public class PotionEffect implements Comparable<PotionEffect>
       */
      public void combine(PotionEffect other)
      {
@@ -5246,7 +5258,7 @@ index 72152cb..3f7253d 100644
          {
              LOGGER.warn("This method should only be called for matching effects!");
          }
-@@ -88,9 +88,9 @@ public class PotionEffect implements Comparable<PotionEffect>
+@@ -88,9 +91,9 @@ public class PotionEffect implements Comparable<PotionEffect>
          this.field_188421_h = other.field_188421_h;
      }
  
@@ -5258,7 +5270,7 @@ index 72152cb..3f7253d 100644
      }
  
      public int getDuration()
-@@ -120,7 +120,7 @@ public class PotionEffect implements Comparable<PotionEffect>
+@@ -120,7 +123,7 @@ public class PotionEffect implements Comparable<PotionEffect>
      {
          if (this.duration > 0)
          {
@@ -5267,7 +5279,17 @@ index 72152cb..3f7253d 100644
              {
                  this.performEffect(entityIn);
              }
-@@ -140,13 +140,13 @@ public class PotionEffect implements Comparable<PotionEffect>
+@@ -133,20 +136,22 @@ public class PotionEffect implements Comparable<PotionEffect>
+ 
+     private int deincrementDuration()
+     {
+-        return --this.duration;
++		// TODO: Client
++		return WurstClient.INSTANCE.mods.potionSaverMod.isFrozen() ? duration
++			: --duration;
+     }
+ 
+     public void performEffect(EntityLivingBase entityIn)
      {
          if (this.duration > 0)
          {
@@ -5283,7 +5305,7 @@ index 72152cb..3f7253d 100644
      }
  
      public String toString()
-@@ -188,13 +188,13 @@ public class PotionEffect implements Comparable<PotionEffect>
+@@ -188,13 +193,13 @@ public class PotionEffect implements Comparable<PotionEffect>
          else
          {
              PotionEffect potioneffect = (PotionEffect)p_equals_1_;
@@ -5299,7 +5321,7 @@ index 72152cb..3f7253d 100644
          i = 31 * i + this.duration;
          i = 31 * i + this.amplifier;
          i = 31 * i + (this.isSplashPotion ? 1 : 0);
-@@ -207,7 +207,7 @@ public class PotionEffect implements Comparable<PotionEffect>
+@@ -207,7 +212,7 @@ public class PotionEffect implements Comparable<PotionEffect>
       */
      public NBTTagCompound writeCustomPotionEffectToNBT(NBTTagCompound nbt)
      {
@@ -5308,7 +5330,7 @@ index 72152cb..3f7253d 100644
          nbt.setByte("Amplifier", (byte)this.getAmplifier());
          nbt.setInteger("Duration", this.getDuration());
          nbt.setBoolean("Ambient", this.getIsAmbient());
-@@ -259,6 +259,6 @@ public class PotionEffect implements Comparable<PotionEffect>
+@@ -259,6 +264,6 @@ public class PotionEffect implements Comparable<PotionEffect>
      public int compareTo(PotionEffect p_compareTo_1_)
      {
          int i = 32147;
