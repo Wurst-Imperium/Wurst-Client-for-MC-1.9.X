@@ -114,6 +114,7 @@ public class ModManager
 	public final HighJumpMod highJumpMod = new HighJumpMod();
 	public final HomeMod homeMod = new HomeMod();
 	public final InstantBunkerMod instantBunkerMod = new InstantBunkerMod();
+	public final InvWalkMod invWalkMod = new InvWalkMod();
 	public final ItemEspMod itemEspMod = new ItemEspMod();
 	public final JesusMod jesusMod = new JesusMod();
 	public final JetpackMod jetpackMod = new JetpackMod();
@@ -125,7 +126,6 @@ public class ModManager
 	public final LogSpammerMod logSpammerMod = new LogSpammerMod();
 	public final LsdMod lsdMod = new LsdMod();
 	public final MassTpaMod massTpaMod = new MassTpaMod();
-	public final MenuWalkMod menuWalkMod = new MenuWalkMod();
 	public final MileyCyrusMod mileyCyrusMod = new MileyCyrusMod();
 	public final MobEspMod mobEspMod = new MobEspMod();
 	public final MultiAuraMod multiAuraMod = new MultiAuraMod();
