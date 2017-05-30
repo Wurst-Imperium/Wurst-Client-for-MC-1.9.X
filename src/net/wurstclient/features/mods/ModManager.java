@@ -18,6 +18,7 @@ import net.wurstclient.features.mods.chat.AntiSpamMod;
 import net.wurstclient.features.mods.chat.FancyChatMod;
 import net.wurstclient.features.mods.chat.ForceOpMod;
 import net.wurstclient.features.mods.chat.HomeMod;
+import net.wurstclient.features.mods.chat.MassTpaMod;
 import net.wurstclient.features.mods.combat.*;
 import net.wurstclient.features.mods.fun.DerpMod;
 import net.wurstclient.features.mods.fun.HeadRollMod;
