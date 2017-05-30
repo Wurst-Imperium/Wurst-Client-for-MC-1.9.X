@@ -1,6 +1,6 @@
-From 23ec477a4dcfdeceaa8114830d53c67166fbc665 Mon Sep 17 00:00:00 2001
+From 8bee9acc4d4830d434c8de863f31b6db3817847f Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Mon, 29 May 2017 16:28:31 +0200
+Date: Tue, 30 May 2017 11:52:21 +0200
 Subject: [PATCH] mod
 
 ---
@@ -104,8 +104,8 @@ Subject: [PATCH] mod
  net/minecraft/util/math/Vec3d.java                 |   6 +
  net/minecraft/util/text/ITextComponent.java        |  12 ++
  net/minecraft/util/text/Style.java                 |   6 +
- net/minecraft/world/World.java                     |  26 +++
- 101 files changed, 1559 insertions(+), 534 deletions(-)
+ net/minecraft/world/World.java                     |  41 ++--
+ 101 files changed, 1562 insertions(+), 546 deletions(-)
 
 diff --git a/Start.java b/Start.java
 index ae0025f..078afa5 100644
@@ -5551,10 +5551,49 @@ index 246b592..2b752c9 100644
       * Sets the event that should be run when text of this ChatStyle is clicked on.
       */
 diff --git a/net/minecraft/world/World.java b/net/minecraft/world/World.java
-index f51c789..92ccccd 100644
+index f51c789..0b66390 100644
 --- a/net/minecraft/world/World.java
 +++ b/net/minecraft/world/World.java
-@@ -55,6 +55,7 @@ import net.minecraft.world.storage.ISaveHandler;
+@@ -1,9 +1,5 @@
+ package net.minecraft.world;
+ 
+-import com.google.common.base.Function;
+-import com.google.common.base.Objects;
+-import com.google.common.base.Predicate;
+-import com.google.common.collect.Lists;
+ import java.util.Calendar;
+ import java.util.Collection;
+ import java.util.Iterator;
+@@ -11,6 +7,12 @@ import java.util.List;
+ import java.util.Random;
+ import java.util.UUID;
+ import java.util.concurrent.Callable;
++
++import com.google.common.base.Function;
++import com.google.common.base.Objects;
++import com.google.common.base.Predicate;
++import com.google.common.collect.Lists;
++
+ import net.minecraft.block.Block;
+ import net.minecraft.block.BlockLiquid;
+ import net.minecraft.block.material.Material;
+@@ -31,14 +33,7 @@ import net.minecraft.profiler.Profiler;
+ import net.minecraft.scoreboard.Scoreboard;
+ import net.minecraft.server.MinecraftServer;
+ import net.minecraft.tileentity.TileEntity;
+-import net.minecraft.util.EntitySelectors;
+-import net.minecraft.util.EnumFacing;
+-import net.minecraft.util.EnumParticleTypes;
+-import net.minecraft.util.ITickable;
+-import net.minecraft.util.IntHashMap;
+-import net.minecraft.util.ReportedException;
+-import net.minecraft.util.SoundCategory;
+-import net.minecraft.util.SoundEvent;
++import net.minecraft.util.*;
+ import net.minecraft.util.math.AxisAlignedBB;
+ import net.minecraft.util.math.BlockPos;
+ import net.minecraft.util.math.MathHelper;
+@@ -55,6 +50,7 @@ import net.minecraft.world.storage.ISaveHandler;
  import net.minecraft.world.storage.MapStorage;
  import net.minecraft.world.storage.WorldInfo;
  import net.minecraft.world.storage.loot.LootTableManager;
@@ -5562,7 +5601,7 @@ index f51c789..92ccccd 100644
  
  public abstract class World implements IBlockAccess
  {
-@@ -1242,6 +1243,13 @@ public abstract class World implements IBlockAccess
+@@ -1242,6 +1238,13 @@ public abstract class World implements IBlockAccess
          this.worldAccesses.remove(worldAccess);
      }
      
@@ -5576,15 +5615,14 @@ index f51c789..92ccccd 100644
      public List<AxisAlignedBB> func_184144_a(Entity p_184144_1_, AxisAlignedBB p_184144_2_)
      {
          List<AxisAlignedBB> list = Lists.<AxisAlignedBB>newArrayList();
-@@ -1550,11 +1558,24 @@ public abstract class World implements IBlockAccess
+@@ -1550,11 +1553,21 @@ public abstract class World implements IBlockAccess
       */
      public float getCelestialAngle(float partialTicks)
      {
 +		// TODO: Client
-+		if(WurstClient.INSTANCE.mods.noWeatherMod.isActive()
-+			&& WurstClient.INSTANCE.mods.noWeatherMod.changeTime.isChecked())
++		if(WurstClient.INSTANCE.mods.noWeatherMod.isTimeChanged())
 +			return provider.calculateCelestialAngle(
-+				(long)WurstClient.INSTANCE.mods.noWeatherMod.time.getValueI(),
++				WurstClient.INSTANCE.mods.noWeatherMod.getChangedTime(),
 +				partialTicks);
 +		
  		return this.provider.calculateCelestialAngle(this.worldInfo.getWorldTime(), partialTicks);
@@ -5593,21 +5631,18 @@ index f51c789..92ccccd 100644
      public int getMoonPhase()
      {
 +		// TODO: Client
-+		if(WurstClient.INSTANCE.mods.noWeatherMod.isActive()
-+			&& WurstClient.INSTANCE.mods.noWeatherMod.changeMoonPhase
-+				.isChecked())
-+			return WurstClient.INSTANCE.mods.noWeatherMod.moonPhase.getValueI();
++		if(WurstClient.INSTANCE.mods.noWeatherMod.isMoonPhaseChanged())
++			return WurstClient.INSTANCE.mods.noWeatherMod.getChangedMoonPhase();
 +		
  		return this.provider.getMoonPhase(this.worldInfo.getWorldTime());
      }
  
-@@ -3592,6 +3613,11 @@ public abstract class World implements IBlockAccess
+@@ -3592,6 +3605,10 @@ public abstract class World implements IBlockAccess
       */
      public float getRainStrength(float delta)
      {
 +		// TODO: Client
-+		if(WurstClient.INSTANCE.mods.noWeatherMod.isActive()
-+			&& WurstClient.INSTANCE.mods.noWeatherMod.disableRain.isChecked())
++		if(WurstClient.INSTANCE.mods.noWeatherMod.isRainDisabled())
 +			return 0;
 +		
          return this.prevRainingStrength + (this.rainingStrength - this.prevRainingStrength) * delta;
