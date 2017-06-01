@@ -1,6 +1,6 @@
-From 9a8912395b5104948bc586c900328fe84f5091c3 Mon Sep 17 00:00:00 2001
+From 374e92fbb08098cedc541dcd37dcff4baddd2625 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Tue, 30 May 2017 15:44:59 +0200
+Date: Thu, 1 Jun 2017 11:19:01 +0200
 Subject: [PATCH] mod
 
 ---
@@ -20,7 +20,7 @@ Subject: [PATCH] mod
  net/minecraft/client/entity/EntityPlayerSP.java    | 127 ++++++++----
  net/minecraft/client/gui/FontRenderer.java         |  17 +-
  net/minecraft/client/gui/GuiButton.java            |  16 +-
- net/minecraft/client/gui/GuiDisconnected.java      |  88 ++++++++
+ net/minecraft/client/gui/GuiDisconnected.java      |  91 ++++++++-
  net/minecraft/client/gui/GuiGameOver.java          |  13 +-
  net/minecraft/client/gui/GuiIngame.java            |  31 ++-
  net/minecraft/client/gui/GuiIngameMenu.java        |  56 ++++-
@@ -33,7 +33,7 @@ Subject: [PATCH] mod
  .../client/gui/GuiScreenOptionsSounds.java         |   2 +-
  net/minecraft/client/gui/GuiScreenServerList.java  |   8 +
  .../client/gui/ServerListEntryNormal.java          |  13 +-
- net/minecraft/client/gui/ServerSelectionList.java  |   8 +-
+ net/minecraft/client/gui/ServerSelectionList.java  |  14 +-
  net/minecraft/client/gui/achievement/GuiStats.java |  18 +-
  net/minecraft/client/gui/inventory/GuiChest.java   |  76 +++++++
  .../client/gui/inventory/GuiContainer.java         |  51 +++--
@@ -105,7 +105,7 @@ Subject: [PATCH] mod
  net/minecraft/util/text/ITextComponent.java        |  12 ++
  net/minecraft/util/text/Style.java                 |   6 +
  net/minecraft/world/World.java                     |  41 ++--
- 101 files changed, 1597 insertions(+), 554 deletions(-)
+ 101 files changed, 1601 insertions(+), 559 deletions(-)
 
 diff --git a/Start.java b/Start.java
 index ae0025f..078afa5 100644
@@ -1239,15 +1239,13 @@ index cdb4e57..82cb9ea 100644
  
      public int getButtonWidth()
 diff --git a/net/minecraft/client/gui/GuiDisconnected.java b/net/minecraft/client/gui/GuiDisconnected.java
-index 4a7f37e..825ef7e 100644
+index 4a7f37e..dbe27e7 100644
 --- a/net/minecraft/client/gui/GuiDisconnected.java
 +++ b/net/minecraft/client/gui/GuiDisconnected.java
-@@ -2,8 +2,14 @@ package net.minecraft.client.gui;
+@@ -2,8 +2,12 @@ package net.minecraft.client.gui;
  
  import java.io.IOException;
  import java.util.List;
-+
-+import org.apache.logging.log4j.LogManager;
 +
  import net.minecraft.client.resources.I18n;
  import net.minecraft.util.text.ITextComponent;
@@ -1257,87 +1255,61 @@ index 4a7f37e..825ef7e 100644
  
  public class GuiDisconnected extends GuiScreen
  {
-@@ -13,11 +19,20 @@ public class GuiDisconnected extends GuiScreen
+@@ -11,13 +15,21 @@ public class GuiDisconnected extends GuiScreen
+     private ITextComponent message;
+     private List<String> multilineMessage;
      private final GuiScreen parentScreen;
-     private int field_175353_i;
- 
-+    //TODO: Client
+-    private int field_175353_i;
++    private int textHeight;
++    
++	// TODO: Client
 +	private int autoReconnectTimer;
-+
+ 
      public GuiDisconnected(GuiScreen screen, String reasonLocalizationKey, ITextComponent chatComp)
      {
          this.parentScreen = screen;
          this.reason = I18n.format(reasonLocalizationKey, new Object[0]);
          this.message = chatComp;
-+
-+        //TODO: Client
-+		LogManager.getLogger().info(
-+			"Disconnected.\n    Message: "
-+				+ (message == null ? null : message.getUnformattedText())
-+				+ "\n    Reason: " + reason);
++        
++		// TODO: Client
++		System.out.println("Disconnected.\n    Message: "
++			+ (message == null ? null : message.getUnformattedText())
++			+ "\n    Reason: " + reason);
      }
  
      /**
-@@ -38,6 +53,58 @@ public class GuiDisconnected extends GuiScreen
+@@ -36,8 +48,28 @@ public class GuiDisconnected extends GuiScreen
+     {
+         this.buttonList.clear();
          this.multilineMessage = this.fontRendererObj.listFormattedStringToWidth(this.message.getFormattedText(), this.width - 50);
-         this.field_175353_i = this.multilineMessage.size() * this.fontRendererObj.FONT_HEIGHT;
-         this.buttonList.add(new GuiButton(0, this.width / 2 - 100, this.height / 2 + this.field_175353_i / 2 + this.fontRendererObj.FONT_HEIGHT, I18n.format("gui.toMenu", new Object[0])));
+-        this.field_175353_i = this.multilineMessage.size() * this.fontRendererObj.FONT_HEIGHT;
+-        this.buttonList.add(new GuiButton(0, this.width / 2 - 100, this.height / 2 + this.field_175353_i / 2 + this.fontRendererObj.FONT_HEIGHT, I18n.format("gui.toMenu", new Object[0])));
++        this.textHeight = this.multilineMessage.size() * this.fontRendererObj.FONT_HEIGHT;
++        this.buttonList.add(new GuiButton(0, this.width / 2 - 100, this.height / 2 + this.textHeight / 2 + this.fontRendererObj.FONT_HEIGHT, I18n.format("gui.toMenu", new Object[0])));
 +        
 +		// TODO: Client
-+		this.buttonList.add(new GuiButton(1, this.width / 2 - 100, this.height
-+			/ 2 + this.field_175353_i / 2 + this.fontRendererObj.FONT_HEIGHT
-+			+ 24, "Reconnect"));
-+		this.buttonList.add(new GuiButton(2, this.width / 2 - 100, this.height
-+			/ 2 + this.field_175353_i / 2 + this.fontRendererObj.FONT_HEIGHT
-+			+ 48, "AutoReconnect"));
++		buttonList.add(new GuiButton(1, width / 2 - 100,
++			height / 2 + textHeight / 2 + fontRendererObj.FONT_HEIGHT + 24,
++			"Reconnect"));
++		buttonList.add(new GuiButton(2, width / 2 - 100,
++			height / 2 + textHeight / 2 + fontRendererObj.FONT_HEIGHT + 48,
++			"AutoReconnect"));
 +		if(message.getUnformattedText().toLowerCase().contains("whitelist")
 +			|| message.getUnformattedText().toLowerCase()
 +				.contains("white-list"))
 +			if(parentScreen instanceof GuiMultiplayer
 +				&& ((GuiMultiplayer)parentScreen).serverListSelector
-+					.getSelectedServer() != -1)
-+				this.buttonList.add(new GuiButton(3, this.width / 2 - 100,
-+					this.height / 2 + this.field_175353_i / 2
-+						+ this.fontRendererObj.FONT_HEIGHT + 72,
++					.getSelected() != -1)
++				buttonList.add(new GuiButton(3,
++					width / 2 - 100, height / 2 + textHeight / 2
++						+ fontRendererObj.FONT_HEIGHT + 72,
 +					"§4Delete Server§r"));
 +		if(WurstClient.INSTANCE.options.autoReconnect)
-+			this.autoReconnectTimer = 100;
-+    }
-+
-+    //TODO: Client
-+    /**
-+     * Called from the main game loop to update the screen.
-+     */
-+    public void updateScreen()
-+    {
-+        super.updateScreen();
-+        if(WurstClient.INSTANCE.options.autoReconnect)
-+		{
-+			if(buttonList.size() < 2)
-+				return;
-+			((GuiButton)this.buttonList.get(2)).displayString =
-+				"AutoReconnect (" + ((this.autoReconnectTimer / 20) + 1) + ")";
-+			if(this.autoReconnectTimer > 0)
-+				this.autoReconnectTimer--;
-+			else
-+			{
-+				try
-+				{
-+					this.actionPerformed((GuiButton)this.buttonList.get(1));
-+				}catch(IOException e)
-+				{
-+					e.printStackTrace();
-+				}
-+			}
-+		}
-+        else
-+        {
-+        	((GuiButton)this.buttonList.get(2)).displayString = "AutoReconnect";
-+        }
++			autoReconnectTimer = 100;
      }
  
      /**
-@@ -48,6 +115,27 @@ public class GuiDisconnected extends GuiScreen
+@@ -48,6 +80,55 @@ public class GuiDisconnected extends GuiScreen
          if (button.id == 0)
          {
              this.mc.displayGuiScreen(this.parentScreen);
@@ -1345,26 +1317,65 @@ index 4a7f37e..825ef7e 100644
 +			// TODO: Client
 +		}else if(button.id == 1)
 +		{
-+			ServerHook.reconnectToLastServer(this);
++			ServerHook.reconnectToLastServer(parentScreen);
 +		}else if(button.id == 2)
 +		{
 +			WurstClient.INSTANCE.options.autoReconnect =
 +				!WurstClient.INSTANCE.options.autoReconnect;
 +			ConfigFiles.OPTIONS.save();
 +			if(WurstClient.INSTANCE.options.autoReconnect)
-+				this.autoReconnectTimer = 100;
++				autoReconnectTimer = 100;
 +		}else if(button.id == 3)
 +		{
 +			GuiMultiplayer servers = (GuiMultiplayer)parentScreen;
-+			servers.savedServerList.removeServerData(
-+				servers.serverListSelector.getSelectedServer());
++			servers.savedServerList
++				.removeServerData(servers.serverListSelector.getSelected());
 +			servers.savedServerList.saveServerList();
 +			servers.serverListSelector.setSelectedSlotIndex(-1);
-+			servers.serverListSelector.func_148195_a(servers.savedServerList);
++			servers.serverListSelector
++				.updateOnlineServers(servers.savedServerList);
 +			mc.displayGuiScreen(servers);
++		}
++    }
++    
++	// TODO: Client
++	public void updateScreen()
++	{
++		if(WurstClient.INSTANCE.options.autoReconnect)
++		{
++			if(buttonList.size() < 2)
++				return;
++			buttonList.get(2).displayString =
++				"AutoReconnect (" + (autoReconnectTimer / 20 + 1) + ")";
++			if(autoReconnectTimer > 0)
++				autoReconnectTimer--;
++			else
++			{
++				try
++				{
++					actionPerformed(buttonList.get(1));
++				}catch(IOException e)
++				{
++					e.printStackTrace();
++				}
++			}
++		}else
++		{
++			buttonList.get(2).displayString = "AutoReconnect";
  		}
-     }
+ 	}
  
+@@ -57,8 +138,8 @@ public class GuiDisconnected extends GuiScreen
+     public void drawScreen(int mouseX, int mouseY, float partialTicks)
+     {
+         this.drawDefaultBackground();
+-        this.drawCenteredString(this.fontRendererObj, this.reason, this.width / 2, this.height / 2 - this.field_175353_i / 2 - this.fontRendererObj.FONT_HEIGHT * 2, 11184810);
+-        int i = this.height / 2 - this.field_175353_i / 2;
++        this.drawCenteredString(this.fontRendererObj, this.reason, this.width / 2, this.height / 2 - this.textHeight / 2 - this.fontRendererObj.FONT_HEIGHT * 2, 11184810);
++        int i = this.height / 2 - this.textHeight / 2;
+ 
+         if (this.multilineMessage != null)
+         {
 diff --git a/net/minecraft/client/gui/GuiGameOver.java b/net/minecraft/client/gui/GuiGameOver.java
 index 08d7720..cf1ee7b 100644
 --- a/net/minecraft/client/gui/GuiGameOver.java
@@ -2338,14 +2349,20 @@ index f4982df..9eb3ec5 100644
          this.mc.fontRendererObj.drawString(s2, x + listWidth - j - 15 - 2, y + 1, 8421504);
          int k = 0;
 diff --git a/net/minecraft/client/gui/ServerSelectionList.java b/net/minecraft/client/gui/ServerSelectionList.java
-index d7c9b83..01e9969 100644
+index d7c9b83..8a20a71 100644
 --- a/net/minecraft/client/gui/ServerSelectionList.java
 +++ b/net/minecraft/client/gui/ServerSelectionList.java
-@@ -63,11 +63,17 @@ public class ServerSelectionList extends GuiListExtended
+@@ -63,11 +63,23 @@ public class ServerSelectionList extends GuiListExtended
          return slotIndex == this.selectedSlotIndex;
      }
- 
+     
 -    public int func_148193_k()
++	// TODO: Client
++	public int getSelected()
++	{
++		return getSelectedServer();
++	}
++    
 +    public int getSelectedServer()
      {
          return this.selectedSlotIndex;
