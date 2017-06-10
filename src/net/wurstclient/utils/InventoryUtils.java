@@ -47,7 +47,7 @@ public class InventoryUtils
 	
 	public static boolean isSplashPotion(ItemStack stack)
 	{
-		return stack.getItem() == Items.splash_potion;
+		return !WItem.isNull(stack) && stack.getItem() == Items.splash_potion;
 	}
 	
 	public static ItemStack createSplashPotion()
