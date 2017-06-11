@@ -41,9 +41,9 @@ public final class ExtraElytraMod extends Mod implements UpdateListener
 	@Override
 	public void initSettings()
 	{
-		settings.add(instantFly);
-		settings.add(easyFly);
-		settings.add(stopInWater);
+		addSetting(instantFly);
+		addSetting(easyFly);
+		addSetting(stopInWater);
 	}
 	
 	@Override
