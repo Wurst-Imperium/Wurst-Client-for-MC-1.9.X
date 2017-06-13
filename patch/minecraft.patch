@@ -1,6 +1,6 @@
-From 374e92fbb08098cedc541dcd37dcff4baddd2625 Mon Sep 17 00:00:00 2001
+From 27e76fc29889360647bb10d87304329dc6d88a04 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Thu, 1 Jun 2017 11:19:01 +0200
+Date: Tue, 13 Jun 2017 23:07:48 +0200
 Subject: [PATCH] mod
 
 ---
@@ -20,21 +20,31 @@ Subject: [PATCH] mod
  net/minecraft/client/entity/EntityPlayerSP.java    | 127 ++++++++----
  net/minecraft/client/gui/FontRenderer.java         |  17 +-
  net/minecraft/client/gui/GuiButton.java            |  16 +-
+ .../GuiClickableScrolledSelectionListProxy.java    |   4 +-
+ net/minecraft/client/gui/GuiCreateFlatWorld.java   |   2 +-
  net/minecraft/client/gui/GuiDisconnected.java      |  91 ++++++++-
+ net/minecraft/client/gui/GuiFlatPresets.java       |   2 +-
  net/minecraft/client/gui/GuiGameOver.java          |  13 +-
  net/minecraft/client/gui/GuiIngame.java            |  31 ++-
  net/minecraft/client/gui/GuiIngameMenu.java        |  56 ++++-
+ net/minecraft/client/gui/GuiLanguage.java          |   2 +-
+ net/minecraft/client/gui/GuiListExtended.java      |   2 +-
  .../client/gui/GuiListWorldSelectionEntry.java     |   2 +-
  net/minecraft/client/gui/GuiMainMenu.java          |  38 +++-
  net/minecraft/client/gui/GuiMemoryErrorScreen.java |   4 +-
  net/minecraft/client/gui/GuiMultiplayer.java       | 138 ++++++++++---
  net/minecraft/client/gui/GuiNewChat.java           |  12 ++
  net/minecraft/client/gui/GuiScreenBook.java        |  72 ++++++-
+ .../client/gui/GuiScreenCustomizePresets.java      |   2 +-
  .../client/gui/GuiScreenOptionsSounds.java         |   2 +-
  net/minecraft/client/gui/GuiScreenServerList.java  |   8 +
+ .../gui/GuiSimpleScrolledSelectionListProxy.java   |   2 +-
+ net/minecraft/client/gui/GuiSlot.java              |   4 +-
+ net/minecraft/client/gui/GuiSlotRealmsProxy.java   |   2 +-
+ net/minecraft/client/gui/GuiSnooper.java           |   2 +-
  .../client/gui/ServerListEntryNormal.java          |  13 +-
  net/minecraft/client/gui/ServerSelectionList.java  |  14 +-
- net/minecraft/client/gui/achievement/GuiStats.java |  18 +-
+ net/minecraft/client/gui/achievement/GuiStats.java |  26 ++-
  net/minecraft/client/gui/inventory/GuiChest.java   |  76 +++++++
  .../client/gui/inventory/GuiContainer.java         |  51 +++--
  .../client/gui/inventory/GuiContainerCreative.java |   2 +-
@@ -72,7 +82,7 @@ Subject: [PATCH] mod
  net/minecraft/entity/monster/EntityMob.java        |   4 +-
  net/minecraft/entity/monster/EntitySpider.java     |   2 +-
  net/minecraft/entity/monster/EntityZombie.java     |   2 +-
- net/minecraft/entity/player/EntityPlayer.java      |  43 ++--
+ net/minecraft/entity/player/EntityPlayer.java      |  45 +++--
  net/minecraft/entity/player/EntityPlayerMP.java    |   6 +-
  net/minecraft/entity/projectile/EntityPotion.java  |   4 +-
  .../entity/projectile/EntityTippedArrow.java       |   2 +-
@@ -105,7 +115,7 @@ Subject: [PATCH] mod
  net/minecraft/util/text/ITextComponent.java        |  12 ++
  net/minecraft/util/text/Style.java                 |   6 +
  net/minecraft/world/World.java                     |  41 ++--
- 101 files changed, 1601 insertions(+), 559 deletions(-)
+ 111 files changed, 1618 insertions(+), 576 deletions(-)
 
 diff --git a/Start.java b/Start.java
 index ae0025f..078afa5 100644
@@ -1238,6 +1248,41 @@ index cdb4e57..82cb9ea 100644
      }
  
      public int getButtonWidth()
+diff --git a/net/minecraft/client/gui/GuiClickableScrolledSelectionListProxy.java b/net/minecraft/client/gui/GuiClickableScrolledSelectionListProxy.java
+index 6077f49..6a8fee9 100644
+--- a/net/minecraft/client/gui/GuiClickableScrolledSelectionListProxy.java
++++ b/net/minecraft/client/gui/GuiClickableScrolledSelectionListProxy.java
+@@ -41,7 +41,7 @@ public class GuiClickableScrolledSelectionListProxy extends GuiSlot
+         this.proxy.renderBackground();
+     }
+ 
+-    protected void drawSlot(int entryID, int p_180791_2_, int p_180791_3_, int p_180791_4_, int mouseXIn, int mouseYIn)
++    protected void drawSlot(int entryID, int p_180791_2_, int p_180791_3_, int p_180791_4_, int mouseXIn, int mouseYIn, float partialTicks)
+     {
+         this.proxy.renderItem(entryID, p_180791_2_, p_180791_3_, p_180791_4_, mouseXIn, mouseYIn);
+     }
+@@ -111,7 +111,7 @@ public class GuiClickableScrolledSelectionListProxy extends GuiSlot
+                 this.renderSelected(this.width, k, l, Tezzelator.instance);
+             }
+ 
+-            this.drawSlot(j, p_148120_1_, k, l, mouseXIn, mouseYIn);
++            this.drawSlot(j, p_148120_1_, k, l, mouseXIn, mouseYIn, 0);
+         }
+     }
+ }
+diff --git a/net/minecraft/client/gui/GuiCreateFlatWorld.java b/net/minecraft/client/gui/GuiCreateFlatWorld.java
+index 78753fa..99d1f23 100644
+--- a/net/minecraft/client/gui/GuiCreateFlatWorld.java
++++ b/net/minecraft/client/gui/GuiCreateFlatWorld.java
+@@ -202,7 +202,7 @@ public class GuiCreateFlatWorld extends GuiScreen
+         {
+         }
+ 
+-        protected void drawSlot(int entryID, int p_180791_2_, int p_180791_3_, int p_180791_4_, int mouseXIn, int mouseYIn)
++        protected void drawSlot(int entryID, int p_180791_2_, int p_180791_3_, int p_180791_4_, int mouseXIn, int mouseYIn, float partialTicks)
+         {
+             FlatLayerInfo flatlayerinfo = (FlatLayerInfo)GuiCreateFlatWorld.this.theFlatGeneratorInfo.getFlatLayers().get(GuiCreateFlatWorld.this.theFlatGeneratorInfo.getFlatLayers().size() - entryID - 1);
+             IBlockState iblockstate = flatlayerinfo.getLayerMaterial();
 diff --git a/net/minecraft/client/gui/GuiDisconnected.java b/net/minecraft/client/gui/GuiDisconnected.java
 index 4a7f37e..dbe27e7 100644
 --- a/net/minecraft/client/gui/GuiDisconnected.java
@@ -1376,6 +1421,19 @@ index 4a7f37e..dbe27e7 100644
  
          if (this.multilineMessage != null)
          {
+diff --git a/net/minecraft/client/gui/GuiFlatPresets.java b/net/minecraft/client/gui/GuiFlatPresets.java
+index d003ccd..456736f 100644
+--- a/net/minecraft/client/gui/GuiFlatPresets.java
++++ b/net/minecraft/client/gui/GuiFlatPresets.java
+@@ -273,7 +273,7 @@ public class GuiFlatPresets extends GuiScreen
+         {
+         }
+ 
+-        protected void drawSlot(int entryID, int p_180791_2_, int p_180791_3_, int p_180791_4_, int mouseXIn, int mouseYIn)
++        protected void drawSlot(int entryID, int p_180791_2_, int p_180791_3_, int p_180791_4_, int mouseXIn, int mouseYIn, float partialTicks)
+         {
+             GuiFlatPresets.LayerItem guiflatpresets$layeritem = (GuiFlatPresets.LayerItem)GuiFlatPresets.FLAT_WORLD_PRESETS.get(entryID);
+             this.func_178054_a(p_180791_2_, p_180791_3_, guiflatpresets$layeritem.field_148234_a, guiflatpresets$layeritem.field_179037_b);
 diff --git a/net/minecraft/client/gui/GuiGameOver.java b/net/minecraft/client/gui/GuiGameOver.java
 index 08d7720..cf1ee7b 100644
 --- a/net/minecraft/client/gui/GuiGameOver.java
@@ -1638,6 +1696,32 @@ index b93bf8a..a1c8e1e 100644
 +		Gui.drawModalRectWithCustomSizedTexture(x, y, u, v, w, h, fw, fh);
      }
  }
+diff --git a/net/minecraft/client/gui/GuiLanguage.java b/net/minecraft/client/gui/GuiLanguage.java
+index 7b6f3f4..1c3066d 100644
+--- a/net/minecraft/client/gui/GuiLanguage.java
++++ b/net/minecraft/client/gui/GuiLanguage.java
+@@ -155,7 +155,7 @@ public class GuiLanguage extends GuiScreen
+             GuiLanguage.this.drawDefaultBackground();
+         }
+ 
+-        protected void drawSlot(int entryID, int p_180791_2_, int p_180791_3_, int p_180791_4_, int mouseXIn, int mouseYIn)
++        protected void drawSlot(int entryID, int p_180791_2_, int p_180791_3_, int p_180791_4_, int mouseXIn, int mouseYIn, float partialTicks)
+         {
+             GuiLanguage.this.fontRendererObj.setBidiFlag(true);
+             GuiLanguage.this.drawCenteredString(GuiLanguage.this.fontRendererObj, ((Language)this.languageMap.get(this.langCodeList.get(entryID))).toString(), this.width / 2, p_180791_3_ + 1, 16777215);
+diff --git a/net/minecraft/client/gui/GuiListExtended.java b/net/minecraft/client/gui/GuiListExtended.java
+index 735d77a..888c3f4 100644
+--- a/net/minecraft/client/gui/GuiListExtended.java
++++ b/net/minecraft/client/gui/GuiListExtended.java
+@@ -28,7 +28,7 @@ public abstract class GuiListExtended extends GuiSlot
+     {
+     }
+ 
+-    protected void drawSlot(int entryID, int p_180791_2_, int p_180791_3_, int p_180791_4_, int mouseXIn, int mouseYIn)
++    protected void drawSlot(int entryID, int p_180791_2_, int p_180791_3_, int p_180791_4_, int mouseXIn, int mouseYIn, float partialTicks)
+     {
+         this.getListEntry(entryID).drawEntry(entryID, p_180791_2_, p_180791_3_, this.getListWidth(), p_180791_4_, mouseXIn, mouseYIn, this.isMouseYWithinSlotBounds(mouseYIn) && this.getSlotIndexFromScreenCoords(mouseXIn, mouseYIn) == entryID);
+     }
 diff --git a/net/minecraft/client/gui/GuiListWorldSelectionEntry.java b/net/minecraft/client/gui/GuiListWorldSelectionEntry.java
 index cf5b504..cc18322 100644
 --- a/net/minecraft/client/gui/GuiListWorldSelectionEntry.java
@@ -2253,6 +2337,19 @@ index 884aeb0..0940eb6 100644
      private void addNewPage()
      {
          if (this.bookPages != null && this.bookPages.tagCount() < 50)
+diff --git a/net/minecraft/client/gui/GuiScreenCustomizePresets.java b/net/minecraft/client/gui/GuiScreenCustomizePresets.java
+index 4353e1b..ff0ed65 100644
+--- a/net/minecraft/client/gui/GuiScreenCustomizePresets.java
++++ b/net/minecraft/client/gui/GuiScreenCustomizePresets.java
+@@ -226,7 +226,7 @@ public class GuiScreenCustomizePresets extends GuiScreen
+             tessellator.draw();
+         }
+ 
+-        protected void drawSlot(int entryID, int p_180791_2_, int p_180791_3_, int p_180791_4_, int mouseXIn, int mouseYIn)
++        protected void drawSlot(int entryID, int p_180791_2_, int p_180791_3_, int p_180791_4_, int mouseXIn, int mouseYIn, float partialTicks)
+         {
+             GuiScreenCustomizePresets.Info guiscreencustomizepresets$info = (GuiScreenCustomizePresets.Info)GuiScreenCustomizePresets.field_175310_f.get(entryID);
+             this.func_178051_a(p_180791_2_, p_180791_3_, guiscreencustomizepresets$info.field_178953_b);
 diff --git a/net/minecraft/client/gui/GuiScreenOptionsSounds.java b/net/minecraft/client/gui/GuiScreenOptionsSounds.java
 index 9f8af59..9b31dc9 100644
 --- a/net/minecraft/client/gui/GuiScreenOptionsSounds.java
@@ -2294,6 +2391,67 @@ index 6ef9c81..e07ab65 100644
                  this.field_146303_a.confirmClicked(true, 0);
              }
          }
+diff --git a/net/minecraft/client/gui/GuiSimpleScrolledSelectionListProxy.java b/net/minecraft/client/gui/GuiSimpleScrolledSelectionListProxy.java
+index 88ee197..1451a3d 100644
+--- a/net/minecraft/client/gui/GuiSimpleScrolledSelectionListProxy.java
++++ b/net/minecraft/client/gui/GuiSimpleScrolledSelectionListProxy.java
+@@ -44,7 +44,7 @@ public class GuiSimpleScrolledSelectionListProxy extends GuiSlot
+         this.field_178050_u.renderBackground();
+     }
+ 
+-    protected void drawSlot(int entryID, int p_180791_2_, int p_180791_3_, int p_180791_4_, int mouseXIn, int mouseYIn)
++    protected void drawSlot(int entryID, int p_180791_2_, int p_180791_3_, int p_180791_4_, int mouseXIn, int mouseYIn, float partialTicks)
+     {
+         this.field_178050_u.renderItem(entryID, p_180791_2_, p_180791_3_, p_180791_4_, mouseXIn, mouseYIn);
+     }
+diff --git a/net/minecraft/client/gui/GuiSlot.java b/net/minecraft/client/gui/GuiSlot.java
+index 7f61766..0664fde 100644
+--- a/net/minecraft/client/gui/GuiSlot.java
++++ b/net/minecraft/client/gui/GuiSlot.java
+@@ -129,7 +129,7 @@ public abstract class GuiSlot
+     {
+     }
+ 
+-    protected abstract void drawSlot(int entryID, int p_180791_2_, int p_180791_3_, int p_180791_4_, int mouseXIn, int mouseYIn);
++    protected abstract void drawSlot(int entryID, int p_180791_2_, int p_180791_3_, int p_180791_4_, int mouseXIn, int mouseYIn, float partialTicks);
+ 
+     /**
+      * Handles drawing a list's header row.
+@@ -482,7 +482,7 @@ public abstract class GuiSlot
+                 GlStateManager.enableTexture2D();
+             }
+ 
+-            this.drawSlot(j, p_148120_1_, k, l, mouseXIn, mouseYIn);
++            this.drawSlot(j, p_148120_1_, k, l, mouseXIn, mouseYIn, 0);
+         }
+     }
+ 
+diff --git a/net/minecraft/client/gui/GuiSlotRealmsProxy.java b/net/minecraft/client/gui/GuiSlotRealmsProxy.java
+index 3f41aab..c813859 100644
+--- a/net/minecraft/client/gui/GuiSlotRealmsProxy.java
++++ b/net/minecraft/client/gui/GuiSlotRealmsProxy.java
+@@ -39,7 +39,7 @@ public class GuiSlotRealmsProxy extends GuiSlot
+         this.selectionList.renderBackground();
+     }
+ 
+-    protected void drawSlot(int entryID, int p_180791_2_, int p_180791_3_, int p_180791_4_, int mouseXIn, int mouseYIn)
++    protected void drawSlot(int entryID, int p_180791_2_, int p_180791_3_, int p_180791_4_, int mouseXIn, int mouseYIn, float partialTicks)
+     {
+         this.selectionList.renderItem(entryID, p_180791_2_, p_180791_3_, p_180791_4_, mouseXIn, mouseYIn);
+     }
+diff --git a/net/minecraft/client/gui/GuiSnooper.java b/net/minecraft/client/gui/GuiSnooper.java
+index b75c2e8..669f559 100644
+--- a/net/minecraft/client/gui/GuiSnooper.java
++++ b/net/minecraft/client/gui/GuiSnooper.java
+@@ -141,7 +141,7 @@ public class GuiSnooper extends GuiScreen
+         {
+         }
+ 
+-        protected void drawSlot(int entryID, int p_180791_2_, int p_180791_3_, int p_180791_4_, int mouseXIn, int mouseYIn)
++        protected void drawSlot(int entryID, int p_180791_2_, int p_180791_3_, int p_180791_4_, int mouseXIn, int mouseYIn, float partialTicks)
+         {
+             GuiSnooper.this.fontRendererObj.drawString((String)GuiSnooper.this.field_146604_g.get(entryID), 10, p_180791_3_, 16777215);
+             GuiSnooper.this.fontRendererObj.drawString((String)GuiSnooper.this.field_146609_h.get(entryID), 230, p_180791_3_, 16777215);
 diff --git a/net/minecraft/client/gui/ServerListEntryNormal.java b/net/minecraft/client/gui/ServerListEntryNormal.java
 index f4982df..9eb3ec5 100644
 --- a/net/minecraft/client/gui/ServerListEntryNormal.java
@@ -2378,7 +2536,7 @@ index d7c9b83..8a20a71 100644
      {
          this.serverListInternet.clear();
 diff --git a/net/minecraft/client/gui/achievement/GuiStats.java b/net/minecraft/client/gui/achievement/GuiStats.java
-index f14be3e..57dcfb7 100644
+index f14be3e..4a07eee 100644
 --- a/net/minecraft/client/gui/achievement/GuiStats.java
 +++ b/net/minecraft/client/gui/achievement/GuiStats.java
 @@ -27,6 +27,8 @@ import net.minecraft.stats.StatBase;
@@ -2427,6 +2585,42 @@ index f14be3e..57dcfb7 100644
              }
          }
  
+@@ -655,7 +671,7 @@ public class GuiStats extends GuiScreen implements IProgressMeter
+             }
+         }
+ 
+-        protected void drawSlot(int entryID, int p_180791_2_, int p_180791_3_, int p_180791_4_, int mouseXIn, int mouseYIn)
++        protected void drawSlot(int entryID, int p_180791_2_, int p_180791_3_, int p_180791_4_, int mouseXIn, int mouseYIn, float partialTicks)
+         {
+             StatCrafting statcrafting = this.func_148211_c(entryID);
+             Item item = statcrafting.func_150959_a();
+@@ -705,7 +721,7 @@ public class GuiStats extends GuiScreen implements IProgressMeter
+             GuiStats.this.drawDefaultBackground();
+         }
+ 
+-        protected void drawSlot(int entryID, int p_180791_2_, int p_180791_3_, int p_180791_4_, int mouseXIn, int mouseYIn)
++        protected void drawSlot(int entryID, int p_180791_2_, int p_180791_3_, int p_180791_4_, int mouseXIn, int mouseYIn, float partialTicks)
+         {
+             StatBase statbase = (StatBase)StatList.field_188094_c.get(entryID);
+             GuiStats.this.drawString(GuiStats.this.fontRendererObj, statbase.getStatName().getUnformattedText(), p_180791_2_ + 2, p_180791_3_ + 1, entryID % 2 == 0 ? 16777215 : 9474192);
+@@ -866,7 +882,7 @@ public class GuiStats extends GuiScreen implements IProgressMeter
+             }
+         }
+ 
+-        protected void drawSlot(int entryID, int p_180791_2_, int p_180791_3_, int p_180791_4_, int mouseXIn, int mouseYIn)
++        protected void drawSlot(int entryID, int p_180791_2_, int p_180791_3_, int p_180791_4_, int mouseXIn, int mouseYIn, float partialTicks)
+         {
+             StatCrafting statcrafting = this.func_148211_c(entryID);
+             Item item = statcrafting.func_150959_a();
+@@ -926,7 +942,7 @@ public class GuiStats extends GuiScreen implements IProgressMeter
+             GuiStats.this.drawDefaultBackground();
+         }
+ 
+-        protected void drawSlot(int entryID, int p_180791_2_, int p_180791_3_, int p_180791_4_, int mouseXIn, int mouseYIn)
++        protected void drawSlot(int entryID, int p_180791_2_, int p_180791_3_, int p_180791_4_, int mouseXIn, int mouseYIn, float partialTicks)
+         {
+             EntityList.EntityEggInfo entitylist$entityegginfo = (EntityList.EntityEggInfo)this.field_148222_l.get(entryID);
+             String s = I18n.format("entity." + entitylist$entityegginfo.spawnedID + ".name", new Object[0]);
 diff --git a/net/minecraft/client/gui/inventory/GuiChest.java b/net/minecraft/client/gui/inventory/GuiChest.java
 index b01af09..758dadb 100644
 --- a/net/minecraft/client/gui/inventory/GuiChest.java
@@ -4544,7 +4738,7 @@ index a65657e..9d9e562 100644
          this.worldObj.setEntityState(this, (byte)16);
      }
 diff --git a/net/minecraft/entity/player/EntityPlayer.java b/net/minecraft/entity/player/EntityPlayer.java
-index 23d8999..427fa1a 100644
+index 23d8999..7e17774 100644
 --- a/net/minecraft/entity/player/EntityPlayer.java
 +++ b/net/minecraft/entity/player/EntityPlayer.java
 @@ -3,15 +3,18 @@ package net.minecraft.entity.player;
@@ -4566,7 +4760,7 @@ index 23d8999..427fa1a 100644
  import net.minecraft.enchantment.EnchantmentHelper;
  import net.minecraft.entity.Entity;
  import net.minecraft.entity.EntityList;
-@@ -87,6 +90,8 @@ import net.minecraft.world.LockCode;
+@@ -87,13 +90,15 @@ import net.minecraft.world.LockCode;
  import net.minecraft.world.World;
  import net.minecraft.world.WorldServer;
  import net.minecraft.world.WorldSettings;
@@ -4575,6 +4769,14 @@ index 23d8999..427fa1a 100644
  
  @SuppressWarnings("incomplete-switch")
  public abstract class EntityPlayer extends EntityLivingBase
+ {
+     private static final DataParameter<Float> ABSORPTION = EntityDataManager.<Float>createKey(EntityPlayer.class, DataSerializers.FLOAT);
+     private static final DataParameter<Integer> PLAYER_SCORE = EntityDataManager.<Integer>createKey(EntityPlayer.class, DataSerializers.VARINT);
+-    protected static final DataParameter<Byte> PLAYER_MODEL_FLAG = EntityDataManager.<Byte>createKey(EntityPlayer.class, DataSerializers.BYTE);
++    public static final DataParameter<Byte> PLAYER_MODEL_FLAG = EntityDataManager.<Byte>createKey(EntityPlayer.class, DataSerializers.BYTE);
+     protected static final DataParameter<Byte> MAIN_HAND = EntityDataManager.<Byte>createKey(EntityPlayer.class, DataSerializers.BYTE);
+ 
+     /** Inventory of the player */
 @@ -319,7 +324,7 @@ public abstract class EntityPlayer extends EntityLivingBase
          {
              if (!ItemStack.func_185132_d(this.field_184831_bT, itemstack))

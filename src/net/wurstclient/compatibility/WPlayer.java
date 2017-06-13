@@ -7,6 +7,7 @@
  */
 package net.wurstclient.compatibility;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.client.CPacketAnimation;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -38,5 +39,11 @@ public final class WPlayer
 	public static void removePotionEffect(Potion potion)
 	{
 		WMinecraft.getPlayer().removePotionEffect(potion);
+	}
+	
+	public static void copyPlayerModel(EntityPlayer from, EntityPlayer to)
+	{
+		to.getDataManager().set(EntityPlayer.PLAYER_MODEL_FLAG,
+			from.getDataManager().get(EntityPlayer.PLAYER_MODEL_FLAG));
 	}
 }
