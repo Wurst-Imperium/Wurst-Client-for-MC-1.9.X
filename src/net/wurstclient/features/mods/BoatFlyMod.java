@@ -9,6 +9,7 @@ package net.wurstclient.features.mods;
 
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
+import net.wurstclient.features.Category;
 import net.wurstclient.features.HelpPage;
 import net.wurstclient.features.Mod;
 import net.wurstclient.features.SearchTags;
@@ -22,6 +23,7 @@ public final class BoatFlyMod extends Mod implements UpdateListener
 	{
 		super("BoatFly", "Allows you to fly with boats and rideable entities.\n"
 			+ "Bypasses NoCheat+, at least for now.");
+		setCategory(Category.MOVEMENT);
 	}
 	
 	@Override

@@ -16,6 +16,7 @@ import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMath;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
+import net.wurstclient.features.Category;
 import net.wurstclient.features.HelpPage;
 import net.wurstclient.features.Mod;
 import net.wurstclient.features.SearchTags;
@@ -36,6 +37,7 @@ public final class ExtraElytraMod extends Mod implements UpdateListener
 	public ExtraElytraMod()
 	{
 		super("ExtraElytra", "Eases the use of the Elytra.");
+		setCategory(Category.MOVEMENT);
 	}
 	
 	@Override
