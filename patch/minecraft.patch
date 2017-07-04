@@ -1,6 +1,6 @@
-From 27e76fc29889360647bb10d87304329dc6d88a04 Mon Sep 17 00:00:00 2001
+From 8172578a0e7ad8b4e827d4c56c2c0d6d35d4a899 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Tue, 13 Jun 2017 23:07:48 +0200
+Date: Tue, 4 Jul 2017 09:35:15 +0200
 Subject: [PATCH] mod
 
 ---
@@ -17,7 +17,7 @@ Subject: [PATCH] mod
  net/minecraft/client/Minecraft.java                | 225 ++++++++++-----------
  .../client/audio/PositionedSoundRecord.java        |   2 +-
  .../client/entity/AbstractClientPlayer.java        |   4 +-
- net/minecraft/client/entity/EntityPlayerSP.java    | 127 ++++++++----
+ net/minecraft/client/entity/EntityPlayerSP.java    | 132 ++++++++----
  net/minecraft/client/gui/FontRenderer.java         |  17 +-
  net/minecraft/client/gui/GuiButton.java            |  16 +-
  .../GuiClickableScrolledSelectionListProxy.java    |   4 +-
@@ -115,7 +115,7 @@ Subject: [PATCH] mod
  net/minecraft/util/text/ITextComponent.java        |  12 ++
  net/minecraft/util/text/Style.java                 |   6 +
  net/minecraft/world/World.java                     |  41 ++--
- 111 files changed, 1618 insertions(+), 576 deletions(-)
+ 111 files changed, 1621 insertions(+), 578 deletions(-)
 
 diff --git a/Start.java b/Start.java
 index ae0025f..078afa5 100644
@@ -893,7 +893,7 @@ index c30247b..1fd170a 100644
  
              if (f1 > 1.0F)
 diff --git a/net/minecraft/client/entity/EntityPlayerSP.java b/net/minecraft/client/entity/EntityPlayerSP.java
-index 61b85c2..1c91d84 100644
+index 61b85c2..d189742 100644
 --- a/net/minecraft/client/entity/EntityPlayerSP.java
 +++ b/net/minecraft/client/entity/EntityPlayerSP.java
 @@ -10,15 +10,7 @@ import net.minecraft.client.gui.GuiMerchant;
@@ -1035,7 +1035,19 @@ index 61b85c2..1c91d84 100644
              }
              else if (this.field_184841_cd != this.onGround)
              {
-@@ -332,9 +352,31 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -306,8 +326,9 @@ public class EntityPlayerSP extends AbstractClientPlayer
+ 
+             if (flag3)
+             {
+-                this.lastReportedYaw = this.rotationYaw;
+-                this.lastReportedPitch = this.rotationPitch;
++				// TODO: Client
++				this.lastReportedYaw = yaw;
++				this.lastReportedPitch = pitch;
+             }
+ 
+             this.field_184841_cd = this.onGround;
+@@ -332,9 +353,31 @@ public class EntityPlayerSP extends AbstractClientPlayer
      /**
       * Sends a chat message from the player. Args: chatMessage
       */
@@ -1069,7 +1081,7 @@ index 61b85c2..1c91d84 100644
      }
  
      public void swingArm(EnumHand hand)
-@@ -629,7 +671,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -629,7 +672,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
      {
          ItemStack itemstack = this.getHeldItem(p_184598_1_);
  
@@ -1078,7 +1090,7 @@ index 61b85c2..1c91d84 100644
          {
              super.func_184598_c(p_184598_1_);
              this.field_184842_cm = true;
-@@ -637,7 +679,13 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -637,7 +680,13 @@ public class EntityPlayerSP extends AbstractClientPlayer
          }
      }
      
@@ -1093,7 +1105,7 @@ index 61b85c2..1c91d84 100644
      {
          return this.field_184842_cm;
      }
-@@ -847,7 +895,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -847,7 +896,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
  
              if (this.timeInPortal == 0.0F)
              {
@@ -1102,7 +1114,7 @@ index 61b85c2..1c91d84 100644
              }
  
              this.timeInPortal += 0.0125F;
-@@ -892,8 +940,11 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -892,8 +941,11 @@ public class EntityPlayerSP extends AbstractClientPlayer
          boolean flag2 = this.movementInput.moveForward >= f;
          this.movementInput.updatePlayerMoveState();
  
@@ -1115,7 +1127,7 @@ index 61b85c2..1c91d84 100644
              this.movementInput.moveStrafe *= 0.2F;
              this.movementInput.moveForward *= 0.2F;
              this.sprintToggleTimer = 0;
-@@ -906,7 +957,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -906,7 +958,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
          this.pushOutOfBlocks(this.posX + (double)this.width * 0.35D, axisalignedbb.minY + 0.5D, this.posZ + (double)this.width * 0.35D);
          boolean flag3 = (float)this.getFoodStats().getFoodLevel() > 6.0F || this.capabilities.allowFlying;
  
@@ -1124,7 +1136,7 @@ index 61b85c2..1c91d84 100644
          {
              if (this.sprintToggleTimer <= 0 && !this.mc.gameSettings.keyBindSprint.isKeyDown())
              {
-@@ -918,7 +969,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -918,7 +970,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
              }
          }
  
@@ -1133,7 +1145,7 @@ index 61b85c2..1c91d84 100644
          {
              this.setSprinting(true);
          }
-@@ -953,7 +1004,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -953,7 +1005,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
              }
          }
  
@@ -1142,7 +1154,7 @@ index 61b85c2..1c91d84 100644
          {
              ItemStack itemstack = this.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
  
-@@ -1052,7 +1103,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -1052,7 +1104,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
          return this.field_184844_co;
      }
  
@@ -1151,7 +1163,7 @@ index 61b85c2..1c91d84 100644
      {
          if (p_184596_1_ == MobEffects.confusion)
          {
-@@ -1060,6 +1111,6 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -1060,6 +1112,6 @@ public class EntityPlayerSP extends AbstractClientPlayer
              this.timeInPortal = 0.0F;
          }
  
