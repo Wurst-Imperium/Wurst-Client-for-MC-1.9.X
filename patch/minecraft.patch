@@ -1,6 +1,6 @@
-From a2c9318da3c341cd7b5c4bf7e355978ecdce0821 Mon Sep 17 00:00:00 2001
+From ad89202b752f1358240b0359d977722e430aaf1b Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Wed, 19 Jul 2017 11:54:28 +0200
+Date: Mon, 31 Jul 2017 17:47:28 +0200
 Subject: [PATCH] mod
 
 ---
@@ -410,7 +410,7 @@ index e590b46..157dc4b 100644
      <T extends Comparable<T>> IBlockState cycleProperty(IProperty<T> property);
  
 diff --git a/net/minecraft/client/Minecraft.java b/net/minecraft/client/Minecraft.java
-index 61b2545..3e4eb16 100644
+index 61b2545..0073bd1 100644
 --- a/net/minecraft/client/Minecraft.java
 +++ b/net/minecraft/client/Minecraft.java
 @@ -1,17 +1,5 @@
@@ -810,7 +810,7 @@ index 61b2545..3e4eb16 100644
                  if (this.currentScreen == null)
                  {
 +					// TODO: Client
-+					WurstClient.INSTANCE.keybinds.onKeyPress();
++					WurstClient.INSTANCE.getKeybindProcessor().onKeyPress();
 +        			
                      if (i == 1)
                      {
