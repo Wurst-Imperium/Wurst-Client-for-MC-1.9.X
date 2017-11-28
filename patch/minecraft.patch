@@ -1,6 +1,6 @@
-From ad89202b752f1358240b0359d977722e430aaf1b Mon Sep 17 00:00:00 2001
+From 408795458317487671679a0f006e4d4bbc9c2388 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Mon, 31 Jul 2017 17:47:28 +0200
+Date: Tue, 28 Nov 2017 15:46:13 +0100
 Subject: [PATCH] mod
 
 ---
@@ -51,7 +51,7 @@ Subject: [PATCH] mod
  .../client/gui/inventory/GuiEditSign.java          |  19 +-
  net/minecraft/client/model/ModelElytra.java        |   2 +-
  .../client/multiplayer/GuiConnecting.java          |   8 +-
- .../client/multiplayer/PlayerControllerMP.java     |  56 ++---
+ .../client/multiplayer/PlayerControllerMP.java     |  58 +++---
  net/minecraft/client/multiplayer/ServerList.java   |   6 +
  .../client/network/NetHandlerPlayClient.java       |  27 ++-
  .../client/network/NetworkPlayerInfo.java          |  10 +
@@ -115,7 +115,7 @@ Subject: [PATCH] mod
  net/minecraft/util/text/ITextComponent.java        |  12 ++
  net/minecraft/util/text/Style.java                 |   6 +
  net/minecraft/world/World.java                     |  41 ++--
- 111 files changed, 1635 insertions(+), 597 deletions(-)
+ 111 files changed, 1636 insertions(+), 598 deletions(-)
 
 diff --git a/Start.java b/Start.java
 index ae0025f..078afa5 100644
@@ -3018,7 +3018,7 @@ index 74c8ca7..7ff3577 100644
                  }
                  catch (UnknownHostException unknownhostexception)
 diff --git a/net/minecraft/client/multiplayer/PlayerControllerMP.java b/net/minecraft/client/multiplayer/PlayerControllerMP.java
-index a54fc8f..9e5158f 100644
+index a54fc8f..48e3c35 100644
 --- a/net/minecraft/client/multiplayer/PlayerControllerMP.java
 +++ b/net/minecraft/client/multiplayer/PlayerControllerMP.java
 @@ -19,15 +19,7 @@ import net.minecraft.item.ItemBlock;
@@ -3055,6 +3055,15 @@ index a54fc8f..9e5158f 100644
  
      /**
       * Tick counter, when it hits 4 it resets back to 0 and plays the step sound
+@@ -64,7 +57,7 @@ public class PlayerControllerMP
+     private int blockHitDelay;
+ 
+     /** Tells if the player is hitting a block */
+-    private boolean isHittingBlock;
++    public boolean isHittingBlock;
+ 
+     /** Current game type for the player */
+     private WorldSettings.GameType currentGameType = WorldSettings.GameType.SURVIVAL;
 @@ -82,7 +75,7 @@ public class PlayerControllerMP
      {
          if (!mcIn.theWorld.extinguishFire(mcIn.thePlayer, pos, facing))
