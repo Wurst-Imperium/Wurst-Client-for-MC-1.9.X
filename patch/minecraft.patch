@@ -1,6 +1,6 @@
-From 408795458317487671679a0f006e4d4bbc9c2388 Mon Sep 17 00:00:00 2001
+From 2dfcce0fe52453f80ae2a418c4c4c15297003096 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Tue, 28 Nov 2017 15:46:13 +0100
+Date: Sun, 4 Mar 2018 17:06:30 +0100
 Subject: [PATCH] mod
 
 ---
@@ -33,7 +33,7 @@ Subject: [PATCH] mod
  net/minecraft/client/gui/GuiMainMenu.java          |  38 +++-
  net/minecraft/client/gui/GuiMemoryErrorScreen.java |   4 +-
  net/minecraft/client/gui/GuiMultiplayer.java       | 138 ++++++++++---
- net/minecraft/client/gui/GuiNewChat.java           |  12 ++
+ net/minecraft/client/gui/GuiNewChat.java           |  21 +-
  net/minecraft/client/gui/GuiScreenBook.java        |  72 ++++++-
  .../client/gui/GuiScreenCustomizePresets.java      |   2 +-
  .../client/gui/GuiScreenOptionsSounds.java         |   2 +-
@@ -53,7 +53,7 @@ Subject: [PATCH] mod
  .../client/multiplayer/GuiConnecting.java          |   8 +-
  .../client/multiplayer/PlayerControllerMP.java     |  58 +++---
  net/minecraft/client/multiplayer/ServerList.java   |   6 +
- .../client/network/NetHandlerPlayClient.java       |  27 ++-
+ .../client/network/NetHandlerPlayClient.java       | 193 ++++--------------
  .../client/network/NetworkPlayerInfo.java          |  10 +
  .../client/renderer/BlockModelRenderer.java        |   8 +-
  net/minecraft/client/renderer/EntityRenderer.java  |  98 ++++++---
@@ -98,7 +98,7 @@ Subject: [PATCH] mod
  net/minecraft/item/ItemTool.java                   |   2 +-
  net/minecraft/network/EnumConnectionState.java     |   6 +-
  net/minecraft/network/NetHandlerPlayServer.java    |  22 +-
- net/minecraft/network/NetworkManager.java          |  26 +++
+ net/minecraft/network/NetworkManager.java          |  57 ++++--
  .../network/play/client/CPacketPlayer.java         |  28 +--
  .../network/play/server/SPacketEntityEffect.java   |   2 +-
  .../network/play/server/SPacketJoinGame.java       |   5 +
@@ -115,7 +115,7 @@ Subject: [PATCH] mod
  net/minecraft/util/text/ITextComponent.java        |  12 ++
  net/minecraft/util/text/Style.java                 |   6 +
  net/minecraft/world/World.java                     |  41 ++--
- 111 files changed, 1636 insertions(+), 598 deletions(-)
+ 111 files changed, 1668 insertions(+), 772 deletions(-)
 
 diff --git a/Start.java b/Start.java
 index ae0025f..078afa5 100644
@@ -410,7 +410,7 @@ index e590b46..157dc4b 100644
      <T extends Comparable<T>> IBlockState cycleProperty(IProperty<T> property);
  
 diff --git a/net/minecraft/client/Minecraft.java b/net/minecraft/client/Minecraft.java
-index 61b2545..0073bd1 100644
+index 61b2545..0e2d56d 100644
 --- a/net/minecraft/client/Minecraft.java
 +++ b/net/minecraft/client/Minecraft.java
 @@ -1,17 +1,5 @@
@@ -593,8 +593,8 @@ index 61b2545..0073bd1 100644
 -import org.lwjgl.opengl.PixelFormat;
 -import org.lwjgl.util.glu.GLU;
 +import net.wurstclient.WurstClient;
-+import net.wurstclient.events.LeftClickEvent;
-+import net.wurstclient.events.RightClickEvent;
++import net.wurstclient.events.LeftClickListener.LeftClickEvent;
++import net.wurstclient.events.RightClickListener.RightClickEvent;
 +import net.wurstclient.gui.main.GuiWurstMainMenu;
 +import net.wurstclient.hooks.FrameHook;
 +import net.wurstclient.spam.SpamProcessor;
@@ -893,7 +893,7 @@ index c30247b..1fd170a 100644
  
              if (f1 > 1.0F)
 diff --git a/net/minecraft/client/entity/EntityPlayerSP.java b/net/minecraft/client/entity/EntityPlayerSP.java
-index 61b85c2..d189742 100644
+index 61b85c2..08d63ae 100644
 --- a/net/minecraft/client/entity/EntityPlayerSP.java
 +++ b/net/minecraft/client/entity/EntityPlayerSP.java
 @@ -10,15 +10,7 @@ import net.minecraft.client.gui.GuiMerchant;
@@ -936,9 +936,9 @@ index 61b85c2..d189742 100644
  import net.minecraft.world.IInteractionObject;
  import net.minecraft.world.World;
 +import net.wurstclient.WurstClient;
-+import net.wurstclient.events.ChatOutputEvent;
-+import net.wurstclient.events.PostUpdateEvent;
-+import net.wurstclient.events.UpdateEvent;
++import net.wurstclient.events.ChatOutputListener.ChatOutputEvent;
++import net.wurstclient.events.PostUpdateListener.PostUpdateEvent;
++import net.wurstclient.events.UpdateListener.UpdateEvent;
 +import net.wurstclient.utils.RotationUtils;
  
  public class EntityPlayerSP extends AbstractClientPlayer
@@ -1447,7 +1447,7 @@ index d003ccd..456736f 100644
              GuiFlatPresets.LayerItem guiflatpresets$layeritem = (GuiFlatPresets.LayerItem)GuiFlatPresets.FLAT_WORLD_PRESETS.get(entryID);
              this.func_178054_a(p_180791_2_, p_180791_3_, guiflatpresets$layeritem.field_148234_a, guiflatpresets$layeritem.field_179037_b);
 diff --git a/net/minecraft/client/gui/GuiGameOver.java b/net/minecraft/client/gui/GuiGameOver.java
-index 08d7720..cf1ee7b 100644
+index 08d7720..5b94db9 100644
 --- a/net/minecraft/client/gui/GuiGameOver.java
 +++ b/net/minecraft/client/gui/GuiGameOver.java
 @@ -1,11 +1,16 @@
@@ -1461,7 +1461,7 @@ index 08d7720..cf1ee7b 100644
  import net.minecraft.util.text.ITextComponent;
  import net.minecraft.util.text.TextFormatting;
 +import net.wurstclient.WurstClient;
-+import net.wurstclient.events.DeathEvent;
++import net.wurstclient.events.DeathListener.DeathEvent;
 +import net.wurstclient.gui.main.GuiWurstMainMenu;
 +import net.wurstclient.spam.SpamProcessor;
  
@@ -1489,10 +1489,10 @@ index 08d7720..cf1ee7b 100644
              {
                  guibutton.enabled = true;
              }
-+            
-+            //TODO: Client
-+            WurstClient.INSTANCE.events.fire(DeathEvent.INSTANCE);
-+            SpamProcessor.runScript("death", "Runs whenever you die.");
++			
++			// TODO: Client
++			WurstClient.INSTANCE.events.fire(DeathEvent.INSTANCE);
++			SpamProcessor.runScript("death", "Runs whenever you die.");
          }
      }
  }
@@ -2172,16 +2172,23 @@ index e4e5eb7..2db0100 100644
              this.selectServer(i);
          }
 diff --git a/net/minecraft/client/gui/GuiNewChat.java b/net/minecraft/client/gui/GuiNewChat.java
-index b43a7c5..283d011 100644
+index b43a7c5..186c970 100644
 --- a/net/minecraft/client/gui/GuiNewChat.java
 +++ b/net/minecraft/client/gui/GuiNewChat.java
-@@ -3,14 +3,19 @@ package net.minecraft.client.gui;
+@@ -1,18 +1,23 @@
+ package net.minecraft.client.gui;
+ 
++import java.util.Iterator;
++import java.util.List;
++
++import org.apache.logging.log4j.LogManager;
++import org.apache.logging.log4j.Logger;
++
  import com.google.common.base.Joiner;
  import com.google.common.base.Splitter;
  import com.google.common.collect.Lists;
-+
- import java.util.Iterator;
- import java.util.List;
+-import java.util.Iterator;
+-import java.util.List;
 +
  import net.minecraft.client.Minecraft;
  import net.minecraft.client.renderer.GlStateManager;
@@ -2189,23 +2196,25 @@ index b43a7c5..283d011 100644
  import net.minecraft.util.math.MathHelper;
  import net.minecraft.util.text.ITextComponent;
  import net.minecraft.util.text.TextComponentString;
+-import org.apache.logging.log4j.LogManager;
+-import org.apache.logging.log4j.Logger;
 +import net.wurstclient.WurstClient;
-+import net.wurstclient.events.ChatInputEvent;
-+
- import org.apache.logging.log4j.LogManager;
- import org.apache.logging.log4j.Logger;
++import net.wurstclient.events.ChatInputListener.ChatInputEvent;
  
-@@ -137,6 +142,13 @@ public class GuiNewChat extends Gui
+ public class GuiNewChat extends Gui
+ {
+@@ -137,6 +142,14 @@ public class GuiNewChat extends Gui
       */
      public void printChatMessageWithOptionalDeletion(ITextComponent chatComponent, int chatLineId)
      {
-+    	//TODO: Client
-+    	ChatInputEvent event = new ChatInputEvent(chatComponent, drawnChatLines);
-+    	WurstClient.INSTANCE.events.fire(event);
-+    	if(event.isCancelled())
-+    		return;
-+    	chatComponent = event.getComponent();
-+    	
++		// TODO: Client
++		ChatInputEvent event =
++			new ChatInputEvent(chatComponent, drawnChatLines);
++		WurstClient.INSTANCE.events.fire(event);
++		if(event.isCancelled())
++			return;
++		chatComponent = event.getComponent();
++		
          this.setChatLine(chatComponent, chatLineId, this.mc.ingameGUI.getUpdateCounter(), false);
          logger.info("[CHAT] " + field_184062_f.join(field_184061_a.split(chatComponent.getUnformattedText())));
      }
@@ -3219,29 +3228,241 @@ index 060ef17..d60ddd9 100644
       * Loads a list of servers from servers.dat, by running ServerData.getServerDataFromNBTCompound on each NBT compound
       * found in the "servers" tag list.
 diff --git a/net/minecraft/client/network/NetHandlerPlayClient.java b/net/minecraft/client/network/NetHandlerPlayClient.java
-index b7f7be5..96b0879 100644
+index b7f7be5..53ef426 100644
 --- a/net/minecraft/client/network/NetHandlerPlayClient.java
 +++ b/net/minecraft/client/network/NetHandlerPlayClient.java
-@@ -27,7 +27,6 @@ import net.minecraft.client.gui.GuiCommandBlock;
- import net.minecraft.client.gui.GuiDisconnected;
- import net.minecraft.client.gui.GuiDownloadTerrain;
- import net.minecraft.client.gui.GuiGameOver;
+@@ -1,10 +1,5 @@
+ package net.minecraft.client.network;
+ 
+-import com.google.common.collect.Maps;
+-import com.google.common.util.concurrent.FutureCallback;
+-import com.google.common.util.concurrent.Futures;
+-import com.mojang.authlib.GameProfile;
+-import io.netty.buffer.Unpooled;
+ import java.io.File;
+ import java.io.IOException;
+ import java.net.URI;
+@@ -12,9 +7,19 @@ import java.net.URISyntaxException;
+ import java.util.Collection;
+ import java.util.List;
+ import java.util.Map;
++import java.util.Map.Entry;
+ import java.util.Random;
+ import java.util.UUID;
+-import java.util.Map.Entry;
++
++import org.apache.logging.log4j.LogManager;
++import org.apache.logging.log4j.Logger;
++
++import com.google.common.collect.Maps;
++import com.google.common.util.concurrent.FutureCallback;
++import com.google.common.util.concurrent.Futures;
++import com.mojang.authlib.GameProfile;
++
++import io.netty.buffer.Unpooled;
+ import net.minecraft.block.Block;
+ import net.minecraft.client.ClientBrandRetriever;
+ import net.minecraft.client.Minecraft;
+@@ -23,21 +28,7 @@ import net.minecraft.client.audio.ISound;
+ import net.minecraft.client.audio.PositionedSoundRecord;
+ import net.minecraft.client.entity.EntityOtherPlayerMP;
+ import net.minecraft.client.entity.EntityPlayerSP;
+-import net.minecraft.client.gui.GuiCommandBlock;
+-import net.minecraft.client.gui.GuiDisconnected;
+-import net.minecraft.client.gui.GuiDownloadTerrain;
+-import net.minecraft.client.gui.GuiGameOver;
 -import net.minecraft.client.gui.GuiMainMenu;
- import net.minecraft.client.gui.GuiMerchant;
- import net.minecraft.client.gui.GuiMultiplayer;
- import net.minecraft.client.gui.GuiScreen;
-@@ -230,6 +229,10 @@ import net.minecraft.world.WorldProviderSurface;
+-import net.minecraft.client.gui.GuiMerchant;
+-import net.minecraft.client.gui.GuiMultiplayer;
+-import net.minecraft.client.gui.GuiScreen;
+-import net.minecraft.client.gui.GuiScreenBook;
+-import net.minecraft.client.gui.GuiScreenDemo;
+-import net.minecraft.client.gui.GuiScreenRealmsProxy;
+-import net.minecraft.client.gui.GuiWinGame;
+-import net.minecraft.client.gui.GuiYesNo;
+-import net.minecraft.client.gui.GuiYesNoCallback;
+-import net.minecraft.client.gui.IProgressMeter;
++import net.minecraft.client.gui.*;
+ import net.minecraft.client.gui.inventory.GuiContainerCreative;
+ import net.minecraft.client.multiplayer.PlayerControllerMP;
+ import net.minecraft.client.multiplayer.ServerData;
+@@ -49,51 +40,19 @@ import net.minecraft.client.player.inventory.LocalBlockIntercommunication;
+ import net.minecraft.client.resources.I18n;
+ import net.minecraft.client.settings.GameSettings;
+ import net.minecraft.creativetab.CreativeTabs;
+-import net.minecraft.entity.Entity;
+-import net.minecraft.entity.EntityAreaEffectCloud;
+-import net.minecraft.entity.EntityLeashKnot;
+-import net.minecraft.entity.EntityList;
+-import net.minecraft.entity.EntityLiving;
+-import net.minecraft.entity.EntityLivingBase;
+-import net.minecraft.entity.EntityTracker;
+-import net.minecraft.entity.IMerchant;
+-import net.minecraft.entity.NpcMerchant;
++import net.minecraft.entity.*;
+ import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
+ import net.minecraft.entity.ai.attributes.AttributeModifier;
+ import net.minecraft.entity.ai.attributes.IAttribute;
+ import net.minecraft.entity.ai.attributes.IAttributeInstance;
+ import net.minecraft.entity.ai.attributes.RangedAttribute;
+ import net.minecraft.entity.effect.EntityLightningBolt;
+-import net.minecraft.entity.item.EntityArmorStand;
+-import net.minecraft.entity.item.EntityBoat;
+-import net.minecraft.entity.item.EntityEnderCrystal;
+-import net.minecraft.entity.item.EntityEnderEye;
+-import net.minecraft.entity.item.EntityEnderPearl;
+-import net.minecraft.entity.item.EntityExpBottle;
+-import net.minecraft.entity.item.EntityFallingBlock;
+-import net.minecraft.entity.item.EntityFireworkRocket;
+-import net.minecraft.entity.item.EntityItem;
+-import net.minecraft.entity.item.EntityItemFrame;
+-import net.minecraft.entity.item.EntityMinecart;
+-import net.minecraft.entity.item.EntityPainting;
+-import net.minecraft.entity.item.EntityTNTPrimed;
+-import net.minecraft.entity.item.EntityXPOrb;
++import net.minecraft.entity.item.*;
+ import net.minecraft.entity.monster.EntityGuardian;
+ import net.minecraft.entity.passive.EntityHorse;
+ import net.minecraft.entity.player.EntityPlayer;
+ import net.minecraft.entity.player.InventoryPlayer;
+-import net.minecraft.entity.projectile.EntityArrow;
+-import net.minecraft.entity.projectile.EntityDragonFireball;
+-import net.minecraft.entity.projectile.EntityEgg;
+-import net.minecraft.entity.projectile.EntityFishHook;
+-import net.minecraft.entity.projectile.EntityLargeFireball;
+-import net.minecraft.entity.projectile.EntityPotion;
+-import net.minecraft.entity.projectile.EntityShulkerBullet;
+-import net.minecraft.entity.projectile.EntitySmallFireball;
+-import net.minecraft.entity.projectile.EntitySnowball;
+-import net.minecraft.entity.projectile.EntitySpectralArrow;
+-import net.minecraft.entity.projectile.EntityTippedArrow;
+-import net.minecraft.entity.projectile.EntityWitherSkull;
++import net.minecraft.entity.projectile.*;
+ import net.minecraft.init.Items;
+ import net.minecraft.init.SoundEvents;
+ import net.minecraft.inventory.AnimalChest;
+@@ -107,88 +66,8 @@ import net.minecraft.network.PacketBuffer;
+ import net.minecraft.network.PacketThreadUtil;
+ import net.minecraft.network.datasync.EntityDataManager;
+ import net.minecraft.network.play.INetHandlerPlayClient;
+-import net.minecraft.network.play.client.CPacketClientStatus;
+-import net.minecraft.network.play.client.CPacketConfirmTeleport;
+-import net.minecraft.network.play.client.CPacketConfirmTransaction;
+-import net.minecraft.network.play.client.CPacketCustomPayload;
+-import net.minecraft.network.play.client.CPacketKeepAlive;
+-import net.minecraft.network.play.client.CPacketPlayer;
+-import net.minecraft.network.play.client.CPacketResourcePackStatus;
+-import net.minecraft.network.play.client.CPacketVehicleMove;
+-import net.minecraft.network.play.server.SPacketAnimation;
+-import net.minecraft.network.play.server.SPacketBlockAction;
+-import net.minecraft.network.play.server.SPacketBlockBreakAnim;
+-import net.minecraft.network.play.server.SPacketBlockChange;
+-import net.minecraft.network.play.server.SPacketCamera;
+-import net.minecraft.network.play.server.SPacketChangeGameState;
+-import net.minecraft.network.play.server.SPacketChat;
+-import net.minecraft.network.play.server.SPacketChunkData;
+-import net.minecraft.network.play.server.SPacketCloseWindow;
+-import net.minecraft.network.play.server.SPacketCollectItem;
+-import net.minecraft.network.play.server.SPacketCombatEvent;
+-import net.minecraft.network.play.server.SPacketConfirmTransaction;
+-import net.minecraft.network.play.server.SPacketCooldown;
+-import net.minecraft.network.play.server.SPacketCustomPayload;
+-import net.minecraft.network.play.server.SPacketCustomSound;
+-import net.minecraft.network.play.server.SPacketDestroyEntities;
+-import net.minecraft.network.play.server.SPacketDisconnect;
+-import net.minecraft.network.play.server.SPacketDisplayObjective;
+-import net.minecraft.network.play.server.SPacketEffect;
+-import net.minecraft.network.play.server.SPacketEntity;
+-import net.minecraft.network.play.server.SPacketEntityAttach;
+-import net.minecraft.network.play.server.SPacketEntityEffect;
+-import net.minecraft.network.play.server.SPacketEntityEquipment;
+-import net.minecraft.network.play.server.SPacketEntityHeadLook;
+-import net.minecraft.network.play.server.SPacketEntityMetadata;
+-import net.minecraft.network.play.server.SPacketEntityProperties;
+-import net.minecraft.network.play.server.SPacketEntityStatus;
+-import net.minecraft.network.play.server.SPacketEntityTeleport;
+-import net.minecraft.network.play.server.SPacketEntityVelocity;
+-import net.minecraft.network.play.server.SPacketExplosion;
+-import net.minecraft.network.play.server.SPacketHeldItemChange;
+-import net.minecraft.network.play.server.SPacketJoinGame;
+-import net.minecraft.network.play.server.SPacketKeepAlive;
+-import net.minecraft.network.play.server.SPacketMaps;
+-import net.minecraft.network.play.server.SPacketMoveVehicle;
+-import net.minecraft.network.play.server.SPacketMultiBlockChange;
+-import net.minecraft.network.play.server.SPacketOpenWindow;
+-import net.minecraft.network.play.server.SPacketParticles;
+-import net.minecraft.network.play.server.SPacketPlayerAbilities;
+-import net.minecraft.network.play.server.SPacketPlayerListHeaderFooter;
+-import net.minecraft.network.play.server.SPacketPlayerListItem;
+-import net.minecraft.network.play.server.SPacketPlayerPosLook;
+-import net.minecraft.network.play.server.SPacketRemoveEntityEffect;
+-import net.minecraft.network.play.server.SPacketResourcePackSend;
+-import net.minecraft.network.play.server.SPacketRespawn;
+-import net.minecraft.network.play.server.SPacketScoreboardObjective;
+-import net.minecraft.network.play.server.SPacketServerDifficulty;
+-import net.minecraft.network.play.server.SPacketSetExperience;
+-import net.minecraft.network.play.server.SPacketSetPassengers;
+-import net.minecraft.network.play.server.SPacketSetSlot;
+-import net.minecraft.network.play.server.SPacketSignEditorOpen;
+-import net.minecraft.network.play.server.SPacketSoundEffect;
+-import net.minecraft.network.play.server.SPacketSpawnExperienceOrb;
+-import net.minecraft.network.play.server.SPacketSpawnGlobalEntity;
+-import net.minecraft.network.play.server.SPacketSpawnMob;
+-import net.minecraft.network.play.server.SPacketSpawnObject;
+-import net.minecraft.network.play.server.SPacketSpawnPainting;
+-import net.minecraft.network.play.server.SPacketSpawnPlayer;
+-import net.minecraft.network.play.server.SPacketSpawnPosition;
+-import net.minecraft.network.play.server.SPacketStatistics;
+-import net.minecraft.network.play.server.SPacketTabComplete;
+-import net.minecraft.network.play.server.SPacketTeams;
+-import net.minecraft.network.play.server.SPacketTimeUpdate;
+-import net.minecraft.network.play.server.SPacketTitle;
+-import net.minecraft.network.play.server.SPacketUnloadChunk;
+-import net.minecraft.network.play.server.SPacketUpdateEntityNBT;
+-import net.minecraft.network.play.server.SPacketUpdateHealth;
+-import net.minecraft.network.play.server.SPacketUpdateScore;
+-import net.minecraft.network.play.server.SPacketUpdateSign;
+-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+-import net.minecraft.network.play.server.SPacketUseBed;
+-import net.minecraft.network.play.server.SPacketWindowItems;
+-import net.minecraft.network.play.server.SPacketWindowProperty;
+-import net.minecraft.network.play.server.SPacketWorldBorder;
++import net.minecraft.network.play.client.*;
++import net.minecraft.network.play.server.*;
+ import net.minecraft.pathfinding.PathEntity;
+ import net.minecraft.potion.Potion;
+ import net.minecraft.potion.PotionEffect;
+@@ -202,16 +81,7 @@ import net.minecraft.scoreboard.Team;
+ import net.minecraft.stats.Achievement;
+ import net.minecraft.stats.AchievementList;
+ import net.minecraft.stats.StatBase;
+-import net.minecraft.tileentity.TileEntity;
+-import net.minecraft.tileentity.TileEntityBanner;
+-import net.minecraft.tileentity.TileEntityBeacon;
+-import net.minecraft.tileentity.TileEntityCommandBlock;
+-import net.minecraft.tileentity.TileEntityEndGateway;
+-import net.minecraft.tileentity.TileEntityFlowerPot;
+-import net.minecraft.tileentity.TileEntityMobSpawner;
+-import net.minecraft.tileentity.TileEntitySign;
+-import net.minecraft.tileentity.TileEntitySkull;
+-import net.minecraft.tileentity.TileEntityStructure;
++import net.minecraft.tileentity.*;
+ import net.minecraft.util.EnumFacing;
+ import net.minecraft.util.EnumHand;
+ import net.minecraft.util.EnumParticleTypes;
+@@ -230,8 +100,9 @@ import net.minecraft.world.WorldProviderSurface;
  import net.minecraft.world.WorldSettings;
  import net.minecraft.world.chunk.Chunk;
  import net.minecraft.world.storage.MapData;
+-import org.apache.logging.log4j.LogManager;
+-import org.apache.logging.log4j.Logger;
 +import net.wurstclient.WurstClient;
-+import net.wurstclient.events.PacketOutputEvent;
++import net.wurstclient.events.PacketOutputListener.PacketOutputEvent;
 +import net.wurstclient.gui.main.GuiWurstMainMenu;
-+
- import org.apache.logging.log4j.LogManager;
- import org.apache.logging.log4j.Logger;
  
-@@ -744,7 +747,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+ public class NetHandlerPlayClient implements INetHandlerPlayClient
+ {
+@@ -744,7 +615,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
  
          entityplayer.setPositionAndRotation(d0, d1, d2, f, f1);
          this.netManager.sendPacket(new CPacketConfirmTeleport(packetIn.getTeleportId()));
@@ -3250,7 +3471,7 @@ index b7f7be5..96b0879 100644
  
          if (!this.doneLoadingTerrain)
          {
-@@ -837,12 +840,24 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+@@ -837,12 +708,24 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
          }
          else
          {
@@ -3276,7 +3497,7 @@ index b7f7be5..96b0879 100644
          this.netManager.sendPacket(packetIn);
      }
  
-@@ -1629,7 +1644,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+@@ -1629,7 +1512,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
  
          if (entity instanceof EntityLivingBase)
          {
@@ -3285,7 +3506,7 @@ index b7f7be5..96b0879 100644
          }
      }
  
-@@ -1854,11 +1869,11 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+@@ -1854,11 +1737,11 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
  
          if (packetIn.getTicks() == 0)
          {
@@ -3362,7 +3583,7 @@ index 628f4dd..e08a1ee 100644
              this.renderQuadsSmooth(worldIn, stateIn, posIn, buffer, list1, afloat, bitset, blockmodelrenderer$ambientocclusionface);
              flag = true;
 diff --git a/net/minecraft/client/renderer/EntityRenderer.java b/net/minecraft/client/renderer/EntityRenderer.java
-index e8fdae5..75b7597 100644
+index e8fdae5..6234b87 100644
 --- a/net/minecraft/client/renderer/EntityRenderer.java
 +++ b/net/minecraft/client/renderer/EntityRenderer.java
 @@ -1,8 +1,5 @@
@@ -3423,7 +3644,7 @@ index e8fdae5..75b7597 100644
 -import org.lwjgl.opengl.GLContext;
 -import org.lwjgl.util.glu.Project;
 +import net.wurstclient.WurstClient;
-+import net.wurstclient.events.RenderEvent;
++import net.wurstclient.events.RenderListener.RenderEvent;
 +import net.wurstclient.hooks.ZoomHook;
  
  public class EntityRenderer implements IResourceManagerReloadListener
@@ -5359,43 +5580,71 @@ index 4e7576e..6fc2033 100644
                      ItemStack itemstack = this.playerEntity.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
  
 diff --git a/net/minecraft/network/NetworkManager.java b/net/minecraft/network/NetworkManager.java
-index 0d831b0..eae1ee1 100644
+index 0d831b0..8a5a1d8 100644
 --- a/net/minecraft/network/NetworkManager.java
 +++ b/net/minecraft/network/NetworkManager.java
-@@ -2,6 +2,7 @@ package net.minecraft.network;
+@@ -1,18 +1,24 @@
+ package net.minecraft.network;
  
++import java.net.InetAddress;
++import java.net.SocketAddress;
++import java.util.Queue;
++import java.util.concurrent.locks.ReentrantReadWriteLock;
++
++import javax.crypto.SecretKey;
++
++import org.apache.commons.lang3.ArrayUtils;
++import org.apache.commons.lang3.Validate;
++import org.apache.logging.log4j.LogManager;
++import org.apache.logging.log4j.Logger;
++import org.apache.logging.log4j.Marker;
++import org.apache.logging.log4j.MarkerManager;
++
  import com.google.common.collect.Queues;
  import com.google.common.util.concurrent.ThreadFactoryBuilder;
 +
  import io.netty.bootstrap.Bootstrap;
- import io.netty.channel.Channel;
- import io.netty.channel.ChannelException;
-@@ -27,17 +28,24 @@ import io.netty.handler.timeout.TimeoutException;
+-import io.netty.channel.Channel;
+-import io.netty.channel.ChannelException;
+-import io.netty.channel.ChannelFuture;
+-import io.netty.channel.ChannelFutureListener;
+-import io.netty.channel.ChannelHandler;
+-import io.netty.channel.ChannelHandlerContext;
+-import io.netty.channel.ChannelInitializer;
+-import io.netty.channel.ChannelOption;
+-import io.netty.channel.EventLoopGroup;
+-import io.netty.channel.SimpleChannelInboundHandler;
++import io.netty.channel.*;
+ import io.netty.channel.epoll.Epoll;
+ import io.netty.channel.epoll.EpollEventLoopGroup;
+ import io.netty.channel.epoll.EpollSocketChannel;
+@@ -27,23 +33,14 @@ import io.netty.handler.timeout.TimeoutException;
  import io.netty.util.AttributeKey;
  import io.netty.util.concurrent.Future;
  import io.netty.util.concurrent.GenericFutureListener;
-+
- import java.net.InetAddress;
- import java.net.SocketAddress;
- import java.util.Queue;
- import java.util.concurrent.locks.ReentrantReadWriteLock;
-+
- import javax.crypto.SecretKey;
-+
+-import java.net.InetAddress;
+-import java.net.SocketAddress;
+-import java.util.Queue;
+-import java.util.concurrent.locks.ReentrantReadWriteLock;
+-import javax.crypto.SecretKey;
  import net.minecraft.util.CryptManager;
  import net.minecraft.util.ITickable;
  import net.minecraft.util.LazyLoadBase;
  import net.minecraft.util.text.ITextComponent;
  import net.minecraft.util.text.TextComponentString;
  import net.minecraft.util.text.TextComponentTranslation;
+-import org.apache.commons.lang3.ArrayUtils;
+-import org.apache.commons.lang3.Validate;
+-import org.apache.logging.log4j.LogManager;
+-import org.apache.logging.log4j.Logger;
+-import org.apache.logging.log4j.Marker;
+-import org.apache.logging.log4j.MarkerManager;
 +import net.wurstclient.WurstClient;
-+import net.wurstclient.events.PacketInputEvent;
-+import net.wurstclient.events.PacketOutputEvent;
-+
- import org.apache.commons.lang3.ArrayUtils;
- import org.apache.commons.lang3.Validate;
- import org.apache.logging.log4j.LogManager;
-@@ -130,9 +138,21 @@ public class NetworkManager extends SimpleChannelInboundHandler < Packet<? >>
++import net.wurstclient.events.PacketInputListener.PacketInputEvent;
+ 
+ public class NetworkManager extends SimpleChannelInboundHandler < Packet<? >>
+ {
+@@ -130,9 +127,21 @@ public class NetworkManager extends SimpleChannelInboundHandler < Packet<? >>
      {
          TextComponentTranslation textcomponenttranslation;
  
@@ -5417,7 +5666,7 @@ index 0d831b0..eae1ee1 100644
          }
          else
          {
-@@ -147,6 +167,12 @@ public class NetworkManager extends SimpleChannelInboundHandler < Packet<? >>
+@@ -147,6 +156,12 @@ public class NetworkManager extends SimpleChannelInboundHandler < Packet<? >>
      {
          if (this.channel.isOpen())
          {
