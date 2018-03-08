@@ -12,14 +12,14 @@ import net.minecraft.util.ResourceLocation;
 
 public final class WItem
 {
-	public static boolean isNull(Item item)
+	public static boolean isNullOrEmpty(Item item)
 	{
 		return item == null;
 	}
 	
-	public static boolean isNull(ItemStack stack)
+	public static boolean isNullOrEmpty(ItemStack stack)
 	{
-		return stack == null;
+		return stack == null || isNullOrEmpty(stack.getItem());
 	}
 	
 	public static int getArmorType(ItemArmor armor)

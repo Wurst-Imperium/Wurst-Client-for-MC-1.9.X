@@ -47,7 +47,8 @@ public class InventoryUtils
 	
 	public static boolean isSplashPotion(ItemStack stack)
 	{
-		return !WItem.isNull(stack) && stack.getItem() == Items.splash_potion;
+		return !WItem.isNullOrEmpty(stack)
+			&& stack.getItem() == Items.splash_potion;
 	}
 	
 	public static ItemStack createSplashPotion()
@@ -73,7 +74,7 @@ public class InventoryUtils
 	{
 		ItemStack stack = WMinecraft.getPlayer().inventory.getCurrentItem();
 		
-		if(WItem.isNull(stack))
+		if(WItem.isNullOrEmpty(stack))
 			return false;
 		
 		return validator.isValid(stack.getItem());
