@@ -8,9 +8,18 @@
 package net.wurstclient.compatibility;
 
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.init.Enchantments;
+import net.minecraft.item.ItemStack;
 
 public final class WEnchantments
 {
+	public static final Enchantment EFFICIENCY = Enchantments.efficiency;
 	public static final Enchantment SILK_TOUCH = Enchantments.silkTouch;
+	
+	public static int getEnchantmentLevel(Enchantment enchantment,
+		ItemStack stack)
+	{
+		return EnchantmentHelper.getEnchantmentLevel(enchantment, stack);
+	}
 }
