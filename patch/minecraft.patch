@@ -1,6 +1,6 @@
-From b6f2e750f314ca4dcde591c118da7cef76be5a06 Mon Sep 17 00:00:00 2001
+From fc69973021b3a5ac3a45c268d39fab3a8733f8d4 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Wed, 11 Apr 2018 09:57:28 +0200
+Date: Fri, 18 May 2018 13:14:23 +0200
 Subject: [PATCH] mod
 
 ---
@@ -74,7 +74,7 @@ Subject: [PATCH] mod
  net/minecraft/crash/CrashReport.java               |  62 +++++-
  net/minecraft/crash/CrashReportCategory.java       |  10 +-
  net/minecraft/enchantment/Enchantment.java         |   4 +
- net/minecraft/entity/Entity.java                   |  68 ++++---
+ net/minecraft/entity/Entity.java                   |  63 +++---
  net/minecraft/entity/EntityAreaEffectCloud.java    |   6 +-
  net/minecraft/entity/EntityLivingBase.java         | 110 +++++-----
  net/minecraft/entity/EntityTrackerEntry.java       |   4 +-
@@ -115,7 +115,7 @@ Subject: [PATCH] mod
  net/minecraft/util/text/ITextComponent.java        |  12 ++
  net/minecraft/util/text/Style.java                 |   6 +
  net/minecraft/world/World.java                     |  41 ++--
- 111 files changed, 1670 insertions(+), 772 deletions(-)
+ 111 files changed, 1666 insertions(+), 771 deletions(-)
 
 diff --git a/Start.java b/Start.java
 index ae0025f..078afa5 100644
@@ -4441,7 +4441,7 @@ index 79768b5..06c460a 100644
      private final EntityEquipmentSlot[] applicableEquipmentTypes;
      private final Enchantment.Rarity weight;
 diff --git a/net/minecraft/entity/Entity.java b/net/minecraft/entity/Entity.java
-index 85a68a2..6c46f96 100644
+index 85a68a2..a5e5c1f 100644
 --- a/net/minecraft/entity/Entity.java
 +++ b/net/minecraft/entity/Entity.java
 @@ -1,8 +1,5 @@
@@ -4472,7 +4472,7 @@ index 85a68a2..6c46f96 100644
  import net.minecraft.block.material.Material;
  import net.minecraft.block.state.IBlockState;
  import net.minecraft.block.state.pattern.BlockPattern;
-+import net.minecraft.client.Minecraft;
++import net.minecraft.client.entity.EntityPlayerSP;
  import net.minecraft.command.CommandResultStats;
  import net.minecraft.command.ICommandSender;
  import net.minecraft.crash.CrashReport;
@@ -4495,7 +4495,7 @@ index 85a68a2..6c46f96 100644
  import net.minecraft.util.math.AxisAlignedBB;
  import net.minecraft.util.math.BlockPos;
  import net.minecraft.util.math.MathHelper;
-@@ -71,8 +67,8 @@ import net.minecraft.world.Explosion;
+@@ -71,8 +67,9 @@ import net.minecraft.world.Explosion;
  import net.minecraft.world.Teleporter;
  import net.minecraft.world.World;
  import net.minecraft.world.WorldServer;
@@ -4503,10 +4503,11 @@ index 85a68a2..6c46f96 100644
 -import org.apache.logging.log4j.Logger;
 +import net.wurstclient.WurstClient;
 +import net.wurstclient.compatibility.WMinecraft;
++import net.wurstclient.event.EventFactory;
  
  public abstract class Entity implements ICommandSender
  {
-@@ -125,7 +121,7 @@ public abstract class Entity implements ICommandSender
+@@ -125,7 +122,7 @@ public abstract class Entity implements ICommandSender
      public float prevRotationPitch;
  
      /** Axis aligned bounding box. */
@@ -4515,7 +4516,7 @@ index 85a68a2..6c46f96 100644
      public boolean onGround;
  
      /**
-@@ -143,7 +139,7 @@ public abstract class Entity implements ICommandSender
+@@ -143,7 +140,7 @@ public abstract class Entity implements ICommandSender
       */
      public boolean isCollided;
      public boolean velocityChanged;
@@ -4524,32 +4525,27 @@ index 85a68a2..6c46f96 100644
      private boolean isOutsideBorder;
  
      /**
-@@ -687,9 +683,21 @@ public abstract class Entity implements ICommandSender
+@@ -687,9 +684,17 @@ public abstract class Entity implements ICommandSender
       */
      public void moveEntity(double x, double y, double z)
      {
 -        if (this.noClip)
--        {
--            this.setEntityBoundingBox(this.getEntityBoundingBox().offset(x, y, z));
 +		// TODO: Client
 +		// Enables NoClip.
-+		boolean freecamActive = WurstClient.INSTANCE.mods.freecamMod.isActive();
-+		if(this.noClip
-+			|| ((freecamActive || WurstClient.INSTANCE.mods.phaseMod.isActive() || WurstClient.INSTANCE.mods.noClipMod
-+				.isActive()) && this instanceof EntityPlayer))
-+		{
-+			// Fixes Freecam flight speed
-+			if(this == Minecraft.getMinecraft().thePlayer && freecamActive)
-+				this.setEntityBoundingBox(this.getEntityBoundingBox().offset(
-+					x * 10, y, z * 10));
-+			else
-+				this.setEntityBoundingBox(this.getEntityBoundingBox().offset(x,
-+					y, z));
++		if(this instanceof EntityPlayerSP)
++			EventFactory.onPlayerMove((EntityPlayerSP)this);
++		if(this.noClip || ((WurstClient.INSTANCE.mods.phaseMod.isActive()
++			|| WurstClient.INSTANCE.mods.noClipMod.isActive())
++			&& this instanceof EntityPlayer))
+ 		{
+-            this.setEntityBoundingBox(this.getEntityBoundingBox().offset(x, y, z));
 +			
-             this.resetPositionToBB();
-         }
++			this.setEntityBoundingBox(
++				this.getEntityBoundingBox().offset(x, y, z));
+ 			this.resetPositionToBB();
+ 		}
          else
-@@ -713,7 +721,12 @@ public abstract class Entity implements ICommandSender
+@@ -713,7 +718,12 @@ public abstract class Entity implements ICommandSender
              double d3 = x;
              double d4 = y;
              double d5 = z;
@@ -4563,7 +4559,7 @@ index 85a68a2..6c46f96 100644
  
              if (flag)
              {
-@@ -2265,9 +2278,14 @@ public abstract class Entity implements ICommandSender
+@@ -2265,9 +2275,14 @@ public abstract class Entity implements ICommandSender
       */
      public void setVelocity(double x, double y, double z)
      {
