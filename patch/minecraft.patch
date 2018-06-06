@@ -1,12 +1,13 @@
-From fc69973021b3a5ac3a45c268d39fab3a8733f8d4 Mon Sep 17 00:00:00 2001
+From 616af24a00924fa0805a6645858b238aab5dd399 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Fri, 18 May 2018 13:14:23 +0200
+Date: Thu, 7 Jun 2018 00:14:46 +0200
 Subject: [PATCH] mod
 
 ---
  Start.java                                         |   2 +-
  net/minecraft/block/Block.java                     |  27 ++-
  net/minecraft/block/BlockCactus.java               |  11 +-
+ net/minecraft/block/BlockCrops.java                |   7 +
  net/minecraft/block/BlockLiquid.java               |  14 +-
  net/minecraft/block/BlockSlab.java                 |   6 +-
  net/minecraft/block/BlockSoulSand.java             |   5 +
@@ -17,7 +18,7 @@ Subject: [PATCH] mod
  net/minecraft/client/Minecraft.java                | 225 ++++++++++-----------
  .../client/audio/PositionedSoundRecord.java        |   2 +-
  .../client/entity/AbstractClientPlayer.java        |   4 +-
- net/minecraft/client/entity/EntityPlayerSP.java    | 132 ++++++++----
+ net/minecraft/client/entity/EntityPlayerSP.java    | 136 +++++++++----
  net/minecraft/client/gui/FontRenderer.java         |  17 +-
  net/minecraft/client/gui/GuiButton.java            |  16 +-
  .../GuiClickableScrolledSelectionListProxy.java    |   4 +-
@@ -86,8 +87,8 @@ Subject: [PATCH] mod
  net/minecraft/entity/player/EntityPlayerMP.java    |   6 +-
  net/minecraft/entity/projectile/EntityPotion.java  |   4 +-
  .../entity/projectile/EntityTippedArrow.java       |   2 +-
- net/minecraft/init/Blocks.java                     |  86 +++++---
- net/minecraft/init/Items.java                      |   8 +
+ net/minecraft/init/Blocks.java                     |  92 ++++++---
+ net/minecraft/init/Items.java                      |  14 ++
  net/minecraft/init/SoundEvents.java                |   3 +
  net/minecraft/item/Item.java                       |   6 +-
  net/minecraft/item/ItemBow.java                    |   2 +-
@@ -115,7 +116,7 @@ Subject: [PATCH] mod
  net/minecraft/util/text/ITextComponent.java        |  12 ++
  net/minecraft/util/text/Style.java                 |   6 +
  net/minecraft/world/World.java                     |  41 ++--
- 111 files changed, 1666 insertions(+), 771 deletions(-)
+ 112 files changed, 1687 insertions(+), 773 deletions(-)
 
 diff --git a/Start.java b/Start.java
 index ae0025f..078afa5 100644
@@ -243,6 +244,31 @@ index d1d7e2c..aa4f668 100644
      }
  
      public boolean isFullCube(IBlockState state)
+diff --git a/net/minecraft/block/BlockCrops.java b/net/minecraft/block/BlockCrops.java
+index ff2ce7b..e220a8c 100644
+--- a/net/minecraft/block/BlockCrops.java
++++ b/net/minecraft/block/BlockCrops.java
+@@ -1,6 +1,7 @@
+ package net.minecraft.block;
+ 
+ import java.util.Random;
++
+ import net.minecraft.block.properties.IProperty;
+ import net.minecraft.block.properties.PropertyInteger;
+ import net.minecraft.block.state.BlockStateContainer;
+@@ -61,6 +62,12 @@ public class BlockCrops extends BlockBush implements IGrowable
+         return this.getDefaultState().withProperty(this.func_185524_e(), Integer.valueOf(p_185528_1_));
+     }
+ 	
++	// TODO: Client
++	public boolean isMaxAge(IBlockState state)
++	{
++		return func_185525_y(state);
++	}
++	
+     public boolean func_185525_y(IBlockState p_185525_1_)
+     {
+         return ((Integer)p_185525_1_.getValue(this.func_185524_e())).intValue() >= this.func_185526_g();
 diff --git a/net/minecraft/block/BlockLiquid.java b/net/minecraft/block/BlockLiquid.java
 index 3914ef9..ec8b44d 100644
 --- a/net/minecraft/block/BlockLiquid.java
@@ -893,7 +919,7 @@ index c30247b..1fd170a 100644
  
              if (f1 > 1.0F)
 diff --git a/net/minecraft/client/entity/EntityPlayerSP.java b/net/minecraft/client/entity/EntityPlayerSP.java
-index 61b85c2..08d63ae 100644
+index 61b85c2..e3a7cf0 100644
 --- a/net/minecraft/client/entity/EntityPlayerSP.java
 +++ b/net/minecraft/client/entity/EntityPlayerSP.java
 @@ -10,15 +10,7 @@ import net.minecraft.client.gui.GuiMerchant;
@@ -943,6 +969,22 @@ index 61b85c2..08d63ae 100644
  
  public class EntityPlayerSP extends AbstractClientPlayer
  {
+@@ -94,13 +82,13 @@ public class EntityPlayerSP extends AbstractClientPlayer
+      * The last yaw value which was transmitted to the server, used to determine when the yaw changes and needs to be
+      * re-transmitted
+      */
+-    private float lastReportedYaw;
++    public float lastReportedYaw;
+ 
+     /**
+      * The last pitch value which was transmitted to the server, used to determine when the pitch changes and needs to
+      * be re-transmitted
+      */
+-    private float lastReportedPitch;
++    public float lastReportedPitch;
+     private boolean field_184841_cd;
+ 
+     /** the last sneaking state sent to the server */
 @@ -205,11 +193,14 @@ public class EntityPlayerSP extends AbstractClientPlayer
      {
          if (this.worldObj.isBlockLoaded(new BlockPos(this.posX, 0.0D, this.posZ)))
@@ -5259,7 +5301,7 @@ index cae123a..25014cd 100644
  
          if (!this.field_184561_h.isEmpty())
 diff --git a/net/minecraft/init/Blocks.java b/net/minecraft/init/Blocks.java
-index 72e11bf..63a1d5d 100644
+index 72e11bf..20f9697 100644
 --- a/net/minecraft/init/Blocks.java
 +++ b/net/minecraft/init/Blocks.java
 @@ -1,39 +1,10 @@
@@ -5306,7 +5348,7 @@ index 72e11bf..63a1d5d 100644
  import net.minecraft.util.ResourceLocation;
  
  public class Blocks
-@@ -497,4 +468,53 @@ public class Blocks
+@@ -497,4 +468,59 @@ public class Blocks
              CACHE.clear();
          }
      }
@@ -5359,12 +5401,18 @@ index 72e11bf..63a1d5d 100644
 +	public static final Block HARDENED_CLAY = hardened_clay;
 +	public static final BlockDoublePlant DOUBLE_PLANT = double_plant;
 +	public static final Block RED_SANDSTONE = red_sandstone;
++	public static final Block WHEAT = wheat;
++	public static final Block CARROTS = carrots;
++	public static final Block POTATOES = potatoes;
++	public static final Block BEETROOTS = beetroots;
++	public static final Block PUMPKIN_STEM = pumpkin_stem;
++	public static final Block MELON_STEM = melon_stem;
  }
 diff --git a/net/minecraft/init/Items.java b/net/minecraft/init/Items.java
-index 42d364e..a386939 100644
+index 42d364e..f7c7409 100644
 --- a/net/minecraft/init/Items.java
 +++ b/net/minecraft/init/Items.java
-@@ -449,4 +449,12 @@ public class Items
+@@ -449,4 +449,18 @@ public class Items
              beetroot_soup = getRegisteredItem("beetroot_soup");
          }
      }
@@ -5376,6 +5424,12 @@ index 42d364e..a386939 100644
 +	public static final Item BOWL = bowl;
 +	public static final Item DIAMOND_CHESTPLATE = diamond_chestplate;
 +	public static final Item POTIONITEM = potionitem;
++	public static final Item WHEAT_SEEDS = wheat_seeds;
++	public static final Item CARROT = carrot;
++	public static final Item POTATO = potato;
++	public static final Item BEETROOT_SEEDS = beetroot_seeds;
++	public static final Item PUMPKIN_SEEDS = pumpkin_seeds;
++	public static final Item MELON_SEEDS = melon_seeds;
  }
 diff --git a/net/minecraft/init/SoundEvents.java b/net/minecraft/init/SoundEvents.java
 index b4c2227..be07ef7 100644
