@@ -1,29 +1,29 @@
-From 616af24a00924fa0805a6645858b238aab5dd399 Mon Sep 17 00:00:00 2001
+From 35e27b9a18395f501955e35338a6b20b645189a1 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Thu, 7 Jun 2018 00:14:46 +0200
+Date: Sun, 17 Jun 2018 09:40:05 +0200
 Subject: [PATCH] mod
 
 ---
  Start.java                                         |   2 +-
- net/minecraft/block/Block.java                     |  27 ++-
+ net/minecraft/block/Block.java                     |  30 ++-
  net/minecraft/block/BlockCactus.java               |  11 +-
  net/minecraft/block/BlockCrops.java                |   7 +
- net/minecraft/block/BlockLiquid.java               |  14 +-
+ net/minecraft/block/BlockLiquid.java               |  10 +-
  net/minecraft/block/BlockSlab.java                 |   6 +-
  net/minecraft/block/BlockSoulSand.java             |   5 +
  net/minecraft/block/material/Material.java         |   7 +
- net/minecraft/block/state/BlockStateContainer.java |   3 +-
+ net/minecraft/block/state/BlockStateContainer.java |  29 +--
  net/minecraft/block/state/IBlockProperties.java    |   6 +
  net/minecraft/block/state/IBlockState.java         |   2 +-
- net/minecraft/client/Minecraft.java                | 225 ++++++++++-----------
+ net/minecraft/client/Minecraft.java                | 225 +++++++++----------
  .../client/audio/PositionedSoundRecord.java        |   2 +-
  .../client/entity/AbstractClientPlayer.java        |   4 +-
- net/minecraft/client/entity/EntityPlayerSP.java    | 136 +++++++++----
+ net/minecraft/client/entity/EntityPlayerSP.java    | 136 +++++++----
  net/minecraft/client/gui/FontRenderer.java         |  17 +-
  net/minecraft/client/gui/GuiButton.java            |  16 +-
  .../GuiClickableScrolledSelectionListProxy.java    |   4 +-
  net/minecraft/client/gui/GuiCreateFlatWorld.java   |   2 +-
- net/minecraft/client/gui/GuiDisconnected.java      |  91 ++++++++-
+ net/minecraft/client/gui/GuiDisconnected.java      |  91 +++++++-
  net/minecraft/client/gui/GuiFlatPresets.java       |   2 +-
  net/minecraft/client/gui/GuiGameOver.java          |  13 +-
  net/minecraft/client/gui/GuiIngame.java            |  31 ++-
@@ -33,9 +33,9 @@ Subject: [PATCH] mod
  .../client/gui/GuiListWorldSelectionEntry.java     |   2 +-
  net/minecraft/client/gui/GuiMainMenu.java          |  38 +++-
  net/minecraft/client/gui/GuiMemoryErrorScreen.java |   4 +-
- net/minecraft/client/gui/GuiMultiplayer.java       | 138 ++++++++++---
+ net/minecraft/client/gui/GuiMultiplayer.java       | 138 +++++++++---
  net/minecraft/client/gui/GuiNewChat.java           |  21 +-
- net/minecraft/client/gui/GuiScreenBook.java        |  72 ++++++-
+ net/minecraft/client/gui/GuiScreenBook.java        |  72 +++++-
  .../client/gui/GuiScreenCustomizePresets.java      |   2 +-
  .../client/gui/GuiScreenOptionsSounds.java         |   2 +-
  net/minecraft/client/gui/GuiScreenServerList.java  |   8 +
@@ -52,22 +52,24 @@ Subject: [PATCH] mod
  .../client/gui/inventory/GuiEditSign.java          |  19 +-
  net/minecraft/client/model/ModelElytra.java        |   2 +-
  .../client/multiplayer/GuiConnecting.java          |   8 +-
- .../client/multiplayer/PlayerControllerMP.java     |  58 +++---
+ .../client/multiplayer/PlayerControllerMP.java     |  58 +++--
  net/minecraft/client/multiplayer/ServerList.java   |   6 +
- .../client/network/NetHandlerPlayClient.java       | 193 ++++--------------
+ .../client/network/NetHandlerPlayClient.java       | 193 ++++------------
  .../client/network/NetworkPlayerInfo.java          |  10 +
- .../client/renderer/BlockModelRenderer.java        |   8 +-
+ .../client/renderer/BlockFluidRenderer.java        | 248 +++++++++++++++------
+ .../client/renderer/BlockModelRenderer.java        |  12 +-
  net/minecraft/client/renderer/EntityRenderer.java  | 100 ++++++---
- .../client/renderer/InventoryEffectRenderer.java   |  24 ++-
+ .../client/renderer/InventoryEffectRenderer.java   |  24 +-
  net/minecraft/client/renderer/ItemRenderer.java    |  15 +-
  net/minecraft/client/renderer/RenderGlobal.java    |   2 +-
  net/minecraft/client/renderer/RenderItem.java      |   2 +-
- net/minecraft/client/renderer/chunk/VisGraph.java  |   8 +-
- net/minecraft/client/renderer/entity/Render.java   |  47 ++++-
+ net/minecraft/client/renderer/chunk/VisGraph.java  |  10 +-
+ net/minecraft/client/renderer/entity/Render.java   |  47 +++-
  .../client/renderer/entity/RenderLivingBase.java   |  16 +-
  .../client/renderer/entity/RenderManager.java      |   6 +-
  .../client/renderer/entity/RenderPlayer.java       |   2 +-
  .../client/renderer/texture/TextureUtil.java       |   2 +-
+ .../tileentity/TileEntityRendererDispatcher.java   |  23 +-
  net/minecraft/client/resources/SkinManager.java    |  22 +-
  net/minecraft/client/settings/GameSettings.java    |  14 +-
  net/minecraft/client/settings/KeyBinding.java      |   2 +-
@@ -75,19 +77,19 @@ Subject: [PATCH] mod
  net/minecraft/crash/CrashReport.java               |  62 +++++-
  net/minecraft/crash/CrashReportCategory.java       |  10 +-
  net/minecraft/enchantment/Enchantment.java         |   4 +
- net/minecraft/entity/Entity.java                   |  63 +++---
+ net/minecraft/entity/Entity.java                   |  63 ++++--
  net/minecraft/entity/EntityAreaEffectCloud.java    |   6 +-
- net/minecraft/entity/EntityLivingBase.java         | 110 +++++-----
+ net/minecraft/entity/EntityLivingBase.java         | 110 ++++-----
  net/minecraft/entity/EntityTrackerEntry.java       |   4 +-
  .../entity/ai/EntityAIAttackRangedBow.java         |   4 +-
  net/minecraft/entity/monster/EntityMob.java        |   4 +-
  net/minecraft/entity/monster/EntitySpider.java     |   2 +-
  net/minecraft/entity/monster/EntityZombie.java     |   2 +-
- net/minecraft/entity/player/EntityPlayer.java      |  45 +++--
+ net/minecraft/entity/player/EntityPlayer.java      |  45 ++--
  net/minecraft/entity/player/EntityPlayerMP.java    |   6 +-
  net/minecraft/entity/projectile/EntityPotion.java  |   4 +-
  .../entity/projectile/EntityTippedArrow.java       |   2 +-
- net/minecraft/init/Blocks.java                     |  92 ++++++---
+ net/minecraft/init/Blocks.java                     | 123 +++++++---
  net/minecraft/init/Items.java                      |  14 ++
  net/minecraft/init/SoundEvents.java                |   3 +
  net/minecraft/item/Item.java                       |   6 +-
@@ -99,11 +101,11 @@ Subject: [PATCH] mod
  net/minecraft/item/ItemTool.java                   |   2 +-
  net/minecraft/network/EnumConnectionState.java     |   6 +-
  net/minecraft/network/NetHandlerPlayServer.java    |  22 +-
- net/minecraft/network/NetworkManager.java          |  57 ++++--
+ net/minecraft/network/NetworkManager.java          |  57 +++--
  .../network/play/client/CPacketPlayer.java         |  28 +--
  .../network/play/server/SPacketEntityEffect.java   |   2 +-
  .../network/play/server/SPacketJoinGame.java       |   5 +
- net/minecraft/potion/PotionEffect.java             |  37 ++--
+ net/minecraft/potion/PotionEffect.java             |  37 +--
  net/minecraft/potion/PotionType.java               |   2 +-
  net/minecraft/potion/PotionUtils.java              |   4 +-
  net/minecraft/realms/Realms.java                   |   4 +-
@@ -113,10 +115,10 @@ Subject: [PATCH] mod
  net/minecraft/util/Timer.java                      |   4 +
  net/minecraft/util/math/AxisAlignedBB.java         |  14 ++
  net/minecraft/util/math/Vec3d.java                 |   6 +
- net/minecraft/util/text/ITextComponent.java        |  12 ++
+ net/minecraft/util/text/ITextComponent.java        |  12 +
  net/minecraft/util/text/Style.java                 |   6 +
- net/minecraft/world/World.java                     |  41 ++--
- 112 files changed, 1687 insertions(+), 773 deletions(-)
+ net/minecraft/world/World.java                     |  41 +++-
+ 114 files changed, 1910 insertions(+), 883 deletions(-)
 
 diff --git a/Start.java b/Start.java
 index ae0025f..078afa5 100644
@@ -132,56 +134,58 @@ index ae0025f..078afa5 100644
  
      public static <T> T[] concat(T[] first, T[] second)
 diff --git a/net/minecraft/block/Block.java b/net/minecraft/block/Block.java
-index b386ea0..09f8118 100644
+index b386ea0..1ce1973 100644
 --- a/net/minecraft/block/Block.java
 +++ b/net/minecraft/block/Block.java
 @@ -1,9 +1,11 @@
  package net.minecraft.block;
  
- import com.google.common.collect.Sets;
-+
+-import com.google.common.collect.Sets;
  import java.util.List;
  import java.util.Random;
  import java.util.Set;
 +
++import com.google.common.collect.Sets;
++
  import net.minecraft.block.material.EnumPushReaction;
  import net.minecraft.block.material.MapColor;
  import net.minecraft.block.material.Material;
-@@ -40,6 +42,8 @@ import net.minecraft.util.text.translation.I18n;
+@@ -23,14 +25,7 @@ import net.minecraft.item.ItemBlock;
+ import net.minecraft.item.ItemStack;
+ import net.minecraft.stats.StatList;
+ import net.minecraft.tileentity.TileEntity;
+-import net.minecraft.util.BlockRenderLayer;
+-import net.minecraft.util.EnumBlockRenderType;
+-import net.minecraft.util.EnumFacing;
+-import net.minecraft.util.EnumHand;
+-import net.minecraft.util.Mirror;
+-import net.minecraft.util.ObjectIntIdentityMap;
+-import net.minecraft.util.ResourceLocation;
+-import net.minecraft.util.Rotation;
++import net.minecraft.util.*;
+ import net.minecraft.util.math.AxisAlignedBB;
+ import net.minecraft.util.math.BlockPos;
+ import net.minecraft.util.math.RayTraceResult;
+@@ -40,6 +35,7 @@ import net.minecraft.util.text.translation.I18n;
  import net.minecraft.world.Explosion;
  import net.minecraft.world.IBlockAccess;
  import net.minecraft.world.World;
 +import net.wurstclient.WurstClient;
-+import net.wurstclient.utils.XRayUtils;
  
  public class Block
  {
-@@ -339,7 +343,12 @@ public class Block
+@@ -339,7 +335,9 @@ public class Block
  
      public boolean isFullCube(IBlockState state)
-     {
+ 	{
 -        return true;
 +		// TODO: Client
-+		if(WurstClient.INSTANCE.mods.xRayMod.isActive())
-+			return XRayUtils.isXRayBlock(this);
-+		else
-+			return !WurstClient.INSTANCE.mods.freecamMod.isActive()
-+				&& !WurstClient.INSTANCE.mods.noClipMod.isActive();
++		return !WurstClient.INSTANCE.mods.freecamMod.isActive()
++			&& !WurstClient.INSTANCE.mods.noClipMod.isActive();
      }
  
      public boolean isPassable(IBlockAccess worldIn, BlockPos pos)
-@@ -435,6 +444,10 @@ public class Block
- 
-     public boolean shouldSideBeRendered(IBlockState worldIn, IBlockAccess pos, BlockPos side, EnumFacing facing)
-     {
-+		// TODO: Client
-+		if(WurstClient.INSTANCE.mods.xRayMod.isEnabled())
-+			return XRayUtils.isXRayBlock(this);
-+    	
-         AxisAlignedBB axisalignedbb = worldIn.func_185900_c(pos, side);
- 
-         switch (facing)
-@@ -535,6 +548,10 @@ public class Block
+@@ -535,6 +533,10 @@ public class Block
  
      public boolean canCollideCheck(IBlockState state, boolean hitIfLiquid)
      {
@@ -192,7 +196,7 @@ index b386ea0..09f8118 100644
          return this.isCollidable();
      }
  
-@@ -614,7 +631,13 @@ public class Block
+@@ -614,7 +616,13 @@ public class Block
      public float getPlayerRelativeBlockHardness(IBlockState playerIn, EntityPlayer worldIn, World pos, BlockPos p_180647_4_)
      {
          float f = playerIn.getBlockHardness(pos, p_180647_4_);
@@ -270,7 +274,7 @@ index ff2ce7b..e220a8c 100644
      {
          return ((Integer)p_185525_1_.getValue(this.func_185524_e())).intValue() >= this.func_185526_g();
 diff --git a/net/minecraft/block/BlockLiquid.java b/net/minecraft/block/BlockLiquid.java
-index 3914ef9..ec8b44d 100644
+index 3914ef9..3d4496d 100644
 --- a/net/minecraft/block/BlockLiquid.java
 +++ b/net/minecraft/block/BlockLiquid.java
 @@ -1,6 +1,7 @@
@@ -289,7 +293,7 @@ index 3914ef9..ec8b44d 100644
  
  public abstract class BlockLiquid extends Block
  {
-@@ -41,12 +43,16 @@ public abstract class BlockLiquid extends Block
+@@ -41,7 +43,9 @@ public abstract class BlockLiquid extends Block
  
      public AxisAlignedBB getSelectedBoundingBox(IBlockState worldIn, World pos, BlockPos p_180646_3_)
      {
@@ -300,15 +304,7 @@ index 3914ef9..ec8b44d 100644
      }
  
      public boolean isPassable(IBlockAccess worldIn, BlockPos pos)
-     {
--        return this.blockMaterial != Material.lava;
-+		// TODO: Client
-+		return WurstClient.INSTANCE.mods.xRayMod.isEnabled() ? true
-+			: this.blockMaterial != Material.lava;
-     }
- 
-     /**
-@@ -88,7 +94,9 @@ public abstract class BlockLiquid extends Block
+@@ -88,7 +92,9 @@ public abstract class BlockLiquid extends Block
  
      public boolean canCollideCheck(IBlockState state, boolean hitIfLiquid)
      {
@@ -392,10 +388,46 @@ index 2c822e3..2c3bc44 100644
      {
          this.materialMapColor = color;
 diff --git a/net/minecraft/block/state/BlockStateContainer.java b/net/minecraft/block/state/BlockStateContainer.java
-index 72ab5aa..7148dae 100644
+index 72ab5aa..fe7e8e2 100644
 --- a/net/minecraft/block/state/BlockStateContainer.java
 +++ b/net/minecraft/block/state/BlockStateContainer.java
-@@ -177,7 +177,8 @@ public class BlockStateContainer
+@@ -1,22 +1,16 @@
+ package net.minecraft.block.state;
+ 
+-import com.google.common.base.Function;
+-import com.google.common.base.Objects;
+-import com.google.common.collect.HashBasedTable;
+-import com.google.common.collect.ImmutableList;
+-import com.google.common.collect.ImmutableMap;
+-import com.google.common.collect.ImmutableSortedMap;
+-import com.google.common.collect.ImmutableTable;
+-import com.google.common.collect.Iterables;
+-import com.google.common.collect.Lists;
+-import com.google.common.collect.Maps;
+-import com.google.common.collect.Table;
+ import java.util.Collection;
+ import java.util.Collections;
+ import java.util.List;
+ import java.util.Map;
+ import java.util.Map.Entry;
+ import java.util.regex.Pattern;
++
++import com.google.common.base.Function;
++import com.google.common.base.Objects;
++import com.google.common.collect.*;
++
+ import net.minecraft.block.Block;
+ import net.minecraft.block.material.EnumPushReaction;
+ import net.minecraft.block.material.MapColor;
+@@ -36,6 +30,7 @@ import net.minecraft.util.math.RayTraceResult;
+ import net.minecraft.util.math.Vec3d;
+ import net.minecraft.world.IBlockAccess;
+ import net.minecraft.world.World;
++import net.wurstclient.event.EventFactory;
+ 
+ public class BlockStateContainer
+ {
+@@ -177,7 +172,8 @@ public class BlockStateContainer
              }
          }
  
@@ -405,6 +437,29 @@ index 72ab5aa..7148dae 100644
          {
              if (!this.properties.containsKey(property))
              {
+@@ -309,7 +305,9 @@ public class BlockStateContainer
+ 
+         public float func_185892_j()
+         {
+-            return this.block.func_185485_f(this);
++			// TODO: Client
++			return EventFactory.getAmbientOcclusionLightValue(
++				this.block.func_185485_f(this), this);
+         }
+ 
+         public boolean isBlockNormalCube()
+@@ -374,7 +372,10 @@ public class BlockStateContainer
+ 
+         public boolean shouldSideBeRendered(IBlockAccess p_185894_1_, BlockPos p_185894_2_, EnumFacing p_185894_3_)
+         {
+-            return this.block.shouldSideBeRendered(this, p_185894_1_, p_185894_2_, p_185894_3_);
++			// TODO: Client
++			return EventFactory
++				.shouldSideBeRendered(this.block.shouldSideBeRendered(this,
++					p_185894_1_, p_185894_2_, p_185894_3_), this);
+         }
+ 
+         public boolean isOpaqueCube()
 diff --git a/net/minecraft/block/state/IBlockProperties.java b/net/minecraft/block/state/IBlockProperties.java
 index 22ae51b..b902b3e 100644
 --- a/net/minecraft/block/state/IBlockProperties.java
@@ -3591,8 +3646,405 @@ index 7ed5f12..ac56d75 100644
      public int func_178835_l()
      {
          return this.field_178873_i;
+diff --git a/net/minecraft/client/renderer/BlockFluidRenderer.java b/net/minecraft/client/renderer/BlockFluidRenderer.java
+index ca66260..91882b0 100644
+--- a/net/minecraft/client/renderer/BlockFluidRenderer.java
++++ b/net/minecraft/client/renderer/BlockFluidRenderer.java
+@@ -39,22 +39,38 @@ public class BlockFluidRenderer
+ 
+     public boolean renderFluid(IBlockAccess blockAccess, IBlockState blockStateIn, BlockPos blockPosIn, VertexBuffer worldRendererIn)
+     {
++    	// TODO: Client
++    	try
++		{
++			
+ 			BlockLiquid blockliquid = (BlockLiquid)blockStateIn.getBlock();
+ 			boolean flag = blockStateIn.getMaterial() == Material.lava;
+-        TextureAtlasSprite[] atextureatlassprite = flag ? this.atlasSpritesLava : this.atlasSpritesWater;
+-        int i = this.field_187500_a.func_186724_a(blockStateIn, blockAccess, blockPosIn, 0);
++			TextureAtlasSprite[] atextureatlassprite =
++				flag ? this.atlasSpritesLava : this.atlasSpritesWater;
++			int i = this.field_187500_a.func_186724_a(blockStateIn, blockAccess,
++				blockPosIn, 0);
+ 			float f = (float)(i >> 16 & 255) / 255.0F;
+ 			float f1 = (float)(i >> 8 & 255) / 255.0F;
+ 			float f2 = (float)(i & 255) / 255.0F;
+-        boolean flag1 = blockStateIn.shouldSideBeRendered(blockAccess, blockPosIn, EnumFacing.UP);
+-        boolean flag2 = blockStateIn.shouldSideBeRendered(blockAccess, blockPosIn, EnumFacing.DOWN);
+-        boolean[] aboolean = new boolean[] {blockStateIn.shouldSideBeRendered(blockAccess, blockPosIn, EnumFacing.NORTH), blockStateIn.shouldSideBeRendered(blockAccess, blockPosIn, EnumFacing.SOUTH), blockStateIn.shouldSideBeRendered(blockAccess, blockPosIn, EnumFacing.WEST), blockStateIn.shouldSideBeRendered(blockAccess, blockPosIn, EnumFacing.EAST)};
+-
+-        if (!flag1 && !flag2 && !aboolean[0] && !aboolean[1] && !aboolean[2] && !aboolean[3])
++			boolean flag1 = blockStateIn.shouldSideBeRendered(blockAccess,
++				blockPosIn, EnumFacing.UP);
++			boolean flag2 = blockStateIn.shouldSideBeRendered(blockAccess,
++				blockPosIn, EnumFacing.DOWN);
++			boolean[] aboolean = new boolean[]{
++				blockStateIn.shouldSideBeRendered(blockAccess, blockPosIn,
++					EnumFacing.NORTH),
++				blockStateIn.shouldSideBeRendered(blockAccess, blockPosIn,
++					EnumFacing.SOUTH),
++				blockStateIn.shouldSideBeRendered(blockAccess, blockPosIn,
++					EnumFacing.WEST),
++				blockStateIn.shouldSideBeRendered(blockAccess, blockPosIn,
++					EnumFacing.EAST)};
++			
++			if(!flag1 && !flag2 && !aboolean[0] && !aboolean[1] && !aboolean[2]
++				&& !aboolean[3])
+ 			{
+ 				return false;
+-        }
+-        else
++			}else
+ 			{
+ 				boolean flag3 = false;
+ 				float f3 = 0.5F;
+@@ -62,20 +78,26 @@ public class BlockFluidRenderer
+ 				float f5 = 0.8F;
+ 				float f6 = 0.6F;
+ 				Material material = blockStateIn.getMaterial();
+-            float f7 = this.getFluidHeight(blockAccess, blockPosIn, material);
+-            float f8 = this.getFluidHeight(blockAccess, blockPosIn.south(), material);
+-            float f9 = this.getFluidHeight(blockAccess, blockPosIn.east().south(), material);
+-            float f10 = this.getFluidHeight(blockAccess, blockPosIn.east(), material);
++				float f7 =
++					this.getFluidHeight(blockAccess, blockPosIn, material);
++				float f8 = this.getFluidHeight(blockAccess, blockPosIn.south(),
++					material);
++				float f9 = this.getFluidHeight(blockAccess,
++					blockPosIn.east().south(), material);
++				float f10 = this.getFluidHeight(blockAccess, blockPosIn.east(),
++					material);
+ 				double d0 = (double)blockPosIn.getX();
+ 				double d1 = (double)blockPosIn.getY();
+ 				double d2 = (double)blockPosIn.getZ();
+ 				float f11 = 0.001F;
+ 				
+-            if (flag1)
++				if(flag1)
+ 				{
+ 					flag3 = true;
+-                float f12 = BlockLiquid.func_185697_a(blockAccess, blockPosIn, material);
+-                TextureAtlasSprite textureatlassprite = f12 > -999.0F ? atextureatlassprite[1] : atextureatlassprite[0];
++					float f12 = BlockLiquid.func_185697_a(blockAccess,
++						blockPosIn, material);
++					TextureAtlasSprite textureatlassprite = f12 > -999.0F
++						? atextureatlassprite[1] : atextureatlassprite[0];
+ 					f7 -= f11;
+ 					f8 -= f11;
+ 					f9 -= f11;
+@@ -89,7 +111,7 @@ public class BlockFluidRenderer
+ 					float f19;
+ 					float f20;
+ 					
+-                if (f12 < -999.0F)
++					if(f12 < -999.0F)
+ 					{
+ 						f13 = textureatlassprite.getInterpolatedU(0.0D);
+ 						f17 = textureatlassprite.getInterpolatedV(0.0D);
+@@ -99,97 +121,146 @@ public class BlockFluidRenderer
+ 						f19 = f18;
+ 						f16 = f15;
+ 						f20 = f17;
+-                }
+-                else
++					}else
+ 					{
+ 						float f21 = MathHelper.sin(f12) * 0.25F;
+ 						float f22 = MathHelper.cos(f12) * 0.25F;
+ 						float f23 = 8.0F;
+-                    f13 = textureatlassprite.getInterpolatedU((double)(8.0F + (-f22 - f21) * 16.0F));
+-                    f17 = textureatlassprite.getInterpolatedV((double)(8.0F + (-f22 + f21) * 16.0F));
+-                    f14 = textureatlassprite.getInterpolatedU((double)(8.0F + (-f22 + f21) * 16.0F));
+-                    f18 = textureatlassprite.getInterpolatedV((double)(8.0F + (f22 + f21) * 16.0F));
+-                    f15 = textureatlassprite.getInterpolatedU((double)(8.0F + (f22 + f21) * 16.0F));
+-                    f19 = textureatlassprite.getInterpolatedV((double)(8.0F + (f22 - f21) * 16.0F));
+-                    f16 = textureatlassprite.getInterpolatedU((double)(8.0F + (f22 - f21) * 16.0F));
+-                    f20 = textureatlassprite.getInterpolatedV((double)(8.0F + (-f22 - f21) * 16.0F));
++						f13 = textureatlassprite.getInterpolatedU(
++							(double)(8.0F + (-f22 - f21) * 16.0F));
++						f17 = textureatlassprite.getInterpolatedV(
++							(double)(8.0F + (-f22 + f21) * 16.0F));
++						f14 = textureatlassprite.getInterpolatedU(
++							(double)(8.0F + (-f22 + f21) * 16.0F));
++						f18 = textureatlassprite.getInterpolatedV(
++							(double)(8.0F + (f22 + f21) * 16.0F));
++						f15 = textureatlassprite.getInterpolatedU(
++							(double)(8.0F + (f22 + f21) * 16.0F));
++						f19 = textureatlassprite.getInterpolatedV(
++							(double)(8.0F + (f22 - f21) * 16.0F));
++						f16 = textureatlassprite.getInterpolatedU(
++							(double)(8.0F + (f22 - f21) * 16.0F));
++						f20 = textureatlassprite.getInterpolatedV(
++							(double)(8.0F + (-f22 - f21) * 16.0F));
+ 					}
+ 					
+-                int k2 = blockStateIn.getPackedLightmapCoords(blockAccess, blockPosIn);
++					int k2 = blockStateIn.getPackedLightmapCoords(blockAccess,
++						blockPosIn);
+ 					int l2 = k2 >> 16 & 65535;
+ 					int i3 = k2 & 65535;
+ 					float f24 = f4 * f;
+ 					float f25 = f4 * f1;
+ 					float f26 = f4 * f2;
+-                worldRendererIn.pos(d0 + 0.0D, d1 + (double)f7, d2 + 0.0D).color(f24, f25, f26, 1.0F).tex((double)f13, (double)f17).lightmap(l2, i3).endVertex();
+-                worldRendererIn.pos(d0 + 0.0D, d1 + (double)f8, d2 + 1.0D).color(f24, f25, f26, 1.0F).tex((double)f14, (double)f18).lightmap(l2, i3).endVertex();
+-                worldRendererIn.pos(d0 + 1.0D, d1 + (double)f9, d2 + 1.0D).color(f24, f25, f26, 1.0F).tex((double)f15, (double)f19).lightmap(l2, i3).endVertex();
+-                worldRendererIn.pos(d0 + 1.0D, d1 + (double)f10, d2 + 0.0D).color(f24, f25, f26, 1.0F).tex((double)f16, (double)f20).lightmap(l2, i3).endVertex();
+-
+-                if (blockliquid.shouldRenderSides(blockAccess, blockPosIn.up()))
++					worldRendererIn.pos(d0 + 0.0D, d1 + (double)f7, d2 + 0.0D)
++						.color(f24, f25, f26, 1.0F)
++						.tex((double)f13, (double)f17).lightmap(l2, i3)
++						.endVertex();
++					worldRendererIn.pos(d0 + 0.0D, d1 + (double)f8, d2 + 1.0D)
++						.color(f24, f25, f26, 1.0F)
++						.tex((double)f14, (double)f18).lightmap(l2, i3)
++						.endVertex();
++					worldRendererIn.pos(d0 + 1.0D, d1 + (double)f9, d2 + 1.0D)
++						.color(f24, f25, f26, 1.0F)
++						.tex((double)f15, (double)f19).lightmap(l2, i3)
++						.endVertex();
++					worldRendererIn.pos(d0 + 1.0D, d1 + (double)f10, d2 + 0.0D)
++						.color(f24, f25, f26, 1.0F)
++						.tex((double)f16, (double)f20).lightmap(l2, i3)
++						.endVertex();
++					
++					if(blockliquid.shouldRenderSides(blockAccess,
++						blockPosIn.up()))
+ 					{
+-                    worldRendererIn.pos(d0 + 0.0D, d1 + (double)f7, d2 + 0.0D).color(f24, f25, f26, 1.0F).tex((double)f13, (double)f17).lightmap(l2, i3).endVertex();
+-                    worldRendererIn.pos(d0 + 1.0D, d1 + (double)f10, d2 + 0.0D).color(f24, f25, f26, 1.0F).tex((double)f16, (double)f20).lightmap(l2, i3).endVertex();
+-                    worldRendererIn.pos(d0 + 1.0D, d1 + (double)f9, d2 + 1.0D).color(f24, f25, f26, 1.0F).tex((double)f15, (double)f19).lightmap(l2, i3).endVertex();
+-                    worldRendererIn.pos(d0 + 0.0D, d1 + (double)f8, d2 + 1.0D).color(f24, f25, f26, 1.0F).tex((double)f14, (double)f18).lightmap(l2, i3).endVertex();
++						worldRendererIn
++							.pos(d0 + 0.0D, d1 + (double)f7, d2 + 0.0D)
++							.color(f24, f25, f26, 1.0F)
++							.tex((double)f13, (double)f17).lightmap(l2, i3)
++							.endVertex();
++						worldRendererIn
++							.pos(d0 + 1.0D, d1 + (double)f10, d2 + 0.0D)
++							.color(f24, f25, f26, 1.0F)
++							.tex((double)f16, (double)f20).lightmap(l2, i3)
++							.endVertex();
++						worldRendererIn
++							.pos(d0 + 1.0D, d1 + (double)f9, d2 + 1.0D)
++							.color(f24, f25, f26, 1.0F)
++							.tex((double)f15, (double)f19).lightmap(l2, i3)
++							.endVertex();
++						worldRendererIn
++							.pos(d0 + 0.0D, d1 + (double)f8, d2 + 1.0D)
++							.color(f24, f25, f26, 1.0F)
++							.tex((double)f14, (double)f18).lightmap(l2, i3)
++							.endVertex();
+ 					}
+ 				}
+ 				
+-            if (flag2)
++				if(flag2)
+ 				{
+ 					float f35 = atextureatlassprite[0].getMinU();
+ 					float f36 = atextureatlassprite[0].getMaxU();
+ 					float f37 = atextureatlassprite[0].getMinV();
+ 					float f38 = atextureatlassprite[0].getMaxV();
+-                int l1 = blockStateIn.getPackedLightmapCoords(blockAccess, blockPosIn.down());
++					int l1 = blockStateIn.getPackedLightmapCoords(blockAccess,
++						blockPosIn.down());
+ 					int i2 = l1 >> 16 & 65535;
+ 					int j2 = l1 & 65535;
+-                worldRendererIn.pos(d0, d1, d2 + 1.0D).color(f3, f3, f3, 1.0F).tex((double)f35, (double)f38).lightmap(i2, j2).endVertex();
+-                worldRendererIn.pos(d0, d1, d2).color(f3, f3, f3, 1.0F).tex((double)f35, (double)f37).lightmap(i2, j2).endVertex();
+-                worldRendererIn.pos(d0 + 1.0D, d1, d2).color(f3, f3, f3, 1.0F).tex((double)f36, (double)f37).lightmap(i2, j2).endVertex();
+-                worldRendererIn.pos(d0 + 1.0D, d1, d2 + 1.0D).color(f3, f3, f3, 1.0F).tex((double)f36, (double)f38).lightmap(i2, j2).endVertex();
++					worldRendererIn.pos(d0, d1, d2 + 1.0D)
++						.color(f3, f3, f3, 1.0F).tex((double)f35, (double)f38)
++						.lightmap(i2, j2).endVertex();
++					worldRendererIn.pos(d0, d1, d2).color(f3, f3, f3, 1.0F)
++						.tex((double)f35, (double)f37).lightmap(i2, j2)
++						.endVertex();
++					worldRendererIn.pos(d0 + 1.0D, d1, d2)
++						.color(f3, f3, f3, 1.0F).tex((double)f36, (double)f37)
++						.lightmap(i2, j2).endVertex();
++					worldRendererIn.pos(d0 + 1.0D, d1, d2 + 1.0D)
++						.color(f3, f3, f3, 1.0F).tex((double)f36, (double)f38)
++						.lightmap(i2, j2).endVertex();
+ 					flag3 = true;
+ 				}
+ 				
+-            for (int i1 = 0; i1 < 4; ++i1)
++				for(int i1 = 0; i1 < 4; ++i1)
+ 				{
+ 					int j1 = 0;
+ 					int k1 = 0;
+ 					
+-                if (i1 == 0)
++					if(i1 == 0)
+ 					{
+ 						--k1;
+ 					}
+ 					
+-                if (i1 == 1)
++					if(i1 == 1)
+ 					{
+ 						++k1;
+ 					}
+ 					
+-                if (i1 == 2)
++					if(i1 == 2)
+ 					{
+ 						--j1;
+ 					}
+ 					
+-                if (i1 == 3)
++					if(i1 == 3)
+ 					{
+ 						++j1;
+ 					}
+ 					
+ 					BlockPos blockpos = blockPosIn.add(j1, 0, k1);
+-                TextureAtlasSprite textureatlassprite1 = atextureatlassprite[1];
++					TextureAtlasSprite textureatlassprite1 =
++						atextureatlassprite[1];
+ 					
+-                if (!flag)
++					if(!flag)
+ 					{
+-                    Block block = blockAccess.getBlockState(blockpos).getBlock();
++						Block block =
++							blockAccess.getBlockState(blockpos).getBlock();
+ 						
+-                    if (block == Blocks.glass || block == Blocks.stained_glass)
++						if(block == Blocks.glass
++							|| block == Blocks.stained_glass)
+ 						{
+ 							textureatlassprite1 = this.field_187501_d;
+ 						}
+ 					}
+ 					
+-                if (aboolean[i1])
++					if(aboolean[i1])
+ 					{
+ 						float f39;
+ 						float f40;
+@@ -198,7 +269,7 @@ public class BlockFluidRenderer
+ 						double d5;
+ 						double d6;
+ 						
+-                    if (i1 == 0)
++						if(i1 == 0)
+ 						{
+ 							f39 = f7;
+ 							f40 = f10;
+@@ -206,8 +277,7 @@ public class BlockFluidRenderer
+ 							d5 = d0 + 1.0D;
+ 							d4 = d2 + (double)f11;
+ 							d6 = d2 + (double)f11;
+-                    }
+-                    else if (i1 == 1)
++						}else if(i1 == 1)
+ 						{
+ 							f39 = f9;
+ 							f40 = f8;
+@@ -215,8 +285,7 @@ public class BlockFluidRenderer
+ 							d5 = d0;
+ 							d4 = d2 + 1.0D - (double)f11;
+ 							d6 = d2 + 1.0D - (double)f11;
+-                    }
+-                    else if (i1 == 2)
++						}else if(i1 == 2)
+ 						{
+ 							f39 = f8;
+ 							f40 = f7;
+@@ -224,8 +293,7 @@ public class BlockFluidRenderer
+ 							d5 = d0 + (double)f11;
+ 							d4 = d2 + 1.0D;
+ 							d6 = d2;
+-                    }
+-                    else
++						}else
+ 						{
+ 							f39 = f10;
+ 							f40 = f9;
+@@ -238,33 +306,65 @@ public class BlockFluidRenderer
+ 						flag3 = true;
+ 						float f41 = textureatlassprite1.getInterpolatedU(0.0D);
+ 						float f27 = textureatlassprite1.getInterpolatedU(8.0D);
+-                    float f28 = textureatlassprite1.getInterpolatedV((double)((1.0F - f39) * 16.0F * 0.5F));
+-                    float f29 = textureatlassprite1.getInterpolatedV((double)((1.0F - f40) * 16.0F * 0.5F));
++						float f28 = textureatlassprite1.getInterpolatedV(
++							(double)((1.0F - f39) * 16.0F * 0.5F));
++						float f29 = textureatlassprite1.getInterpolatedV(
++							(double)((1.0F - f40) * 16.0F * 0.5F));
+ 						float f30 = textureatlassprite1.getInterpolatedV(8.0D);
+-                    int j = blockStateIn.getPackedLightmapCoords(blockAccess, blockpos);
++						int j = blockStateIn
++							.getPackedLightmapCoords(blockAccess, blockpos);
+ 						int k = j >> 16 & 65535;
+ 						int l = j & 65535;
+ 						float f31 = i1 < 2 ? f5 : f6;
+ 						float f32 = f4 * f31 * f;
+ 						float f33 = f4 * f31 * f1;
+ 						float f34 = f4 * f31 * f2;
+-                    worldRendererIn.pos(d3, d1 + (double)f39, d4).color(f32, f33, f34, 1.0F).tex((double)f41, (double)f28).lightmap(k, l).endVertex();
+-                    worldRendererIn.pos(d5, d1 + (double)f40, d6).color(f32, f33, f34, 1.0F).tex((double)f27, (double)f29).lightmap(k, l).endVertex();
+-                    worldRendererIn.pos(d5, d1 + 0.0D, d6).color(f32, f33, f34, 1.0F).tex((double)f27, (double)f30).lightmap(k, l).endVertex();
+-                    worldRendererIn.pos(d3, d1 + 0.0D, d4).color(f32, f33, f34, 1.0F).tex((double)f41, (double)f30).lightmap(k, l).endVertex();
+-
+-                    if (textureatlassprite1 != this.field_187501_d)
++						worldRendererIn.pos(d3, d1 + (double)f39, d4)
++							.color(f32, f33, f34, 1.0F)
++							.tex((double)f41, (double)f28).lightmap(k, l)
++							.endVertex();
++						worldRendererIn.pos(d5, d1 + (double)f40, d6)
++							.color(f32, f33, f34, 1.0F)
++							.tex((double)f27, (double)f29).lightmap(k, l)
++							.endVertex();
++						worldRendererIn.pos(d5, d1 + 0.0D, d6)
++							.color(f32, f33, f34, 1.0F)
++							.tex((double)f27, (double)f30).lightmap(k, l)
++							.endVertex();
++						worldRendererIn.pos(d3, d1 + 0.0D, d4)
++							.color(f32, f33, f34, 1.0F)
++							.tex((double)f41, (double)f30).lightmap(k, l)
++							.endVertex();
++						
++						if(textureatlassprite1 != this.field_187501_d)
+ 						{
+-                        worldRendererIn.pos(d3, d1 + 0.0D, d4).color(f32, f33, f34, 1.0F).tex((double)f41, (double)f30).lightmap(k, l).endVertex();
+-                        worldRendererIn.pos(d5, d1 + 0.0D, d6).color(f32, f33, f34, 1.0F).tex((double)f27, (double)f30).lightmap(k, l).endVertex();
+-                        worldRendererIn.pos(d5, d1 + (double)f40, d6).color(f32, f33, f34, 1.0F).tex((double)f27, (double)f29).lightmap(k, l).endVertex();
+-                        worldRendererIn.pos(d3, d1 + (double)f39, d4).color(f32, f33, f34, 1.0F).tex((double)f41, (double)f28).lightmap(k, l).endVertex();
++							worldRendererIn.pos(d3, d1 + 0.0D, d4)
++								.color(f32, f33, f34, 1.0F)
++								.tex((double)f41, (double)f30).lightmap(k, l)
++								.endVertex();
++							worldRendererIn.pos(d5, d1 + 0.0D, d6)
++								.color(f32, f33, f34, 1.0F)
++								.tex((double)f27, (double)f30).lightmap(k, l)
++								.endVertex();
++							worldRendererIn.pos(d5, d1 + (double)f40, d6)
++								.color(f32, f33, f34, 1.0F)
++								.tex((double)f27, (double)f29).lightmap(k, l)
++								.endVertex();
++							worldRendererIn.pos(d3, d1 + (double)f39, d4)
++								.color(f32, f33, f34, 1.0F)
++								.tex((double)f41, (double)f28).lightmap(k, l)
++								.endVertex();
+ 						}
+ 					}
+ 				}
+ 				
+ 				return flag3;
+ 			}
++			
++		}catch(IndexOutOfBoundsException e)
++    	{
++			return false;
++    	}
+     }
+ 
+     private float getFluidHeight(IBlockAccess blockAccess, BlockPos blockPosIn, Material blockMaterial)
 diff --git a/net/minecraft/client/renderer/BlockModelRenderer.java b/net/minecraft/client/renderer/BlockModelRenderer.java
-index 628f4dd..e08a1ee 100644
+index 628f4dd..3fe3ccd 100644
 --- a/net/minecraft/client/renderer/BlockModelRenderer.java
 +++ b/net/minecraft/client/renderer/BlockModelRenderer.java
 @@ -2,6 +2,7 @@ package net.minecraft.client.renderer;
@@ -3603,27 +4055,45 @@ index 628f4dd..e08a1ee 100644
  import net.minecraft.block.Block;
  import net.minecraft.block.state.IBlockState;
  import net.minecraft.client.Minecraft;
-@@ -18,6 +19,8 @@ import net.minecraft.util.math.BlockPos;
+@@ -18,6 +19,7 @@ import net.minecraft.util.math.BlockPos;
  import net.minecraft.util.math.MathHelper;
  import net.minecraft.util.math.Vec3i;
  import net.minecraft.world.IBlockAccess;
-+import net.wurstclient.WurstClient;
-+import net.wurstclient.utils.XRayUtils;
++import net.wurstclient.event.EventFactory;
  
  public class BlockModelRenderer
  {
-@@ -71,7 +74,10 @@ public class BlockModelRenderer
+@@ -53,6 +55,10 @@ public class BlockModelRenderer
+ 
+     public boolean renderModelSmooth(IBlockAccess worldIn, IBakedModel modelIn, IBlockState stateIn, BlockPos posIn, VertexBuffer buffer, boolean checkSides, long rand)
+ 	{
++		// TODO: Client
++		if(!EventFactory.renderBlockModel(stateIn))
++			return false;
++		
+         boolean flag = false;
+         float[] afloat = new float[EnumFacing.values().length * 2];
+         BitSet bitset = new BitSet(3);
+@@ -71,7 +77,7 @@ public class BlockModelRenderer
  
          List<BakedQuad> list1 = modelIn.getQuads(stateIn, (EnumFacing)null, rand);
  
 -        if (!list1.isEmpty())
-+		// TODO: Client
-+		if(!list1.isEmpty()
-+			&& (!WurstClient.INSTANCE.mods.xRayMod.isActive() || XRayUtils
-+				.isXRayBlock(stateIn.getBlock())))
++		if(!list1.isEmpty())
          {
              this.renderQuadsSmooth(worldIn, stateIn, posIn, buffer, list1, afloat, bitset, blockmodelrenderer$ambientocclusionface);
              flag = true;
+@@ -82,6 +88,10 @@ public class BlockModelRenderer
+ 
+     public boolean renderModelFlat(IBlockAccess worldIn, IBakedModel modelIn, IBlockState stateIn, BlockPos posIn, VertexBuffer buffer, boolean checkSides, long rand)
+ 	{
++		// TODO: Client
++		if(!EventFactory.renderBlockModel(stateIn))
++			return false;
++		
+         boolean flag = false;
+         BitSet bitset = new BitSet(3);
+ 
 diff --git a/net/minecraft/client/renderer/EntityRenderer.java b/net/minecraft/client/renderer/EntityRenderer.java
 index e8fdae5..fa42eb2 100644
 --- a/net/minecraft/client/renderer/EntityRenderer.java
@@ -3999,28 +4469,36 @@ index b586e15..0cacdff 100644
              if (f > 0.0F)
              {
 diff --git a/net/minecraft/client/renderer/chunk/VisGraph.java b/net/minecraft/client/renderer/chunk/VisGraph.java
-index 1fe434a..f01e139 100644
+index 1fe434a..8eae7e5 100644
 --- a/net/minecraft/client/renderer/chunk/VisGraph.java
 +++ b/net/minecraft/client/renderer/chunk/VisGraph.java
-@@ -8,6 +8,7 @@ import java.util.Set;
+@@ -1,13 +1,16 @@
+ package net.minecraft.client.renderer.chunk;
+ 
+-import com.google.common.collect.Queues;
+ import java.util.BitSet;
+ import java.util.EnumSet;
+ import java.util.Queue;
+ import java.util.Set;
++
++import com.google.common.collect.Queues;
++
  import net.minecraft.util.EnumFacing;
  import net.minecraft.util.IntegerCache;
  import net.minecraft.util.math.BlockPos;
-+import net.wurstclient.WurstClient;
++import net.wurstclient.event.EventFactory;
  
  public class VisGraph
  {
-@@ -20,7 +21,12 @@ public class VisGraph
+@@ -20,7 +23,10 @@ public class VisGraph
  
      public void func_178606_a(BlockPos pos)
-     {
+ 	{
 -        this.field_178612_d.set(getIndex(pos), true);
 +		// TODO: Client
-+		if(WurstClient.INSTANCE.mods.xRayMod.isActive()
-+			|| WurstClient.INSTANCE.mods.freecamMod.isActive()
-+			|| WurstClient.INSTANCE.mods.caveFinderMod.isActive())
++		if(!EventFactory.setOpaqueCube())
 +			return;
-+    	
++		
          --this.field_178611_f;
      }
  
@@ -4194,6 +4672,57 @@ index 7bebe78..7e95efd 100644
      {
          GlStateManager.bindTexture(p_94277_0_);
      }
+diff --git a/net/minecraft/client/renderer/tileentity/TileEntityRendererDispatcher.java b/net/minecraft/client/renderer/tileentity/TileEntityRendererDispatcher.java
+index d27aea1..f834091 100644
+--- a/net/minecraft/client/renderer/tileentity/TileEntityRendererDispatcher.java
++++ b/net/minecraft/client/renderer/tileentity/TileEntityRendererDispatcher.java
+@@ -1,7 +1,9 @@
+ package net.minecraft.client.renderer.tileentity;
+ 
+-import com.google.common.collect.Maps;
+ import java.util.Map;
++
++import com.google.common.collect.Maps;
++
+ import net.minecraft.client.gui.FontRenderer;
+ import net.minecraft.client.renderer.GlStateManager;
+ import net.minecraft.client.renderer.OpenGlHelper;
+@@ -9,22 +11,11 @@ import net.minecraft.client.renderer.texture.TextureManager;
+ import net.minecraft.crash.CrashReport;
+ import net.minecraft.crash.CrashReportCategory;
+ import net.minecraft.entity.Entity;
+-import net.minecraft.tileentity.TileEntity;
+-import net.minecraft.tileentity.TileEntityBanner;
+-import net.minecraft.tileentity.TileEntityBeacon;
+-import net.minecraft.tileentity.TileEntityChest;
+-import net.minecraft.tileentity.TileEntityEnchantmentTable;
+-import net.minecraft.tileentity.TileEntityEndGateway;
+-import net.minecraft.tileentity.TileEntityEndPortal;
+-import net.minecraft.tileentity.TileEntityEnderChest;
+-import net.minecraft.tileentity.TileEntityMobSpawner;
+-import net.minecraft.tileentity.TileEntityPiston;
+-import net.minecraft.tileentity.TileEntitySign;
+-import net.minecraft.tileentity.TileEntitySkull;
+-import net.minecraft.tileentity.TileEntityStructure;
++import net.minecraft.tileentity.*;
+ import net.minecraft.util.ReportedException;
+ import net.minecraft.util.math.BlockPos;
+ import net.minecraft.world.World;
++import net.wurstclient.event.EventFactory;
+ 
+ public class TileEntityRendererDispatcher
+ {
+@@ -107,6 +98,10 @@ public class TileEntityRendererDispatcher
+ 
+     public void renderTileEntity(TileEntity tileentityIn, float partialTicks, int destroyStage)
+ 	{
++		// TODO: Client
++		if(!EventFactory.renderTileEntity(tileentityIn))
++			return;
++		
+         if (tileentityIn.getDistanceSq(this.entityX, this.entityY, this.entityZ) < tileentityIn.getMaxRenderDistanceSquared())
+         {
+             int i = this.worldObj.getCombinedLight(tileentityIn.getPos(), 0);
 diff --git a/net/minecraft/client/resources/SkinManager.java b/net/minecraft/client/resources/SkinManager.java
 index 65b26b7..1340413 100644
 --- a/net/minecraft/client/resources/SkinManager.java
@@ -5301,7 +5830,7 @@ index cae123a..25014cd 100644
  
          if (!this.field_184561_h.isEmpty())
 diff --git a/net/minecraft/init/Blocks.java b/net/minecraft/init/Blocks.java
-index 72e11bf..20f9697 100644
+index 72e11bf..35270a2 100644
 --- a/net/minecraft/init/Blocks.java
 +++ b/net/minecraft/init/Blocks.java
 @@ -1,39 +1,10 @@
@@ -5348,11 +5877,11 @@ index 72e11bf..20f9697 100644
  import net.minecraft.util.ResourceLocation;
  
  public class Blocks
-@@ -497,4 +468,59 @@ public class Blocks
+@@ -497,4 +468,90 @@ public class Blocks
              CACHE.clear();
          }
      }
-+    
++	
 +	// TODO: Client
 +	public static final Block AIR = air;
 +	public static final Block STONE = stone;
@@ -5384,7 +5913,7 @@ index 72e11bf..20f9697 100644
 +	public static final Block MOSSY_COBBLESTONE = mossy_cobblestone;
 +	public static final Block OBSIDIAN = obsidian;
 +	public static final Block MOB_SPAWNER = mob_spawner;
-+    public static final BlockChest CHEST = chest;
++	public static final BlockChest CHEST = chest;
 +	public static final Block DIAMOND_ORE = diamond_ore;
 +	public static final Block REDSTONE_ORE = redstone_ore;
 +	public static final Block SNOW_LAYER = snow_layer;
@@ -5407,6 +5936,37 @@ index 72e11bf..20f9697 100644
 +	public static final Block BEETROOTS = beetroots;
 +	public static final Block PUMPKIN_STEM = pumpkin_stem;
 +	public static final Block MELON_STEM = melon_stem;
++	public static final Block COAL_BLOCK = coal_block;
++	public static final Block IRON_BLOCK = iron_block;
++	public static final Block GOLD_BLOCK = gold_block;
++	public static final Block LAPIS_BLOCK = lapis_block;
++	public static final Block LIT_REDSTONE_ORE = lit_redstone_ore;
++	public static final Block REDSTONE_BLOCK = redstone_block;
++	public static final Block DIAMOND_BLOCK = diamond_block;
++	public static final Block EMERALD_BLOCK = emerald_block;
++	public static final Block BONE_BLOCK = null;
++	public static final Block GLOWSTONE = glowstone;
++	public static final Block CRAFTING_TABLE = crafting_table;
++	public static final Block FURNACE = furnace;
++	public static final Block LIT_FURNACE = lit_furnace;
++	public static final Block TORCH = torch;
++	public static final Block LADDER = ladder;
++	public static final Block TNT = tnt;
++	public static final Block ENCHANTING_TABLE = enchanting_table;
++	public static final Block BOOKSHELF = bookshelf;
++	public static final Block ANVIL = anvil;
++	public static final Block BREWING_STAND = brewing_stand;
++	public static final Block BEACON = beacon;
++	public static final Block TRAPPED_CHEST = trapped_chest;
++	public static final Block ENDER_CHEST = ender_chest;
++	public static final Block HOPPER = hopper;
++	public static final Block DROPPER = dropper;
++	public static final Block DISPENSER = dispenser;
++	public static final Block PORTAL = portal;
++	public static final Block END_PORTAL = end_portal;
++	public static final Block END_PORTAL_FRAME = end_portal_frame;
++	public static final Block CHAIN_COMMAND_BLOCK = chain_command_block;
++	public static final Block REPEATING_COMMAND_BLOCK = repeating_command_block;
  }
 diff --git a/net/minecraft/init/Items.java b/net/minecraft/init/Items.java
 index 42d364e..f7c7409 100644
